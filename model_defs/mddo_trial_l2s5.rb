@@ -5,7 +5,7 @@ require_relative 'mddo_trial/networks'
 
 opts = ARGV.getopts('d', 'debug:')
 if opts['d']
-  puts 'OOL-MDDO PJ Trial 2'
+  puts 'OOL-MDDO PJ Trial(2) L2 sample5'
   exit 0
 end
 
