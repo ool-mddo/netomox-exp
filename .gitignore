@@ -1,3 +1,6 @@
+.idea/
+netoviz_model/
+
 *.gem
 *.rbc
 /.config

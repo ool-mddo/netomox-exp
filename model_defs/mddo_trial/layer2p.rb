@@ -1,0 +1,130 @@
+# frozen_string_literal: true
+
+require 'json'
+require_relative '../bf_common/pseudo_model'
+require_relative 'csv/sw_vlan_props_table'
+require_relative 'csv/interface_prop_table'
+
+# L2 data builder
+class L2DataBuilder < DataBuilderBase
+  def initialize(target, layer1p)
+    super()
+    @layer1p = layer1p
+    @sw_vlan_props = SwitchVlanPropsTable.new(target)
+    @intf_props = InterfacePropertiesTable.new(target)
+  end
+
+  def make_networks
+    @network = PNetwork.new('layer2')
+    @network.supports.push(@layer1p.name)
+    setup_nodes_and_links
+    @networks.push(@network)
+    @networks
+  end
+
+  private
+
+  def access_port_vlan_id(tp_prop)
+    return tp_prop.access_vlan if tp_prop.swp_access?
+
+    0 # Host port (not specified vlan)
+  end
+
+  def operative_access_vlan(tp_prop)
+    return 0 if tp_prop.host_access? # NOP for host
+
+    found_sw_vlan_prop = @sw_vlan_props.find_record_by_node_intf(tp_prop.node, tp_prop.interface)
+    found_sw_vlan_prop ? found_sw_vlan_prop.vlan_id : -1 # -1:vlan bridge doesn't exists
+  end
+
+  def sw_vlans(tp_prop)
+    @sw_vlan_props.find_all_records_by_node_intf(tp_prop.node, tp_prop.interface).map(&:vlan_id).uniq
+  end
+
+  def operative_access_port?(src_tp_prop, dst_tp_prop)
+    # for host/access port pair, vlan-id matching is unnecessary. (untag port)
+    src_tp_prop.almost_access? &&
+      access_port_vlan_id(src_tp_prop) == operative_access_vlan(src_tp_prop) && # on device?
+      dst_tp_prop.almost_access? &&
+      access_port_vlan_id(dst_tp_prop) == operative_access_vlan(dst_tp_prop) # on device?
+  end
+
+  def operative_trunk_port?(src_tp_prop, dst_tp_prop)
+    src_tp_prop.swp_trunk? && dst_tp_prop.swp_trunk?
+  end
+
+  def operative_trunk_vlans(src_tp_prop, dst_tp_prop)
+    src_tp_prop.allowed_vlans & # allowed-vlans on port
+      sw_vlans(src_tp_prop) & # vlans on device
+      dst_tp_prop.allowed_vlans & # allowed-vlans on port
+      sw_vlans(dst_tp_prop) # vlans on device
+  end
+
+  def port_l2_config_access(src_tp_prop, dst_tp_prop)
+    {
+      type: :access,
+      src_vlan_id: access_port_vlan_id(src_tp_prop),
+      dst_vlan_id: access_port_vlan_id(dst_tp_prop)
+    }
+  end
+
+  def port_l2_config_trunk(src_tp_prop, dst_tp_prop)
+    {
+      type: :trunk,
+      # common vlan_ids in allowed vlans of src/dst port and src/dst switch vlans
+      vlan_ids: operative_trunk_vlans(src_tp_prop, dst_tp_prop)
+    }
+  end
+
+  def port_l2_config_check(src_tp_prop, dst_tp_prop)
+    return port_l2_config_access(src_tp_prop, dst_tp_prop) if operative_access_port?(src_tp_prop, dst_tp_prop)
+    return port_l2_config_trunk(src_tp_prop, dst_tp_prop) if operative_trunk_port?(src_tp_prop, dst_tp_prop)
+    { type: :error }
+  end
+
+  def add_l2_node_tp(l1_node, l1_tp, vlan_id)
+    l2_node_name = vlan_id > 0 ? l1_node.name + "_Vlan#{vlan_id}" : l1_node.name
+    new_node = @network.node(l2_node_name)
+    new_node.supports.push([@layer1p.name, l1_node.name])
+    new_tp = new_node.term_point(l1_tp.name)
+    new_tp.supports.push([@layer1p.name, l1_node.name, l1_tp.name])
+    [new_node.name, new_tp.name]
+  end
+
+  def add_l2_node_tp_link(src_node, src_tp, src_vlan_id, dst_node, dst_tp, dst_vlan_id)
+    src_l2_node, src_l2_tp = add_l2_node_tp(src_node, src_tp, src_vlan_id)
+    dst_l2_node, dst_l2_tp = add_l2_node_tp(dst_node, dst_tp, dst_vlan_id)
+    @network.link(src_l2_node, src_l2_tp, dst_l2_node, dst_l2_tp)
+  end
+
+  def add_l2_node_tp_link_by_config(src_node, src_tp, dst_node, dst_tp, check_result)
+    if check_result[:type] == :access
+      add_l2_node_tp_link(src_node, src_tp, check_result[:src_vlan_id], dst_node, dst_tp, check_result[:dst_vlan_id])
+      return
+    end
+
+    if check_result[:type] == :trunk
+      check_result[:vlan_ids].each do |vlan_id|
+        add_l2_node_tp_link(src_node, src_tp, vlan_id, dst_node, dst_tp, vlan_id)
+      end
+      return
+    end
+
+    warn '# ERROR: L2 Config Check Error'
+  end
+
+  def tp_prop_by_link_edge(link_edge)
+    node = @layer1p.find_node_by_name(link_edge.node)
+    tp = node.find_tp_by_name(link_edge.tp)
+    [node, tp, @intf_props.find_record_by_node_intf(node.name, tp.name)]
+  end
+
+  def setup_nodes_and_links
+    @layer1p.links.each do |link|
+      src_node, src_tp, src_tp_prop = tp_prop_by_link_edge(link.src)
+      dst_node, dst_tp, dst_tp_prop = tp_prop_by_link_edge(link.dst)
+      check_result = port_l2_config_check(src_tp_prop, dst_tp_prop)
+      add_l2_node_tp_link_by_config(src_node, src_tp, dst_node, dst_tp, check_result)
+    end
+  end
+end
