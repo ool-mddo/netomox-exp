@@ -1,0 +1,28 @@
+AllCops:
+  NewCops: enable
+
+# TODO
+Style/OptionalBooleanParameter:
+  Enabled: false
+
+# disable several metrics for hand-made models
+
+Metrics/AbcSize:
+  Exclude:
+    - 'model_defs/mddo/*.rb'
+
+Metrics/MethodLength:
+  Exclude:
+    - 'model_defs/mddo/*.rb'
+
+Metrics/BlockLength:
+  Exclude:
+    - 'model_defs/mddo/*.rb'
+
+Metrics/CyclomaticComplexity:
+  Exclude:
+    - 'model_defs/mddo/*.rb'
+
+Metrics/PerceivedComplexity:
+  Exclude:
+    - 'model_defs/mddo/*.rb'

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'json'
 require 'netomox'
 require 'optparse'
@@ -5,8 +7,8 @@ require_relative 'mddo/layer1'
 require_relative 'mddo/layer15'
 require_relative 'mddo/layer2'
 require_relative 'mddo/layer3'
-require_relative 'mddo/ospf-proc'
-require_relative 'mddo/bgp-proc'
+require_relative 'mddo/ospf_proc'
+require_relative 'mddo/bgp_proc'
 require_relative 'mddo/region'
 
 opts = ARGV.getopts('d')

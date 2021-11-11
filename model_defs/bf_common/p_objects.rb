@@ -79,8 +79,11 @@ class PNode < PObjectBase
 
   def auto_tp_name
     tp_names = @tps.map(&:name).filter { |tp| tp.name =~ /p\d+/ }
-    tp_name_numbers = tp_names.map { |tp| tp.name =~ /p(\d+)/; $1.to_i }.sort
-    next_number = tp_name_numbers.length > 0 ? tp_name_numbers.pop + 1 : 1
+    tp_name_numbers = tp_names.map do |tp|
+      tp.name =~ /p(\d+)/
+      Regexp.last_match(1).to_i
+    end.sort
+    next_number = tp_name_numbers.length.positive? ? tp_name_numbers.pop + 1 : 1
     "p#{next_number}"
   end
 

@@ -5,6 +5,7 @@ require_relative '../bf_common/pseudo_model'
 require_relative 'csv/sw_vlan_props_table'
 require_relative 'csv/interface_prop_table'
 
+# rubocop:disable Metrics/ClassLength
 # L2 data builder
 class L2DataBuilder < DataBuilderBase
   def initialize(target, layer1p)
@@ -25,16 +26,16 @@ class L2DataBuilder < DataBuilderBase
   private
 
   def access_port_vlan_id(tp_prop)
-    return tp_prop.access_vlan if tp_prop.swp_access?
-
-    0 # Host port (not specified vlan)
+    # 0:Host port (not specified vlan)
+    tp_prop.swp_access? ? tp_prop.access_vlan : 0
   end
 
   def operative_access_vlan(tp_prop)
     return 0 if tp_prop.host_access? # NOP for host
 
     found_sw_vlan_prop = @sw_vlan_props.find_record_by_node_intf(tp_prop.node, tp_prop.interface)
-    found_sw_vlan_prop ? found_sw_vlan_prop.vlan_id : -1 # -1:vlan bridge doesn't exists
+    # -1:vlan bridge doesn't exists
+    found_sw_vlan_prop ? found_sw_vlan_prop.vlan_id : -1
   end
 
   def sw_vlans(tp_prop)
@@ -79,38 +80,48 @@ class L2DataBuilder < DataBuilderBase
   def port_l2_config_check(src_tp_prop, dst_tp_prop)
     return port_l2_config_access(src_tp_prop, dst_tp_prop) if operative_access_port?(src_tp_prop, dst_tp_prop)
     return port_l2_config_trunk(src_tp_prop, dst_tp_prop) if operative_trunk_port?(src_tp_prop, dst_tp_prop)
+
     { type: :error }
   end
 
-  def add_l2_node_tp(l1_node, l1_tp, vlan_id)
-    l2_node_name = vlan_id > 0 ? l1_node.name + "_Vlan#{vlan_id}" : l1_node.name
+  def add_l2_node(l1_node, vlan_id)
+    l2_node_name = l1_node.name + (vlan_id.positive? ? "_Vlan#{vlan_id}" : '')
     new_node = @network.node(l2_node_name)
     new_node.supports.push([@layer1p.name, l1_node.name])
-    new_tp = new_node.term_point(l1_tp.name)
+    new_node
+  end
+
+  def add_l2_tp(l2_node, l1_node, l1_tp)
+    new_tp = l2_node.term_point(l1_tp.name)
     new_tp.supports.push([@layer1p.name, l1_node.name, l1_tp.name])
+    new_tp
+  end
+
+  def add_l2_node_tp(l1_node, l1_tp, vlan_id)
+    new_node = add_l2_node(l1_node, vlan_id)
+    new_tp = add_l2_tp(new_node, l1_node, l1_tp)
     [new_node.name, new_tp.name]
   end
 
+  # rubocop:disable Metrics/ParameterLists
   def add_l2_node_tp_link(src_node, src_tp, src_vlan_id, dst_node, dst_tp, dst_vlan_id)
     src_l2_node, src_l2_tp = add_l2_node_tp(src_node, src_tp, src_vlan_id)
     dst_l2_node, dst_l2_tp = add_l2_node_tp(dst_node, dst_tp, dst_vlan_id)
     @network.link(src_l2_node, src_l2_tp, dst_l2_node, dst_l2_tp)
   end
+  # rubocop:enable Metrics/ParameterLists
 
   def add_l2_node_tp_link_by_config(src_node, src_tp, dst_node, dst_tp, check_result)
-    if check_result[:type] == :access
+    case check_result[:type]
+    when :access
       add_l2_node_tp_link(src_node, src_tp, check_result[:src_vlan_id], dst_node, dst_tp, check_result[:dst_vlan_id])
-      return
-    end
-
-    if check_result[:type] == :trunk
+    when :trunk
       check_result[:vlan_ids].each do |vlan_id|
         add_l2_node_tp_link(src_node, src_tp, vlan_id, dst_node, dst_tp, vlan_id)
       end
-      return
+    else
+      warn '# ERROR: L2 Config Check Error'
     end
-
-    warn '# ERROR: L2 Config Check Error'
   end
 
   def tp_prop_by_link_edge(link_edge)
@@ -128,3 +139,4 @@ class L2DataBuilder < DataBuilderBase
     end
   end
 end
+# rubocop:enable Metrics/ClassLength

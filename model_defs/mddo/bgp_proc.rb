@@ -2,7 +2,6 @@
 
 require 'netomox'
 
-# rubocop:disable Metrics/MethodLength, Metrics/AbcSize
 def register_target_bgp_proc(nws)
   nws.register do
     network 'bgp-proc' do
@@ -55,4 +54,3 @@ def register_target_bgp_proc(nws)
     end
   end
 end
-# rubocop:enable Metrics/MethodLength, Metrics/AbcSize
