@@ -147,6 +147,18 @@ rescue LoadError
   end
 end
 
+begin
+  require 'yard'
+  require 'yard/rake/yardoc_task'
+  YARD::Rake::YardocTask.new do |task|
+    task.files = FileList['./model_defs/**/*.rb']
+  end
+rescue LoadError
+  task :yard do
+    warn 'YARD is disabled'
+  end
+end
+
 CLOBBER.include(
   TARGET_JSON, # JTOX, JSON_SCHEMA,
   "#{MODEL_DIR}/*.xml",

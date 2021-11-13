@@ -69,6 +69,17 @@ pip install wheel
 python -m pip install --upgrade git+https://github.com/batfish/pybatfish.git
 ```
 
+# Generate YARD documents
+
+```shell
+bundle exec rake yard
+```
+
+Run yard document server (access `http://localhost:8808/` as default)
+```shell
+bundle exec yard server
+```
+
 # Repository configuration
 
 ## Original

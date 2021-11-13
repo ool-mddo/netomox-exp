@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 require 'json'
-require 'pry'
+# require 'pry'
 require_relative 'layer1p'
 require_relative 'layer2p'
 require_relative 'layer3p'
