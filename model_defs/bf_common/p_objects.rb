@@ -54,7 +54,11 @@ class PNetwork < PObjectBase
     @nodes.find { |node| node.name == node_name }
   end
 
-  def find_link_by_source(node_name, tp_name)
+  def find_link_by_src_edge(edge)
+    find_link_by_src_name(edge.node, edge.tp)
+  end
+
+  def find_link_by_src_name(node_name, tp_name)
     @links.find do |link|
       link.src.node == node_name && link.src.tp == tp_name
     end
@@ -100,6 +104,10 @@ class PNode < PObjectBase
     @tps.find { |tp| tp.name == tp_name }
   end
 
+  def tps_without(tp_name)
+    @tps.reject { |tp| tp.name == tp_name }
+  end
+
   def to_s
     name.to_s
   end
@@ -119,6 +127,10 @@ class PLinkEdge
   def initialize(node, term_point)
     @node = node
     @tp = term_point
+  end
+
+  def ==(other)
+    @node == other.node && @tp == other.tp
   end
 
   def to_s

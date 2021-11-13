@@ -10,8 +10,9 @@ if opts['d']
 end
 
 target_config = 'sample3'
+
 if opts['debug']
-  dump(target_config, opts['debug'])
+  generate_json(target_config, layer: opts['debug'], debug: true)
   exit 0
 end
 
