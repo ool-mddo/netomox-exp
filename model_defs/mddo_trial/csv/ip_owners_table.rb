@@ -56,6 +56,11 @@ class IPOwnersTable < TableBase
     @records = @orig_table.map { |r| IPOwnersTableRecord.new(r) }
   end
 
+  # alias
+  def find_record_by_node_intf(node_name, intf_name)
+    find_node_int(node_name, intf_name)
+  end
+
   def find_node_int(node, interface)
     @records.find { |r| r.node == node && r.interface == interface }
   end

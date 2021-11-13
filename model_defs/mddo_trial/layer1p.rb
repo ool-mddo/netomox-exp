@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-require 'json'
 require_relative '../bf_common/pseudo_model'
 require_relative 'csv/node_props_table'
 require_relative 'csv/edges_layer1_table'
@@ -44,8 +43,3 @@ class L1DataBuilder < DataBuilderBase
     @links
   end
 end
-
-## TEST
-# l1db = L1DataBuilder.new('sample3')
-# l1db.dump
-# puts JSON.pretty_generate(l1db.topo_data)

@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-require 'json'
 require_relative '../bf_common/pseudo_model'
 require_relative 'csv/sw_vlan_props_table'
 require_relative 'csv/interface_prop_table'

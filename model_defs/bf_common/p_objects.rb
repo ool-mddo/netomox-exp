@@ -64,6 +64,13 @@ class PNetwork < PObjectBase
     end
   end
 
+  def find_tp_by_edge(edge)
+    node = find_node_by_name(edge.node)
+    return unless node
+
+    node.find_tp_by_name(edge.tp)
+  end
+
   def find_link_by_src_dst_name(node1, tp1, node2, tp2)
     @links.find do |link|
       link.src.node == node1 && link.src.tp == tp1 &&
@@ -82,9 +89,9 @@ class PNode < PObjectBase
   end
 
   def auto_tp_name
-    tp_names = @tps.map(&:name).filter { |tp| tp.name =~ /p\d+/ }
-    tp_name_numbers = tp_names.map do |tp|
-      tp.name =~ /p(\d+)/
+    tp_names = @tps.map(&:name).filter { |name| name =~ /p\d+/ }
+    tp_name_numbers = tp_names.map do |name|
+      name =~ /p(\d+)/
       Regexp.last_match(1).to_i
     end.sort
     next_number = tp_name_numbers.length.positive? ? tp_name_numbers.pop + 1 : 1
