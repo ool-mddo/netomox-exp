@@ -4,6 +4,8 @@ require 'csv'
 
 # Base class for csv-wrapper
 class TableBase
+  # @param [String] target Target network (config) data name
+  # @param [String] table_file CSV File name
   def initialize(target, table_file)
     csv_dir = "model_defs/mddo_trial/csv/#{target}"
     @orig_table = CSV.table("#{csv_dir}/#{table_file}")
@@ -13,6 +15,7 @@ end
 # Base class for record of csv-wrapper
 class TableRecordBase
   # get multiple method-results
+  # @param [Array<String>] attrs Record columns (attribute method name)
   def values(attrs)
     attrs.map { |attr| send(attr) }
   end
@@ -22,10 +25,14 @@ end
 class EdgeBase < TableRecordBase
   attr_accessor :node, :interface
 
+  # @param [String] node Node name
+  # @param [String] interface Interface (term-point) name
+  # @return [EdgeBAse] link-edge object
   def self.generate(node, interface)
     EdgeBase.new("#{node}[#{interface}]")
   end
 
+  # @param [String] interface_str `node[interface]` format string
   def initialize(interface_str)
     super()
     interface_str =~ /(.+)\[(.+)\]/
@@ -33,25 +40,19 @@ class EdgeBase < TableRecordBase
     @interface = Regexp.last_match(2)
   end
 
+  # @return [Boolean] true if its interface name matched `/Vlan/`
   def physical_interface?
     @interface !~ /Vlan*/
   end
 
+  # @param [EdgeBase] other
+  # @return [Boolean] ture if equal
   def ==(other)
     @node == other.node && @interface == other.interface
   end
 
+  # @return [String]
   def to_s
     "#{@node}[#{@interface}]"
   end
-end
-
-# make layer2 segment name (per device)
-def l2node_name(node_name, vlan_id)
-  "#{node_name}_VL#{vlan_id}"
-end
-
-# make layer3 segment name
-def l3seg_node_name(vlan_id)
-  "Seg-VL#{vlan_id}"
 end

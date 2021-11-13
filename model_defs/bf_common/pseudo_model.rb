@@ -9,42 +9,20 @@ class DataBuilderBase
 
   def initialize
     @networks = PNetworks.new # PNetworks
-    @nodes = [] # Array of PNodes
-    @links = [] # Array of PLinks
   end
 
+  # @return [Netomox::DSL::Networks]
   def interpret
     @networks.interpret
   end
 
+  # @return [Hash] RFC8345-structured hash object
   def topo_data
     interpret.topo_data
   end
 
+  # print to stdout
   def dump
     @networks.dump
-  end
-
-  protected
-
-  def find_node(node_name)
-    @nodes.find { |n| n.name == node_name }
-  end
-
-  def find_or_new_node(node_name)
-    find_node(node_name) || PNode.new(node_name)
-  end
-
-  def add_link(src_node, src_tp, dst_node, dst_tp, bidirectional = true)
-    src = PLinkEdge.new(src_node, src_tp)
-    dst = PLinkEdge.new(dst_node, dst_tp)
-    @links.push(PLink.new(src, dst))
-    @links.push(PLink.new(dst, src)) if bidirectional
-  end
-
-  def add_node_if_new(pnode)
-    return if find_node(pnode.name)
-
-    @nodes.push(pnode)
   end
 end

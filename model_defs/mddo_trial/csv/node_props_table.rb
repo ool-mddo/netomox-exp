@@ -43,17 +43,15 @@ class NodePropsTable < TableBase
 
   def_delegators :@records, :each, :find, :[]
 
+  # @param [String] target Target network (config) data name
   def initialize(target)
     super(target, 'node_props.csv')
     @records = @orig_table.map { |r| NodePropsTableRecord.new(r) }
   end
 
-  # alias
+  # @param [String] node_name Node name
+  # @return [nil, InterfacePropertiesTableRecord] Record if found or nil if not found
   def find_record_by_node(node_name)
-    find_node(node_name)
-  end
-
-  def find_node(node)
-    @records.find { |r| r.node == node }
+    @records.find { |r| r.node == node_name }
   end
 end

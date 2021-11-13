@@ -7,6 +7,7 @@ require_relative 'table_base'
 class SwitchVlanPropsTableRecord < TableRecordBase
   attr_accessor :node, :vlan_id, :interfaces
 
+  # @param [Enumerable] record A row of csv table (row)
   def initialize(record)
     super()
     @node = record[:node]
@@ -14,12 +15,12 @@ class SwitchVlanPropsTableRecord < TableRecordBase
     @interfaces = extract_interfaces(record[:interfaces])
   end
 
-  def l2node_name
-    "#{@node}_VL#{@vlan_id}"
-  end
-
   private
 
+  # Convert interface list string to link-edge object.
+  #   ( array of `node[interface]` format string to link-edge)
+  # @param [String] interfaces_str Interface list string
+  # @return [Array<EdgeBase>] Array of link-edge
   def extract_interfaces(interfaces_str)
     interfaces_str =~ /\[(.+)\]/
     content = Regexp.last_match(1)
@@ -33,25 +34,27 @@ class SwitchVlanPropsTable < TableBase
 
   def_delegators :@records, :each, :find, :[]
 
+  # @param [String] target Target network (config) data name
   def initialize(target)
     super(target, 'sw_vlan_props.csv')
     @records = @orig_table.map { |r| SwitchVlanPropsTableRecord.new(r) }
   end
 
+  # @param [String] node_name Node name
+  # @param [String] intf_name Interface name
+  # @return [Array<SwitchVlanPropsTableRecord>] Found records
   def find_all_records_by_node_intf(node_name, intf_name)
     @records.find_all do |r|
       r.node == node_name && r.interfaces.map(&:interface).include?(intf_name)
     end
   end
 
-  # alias
+  # @param [String] node_name Node name
+  # @param [String] intf_name Interface name
+  # @return [nil, InterfacePropertiesTableRecord] Record if found or nil if not found
   def find_record_by_node_intf(node_name, intf_name)
-    find_node_int(node_name, intf_name)
-  end
-
-  def find_node_int(node, interface)
     @records.find do |r|
-      r.node == node && r.interfaces.map(&:interface).include?(interface)
+      r.node == node_name && r.interfaces.map(&:interface).include?(intf_name)
     end
   end
 end
