@@ -5,6 +5,8 @@ require_relative 'table_base'
 
 # endpoint of layer3-edge
 class EdgeLayer3 < EdgeBase
+  # @!attribute [rw] ips
+  #   @return [Array<String>]
   attr_accessor :ips
 
   # rubocop:disable Security/Eval
@@ -26,12 +28,16 @@ class EdgeLayer3 < EdgeBase
   # @return [EdgeLayer3] layer3 link-edge
   def self.new_from_str(interface_str)
     interface_str =~ /(.+\[.+\])(.+)/
-    EdgeLayer3.new(Regexp.last_match(1), Regexp.last_match(2))
+    EdgeLayer3.new(Regexp.last_match(1).to_s, Regexp.last_match(2).to_s)
   end
 end
 
 # row of layer3-edges table
 class EdgesLayer3TableRecord < TableRecordBase
+  # @!attribute [rw] src
+  #   @return [EdgeLayer3]
+  # @!attribute [rw] dst
+  #   @return [EdgeLayer3]
   attr_accessor :src, :dst
 
   # @param [Enumerable] record A row of csv table (row)

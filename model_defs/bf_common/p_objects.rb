@@ -2,6 +2,15 @@
 
 # base class for pseudo network object
 class PObjectBase
+  # @!attribute [rw] name
+  #   @return [String]
+  # @!attribute [rw] attribute
+  #   @return [Hash]
+  # @!attribute [rw] supports
+  #   @return [Array<(String, Array<String>)>]
+  #   @note `[nw_name,..]` for network,
+  #     `[[nw_name, node_name],..]` for node,
+  #     `[[nw_name, node_name, tp_name],...]` for tp
   attr_accessor :name, :attribute, :supports
 
   # @param [String] name Name of the object
@@ -14,6 +23,12 @@ end
 
 # pseudo network
 class PNetwork < PObjectBase
+  # @!attribute [rw] nodes
+  #   @return [Array<PNode>]
+  # @!attribute [rw] links
+  #   @return [Array<PLink>]
+  # @!attribute [rw] type
+  #   @return [String]
   attr_accessor :nodes, :links, :type
 
   # @param [String] name Name of the network
@@ -107,6 +122,8 @@ end
 
 # pseudo node
 class PNode < PObjectBase
+  # @!attribute [rw] tps
+  #   @return [Array<PTermPoint>]
   attr_accessor :tps
 
   # @param [String] name Name of the network
@@ -167,6 +184,10 @@ end
 
 # base class for pseudo link
 class PLinkEdge
+  # @!attribute [rw] node
+  #   @return [String]
+  # @!attribute [rw] tp
+  #   @return [String]
   attr_accessor :node, :tp
 
   # @param [String] node_name Node name
@@ -189,6 +210,10 @@ end
 
 # pseudo link
 class PLink
+  # @!attribute [rw] src
+  #   @return [PLinkEdge]
+  # @!attribute [rw] dst
+  #   @return [PLinkEdge]
   attr_accessor :src, :dst
 
   # @param [PLinkEdge] src Source link-edge

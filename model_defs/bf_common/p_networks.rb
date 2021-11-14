@@ -8,6 +8,11 @@ class PNetworks
   extend Forwardable
 
   def_delegators :@networks, :each, :find, :push, :[]
+
+  # @!attribute [rw] networks
+  #   @return [Array<PNetwork>]
+  # @!attribute [rw] nmx_networks
+  #   @return [Netomox::DSL::Networks]
   attr_accessor :networks, :nmx_networks
 
   def initialize

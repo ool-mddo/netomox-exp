@@ -23,6 +23,10 @@ end
 
 # Base class of edges-table endpoint
 class EdgeBase < TableRecordBase
+  # @!attribute [rw] node
+  #   @return [String]
+  # @!attribute [rw] interface
+  #   @return [String]
   attr_accessor :node, :interface
 
   # @param [String] node Node name

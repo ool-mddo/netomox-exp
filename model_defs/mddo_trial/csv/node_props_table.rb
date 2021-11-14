@@ -5,6 +5,15 @@ require_relative 'table_base'
 
 # row of node-properties table
 class NodePropsTableRecord < TableRecordBase
+  # @!attribute [rw] node
+  #   @return [String]
+  # @!attribute [rw] config_format
+  #   @return [String]
+  # @!attribute [rw] interfaces
+  #   @return [Array<String>]
+  # @!attribute [rw] vrfs
+  #   @return [String]
+  #   TODO: Array<String>
   attr_accessor :node, :config_format, :interfaces, :vrfs
 
   def initialize(record)

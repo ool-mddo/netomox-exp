@@ -7,7 +7,7 @@ require_relative 'csv/interface_prop_table'
 # rubocop:disable Metrics/ClassLength
 # L2 data builder
 class L2DataBuilder < DataBuilderBase
-  # @param [Stringe] target Target network (config) data name
+  # @param [String] target Target network (config) data name
   # @param [PNetwork] layer1p Layer1 network topology
   def initialize(target, layer1p)
     super()

@@ -5,6 +5,18 @@ require_relative 'table_base'
 
 # row of ip-owners table
 class IPOwnersTableRecord < TableRecordBase
+  # @!attribute [rw] node
+  #   @return [String]
+  # @!attribute [rw] vrf
+  #   @return [String]
+  # @!attribute [rw] interface
+  #   @return [String]
+  # @!attribute [rw] ip
+  #   @return [String]
+  # @!attribute [rw] mask
+  #   @return [Integer]
+  # @!attribute [rw] active
+  #   @return [String]
   attr_accessor :node, :vrf, :interface, :ip, :mask, :active
 
   # @param [Enumerable] record A row of csv table (row)

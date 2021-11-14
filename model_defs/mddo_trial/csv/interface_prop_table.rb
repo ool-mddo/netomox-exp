@@ -5,6 +5,24 @@ require_relative 'table_base'
 
 # row of interface-properties table
 class InterfacePropertiesTableRecord < TableRecordBase
+  # @!attribute [rw] node
+  #   @return [String]
+  # @!attribute [rw] interface
+  #   @return [String]
+  # @!attribute [rw] vrf
+  #   @return [String]
+  # @!attribute [rw] mtu
+  #   @return [Integer]
+  # @!attribute [rw] access_vlan
+  #   @return [Integer]
+  # @!attribute [rw] allowed_vlans
+  #   @return [Array<Integer>]
+  # @!attribute [rw] switchport
+  #   @return [String]
+  # @!attribute [rw] switchport_mode
+  #   @return [String]
+  # @!attribute [rw] switchport_encap
+  #   @return [String]
   attr_accessor :node, :interface, :vrf, :mtu, :access_vlan, :allowed_vlans,
                 :switchport, :switchport_mode, :switchport_encap
 

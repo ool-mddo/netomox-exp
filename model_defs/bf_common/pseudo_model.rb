@@ -5,6 +5,8 @@ require_relative 'p_networks'
 
 # base class for data builder with pseudo networks
 class DataBuilderBase
+  # @!attribute [rw] networks
+  #   @return [PNetworks]
   attr_accessor :networks
 
   def initialize

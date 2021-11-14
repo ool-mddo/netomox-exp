@@ -5,6 +5,10 @@ require_relative 'table_base'
 
 # row of layer1-edges table
 class EdgesLayer1TableRecord < TableRecordBase
+  # @!attribute [rw] src
+  #   @return [EdgeBase]
+  # @!attribute [rw] dst
+  #   @return [EdgeBase]
   attr_accessor :src, :dst
 
   # @param [Enumerable] record A row of csv table (row)

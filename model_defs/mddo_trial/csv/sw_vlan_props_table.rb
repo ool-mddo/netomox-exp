@@ -5,6 +5,12 @@ require_relative 'table_base'
 
 # row of switch-vlan-properties table
 class SwitchVlanPropsTableRecord < TableRecordBase
+  # @!attribute [rw] node
+  #   @return [String]
+  # @!attribute [rw] vlan_id
+  #   @return [Integer]
+  # @!attribute [rw] interfaces
+  #   @return [Array<String>]
   attr_accessor :node, :vlan_id, :interfaces
 
   # @param [Enumerable] record A row of csv table (row)
