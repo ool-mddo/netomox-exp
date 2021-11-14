@@ -25,17 +25,24 @@ def exec_query(snapshot_dir, snapshot_name, csv_dir):
             outfile.write(queries[query]().answer().frame().to_csv())
 
 
-def dir_info(name):
-    base_dir = path.expanduser('../batfish-test-topology/l2')
+def dir_info(config_sub_path):
+    base_dir = path.expanduser('../batfish-test-topology/')
+    config_name = config_sub_path.replace('/', '_')
     return {
-        'name': name,
-        'dir': path.join(base_dir, name),
-        'csv_dir': path.join('./csv', name)
+        'config_name': config_name,
+        'config_dir': path.join(base_dir, config_sub_path),
+        'csv_dir': path.join('./csv', config_name)
     }
 
 
 if __name__ == '__main__':
-    dirs = map(lambda d: dir_info(d), ['sample3', 'sample4', 'sample5'])
+    config_sub_path_list = [
+        'l2/sample3',
+        'l2/sample4',
+        'l2/sample5',
+        'l2l3/sample3'
+    ]
+    dirs = map(lambda d: dir_info(d), config_sub_path_list)
     for d in dirs:
         makedirs(d['csv_dir'], exist_ok=True)
-        exec_query(d['dir'], d['name'], d['csv_dir'])
+        exec_query(d['config_dir'], d['config_name'], d['csv_dir'])

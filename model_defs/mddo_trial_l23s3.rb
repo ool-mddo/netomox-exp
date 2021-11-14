@@ -5,11 +5,11 @@ require_relative 'mddo_trial/networks'
 
 opts = ARGV.getopts('d', 'debug:')
 if opts['d']
-  puts 'OOL-MDDO PJ Trial(2) L2 sample3'
+  puts 'OOL-MDDO PJ Trial(2) L2-L3 sample3'
   exit 0
 end
 
-target_config = 'l2_sample3'
+target_config = 'l2l3_sample3'
 
 if opts['debug']
   generate_json(target_config, layer: opts['debug'], debug: true)

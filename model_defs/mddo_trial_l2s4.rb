@@ -9,7 +9,7 @@ if opts['d']
   exit 0
 end
 
-target_config = 'sample4'
+target_config = 'l2_sample4'
 
 if opts['debug']
   generate_json(target_config, layer: opts['debug'], debug: true)
