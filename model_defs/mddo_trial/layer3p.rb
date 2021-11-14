@@ -1,50 +1,10 @@
 # frozen_string_literal: true
 
-require 'forwardable'
+require_relative 'l3_segment_ledger'
 require_relative '../bf_common/pseudo_model'
 require_relative 'csv/ip_owners_table'
 
-# L3 segment data holder
-class L3SegmentLedger
-  extend Forwardable
-  def_delegators :@segments, :push, :each, :each_with_index, :to_s
-
-  def initialize
-    @segments = [] # Array(Array(PLinkEdge))
-  end
-
-  # @param [PLinkEdge] edge Link-edge
-  # @return [Boolean] true if there is a segment includes the link-edge
-  def exist_segment_includes?(edge)
-    @segments.each do |seg|
-      return true if seg.include?(edge)
-    end
-    false
-  end
-
-  # @return [Array<PLinkEdge>] Appended link-edge array
-  def append_new_segment
-    seg = [] # Array<PlinkEdge>
-    @segments.push(seg)
-    seg
-  end
-
-  # Remove empty segment (empty array) from segments
-  def clean!
-    @segments.reject!(&:empty?)
-  end
-
-  # @return [Array<PLinkEdge>] current segment to push link-edge
-  def current_segment
-    @segments[-1]
-  end
-
-  # @return [Boolean] true if current-segment includes the link-edge
-  def current_segment_include?(edge)
-    current_segment.include?(edge)
-  end
-end
-
+# rubocop:disable Metrics/ClassLength
 # L2 data builder
 class L3DataBuilder < DataBuilderBase
   # @param [String] target Target network (config) data name
@@ -68,14 +28,21 @@ class L3DataBuilder < DataBuilderBase
 
   private
 
+  def l3_node_name(rec, l2_node)
+    if rec.interface =~ /Vlan\d+/
+      rec.vrf == 'default' ? rec.node : "#{rec.node}_#{rec.vrf}"
+    else
+      l2_node.attribute[:name]
+    end
+  end
+
   # @param [IPOwnersTableRecord] rec A record of IP-Owners table
-  # @param [PLinkEdge] l2_edge A Link-edge in layer2 topology (in segment)
+  # @param [PNode] l2_node A layer2 node
   # @return [PNode] Added layer3 node
-  def add_l3_node(rec, l2_edge)
+  def add_l3_node(rec, l2_node)
     # TODO: l2 node type determination
-    l3_node_name = rec.interface =~ /Vlan\d+/ ? "#{rec.node}_#{rec.vrf}" : l2_edge.node
-    l3_node = @network.node(l3_node_name)
-    l3_node.supports.push([@layer2p.name, l2_edge.node])
+    l3_node = @network.node(l3_node_name(rec, l2_node))
+    l3_node.supports.push([@layer2p.name, l2_node.name])
     l3_node
   end
 
@@ -93,12 +60,25 @@ class L3DataBuilder < DataBuilderBase
   # @param [PLinkEdge] l2_edge A Link-edge in layer2 topology (in segment)
   # @return [Array<(PNode, PTermPoint)>] Added L3-Node and term-point pair
   def add_l3_node_tp(l2_edge)
-    rec = @ip_owners.find_record_by_node_intf(l2_edge.node, l2_edge.tp)
+    l2_node = @layer2p.node(l2_edge.node)
+    rec = @ip_owners.find_record_by_node_intf(l2_node.attribute[:name], l2_edge.tp)
+    # if rec not found, search virtual node (GRT/VRF)
+    # TODO: using mgmt_vid field is temporary
+    rec ||= @ip_owners.find_vlan_intf_record_by_node(l2_node.attribute[:name], l2_node.attribute[:mgmt_vid])
+    warn "# DEBUG: l2_edge=#{l2_edge}, rec=#{rec}"
+
     return [nil, nil] unless rec
 
-    l3_node = add_l3_node(rec, l2_edge)
+    l3_node = add_l3_node(rec, l2_node)
     l3_tp = add_l3_tp(rec, l3_node, l2_edge)
     [l3_node, l3_tp]
+  end
+
+  def l3_seg_tp_name(l3_seg_node, l2_link, l3_node, l3_tp)
+    l2_dst_node = @layer2p.node(l2_link.dst.node)
+    tp_name = l2_link ? "#{l2_dst_node.attribute[:name]}_#{l2_link.dst.tp}" : l3_seg_node.auto_tp_name
+    tp_name = "#{l3_node.name}_#{l3_tp.name}" if l3_tp.name =~ /Vlan\d+/
+    tp_name
   end
 
   # rubocop:disable Metrics/AbcSize
@@ -108,11 +88,12 @@ class L3DataBuilder < DataBuilderBase
   # @param [PTermPoint] l3_tp Layer3 (host) port on l3_node
   # @param [PLinkEdge] l2_edge A Link-edge in layer2 topology (in segment)
   def add_l3_link(l3_seg_node, l3_node, l3_tp, l2_edge)
-    link = @layer2p.find_link_by_src_edge(l2_edge)
-    l3_seg_tp_name = link ? link.dst.tp : l3_seg_node.auto_tp_name
-    l3_seg_tp = l3_seg_node.term_point(l3_seg_tp_name)
-    l3_seg_tp.supports.push([@layer2p.name, link.dst.node, link.dst.tp])
+    l2_link = @layer2p.find_link_by_src_edge(l2_edge)
+    l3_seg_tp = l3_seg_node.term_point(l3_seg_tp_name(l3_seg_node, l2_link, l3_node, l3_tp))
+    l3_seg_tp.supports.push([@layer2p.name, l2_link.dst.node, l2_link.dst.tp])
+    warn "# DEBUG: link: #{l3_seg_node.name}, #{l3_seg_tp.name}, #{l3_node.name}, #{l3_tp.name}"
     @network.link(l3_seg_node.name, l3_seg_tp.name, l3_node.name, l3_tp.name)
+    @network.link(l3_node.name, l3_tp.name, l3_seg_node.name, l3_seg_tp.name) # bidirectional
   end
   # rubocop:enable Metrics/AbcSize
 
@@ -121,6 +102,7 @@ class L3DataBuilder < DataBuilderBase
     @segments.each_with_index do |segment, i|
       # segment: Array(PLinkEdge)
       l3_seg_node = @network.node("Seg#{i}")
+      warn "# DEBUG: -- Start L3 topology: Segment #{i} --"
       segment.each do |l2_edge|
         l3_seg_node.supports.push([@layer2p.name, l2_edge.node])
         l3_node, l3_tp = add_l3_node_tp(l2_edge)
@@ -185,6 +167,8 @@ class L3DataBuilder < DataBuilderBase
       end
     end
     @segments.clean!
+    @segments.dump # for debug
   end
   # rubocop:enable Metrics/MethodLength
 end
+# rubocop:enable Metrics/ClassLength

@@ -13,7 +13,7 @@ class SwitchVlanPropsTableRecord < TableRecordBase
   #   @return [Array<String>]
   attr_accessor :node, :vlan_id, :interfaces
 
-  # @param [Enumerable] record A row of csv table (row)
+  # @param [Enumerable] record A row of csv table
   def initialize(record)
     super()
     @node = record[:node]

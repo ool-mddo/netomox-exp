@@ -11,8 +11,8 @@ class InterfacePropertiesTableRecord < TableRecordBase
   #   @return [String]
   # @!attribute [rw] vrf
   #   @return [String]
-  # @!attribute [rw] mtu
-  #   @return [Integer]
+  # @!attribute [rw] primary_address
+  #   @return [String]
   # @!attribute [rw] access_vlan
   #   @return [Integer]
   # @!attribute [rw] allowed_vlans
@@ -23,11 +23,12 @@ class InterfacePropertiesTableRecord < TableRecordBase
   #   @return [String]
   # @!attribute [rw] switchport_encap
   #   @return [String]
-  attr_accessor :node, :interface, :vrf, :mtu, :access_vlan, :allowed_vlans,
+  attr_accessor :node, :interface, :vrf, :primary_address,
+                :access_vlan, :allowed_vlans,
                 :switchport, :switchport_mode, :switchport_encap
 
   # rubocop:disable Metrics/MethodLength
-  # @param [Enumerable] record A row of csv table (row)
+  # @param [Enumerable] record A row of csv table
   def initialize(record)
     super()
     interface = EdgeBase.new(record[:interface])
@@ -36,10 +37,10 @@ class InterfacePropertiesTableRecord < TableRecordBase
 
     @access_vlan = record[:access_vlan]
     @allowed_vlans = parse_allowed_vlans(record[:allowed_vlans])
+    @primary_address = record[:primary_address]
     @switchport = record[:switchport]
     @switchport_mode = record[:switchport_mode]
     @switchport_encap = record[:switchport_trunk_encapsulation]
-    @mtu = record[:mtu]
     @vrf = record[:vrf]
   end
   # rubocop:enable Metrics/MethodLength
@@ -49,19 +50,19 @@ class InterfacePropertiesTableRecord < TableRecordBase
     !!(@switchport =~ /TRUE/i)
   end
 
+  # @return [Boolean] true if the interface is routed port
+  def routed_port?
+    !!(!switchport? && @switchport_mode =~ /NONE/i && @primary_address)
+  end
+
   # @return [Boolean] true if the interface is switchport-access
   def swp_access?
     !!(switchport? && @switchport_mode =~ /ACCESS/i)
   end
 
-  # @return [Boolean] true if the interface is not switchport
-  def host_access?
-    !!(!switchport? && @switchport_mode =~ /NONE/i)
-  end
-
   # @return [Boolean] true if the interface is not switchport-trunk
   def almost_access?
-    swp_access? || host_access?
+    swp_access? || routed_port?
   end
 
   # @return [Boolean] true if the interface is switchport-trunk

@@ -16,6 +16,7 @@ class NodePropsTableRecord < TableRecordBase
   #   TODO: Array<String>
   attr_accessor :node, :config_format, :interfaces, :vrfs
 
+  # @param [Enumerable] record A row of csv table
   def initialize(record)
     super()
     @node = record[:node]
@@ -24,15 +25,18 @@ class NodePropsTableRecord < TableRecordBase
     @vrfs = record[:vrfs]
   end
 
+  # @return [Array<String>] A list of physical interface
   def physical_interfaces
     # use physical interface (ignore SVI)
     @interfaces.filter { |d| d !~ /Vlan*/ }
   end
 
+  # @return [Boolean] true if this node is host
   def host?
     @config_format == 'HOST'
   end
 
+  # @return [Boolean] true if this node is network device
   def switch?
     %w[CISCO_IOS].include?(@config_format)
   end

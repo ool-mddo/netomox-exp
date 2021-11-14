@@ -11,7 +11,7 @@ class EdgesLayer1TableRecord < TableRecordBase
   #   @return [EdgeBase]
   attr_accessor :src, :dst
 
-  # @param [Enumerable] record A row of csv table (row)
+  # @param [Enumerable] record A row of csv table
   def initialize(record)
     super()
     @src = EdgeBase.new(record[:interface])
@@ -37,12 +37,19 @@ class EdgesLayer1Table < TableBase
     @records = @orig_table.map { |r| EdgesLayer1TableRecord.new(r) }
   end
 
-  # @param [PNode] node_name Node name
+  # @param [String] node_name Source node name
+  # @param [String] intf_name Source interface name
+  # @return [nil, EdgesLayer1TableRecord] Record if found or nil if not found
+  def find_link_by_src_node_intf(node_name, intf_name)
+    edge = EdgeBase.new("#{node_name}[#{intf_name}]")
+    @records.find { |r| r.src == edge }
+  end
+
+  # @param [String] node_name Node name
   # @param [String] interface_name Interface name
   # @return [nil, EdgeBase] Destination link-edge connected with the node/interface, or nil if not found
   def find_pair(node_name, interface_name)
-    find_target = EdgeBase.new("#{node_name}[#{interface_name}]")
-    rec = @records.find { |r| r.src == find_target }
-    rec ? rec.dst : rec
+    rec = find_link_by_src_node_intf(node_name, interface_name)
+    rec ? rec.dst : nil
   end
 end

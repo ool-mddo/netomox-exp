@@ -24,15 +24,21 @@ class L1DataBuilder < DataBuilderBase
 
   private
 
+  # make node and its term-points
   def make_nodes
     @node_props.each do |node_prop|
       l1_node = @network.node(node_prop.node)
-      node_prop.physical_interfaces.map { |intf| l1_node.term_point(intf) }
+      node_prop.physical_interfaces
+               .filter { |intf| @l1_edges.find_link_by_src_node_intf(l1_node.name, intf) }
+               .each { |intf| l1_node.term_point(intf) }
     end
   end
 
+  # make links
   def make_links
     @l1_edges.each do |edge|
+      # NOTE: Layer1 edge data is bidirectional link.
+      # A physical link is expressed two unidirectional link record.
       @network.link(edge.src.node, edge.src.interface, edge.dst.node, edge.dst.interface)
     end
   end

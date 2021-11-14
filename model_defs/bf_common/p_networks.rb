@@ -43,6 +43,11 @@ class PNetworks
   # @return [Netomox::DSL::Network] converted network object
   def make_nmx_network(network)
     nmx_network = @nmx_networks.network(network.name)
+    unless nmx_network
+      warn "ERROR: network: #{network.name} not found"
+      return
+    end
+
     nmx_network.attribute(network.attribute) if network.attribute
     nmx_network.type(network.type) if network.type
     nmx_network

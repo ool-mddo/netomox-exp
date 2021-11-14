@@ -19,6 +19,7 @@ class L2DataBuilder < DataBuilderBase
   # @return [PNetworks] Networks contains only layer2 network topology
   def make_networks
     @network = PNetwork.new('layer2')
+    @network.type = Netomox::NWTYPE_L2
     @network.supports.push(@layer1p.name)
     setup_nodes_and_links
     @networks.push(@network)
@@ -28,19 +29,19 @@ class L2DataBuilder < DataBuilderBase
   private
 
   # @param [InterfacePropertiesTableRecord] tp_prop A record of term-point properties table
-  #   (for host or access-vlan port)
+  #   (for routed or access-vlan port)
   # @return [Integer] Vlan-id if the record has access_vlan info, or 0 (no access_vlan)
   def access_port_vlan_id(tp_prop)
-    # 0:Host port (not specified vlan)
+    # 0:routed port (not specified vlan)
     tp_prop.swp_access? ? tp_prop.access_vlan : 0
   end
 
   # Check port vlan config and switch vlan config to determine it is operative.
   # @param [InterfacePropertiesTableRecord] tp_prop A record of term-point properties table
-  #   (for host or access-vlan port)
+  #   (for routed or access-vlan port)
   # @return [Integer] Vlan-id or 0 (no access_vlan)
   def operative_access_vlan(tp_prop)
-    return 0 if tp_prop.host_access? # NOP for host
+    return 0 if tp_prop.routed_port? # NOP for routed port
 
     found_sw_vlan_prop = @sw_vlan_props.find_record_by_node_intf(tp_prop.node, tp_prop.interface)
     # -1:vlan bridge doesn't exists
@@ -59,7 +60,7 @@ class L2DataBuilder < DataBuilderBase
   # @param [InterfacePropertiesTableRecord] dst_tp_prop Term-point properties of destination
   # @return [Boolean] true if vlan-config are operative
   def operative_access_port?(src_tp_prop, dst_tp_prop)
-    # for host/access port pair, vlan-id matching is unnecessary. (untag port)
+    # for routed/access port pair, vlan-id matching is unnecessary. (untag port)
     src_tp_prop.almost_access? &&
       access_port_vlan_id(src_tp_prop) == operative_access_vlan(src_tp_prop) && # on device?
       dst_tp_prop.almost_access? &&
@@ -117,12 +118,15 @@ class L2DataBuilder < DataBuilderBase
     { type: :error }
   end
 
-  # @param [PNodee] l1_node A node under the new layer2 node
+  # @param [PNode] l1_node A node under the new layer2 node
+  # @param [PTermPoint] l1_tp Layer1 term-point under the new layer2 term-point
   # @param [Integer] vlan_id VLAN id (if used)
   # @return [PNode] Added layer2 node
-  def add_l2_node(l1_node, vlan_id)
-    l2_node_name = l1_node.name + (vlan_id.positive? ? "_Vlan#{vlan_id}" : '')
+  def add_l2_node(l1_node, l1_tp, vlan_id)
+    l2_node_name = l1_node.name + (vlan_id.positive? ? "_Vlan#{vlan_id}" : "_#{l1_tp.name}")
     new_node = @network.node(l2_node_name)
+    # TODO: using management vlan-id field temporary to keep vlan id of L2 bridge
+    new_node.attribute = { name: l1_node.name, mgmt_vid: vlan_id }
     new_node.supports.push([@layer1p.name, l1_node.name])
     new_node
   end
@@ -138,11 +142,11 @@ class L2DataBuilder < DataBuilderBase
   end
 
   # @param [PNode] l1_node A node under the new layer2 node
-  # @param [PTermPoint] l1_tp l1_tp layer1 term-point under the new layer2 term-point
+  # @param [PTermPoint] l1_tp Layer1 term-point under the new layer2 term-point
   # @param [Integer] vlan_id vlan_id VLAN id (if used)
   # @return [Array<PNode, PTermPoint>] A pair of added node name and tp name
   def add_l2_node_tp(l1_node, l1_tp, vlan_id)
-    new_node = add_l2_node(l1_node, vlan_id)
+    new_node = add_l2_node(l1_node, l1_tp, vlan_id)
     new_tp = add_l2_tp(new_node, l1_node, l1_tp)
     [new_node, new_tp]
   end
@@ -157,6 +161,8 @@ class L2DataBuilder < DataBuilderBase
   def add_l2_node_tp_link(src_node, src_tp, src_vlan_id, dst_node, dst_tp, dst_vlan_id)
     src_l2_node, src_l2_tp = add_l2_node_tp(src_node, src_tp, src_vlan_id).map(&:name)
     dst_l2_node, dst_l2_tp = add_l2_node_tp(dst_node, dst_tp, dst_vlan_id).map(&:name)
+    # NOTE: Lyer2 link is added according to layer1 link.
+    # Therefore, layer1 link is bidirectional, layer2 is same
     @network.link(src_l2_node, src_l2_tp, dst_l2_node, dst_l2_tp)
   end
   # rubocop:enable Metrics/ParameterLists

@@ -40,7 +40,7 @@ class EdgesLayer3TableRecord < TableRecordBase
   #   @return [EdgeLayer3]
   attr_accessor :src, :dst
 
-  # @param [Enumerable] record A row of csv table (row)
+  # @param [Enumerable] record A row of csv table
   def initialize(record)
     super()
     @src = EdgeLayer3.new(record[:interface], record[:ips])
