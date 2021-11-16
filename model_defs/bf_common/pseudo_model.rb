@@ -9,8 +9,9 @@ class DataBuilderBase
   #   @return [PNetworks]
   attr_accessor :networks
 
-  def initialize
+  def initialize(debug: false)
     @networks = PNetworks.new # PNetworks
+    @use_debug = debug
   end
 
   # @return [Netomox::DSL::Networks]
@@ -21,6 +22,12 @@ class DataBuilderBase
   # @return [Hash] RFC8345-structured hash object
   def topo_data
     interpret.topo_data
+  end
+
+  # print debug message to stderr
+  # @param [Array] message Objects to debug print
+  def debug_print(*message)
+    warn 'DEBUG: ', message if @use_debug
   end
 
   # print to stdout

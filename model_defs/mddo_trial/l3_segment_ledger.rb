@@ -43,7 +43,7 @@ class L3SegmentLedger
   end
 
   # print stdout
-  def dump
+  def debug_print
     @segments.each_with_index do |seg, i|
       warn "# segment: #{i}"
       seg.each do |edge|

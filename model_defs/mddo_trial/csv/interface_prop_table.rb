@@ -28,6 +28,7 @@ class InterfacePropertiesTableRecord < TableRecordBase
                 :switchport, :switchport_mode, :switchport_encap
 
   # rubocop:disable Metrics/MethodLength
+
   # @param [Enumerable] record A row of csv table
   def initialize(record)
     super()

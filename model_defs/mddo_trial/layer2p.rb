@@ -5,12 +5,13 @@ require_relative 'csv/sw_vlan_props_table'
 require_relative 'csv/interface_prop_table'
 
 # rubocop:disable Metrics/ClassLength
+
 # L2 data builder
 class L2DataBuilder < DataBuilderBase
   # @param [String] target Target network (config) data name
   # @param [PNetwork] layer1p Layer1 network topology
-  def initialize(target, layer1p)
-    super()
+  def initialize(target:, layer1p:, debug: false)
+    super(debug: debug)
     @layer1p = layer1p
     @sw_vlan_props = SwitchVlanPropsTable.new(target)
     @intf_props = InterfacePropertiesTable.new(target)
@@ -152,6 +153,7 @@ class L2DataBuilder < DataBuilderBase
   end
 
   # rubocop:disable Metrics/ParameterLists
+
   # @param [PNode] src_node Link source node
   # @param [PTermPoint] src_tp Link source tp (on src_node)
   # @param [Integer] src_vlan_id VLAN id of src_tp

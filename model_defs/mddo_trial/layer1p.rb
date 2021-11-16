@@ -7,8 +7,8 @@ require_relative 'csv/edges_layer1_table'
 # L1 data builder
 class L1DataBuilder < DataBuilderBase
   # @param [String] target Target network (config) data name
-  def initialize(target)
-    super()
+  def initialize(target:, debug: false)
+    super(debug: debug)
     @node_props = NodePropsTable.new(target)
     @l1_edges = EdgesLayer1Table.new(target)
   end

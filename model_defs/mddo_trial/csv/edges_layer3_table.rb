@@ -10,6 +10,7 @@ class EdgeLayer3 < EdgeBase
   attr_accessor :ips
 
   # rubocop:disable Security/Eval
+
   # @param [String] interface_str `node[interface]` format string
   # @param [String] ips_str String of IP address list
   def initialize(interface_str, ips_str)

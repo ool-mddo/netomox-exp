@@ -20,9 +20,9 @@ class PNetworks
     @nmx_networks = Netomox::DSL::Networks.new
   end
 
-  # Print data to stdout
-  def dump
-    @networks.each(&:dump)
+  # Print data to stderr
+  def debug_print
+    @networks.each(&:debug_print)
   end
 
   # convert to Netomox::DSL objects

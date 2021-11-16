@@ -39,8 +39,8 @@ class PNetwork < PObjectBase
     @links = [] # Array<PLink>
   end
 
-  # print to stdout
-  def dump
+  # print to stderr
+  def debug_print
     warn "network: #{name}"
     warn '  nodes:'
     @nodes.each { |n| warn "    - #{n}" }

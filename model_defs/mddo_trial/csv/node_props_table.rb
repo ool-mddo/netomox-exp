@@ -44,6 +44,9 @@ class NodePropsTableRecord < TableRecordBase
   private
 
   # rubocop:disable Security/Eval
+
+  # @param [String] interfaces Multiple-interface string
+  # @return [Array<String>] Array of interface
   def interfaces2array(interfaces)
     eval(interfaces).sort
   end

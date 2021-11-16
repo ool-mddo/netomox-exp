@@ -5,12 +5,13 @@ require_relative '../bf_common/pseudo_model'
 require_relative 'csv/ip_owners_table'
 
 # rubocop:disable Metrics/ClassLength
-# L2 data builder
+
+# L3 data builder
 class L3DataBuilder < DataBuilderBase
   # @param [String] target Target network (config) data name
   # @param [PNetwork] layer2p Layer2 network topology
-  def initialize(target, layer2p)
-    super()
+  def initialize(target:, layer2p:, debug: false)
+    super(debug: debug)
     @layer2p = layer2p
     @ip_owners = IPOwnersTable.new(target)
   end
@@ -82,6 +83,7 @@ class L3DataBuilder < DataBuilderBase
   end
 
   # rubocop:disable Metrics/AbcSize
+
   # Connect L3 segment-node and host-node
   # @param [PNode] l3_seg_node Layer3 segment-node
   # @param [PNode] l3_node Layer3 (host) node
@@ -91,7 +93,7 @@ class L3DataBuilder < DataBuilderBase
     l2_link = @layer2p.find_link_by_src_edge(l2_edge)
     l3_seg_tp = l3_seg_node.term_point(l3_seg_tp_name(l3_seg_node, l2_link, l3_node, l3_tp))
     l3_seg_tp.supports.push([@layer2p.name, l2_link.dst.node, l2_link.dst.tp])
-    warn "# DEBUG: link: #{l3_seg_node.name}, #{l3_seg_tp.name}, #{l3_node.name}, #{l3_tp.name}"
+    debug_print "link: #{l3_seg_node.name}, #{l3_seg_tp.name}, #{l3_node.name}, #{l3_tp.name}"
     @network.link(l3_seg_node.name, l3_seg_tp.name, l3_node.name, l3_tp.name)
     @network.link(l3_node.name, l3_tp.name, l3_seg_node.name, l3_seg_tp.name) # bidirectional
   end
@@ -102,7 +104,7 @@ class L3DataBuilder < DataBuilderBase
     @segments.each_with_index do |segment, i|
       # segment: Array(PLinkEdge)
       l3_seg_node = @network.node("Seg#{i}")
-      warn "# DEBUG: -- Start L3 topology: Segment #{i} --"
+      debug_print "-- Start L3 topology: Segment #{i} --"
       segment.each do |l2_edge|
         l3_seg_node.supports.push([@layer2p.name, l2_edge.node])
         l3_node, l3_tp = add_l3_node_tp(l2_edge)
@@ -114,6 +116,7 @@ class L3DataBuilder < DataBuilderBase
   end
 
   # rubocop:disable Metrics/AbcSize
+
   # Recursive exploration: layer2-connected objects
   # @param [PLinkEdge] src_edge A link-edge to specify start point
   def recursively_explore_l3_segment(src_edge)
@@ -153,6 +156,7 @@ class L3DataBuilder < DataBuilderBase
   end
 
   # rubocop:disable Metrics/MethodLength
+
   # Explore layer2-connected nodes as "segment" for each node.
   def explore_l3_segment
     @segments = L3SegmentLedger.new
@@ -167,7 +171,7 @@ class L3DataBuilder < DataBuilderBase
       end
     end
     @segments.clean!
-    @segments.dump # for debug
+    @segments.debug_print if @use_debug
   end
   # rubocop:enable Metrics/MethodLength
 end
