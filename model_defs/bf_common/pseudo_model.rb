@@ -27,7 +27,7 @@ class DataBuilderBase
   # print debug message to stderr
   # @param [Array] message Objects to debug print
   def debug_print(*message)
-    warn 'DEBUG: ', message if @use_debug
+    warn '# DEBUG: ', message if @use_debug
   end
 
   # print to stdout

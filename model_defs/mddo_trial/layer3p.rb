@@ -8,10 +8,15 @@ require_relative 'csv/ip_owners_table'
 
 # L3 data builder
 class L3DataBuilder < DataBuilderBase
+  # @!attribute [r] segments
+  #   @return [L3SegmentLedger]
+  attr_reader :segments
+
   # @param [String] target Target network (config) data name
   # @param [PNetwork] layer2p Layer2 network topology
   def initialize(target:, layer2p:, debug: false)
     super(debug: debug)
+    @segments = L3SegmentLedger.new
     @layer2p = layer2p
     @ip_owners = IPOwnersTable.new(target)
   end
@@ -159,7 +164,6 @@ class L3DataBuilder < DataBuilderBase
 
   # Explore layer2-connected nodes as "segment" for each node.
   def explore_l3_segment
-    @segments = L3SegmentLedger.new
     @layer2p.nodes.each do |src_node|
       @segments.append_new_segment
       src_node.tps.each do |src_tp|

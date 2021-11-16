@@ -4,13 +4,17 @@ require 'json'
 require_relative 'layer1p'
 require_relative 'layer2p'
 require_relative 'layer3p'
+require_relative 'layer3p_expand'
 
 def to_json(nws)
   JSON.pretty_generate(nws.topo_data)
 end
 
-def debug_layer?(debug, layer, layer_num)
-  debug && layer =~ /l(?:ayer)?#{layer_num}/i
+# @param [Boolean] debug Debug mode
+# @param [String] layer Target layer name
+# @param [String, Integer] layer_id Layer number
+def debug_layer?(debug, layer, layer_id)
+  debug && layer =~ /^l(?:ayer)?#{layer_id}$/i
 end
 
 # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
@@ -32,8 +36,15 @@ def generate_json(target, layer: 'layer1', debug: false)
   layer3_nws = l3_builder.make_networks
   return layer3_nws.debug_print if debug_layer?(debug, layer, 3)
 
-  nws = Netomox::DSL::Networks.new
-  nws.networks = [layer3_nws, layer2_nws, layer1_nws].map(&:interpret).map(&:networks).flatten
-  to_json(nws)
+  opts.delete(:layer2p)
+  opts[:layer3p] = layer3_nws.find_network_by_name('layer3')
+  l3exp_builder = ExpandedL3DataBuilder.new(**opts)
+  layer3exp_nws = l3exp_builder.make_networks
+  return layer3exp_nws.debug_print if debug_layer?(debug, layer, '3p')
+
+  nws = [layer3exp_nws, layer3_nws, layer2_nws, layer1_nws]
+  nmx_nws = Netomox::DSL::Networks.new
+  nmx_nws.networks = nws.map(&:interpret).map(&:networks).flatten
+  to_json(nmx_nws)
 end
 # rubocop:enable Metrics/AbcSize, Metrics/MethodLength
