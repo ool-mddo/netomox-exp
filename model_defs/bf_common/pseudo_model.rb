@@ -24,14 +24,18 @@ class DataBuilderBase
     interpret.topo_data
   end
 
-  # print debug message to stderr
-  # @param [Array] message Objects to debug print
-  def debug_print(*message)
-    warn '# DEBUG: ', message if @use_debug
-  end
-
   # print to stdout
+  # @return [void]
   def dump
     @networks.dump
+  end
+
+  protected
+
+  # print debug message to stderr
+  # @param [Array] message Objects to debug print
+  # @return [void]
+  def debug_print(*message)
+    warn '# DEBUG: ', message if @use_debug
   end
 end

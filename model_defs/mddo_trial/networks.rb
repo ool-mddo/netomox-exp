@@ -6,6 +6,8 @@ require_relative 'layer2p'
 require_relative 'layer3p'
 require_relative 'layer3p_expand'
 
+# @param [Netomox::DSL::Networks] nws Networks
+# @return [String] RFC8345-structure json string
 def to_json(nws)
   JSON.pretty_generate(nws.topo_data)
 end
@@ -19,6 +21,11 @@ def debug_layer?(debug, layer, layer_id)
 end
 
 # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
+
+# @param [String] target Target source data (config file directory name)
+# @param [String] layer Layer name to debug
+# @param [Boolean] debug Debug mode (true if enable)
+# @return [String] RFC8345-structure json string
 def generate_json(target, layer: 'layer1', debug: false)
   l1_debug = debug_layer?(debug, layer, 1)
   l1_builder = L1DataBuilder.new(target: target, debug: l1_debug)

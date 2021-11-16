@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 require 'netomox'
-require_relative 'p_objects'
+require_relative 'p_network'
 
 # pseudo networks: Netomox-DSL interpreter
 class PNetworks
@@ -21,11 +21,13 @@ class PNetworks
   end
 
   # Print data to stderr
+  # @return [void]
   def debug_print
     @networks.each(&:debug_print)
   end
 
   # convert to Netomox::DSL objects
+  # @return [Netomox::DSL::Networks]
   def interpret
     @networks.each { |network| interpret_network(network) }
     @nmx_networks
@@ -54,6 +56,7 @@ class PNetworks
   end
 
   # @param [PNetwork] network A network to convert netomox::DSL::Network
+  # @return [void]
   def interpret_network(network)
     nmx_network = make_nmx_network(network)
     network.supports.each { |s| nmx_network.support(s) }
@@ -63,6 +66,7 @@ class PNetworks
 
   # @param [PTermPoint] term_point A term-point to convert to Netomox::DSL::TermPoint
   # @param [Netomox::DSL::Node] nmx_node Parent node object of the term-point
+  # @return [void]
   def interpret_tp(term_point, nmx_node)
     nmx_tp = nmx_node.tp(term_point.name)
     nmx_tp.attribute(term_point.attribute) if term_point.attribute
@@ -71,6 +75,7 @@ class PNetworks
 
   # @param [PNode] node A node to convert to Netomox::DSL::Node
   # @param [Netomox::DSL::Network] nmx_network Parent network object of the node
+  # @return [void]
   def interpret_node(node, nmx_network)
     nmx_node = nmx_network.node(node.name)
     nmx_node.attribute(node.attribute) if node.attribute
@@ -80,6 +85,7 @@ class PNetworks
 
   # @param [PLink] link A link to convert to Netomox::DSL::Link
   # @param [Netomox::DSL::Network] nmx_network Parent network object of the link
+  # @return [void]
   def interpret_link(link, nmx_network)
     nmx_network.link(link.src.node, link.src.tp, link.dst.node, link.dst.tp)
   end

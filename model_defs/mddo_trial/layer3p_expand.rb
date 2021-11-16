@@ -71,6 +71,7 @@ class ExpandedL3DataBuilder < DataBuilderBase
   # rubocop:enable Metrics/ParameterLists
 
   # @param [Array<PLinkEdge>] seg_connected_edges Edges connected a segment node
+  # @return [void]
   def add_node_tp_links(seg_connected_edges)
     seg_connected_edges.each_with_index do |src_edge, si|
       src_node, src_tp = @layer3p.find_node_tp_by_edge(src_edge)
@@ -84,6 +85,7 @@ class ExpandedL3DataBuilder < DataBuilderBase
   end
 
   # Expand links connected a layer3 segment to P2P links
+  # @return [void]
   def expand_segment_to_p2p
     segment_nodes = find_all_segment_nodes
     debug_print "seg nodes = #{segment_nodes.map(&:name)}"

@@ -80,6 +80,11 @@ class L3DataBuilder < DataBuilderBase
     [l3_node, l3_tp]
   end
 
+  # @param [PNode] l3_seg_node Layer3 segment-node
+  # @param [PLink] l2_link Layer2 link
+  # @param [PNode] l3_node Layer3 node
+  # @param [PTermPoint] l3_tp Layer3 term-point
+  # @return [String] Term-point name
   def l3_seg_tp_name(l3_seg_node, l2_link, l3_node, l3_tp)
     l2_dst_node = @layer2p.node(l2_link.dst.node)
     tp_name = l2_link ? "#{l2_dst_node.attribute[:name]}_#{l2_link.dst.tp}" : l3_seg_node.auto_tp_name
@@ -94,6 +99,7 @@ class L3DataBuilder < DataBuilderBase
   # @param [PNode] l3_node Layer3 (host) node
   # @param [PTermPoint] l3_tp Layer3 (host) port on l3_node
   # @param [PLinkEdge] l2_edge A Link-edge in layer2 topology (in segment)
+  # @return [void]
   def add_l3_link(l3_seg_node, l3_node, l3_tp, l2_edge)
     l2_link = @layer2p.find_link_by_src_edge(l2_edge)
     l3_seg_tp = l3_seg_node.term_point(l3_seg_tp_name(l3_seg_node, l2_link, l3_node, l3_tp))
@@ -105,6 +111,7 @@ class L3DataBuilder < DataBuilderBase
   # rubocop:enable Metrics/AbcSize
 
   # Add all layer3 node, tp and link
+  # @return [void]
   def add_l3_node_tp_link
     @segments.each_with_index do |segment, i|
       # segment: Array(PLinkEdge)
@@ -124,6 +131,7 @@ class L3DataBuilder < DataBuilderBase
 
   # Recursive exploration: layer2-connected objects
   # @param [PLinkEdge] src_edge A link-edge to specify start point
+  # @return [void]
   def recursively_explore_l3_segment(src_edge)
     @segments.current_segment.push(src_edge)
     src_node = @layer2p.find_node_by_name(src_edge.node)
@@ -163,6 +171,7 @@ class L3DataBuilder < DataBuilderBase
   # rubocop:disable Metrics/MethodLength
 
   # Explore layer2-connected nodes as "segment" for each node.
+  # @return [void]
   def explore_l3_segment
     @layer2p.nodes.each do |src_node|
       @segments.append_new_segment
@@ -175,7 +184,7 @@ class L3DataBuilder < DataBuilderBase
       end
     end
     @segments.clean!
-    @segments.debug_print if @use_debug
+    @segments.dump if @use_debug
   end
   # rubocop:enable Metrics/MethodLength
 end

@@ -160,6 +160,7 @@ class L2DataBuilder < DataBuilderBase
   # @param [PNode] dst_node Link destination node
   # @param [PTermPoint] dst_tp link destination port (on dst_node)
   # @param [Integer] dst_vlan_id VLAN id of dst_tp
+  # @return [void]
   def add_l2_node_tp_link(src_node, src_tp, src_vlan_id, dst_node, dst_tp, dst_vlan_id)
     src_l2_node, src_l2_tp = add_l2_node_tp(src_node, src_tp, src_vlan_id).map(&:name)
     dst_l2_node, dst_l2_tp = add_l2_node_tp(dst_node, dst_tp, dst_vlan_id).map(&:name)
@@ -174,6 +175,7 @@ class L2DataBuilder < DataBuilderBase
   # @param [PNode] dst_node Link destination node
   # @param [PTermPoint] dst_tp link destination port (on dst_node)
   # @param [Hash] check_result L2 config check result (@see: port_l2_config_check)
+  # @return [void]
   def add_l2_node_tp_link_by_config(src_node, src_tp, dst_node, dst_tp, check_result)
     case check_result[:type]
     when :access
@@ -196,6 +198,7 @@ class L2DataBuilder < DataBuilderBase
     [node, tp, @intf_props.find_record_by_node_intf(node.name, tp.name)]
   end
 
+  # @return [void]
   def setup_nodes_and_links
     @layer1p.links.each do |link|
       src_node, src_tp, src_tp_prop = tp_prop_by_link_edge(link.src)

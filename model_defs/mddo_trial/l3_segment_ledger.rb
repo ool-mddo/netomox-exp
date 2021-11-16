@@ -28,6 +28,7 @@ class L3SegmentLedger
   end
 
   # Remove empty segment (empty array) from segments
+  # @return [void]
   def clean!
     @segments.reject!(&:empty?)
   end
@@ -42,8 +43,9 @@ class L3SegmentLedger
     current_segment.include?(edge)
   end
 
-  # print stdout
-  def debug_print
+  # print stderr
+  # @return [void]
+  def dump
     @segments.each_with_index do |seg, i|
       warn "# segment: #{i}"
       seg.each do |edge|

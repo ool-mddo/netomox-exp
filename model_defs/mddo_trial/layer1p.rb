@@ -25,6 +25,7 @@ class L1DataBuilder < DataBuilderBase
   private
 
   # make node and its term-points
+  # @return [void]
   def make_nodes
     @node_props.each do |node_prop|
       l1_node = @network.node(node_prop.node)
@@ -35,6 +36,7 @@ class L1DataBuilder < DataBuilderBase
   end
 
   # make links
+  # @return [void]
   def make_links
     @l1_edges.each do |edge|
       # NOTE: Layer1 edge data is bidirectional link.

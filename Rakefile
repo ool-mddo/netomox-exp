@@ -151,7 +151,12 @@ begin
   require 'yard'
   require 'yard/rake/yardoc_task'
   YARD::Rake::YardocTask.new do |task|
-    task.files = FileList['./model_defs/**/*.rb']
+    task.options = ['--private']
+    task.files = FileList[
+      './model_defs/mddo_trial/**/*.rb',
+      './model_defs/bf_common/**/*.rb',
+      './model_defs/mddo_trial*.rb'
+    ]
   end
 rescue LoadError
   task :yard do
