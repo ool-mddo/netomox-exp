@@ -98,13 +98,21 @@ class PNetwork < PObjectBase
     end
   end
 
-  # @param [PLinkEdge] edge Link-edge to find
-  # @return [nil, PTermPoint] Term-point if found or nil if not found
-  def find_tp_by_edge(edge)
-    node = find_node_by_name(edge.node)
-    return unless node
+  # @param [String] node_name Source node name
+  # @return [Array<PLinkEdge>] Facing (destination) edges connected with the node
+  def find_all_edges_by_src_name(node_name)
+    @links.find_all { |link| link.src.node == node_name }
+          .map(&:dst)
+  end
 
-    node.find_tp_by_name(edge.tp)
+  # @param [PLinkEdge] edge Link-edge to find
+  # @return [Array<PNode, pTermPoint>] Node and term-point if found or nil if not found
+  def find_node_tp_by_edge(edge)
+    node = find_node_by_name(edge.node)
+    return [] unless node
+
+    tp = node.find_tp_by_name(edge.tp)
+    [node, tp]
   end
 
   # @param [String] node1 Source node name

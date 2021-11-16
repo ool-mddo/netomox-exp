@@ -13,34 +13,43 @@ end
 # @param [Boolean] debug Debug mode
 # @param [String] layer Target layer name
 # @param [String, Integer] layer_id Layer number
+# @return [Boolean]
 def debug_layer?(debug, layer, layer_id)
-  debug && layer =~ /^l(?:ayer)?#{layer_id}$/i
+  debug && !!(layer =~ /^l(?:ayer)?#{layer_id}$/i)
 end
 
 # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
 def generate_json(target, layer: 'layer1', debug: false)
-  opts = { target: target, debug: debug }
-
-  l1_builder = L1DataBuilder.new(**opts)
+  l1_debug = debug_layer?(debug, layer, 1)
+  l1_builder = L1DataBuilder.new(target: target, debug: l1_debug)
   layer1_nws = l1_builder.make_networks
-  return layer1_nws.debug_print if debug_layer?(debug, layer, 1)
+  return layer1_nws.debug_print if l1_debug
 
-  opts[:layer1p] = layer1_nws.find_network_by_name('layer1')
-  l2_builder = L2DataBuilder.new(**opts)
+  l2_debug = debug_layer?(debug, layer, 2)
+  l2_builder = L2DataBuilder.new(
+    target: target,
+    layer1p: layer1_nws.find_network_by_name('layer1'),
+    debug: l2_debug
+  )
   layer2_nws = l2_builder.make_networks
-  return layer2_nws.debug_print if debug_layer?(debug, layer, 2)
+  return layer2_nws.debug_print if l2_debug
 
-  opts.delete(:layer1p)
-  opts[:layer2p] = layer2_nws.find_network_by_name('layer2')
-  l3_builder = L3DataBuilder.new(**opts)
+  l3_debug = debug_layer?(debug, layer, 3)
+  l3_builder = L3DataBuilder.new(
+    target: target,
+    layer2p: layer2_nws.find_network_by_name('layer2'),
+    debug: l3_debug
+  )
   layer3_nws = l3_builder.make_networks
-  return layer3_nws.debug_print if debug_layer?(debug, layer, 3)
+  return layer3_nws.debug_print if l3_debug
 
-  opts.delete(:layer2p)
-  opts[:layer3p] = layer3_nws.find_network_by_name('layer3')
-  l3exp_builder = ExpandedL3DataBuilder.new(**opts)
+  l3exp_debug = debug_layer?(debug, layer, '3p')
+  l3exp_builder = ExpandedL3DataBuilder.new(
+    layer3p: layer3_nws.find_network_by_name('layer3'),
+    debug: l3exp_debug
+  )
   layer3exp_nws = l3exp_builder.make_networks
-  return layer3exp_nws.debug_print if debug_layer?(debug, layer, '3p')
+  return layer3exp_nws.debug_print if l3exp_debug
 
   nws = [layer3exp_nws, layer3_nws, layer2_nws, layer1_nws]
   nmx_nws = Netomox::DSL::Networks.new

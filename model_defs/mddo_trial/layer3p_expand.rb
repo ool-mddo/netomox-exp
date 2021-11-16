@@ -4,9 +4,8 @@ require_relative '../bf_common/pseudo_model'
 
 # Expanded L3 data builder
 class ExpandedL3DataBuilder < DataBuilderBase
-  # @param [String] target Target network (config) data name
   # @param [PNetwork] layer3p Layer3 network topology
-  def initialize(target:, layer3p:, debug: false)
+  def initialize(layer3p:, debug: false)
     super(debug: debug)
     @layer3p = layer3p
   end
@@ -23,6 +22,7 @@ class ExpandedL3DataBuilder < DataBuilderBase
 
   private
 
+  # @return [Array<PNode>] Layer3 segment nodes
   def find_all_segment_nodes
     @layer3p.nodes.find_all do |node|
       # TODO: node type detection
@@ -30,12 +30,8 @@ class ExpandedL3DataBuilder < DataBuilderBase
     end
   end
 
-  def find_all_edges_connected(src_node)
-    @layer3p.links
-            .find_all { |link| link.src.node == src_node.name }
-            .map { |link| link.dst }
-  end
-
+  # @param [PNode] orig_l3_node Layer3 node (copy source)
+  # @return [PNode] expanded-layer3 node
   def add_node(orig_l3_node)
     # copy except tps
     new_src_node = @network.node(orig_l3_node.name)
@@ -44,40 +40,55 @@ class ExpandedL3DataBuilder < DataBuilderBase
     new_src_node
   end
 
-  def add_tp(index, src_node, orig_l3_tp)
+  # @param [Integer] index Index number of new term-point
+  # @param [PNode] node Node to add new term-point
+  # @param [PTermPoint] orig_l3_tp Layer3 term-point (copy source)
+  # @return [PTermPoint] expanded-layer3 term-point
+  def add_tp(index, node, orig_l3_tp)
     # copy with indexed-name
-    new_tp = src_node.term_point(orig_l3_tp.name + "##{index}")
+    new_tp = node.term_point(orig_l3_tp.name + "##{index}")
     new_tp.supports = orig_l3_tp.supports
     new_tp.attribute = orig_l3_tp.attribute
     new_tp
   end
 
+  # rubocop:disable Metrics/ParameterLists
+
+  # @param [Integer] src_edge_index Index number of source edge
+  # @param [Integer] dst_edge_index Index number of destination edge
+  # @param [PNode] src_node Source layer3 node (copy source)
+  # @param [PTermPoint] src_tp Source layer3 term-point (copy source)
+  # @param [PNode] dst_node Destination layer3 node (copy source)
+  # @param [PTermPoint] dst_tp Destination layer3 term-point (copy-source)
+  # @return [Array<String>] Source/destination node/tp names (to create link)
+  def add_node_tp(src_edge_index, dst_edge_index, src_node, src_tp, dst_node, dst_tp)
+    new_src_node = add_node(src_node) # redundant
+    new_src_tp = add_tp(dst_edge_index, new_src_node, src_tp)
+    new_dst_node = add_node(dst_node)
+    new_dst_tp = add_tp(src_edge_index, new_dst_node, dst_tp)
+    [new_src_node, new_src_tp, new_dst_node, new_dst_tp].map(&:name)
+  end
+  # rubocop:enable Metrics/ParameterLists
+
+  # @param [Array<PLinkEdge>] seg_connected_edges Edges connected a segment node
   def add_node_tp_links(seg_connected_edges)
     seg_connected_edges.each_with_index do |src_edge, si|
-      src_node = @layer3p.find_node_by_name(src_edge.node)
-      src_tp = src_node.find_tp_by_name(src_edge.tp)
-      new_src_node = add_node(src_node)
-
+      src_node, src_tp = @layer3p.find_node_tp_by_edge(src_edge)
       seg_connected_edges.each_with_index do |dst_edge, di|
         next if dst_edge == src_edge
 
-        dst_node = @layer3p.find_node_by_name(dst_edge.node)
-        dst_tp = dst_node.find_tp_by_name(dst_edge.tp)
-
-        new_src_tp = add_tp(di, new_src_node, src_tp)
-        new_dst_node = add_node(dst_node)
-        new_dst_tp = add_tp(si, new_dst_node, dst_tp)
-        debug_print "link: #{new_src_node.name}, #{new_src_tp.name}, #{new_dst_node.name}, #{new_dst_tp.name}"
-        @network.link(new_src_node.name, new_src_tp.name, new_dst_node.name, new_dst_tp.name)
+        dst_node, dst_tp = @layer3p.find_node_tp_by_edge(dst_edge)
+        @network.link(*add_node_tp(si, di, src_node, src_tp, dst_node, dst_tp))
       end
     end
   end
 
+  # Expand links connected a layer3 segment to P2P links
   def expand_segment_to_p2p
     segment_nodes = find_all_segment_nodes
     debug_print "seg nodes = #{segment_nodes.map(&:name)}"
     segment_nodes.each do |seg_node|
-      seg_connected_edges = find_all_edges_connected(seg_node)
+      seg_connected_edges = @layer3p.find_all_edges_by_src_name(seg_node.name)
       debug_print "seg edges = #{seg_connected_edges.map(&:to_s)}"
       add_node_tp_links(seg_connected_edges)
     end
