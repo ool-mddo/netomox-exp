@@ -38,11 +38,6 @@ class L3SegmentLedger
     @segments[-1]
   end
 
-  # @return [Boolean] true if current-segment includes the link-edge
-  def current_segment_include?(edge)
-    current_segment.include?(edge)
-  end
-
   # print stderr
   # @return [void]
   def dump

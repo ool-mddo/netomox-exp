@@ -1,10 +1,10 @@
 # frozen_string_literal: true
 
 require 'json'
-require_relative 'layer1p'
-require_relative 'layer2p'
-require_relative 'layer3p'
-require_relative 'layer3p_expand'
+require_relative 'l1_data_builder'
+require_relative 'l2_data_builder'
+require_relative 'l3_data_builder'
+require_relative 'expanded_l3_data_builder'
 
 # @param [Netomox::DSL::Networks] nws Networks
 # @return [String] RFC8345-structure json string

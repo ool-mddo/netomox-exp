@@ -139,7 +139,7 @@ class L3DataBuilder < DataBuilderBase
     src_node.tps_without(src_edge.tp).each do |src_tp|
       src_edge = PLinkEdge.new(src_node.name, src_tp.name)
       link = @layer2p.find_link_by_src_edge(src_edge)
-      next if !link || @segments.current_segment_include?(link.dst) # loop avoidance
+      next if !link || @segments.current_segment.include?(link.dst) # loop avoidance
 
       @segments.current_segment.push(src_edge)
       recursively_explore_l3_segment(link.dst)
