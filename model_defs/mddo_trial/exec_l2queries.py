@@ -40,7 +40,8 @@ if __name__ == '__main__':
         'l2/sample3',
         'l2/sample4',
         'l2/sample5',
-        'l2l3/sample3'
+        'l2l3/sample3',
+        'l2l3/sample3err2'
     ]
     dirs = map(lambda d: dir_info(d), config_sub_path_list)
     for d in dirs:
