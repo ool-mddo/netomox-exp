@@ -44,7 +44,7 @@ class PNetwork < PObjectBase
     new_node
   end
 
-  # Find or create link
+  # Find or create link (unidirectional)
   # @param [String] src_node_name Source node name
   # @param [String] src_tp_name Source term-point name (on source node)
   # @param [String] dst_node_name Destination node name

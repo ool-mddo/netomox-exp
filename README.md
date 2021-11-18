@@ -19,13 +19,14 @@ bundle install --path=vendor/bundle
 
 ## Generate normalized CSV files from configs
 
-### Up batfish-container
+### Up batfish and netoviz containers
 
 ```shell
-cd model_defs/batfish-test-topology
 docker-compose up -d
-cd -
 ```
+
+- netoviz: `http://localhost:3000/` with browser.
+- batfish: localhost `tcp/9996-9997`
 
 ### Activate pybatfish environment (w/venv)
 
@@ -44,15 +45,7 @@ cd -
 bundle exec rake
 ```
 
-## Up netoviz container
-
-```shell
-docker-compose up -d
-```
-
-and connect `localhost:3000` with browser.
-
-# Setup python env and pybatfish
+# Setup python venv and pybatfish
 
 [Pybatfish](https://github.com/batfish/pybatfish) is a python frontend for batfish.
 Setup venv for python3 before install pybatfish.
@@ -75,7 +68,8 @@ python -m pip install --upgrade git+https://github.com/batfish/pybatfish.git
 bundle exec rake yard
 ```
 
-Run yard document server (access `http://localhost:8808/` as default)
+Run yard document server (access `http://localhost:8808/` with browser)
+
 ```shell
 bundle exec yard server
 ```
@@ -88,5 +82,4 @@ bundle exec yard server
 
 ## Submodule
 
-- model_defs/batfish-test-topology
-  - https://github.com/corestate55/batfish-test-topology.git
+- [model_defs/batfish-test-topology](https://github.com/corestate55/batfish-test-topology)
