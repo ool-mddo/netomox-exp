@@ -6,3 +6,9 @@ services:
       - "3000:3000"
     volumes:
       - ./netoviz_model:/home/netoviz/static/model
+  batfish:
+    image: "batfish/allinone"
+    container_name: "batfish"
+    ports:
+      - "9996:9996"
+      - "9997:9997"
