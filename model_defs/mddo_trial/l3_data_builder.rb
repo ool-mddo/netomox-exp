@@ -69,7 +69,7 @@ class L3DataBuilder < DataBuilderBase
     l2_node = @layer2p.node(l2_edge.node)
     rec = @ip_owners.find_record_by_node_intf(l2_node.attribute[:name], l2_edge.tp)
     # if rec not found, search virtual node (GRT/VRF)
-    # TODO: using mgmt_vid field is temporary
+    # TODO: using mgmt_vid field temporary
     rec ||= @ip_owners.find_vlan_intf_record_by_node(l2_node.attribute[:name], l2_node.attribute[:mgmt_vid])
     warn "# DEBUG: l2_edge=#{l2_edge}, rec=#{rec}"
 

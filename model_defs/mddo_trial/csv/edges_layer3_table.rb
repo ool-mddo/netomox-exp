@@ -49,7 +49,7 @@ class EdgesLayer3TableRecord < TableRecordBase
   end
 end
 
-# llayer3-edges table
+# layer3-edges table
 class EdgesLayer3Table < TableBase
   extend Forwardable
 
