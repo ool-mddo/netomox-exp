@@ -132,6 +132,8 @@ class L2DataBuilder < DataBuilderBase
     new_node
   end
 
+  # rubocop:disable Metrics/AbcSize
+
   # @param [PNode] l2_node Layer2 node to add new term-point
   # @param [PNode] l1_node layer1 node under l2_node
   # @param [PTermPoint] l1_tp layer1 term-point under the new layer2 term-point
@@ -140,12 +142,14 @@ class L2DataBuilder < DataBuilderBase
     new_tp = l2_node.term_point(l1_tp.name)
     l1_tp_prop = @intf_props.find_record_by_node_intf(l1_node.name, l1_tp.name)
     if l1_tp_prop.lag_parent?
-      l1_tp_prop.lag_member_interfaces.each { |intf| new_tp.supports.push([@layer1p.name, l1_node.name, intf]) }
+      supports = l1_tp_prop.lag_member_interfaces.map { |intf| [@layer1p.name, l1_node.name, intf] }
+      new_tp.supports.push(*supports)
     else
       new_tp.supports.push([@layer1p.name, l1_node.name, l1_tp.name])
     end
     new_tp
   end
+  # rubocop:enable Metrics/AbcSize
 
   # @param [PNode] l1_node A node under the new layer2 node
   # @param [PTermPoint] l1_tp Layer1 term-point under the new layer2 term-point
@@ -208,13 +212,9 @@ class L2DataBuilder < DataBuilderBase
   # @return [(Array<PNode, PTermPoint, InterfacePropertiesTableRecord)>]
   #   Node, interface, interface property of the edge
   def tp_prop_by_link_edge(link_edge)
-    debug_print "[1] node=#{link_edge.node}, tp=#{link_edge.tp}"
     node = @layer1p.find_node_by_name(link_edge.node)
-    debug_print "[A] node.tps = #{node.tps.map(&:name)}"
     tp = node.find_tp_by_name(link_edge.tp)
     tp_prop = @intf_props.find_record_by_node_intf(node.name, tp.name)
-    debug_print "[2] node=#{node.name}, tp=#{tp.name}"
-    debug_print "[3] tp_prop: #{tp_prop}"
     [
       node,
       tp_prop.lag_member? ? make_l1_lag_tp(tp_prop.lag_parent_interface, tp) : tp,

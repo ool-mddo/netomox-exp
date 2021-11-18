@@ -32,10 +32,10 @@ class InterfacePropertiesTableRecord < TableRecordBase
                 :switchport, :switchport_mode, :switchport_encap,
                 :channel_group, :channel_group_members
 
-  alias_method :lag_parent_interface, :channel_group
-  alias_method :lag_member_interfaces, :channel_group_members
+  alias lag_parent_interface channel_group
+  alias lag_member_interfaces channel_group_members
 
-  # rubocop:disable Metrics/MethodLength
+  # rubocop:disable Metrics/MethodLength, Metrics/AbcSize
 
   # @param [Enumerable] record A row of csv table
   def initialize(record)
@@ -54,7 +54,7 @@ class InterfacePropertiesTableRecord < TableRecordBase
     @channel_group_members = interfaces2array(record[:channel_group_members])
     @vrf = record[:vrf]
   end
-  # rubocop:enable Metrics/MethodLength
+  # rubocop:enable Metrics/MethodLength, Metrics/AbcSize
 
   # @return [Boolean] true if the interface is switchport
   def switchport?
@@ -108,6 +108,8 @@ class InterfacePropertiesTableRecord < TableRecordBase
   end
 
   private
+
+  # rubocop:disable Security/Eval
 
   # @param [String] interfaces Multiple-interface string
   # @return [Array<String>] Array of interface
