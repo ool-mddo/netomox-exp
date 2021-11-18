@@ -23,9 +23,17 @@ class InterfacePropertiesTableRecord < TableRecordBase
   #   @return [String]
   # @!attribute [rw] switchport_encap
   #   @return [String]
+  # @!attribute [rw] channel_group
+  #   @return [String]
+  # @!attribute [rw] channel_group_members
+  #   @return [Array<String>]
   attr_accessor :node, :interface, :vrf, :primary_address,
                 :access_vlan, :allowed_vlans,
-                :switchport, :switchport_mode, :switchport_encap
+                :switchport, :switchport_mode, :switchport_encap,
+                :channel_group, :channel_group_members
+
+  alias_method :lag_parent_interface, :channel_group
+  alias_method :lag_member_interfaces, :channel_group_members
 
   # rubocop:disable Metrics/MethodLength
 
@@ -42,6 +50,8 @@ class InterfacePropertiesTableRecord < TableRecordBase
     @switchport = record[:switchport]
     @switchport_mode = record[:switchport_mode]
     @switchport_encap = record[:switchport_trunk_encapsulation]
+    @channel_group = record[:channel_group]
+    @channel_group_members = interfaces2array(record[:channel_group_members])
     @vrf = record[:vrf]
   end
   # rubocop:enable Metrics/MethodLength
@@ -78,6 +88,14 @@ class InterfacePropertiesTableRecord < TableRecordBase
     swp_access? ? [@access_vlan] : @allowed_vlans
   end
 
+  def lag_parent?
+    !@channel_group_members.empty?
+  end
+
+  def lag_member?
+    !@channel_group.nil?
+  end
+
   # @param [Integer] vlan_id VLAN id
   # @return [Boolean] true if the VLAN_id is included switchport vlan config
   def swp_has_vlan?(vlan_id)
@@ -90,6 +108,13 @@ class InterfacePropertiesTableRecord < TableRecordBase
   end
 
   private
+
+  # @param [String] interfaces Multiple-interface string
+  # @return [Array<String>] Array of interface
+  def interfaces2array(interfaces)
+    eval(interfaces).sort
+  end
+  # rubocop:enable Security/Eval
 
   # @param [String] range_str VLAN id range string
   # @return [Array<Integer>] List of VLAN id
