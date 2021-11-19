@@ -68,7 +68,7 @@ class PNetwork < PObjectBase
   end
 
   # @param [PLinkEdge] edge Source link-edge
-  # @@return [nil, PLink] Link if found or  nil if not found
+  # @return [nil, PLink] Link if found or  nil if not found
   def find_link_by_src_edge(edge)
     find_link_by_src_name(edge.node, edge.tp)
   end

@@ -110,7 +110,7 @@ class L2DataBuilder < DataBuilderBase
 
   # @param [InterfacePropertiesTableRecord] src_tp_prop Term-point properties of source
   # @param [InterfacePropertiesTableRecord] dst_tp_prop Term-point properties of destination
-  # @@return [Hash] L2 config data for trunk-port
+  # @return [Hash] L2 config data for trunk-port
   def port_l2_config_check(src_tp_prop, dst_tp_prop)
     return port_l2_config_access(src_tp_prop, dst_tp_prop) if operative_access_port?(src_tp_prop, dst_tp_prop)
     return port_l2_config_trunk(src_tp_prop, dst_tp_prop) if operative_trunk_port?(src_tp_prop, dst_tp_prop)

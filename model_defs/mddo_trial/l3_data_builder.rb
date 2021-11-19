@@ -32,6 +32,9 @@ class L3DataBuilder < DataBuilderBase
 
   private
 
+  # @param [IPOwnersTableRecord] rec A record of IP-Owners table
+  # @param [PNode] l2_node A layer2 node
+  # @return [String] Name of layer3 node
   def l3_node_name(rec, l2_node)
     if rec.interface =~ /Vlan\d+/
       rec.vrf == 'default' ? rec.node : "#{rec.node}_#{rec.vrf}"

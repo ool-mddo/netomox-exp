@@ -16,6 +16,7 @@ end
 class TableRecordBase
   # get multiple method-results
   # @param [Array<String>] attrs Record columns (attribute method name)
+  # @return @Array] Values of attrs
   def values(attrs)
     attrs.map { |attr| send(attr) }
   end

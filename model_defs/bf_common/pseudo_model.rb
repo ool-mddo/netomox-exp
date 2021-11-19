@@ -9,6 +9,7 @@ class DataBuilderBase
   #   @return [PNetworks]
   attr_accessor :networks
 
+  # @param [Boolean] debug Debug mode (true if enable, default = false)
   def initialize(debug: false)
     @networks = PNetworks.new # PNetworks
     @use_debug = debug
@@ -24,7 +25,7 @@ class DataBuilderBase
     interpret.topo_data
   end
 
-  # print to stdout
+  # print data to stderr
   # @return [void]
   def dump
     @networks.dump
