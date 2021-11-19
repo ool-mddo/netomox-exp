@@ -2,10 +2,6 @@ AllCops:
   NewCops: enable
   TargetRubyVersion: 2.7
 
-# TODO
-Style/OptionalBooleanParameter:
-  Enabled: false
-
 # disable several metrics for hand-made models
 
 Metrics/AbcSize:

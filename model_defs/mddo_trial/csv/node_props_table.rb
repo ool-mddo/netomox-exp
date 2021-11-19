@@ -11,10 +11,7 @@ class NodePropsTableRecord < TableRecordBase
   #   @return [String]
   # @!attribute [rw] interfaces
   #   @return [Array<String>]
-  # @!attribute [rw] vrfs
-  #   @return [String]
-  #   TODO: Array<String>
-  attr_accessor :node, :config_format, :interfaces, :vrfs
+  attr_accessor :node, :config_format, :interfaces
 
   # @param [Enumerable] record A row of csv table
   def initialize(record)
@@ -22,7 +19,6 @@ class NodePropsTableRecord < TableRecordBase
     @node = record[:node]
     @config_format = record[:configuration_format]
     @interfaces = interfaces2array(record[:interfaces])
-    @vrfs = record[:vrfs]
   end
 
   # @return [Array<String>] A list of physical interface
