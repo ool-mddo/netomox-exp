@@ -20,10 +20,15 @@ class PNetworks
     @nmx_networks = Netomox::DSL::Networks.new
   end
 
-  # Print data to stderr
-  # @return [void]
-  def debug_print
-    @networks.each(&:debug_print)
+  # Find or create new network
+  # @param [String] network_name Name of the network
+  def network(network_name)
+    found_nw = find_network_by_name(network_name)
+    return found_nw if found_nw
+
+    new_nw = PNetwork.new(network_name)
+    @networks.push(new_nw)
+    new_nw
   end
 
   # convert to Netomox::DSL objects
@@ -37,6 +42,12 @@ class PNetworks
   # @return [PNetwork, nil] network if found (nil if not found)
   def find_network_by_name(network_name)
     @networks.find { |nw| nw.name == network_name }
+  end
+
+  # Print data to stderr
+  # @return [void]
+  def dump
+    @networks.each(&:dump)
   end
 
   private

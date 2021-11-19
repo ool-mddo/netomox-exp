@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 require_relative '../bf_common/pseudo_model'
-require_relative 'csv/node_props_table'
 require_relative 'csv/edges_layer1_table'
 require_relative 'csv/interface_prop_table'
 
@@ -10,16 +9,14 @@ class L1DataBuilder < DataBuilderBase
   # @param [String] target Target network (config) data name
   def initialize(target:, debug: false)
     super(debug: debug)
-    @node_props = NodePropsTable.new(target)
     @l1_edges = EdgesLayer1Table.new(target)
     @intf_props = InterfacePropertiesTable.new(target)
   end
 
   # @return [PNetworks] Networks contains only layer1 network topology
   def make_networks
-    @network = PNetwork.new('layer1')
+    @network = @networks.network('layer1')
     setup_node_tp_link
-    @networks.push(@network)
     @networks
   end
 

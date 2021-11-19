@@ -30,7 +30,7 @@ def generate_json(target, layer: 'layer1', debug: false)
   l1_debug = debug_layer?(debug, layer, 1)
   l1_builder = L1DataBuilder.new(target: target, debug: l1_debug)
   layer1_nws = l1_builder.make_networks
-  return layer1_nws.debug_print if l1_debug
+  return layer1_nws.dump if l1_debug
 
   l2_debug = debug_layer?(debug, layer, 2)
   l2_builder = L2DataBuilder.new(
@@ -39,7 +39,7 @@ def generate_json(target, layer: 'layer1', debug: false)
     debug: l2_debug
   )
   layer2_nws = l2_builder.make_networks
-  return layer2_nws.debug_print if l2_debug
+  return layer2_nws.dump if l2_debug
 
   l3_debug = debug_layer?(debug, layer, 3)
   l3_builder = L3DataBuilder.new(
@@ -48,7 +48,7 @@ def generate_json(target, layer: 'layer1', debug: false)
     debug: l3_debug
   )
   layer3_nws = l3_builder.make_networks
-  return layer3_nws.debug_print if l3_debug
+  return layer3_nws.dump if l3_debug
 
   l3exp_debug = debug_layer?(debug, layer, '3p')
   l3exp_builder = ExpandedL3DataBuilder.new(
@@ -56,7 +56,7 @@ def generate_json(target, layer: 'layer1', debug: false)
     debug: l3exp_debug
   )
   layer3exp_nws = l3exp_builder.make_networks
-  return layer3exp_nws.debug_print if l3exp_debug
+  return layer3exp_nws.dump if l3exp_debug
 
   nws = [layer3exp_nws, layer3_nws, layer2_nws, layer1_nws]
   nmx_nws = Netomox::DSL::Networks.new

@@ -22,9 +22,9 @@ class PNetwork < PObjectBase
     @links = [] # Array<PLink>
   end
 
-  # print to stderr
+  # print data to stderr
   # @return [void]
-  def debug_print
+  def dump
     warn "network: #{name}"
     warn '  nodes:'
     @nodes.each { |n| warn "    - #{n}" }

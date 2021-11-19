@@ -23,12 +23,10 @@ class L3DataBuilder < DataBuilderBase
 
   # @return [PNetworks] Networks contains only layer3 network topology
   def make_networks
-    @network = PNetwork.new('layer3')
+    @network = @networks.network('layer3')
     @network.type = Netomox::NWTYPE_L3
     explore_l3_segment
     add_l3_node_tp_link
-
-    @networks.push(@network)
     @networks
   end
 

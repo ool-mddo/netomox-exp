@@ -19,11 +19,10 @@ class L2DataBuilder < DataBuilderBase
 
   # @return [PNetworks] Networks contains only layer2 network topology
   def make_networks
-    @network = PNetwork.new('layer2')
+    @network = @networks.network('layer2')
     @network.type = Netomox::NWTYPE_L2
     @network.supports.push(@layer1p.name)
     setup_nodes_and_links
-    @networks.push(@network)
     @networks
   end
 

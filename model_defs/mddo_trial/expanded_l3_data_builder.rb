@@ -12,11 +12,9 @@ class ExpandedL3DataBuilder < DataBuilderBase
 
   # @return [PNetworks] Networks contains only layer3 network topology
   def make_networks
-    @network = PNetwork.new('layer3exp')
+    @network = @networks.network('layer3exp')
     @network.type = Netomox::NWTYPE_L3
     expand_segment_to_p2p
-
-    @networks.push(@network)
     @networks
   end
 

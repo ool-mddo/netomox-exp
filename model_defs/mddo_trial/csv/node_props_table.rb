@@ -21,12 +21,6 @@ class NodePropsTableRecord < TableRecordBase
     @interfaces = interfaces2array(record[:interfaces])
   end
 
-  # @return [Array<String>] A list of physical interface
-  def physical_interfaces
-    # use physical interface (ignore SVI)
-    @interfaces.filter { |d| d !~ /Vlan*/ }
-  end
-
   # @return [Boolean] true if this node is host
   def host?
     @config_format == 'HOST'

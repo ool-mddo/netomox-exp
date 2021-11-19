@@ -54,7 +54,7 @@ if __name__ == '__main__':
     query_dict = {
         'ip_owners': lambda: bfq.ipOwners(),
         # 'edges_layer1': lambda: bfq.edges(edgeType='layer1'),
-        'edges_layer3': lambda: bfq.edges(edgeType='layer3'),
+        # 'edges_layer3': lambda: bfq.edges(edgeType='layer3'),
         'interface_props': lambda: bfq.interfaceProperties(nodes='.*', properties='.*'),
         'node_props': lambda: bfq.nodeProperties(nodes='.*', properties='Configuration_Format, VRFs, Interfaces'),
         'sw_vlan_props': lambda: bfq.switchedVlanProperties(nodes='.*')

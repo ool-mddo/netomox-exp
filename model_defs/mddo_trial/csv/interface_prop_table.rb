@@ -21,15 +21,13 @@ class InterfacePropertiesTableRecord < TableRecordBase
   #   @return [String]
   # @!attribute [rw] switchport_mode
   #   @return [String]
-  # @!attribute [rw] switchport_encap
-  #   @return [String]
   # @!attribute [rw] channel_group
   #   @return [String]
   # @!attribute [rw] channel_group_members
   #   @return [Array<String>]
   attr_accessor :node, :interface, :vrf, :primary_address,
                 :access_vlan, :allowed_vlans,
-                :switchport, :switchport_mode, :switchport_encap,
+                :switchport, :switchport_mode,
                 :channel_group, :channel_group_members
 
   alias lag_parent_interface channel_group
@@ -49,7 +47,6 @@ class InterfacePropertiesTableRecord < TableRecordBase
     @primary_address = record[:primary_address]
     @switchport = record[:switchport]
     @switchport_mode = record[:switchport_mode]
-    @switchport_encap = record[:switchport_trunk_encapsulation]
     @channel_group = record[:channel_group]
     @channel_group_members = interfaces2array(record[:channel_group_members])
     @vrf = record[:vrf]
@@ -81,25 +78,14 @@ class InterfacePropertiesTableRecord < TableRecordBase
     !!(switchport? && @switchport_mode =~ /TRUNK/i)
   end
 
-  # @return [Array<Integer>] List of VLAN id
-  def swp_vlans
-    return [] unless switchport?
-
-    swp_access? ? [@access_vlan] : @allowed_vlans
-  end
-
+  # @return [Boolean] true if LAG (parent) port
   def lag_parent?
     !@channel_group_members.empty?
   end
 
+  # @return [Boolean] true if LAG member port (physical port)
   def lag_member?
     !@channel_group.nil?
-  end
-
-  # @param [Integer] vlan_id VLAN id
-  # @return [Boolean] true if the VLAN_id is included switchport vlan config
-  def swp_has_vlan?(vlan_id)
-    swp_vlans.include?(vlan_id)
   end
 
   # @return [String]
