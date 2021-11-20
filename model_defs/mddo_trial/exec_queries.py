@@ -61,14 +61,22 @@ if __name__ == '__main__':
         'l2l3/sample3',
         'l2l3/sample3err2'
     ]
+
+    # for batfish
     bf_query_dict = {
         'ip_owners': lambda: bfq.ipOwners(),
         # 'edges_layer1': lambda: bfq.edges(edgeType='layer1'),
         # 'edges_layer3': lambda: bfq.edges(edgeType='layer3'),
-        'interface_props': lambda: bfq.interfaceProperties(nodes='.*', properties='.*'),
-        'node_props': lambda: bfq.nodeProperties(nodes='.*', properties='Configuration_Format, Interfaces'),
+        'interface_props': lambda: bfq.interfaceProperties(nodes='.*', properties=', '.join([
+            'VRF', 'Primary_Address', 'Access_VLAN', 'Allowed_VLANs',
+            'Switchport', 'Switchport_Mode', 'Channel_Group', 'Channel_Group_Members'
+        ])),
+        'node_props': lambda: bfq.nodeProperties(nodes='.*', properties=', '.join([
+            'Configuration_Format', 'Interfaces'
+        ])),
         'sw_vlan_props': lambda: bfq.switchedVlanProperties(nodes='.*')
     }
+    # other data source
     other_query_dict = {
         'edges_layer1': lambda in_dir: convert_l1topology_to_csv(in_dir)
     }
