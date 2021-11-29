@@ -39,9 +39,10 @@ def dir_info(config_sub_path, base_dir):
 
 
 def edges_to_dataframe(edges):
+    # hostname will be lower-case in batfish output
     return pd.DataFrame({
-        'Interface': map(lambda e: '%s[%s]' % (e['node1']['hostname'], e['node1']['interfaceName']), edges),
-        'Remote_Interface': map(lambda e: '%s[%s]' % (e['node2']['hostname'], e['node2']['interfaceName']), edges)
+        'Interface': map(lambda e: '%s[%s]' % (e['node1']['hostname'].lower(), e['node1']['interfaceName']), edges),
+        'Remote_Interface': map(lambda e: '%s[%s]' % (e['node2']['hostname'].lower(), e['node2']['interfaceName']), edges)
     })
 
 

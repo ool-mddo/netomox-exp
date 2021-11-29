@@ -193,7 +193,7 @@ class L2DataBuilder < DataBuilderBase
         add_l2_node_tp_link(src_node, src_tp, vlan_id, dst_node, dst_tp, vlan_id)
       end
     else
-      warn '# ERROR: L2 Config Check Error'
+      warn '# WARNING: L2 trunk/access mode mismatch'
     end
   end
 
@@ -214,6 +214,7 @@ class L2DataBuilder < DataBuilderBase
     node = @layer1p.find_node_by_name(link_edge.node)
     tp = node.find_tp_by_name(link_edge.tp)
     tp_prop = @intf_props.find_record_by_node_intf(node.name, tp.name)
+    raise StandardError.new("Term point not found: #{link_edge}") unless tp_prop
     [
       node,
       tp_prop.lag_member? ? make_l1_lag_tp(tp_prop.lag_parent_interface, tp) : tp,
