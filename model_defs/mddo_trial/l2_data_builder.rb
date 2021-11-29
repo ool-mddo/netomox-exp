@@ -147,15 +147,25 @@ class L2DataBuilder < DataBuilderBase
     end
   end
 
+  # @param [InterfacePropertiesTableRecord] tp_prop Term-point property
+  # @return [nil, InterfacePropertiesTableRecord] Term-point property
+  def choose_tp_prop(tp_prop)
+    # NOTICE: if edge node is juniper device, use interface unit config instead of physical.
+    node_prop = @node_props.find_record_by_node(tp_prop.node)
+    raise StandardError, "Node props not found: #{tp_prop}" unless node_prop
+
+    node_prop.juniper? ? find_unit_prop_by_phy_prop(tp_prop) : tp_prop
+  end
+
   # @param [InterfacePropertiesTableRecord] src_tp_prop Term-point properties of source
   # @param [InterfacePropertiesTableRecord] dst_tp_prop Term-point properties of destination
   # @return [Hash] L2 config data for trunk-port
   def port_l2_config_check(src_tp_prop, dst_tp_prop)
-    # NOTICE: if edge node is juniper device, use interface unit config instead of physical.
-    src_node_prop = @node_props.find_record_by_node(src_tp_prop.node)
-    dst_node_prop = @node_props.find_record_by_node(dst_tp_prop.node)
-    src_tp_prop = find_unit_prop_by_phy_prop(src_tp_prop) if src_node_prop.juniper?
-    dst_tp_prop = find_unit_prop_by_phy_prop(dst_tp_prop) if dst_node_prop.juniper?
+    src_tp_prop = choose_tp_prop(src_tp_prop)
+    dst_tp_prop = choose_tp_prop(dst_tp_prop)
+    if src_tp_prop.nil? || dst_tp_prop.nil?
+      raise StandardError, "Term-point props not found: #{src_tp_prop} or #{dst_tp_prop}"
+    end
     return port_l2_config_access(src_tp_prop, dst_tp_prop) if operative_access_port?(src_tp_prop, dst_tp_prop)
     return port_l2_config_trunk(src_tp_prop, dst_tp_prop) if operative_trunk_port?(src_tp_prop, dst_tp_prop)
 

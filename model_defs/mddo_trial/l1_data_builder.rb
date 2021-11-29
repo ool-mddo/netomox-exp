@@ -34,6 +34,8 @@ class L1DataBuilder < DataBuilderBase
   # @return [Array<String>] Interfaces of the LAG member
   def lag_members(edge)
     intf_props = @intf_props.find_record_by_node_intf(edge.node, edge.interface)
+    raise StandardError("LAG member props not found: #{edge}") unless intf_props
+
     intf_props.lag_member_interfaces
   end
 
