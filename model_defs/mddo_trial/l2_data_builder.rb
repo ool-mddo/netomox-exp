@@ -3,6 +3,7 @@
 require_relative '../bf_common/pseudo_model'
 require_relative 'csv/sw_vlan_props_table'
 require_relative 'csv/interface_prop_table'
+require_relative 'csv/node_props_table'
 
 # rubocop:disable Metrics/ClassLength
 
@@ -15,6 +16,7 @@ class L2DataBuilder < DataBuilderBase
     @layer1p = layer1p
     @sw_vlan_props = SwitchVlanPropsTable.new(target)
     @intf_props = InterfacePropertiesTable.new(target)
+    @node_props = NodePropsTable.new(target)
   end
 
   # @return [PNetworks] Networks contains only layer2 network topology
@@ -52,7 +54,14 @@ class L2DataBuilder < DataBuilderBase
   # @param [InterfacePropertiesTableRecord] tp_prop A record of term-point properties table
   # @return [Array<Integer>] List of vlan-id
   def sw_vlans(tp_prop)
-    @sw_vlan_props.find_all_records_by_node_intf(tp_prop.node, tp_prop.interface).map(&:vlan_id).uniq
+    vlans = @sw_vlan_props.find_all_records_by_node_intf(tp_prop.node, tp_prop.interface).map(&:vlan_id).uniq
+    if vlans.empty?
+      # NOTICE: Batfish cannot handle vlan information with vlan sub-interface (in junos, probably ios...)
+      #   So, then it assumes that switch vlans = trunk allowed vlans
+      node_prop = @node_props.find_record_by_node(tp_prop.node)
+      vlans = tp_prop.allowed_vlans if node_prop&.juniper?
+    end
+    vlans
   end
 
   # Check access-port vlan config between layer1-connected port/node.
@@ -80,6 +89,10 @@ class L2DataBuilder < DataBuilderBase
   # @param [InterfacePropertiesTableRecord] dst_tp_prop Term-point properties of destination
   # @return [Array<Integer>] A list of vlan-id (common-set of each port/node)
   def operative_trunk_vlans(src_tp_prop, dst_tp_prop)
+    debug_print "  src #{src_tp_prop.node}[#{src_tp_prop.interface}]: " \
+                "operative_vlans: #{src_tp_prop.allowed_vlans}, #{sw_vlans(src_tp_prop)}"
+    debug_print "  dst #{dst_tp_prop.node}[#{dst_tp_prop.interface}]: " \
+                "operative_vlans: #{dst_tp_prop.allowed_vlans}, #{sw_vlans(dst_tp_prop)}"
     src_tp_prop.allowed_vlans & # allowed-vlans on port
       sw_vlans(src_tp_prop) & # vlans on device
       dst_tp_prop.allowed_vlans & # allowed-vlans on port
@@ -108,10 +121,41 @@ class L2DataBuilder < DataBuilderBase
     }
   end
 
+  # @param [InterfacePropertiesTableRecord] phy_prop Intf property of physical intf
+  # @param [Array<InterfacePropertiesTableRecord>] unit_props Unit interface properties of phy_intf
+  # @return [InterfacePropertiesTableRecord] Phy. interface property (as trunk port)
+  def junos_trunk_port_as_subif(phy_prop, unit_props)
+    # NOTICE: L3 sub-interface : batfish cannot handle sub-interface vlan configuration
+    #   here, it assumes that unit-number is vlan-id
+    phy_prop.allowed_vlans = unit_props.map(&:unit_number).map(&:to_i)
+    phy_prop.switchport = 'True'
+    phy_prop.switchport_mode = 'TRUNK'
+    phy_prop
+  end
+
+  # for junos: physical-interface <> its unit matching
+  # @param [InterfacePropertiesTableRecord] phy_prop Physical interface property
+  # @return [nil, InterfacePropertiesTableRecord] interface unit property
+  def find_unit_prop_by_phy_prop(phy_prop)
+    unit_props = @intf_props.find_all_unit_records_by_node_intf(phy_prop.node, phy_prop.interface)
+    if unit_props.length == 1
+      unit_props[0]
+    elsif unit_props.length > 1
+      junos_trunk_port_as_subif(phy_prop, unit_props)
+    else
+      raise StandardError("Interface unit not found : #{phy_prop}")
+    end
+  end
+
   # @param [InterfacePropertiesTableRecord] src_tp_prop Term-point properties of source
   # @param [InterfacePropertiesTableRecord] dst_tp_prop Term-point properties of destination
   # @return [Hash] L2 config data for trunk-port
   def port_l2_config_check(src_tp_prop, dst_tp_prop)
+    # NOTICE: if edge node is juniper device, use interface unit config instead of physical.
+    src_node_prop = @node_props.find_record_by_node(src_tp_prop.node)
+    dst_node_prop = @node_props.find_record_by_node(dst_tp_prop.node)
+    src_tp_prop = find_unit_prop_by_phy_prop(src_tp_prop) if src_node_prop.juniper?
+    dst_tp_prop = find_unit_prop_by_phy_prop(dst_tp_prop) if dst_node_prop.juniper?
     return port_l2_config_access(src_tp_prop, dst_tp_prop) if operative_access_port?(src_tp_prop, dst_tp_prop)
     return port_l2_config_trunk(src_tp_prop, dst_tp_prop) if operative_trunk_port?(src_tp_prop, dst_tp_prop)
 
@@ -172,8 +216,9 @@ class L2DataBuilder < DataBuilderBase
   def add_l2_node_tp_link(src_node, src_tp, src_vlan_id, dst_node, dst_tp, dst_vlan_id)
     src_l2_node, src_l2_tp = add_l2_node_tp(src_node, src_tp, src_vlan_id).map(&:name)
     dst_l2_node, dst_l2_tp = add_l2_node_tp(dst_node, dst_tp, dst_vlan_id).map(&:name)
-    # NOTE: Lyer2 link is added according to layer1 link.
+    # NOTE: Layer2 link is added according to layer1 link.
     # Therefore, layer1 link is bidirectional, layer2 is same
+    debug_print "  Add L2 ink: #{src_l2_node}[#{src_l2_tp}] > #{dst_l2_node}[#{dst_l2_tp}]"
     @network.link(src_l2_node, src_l2_tp, dst_l2_node, dst_l2_tp)
   end
   # rubocop:enable Metrics/ParameterLists
@@ -214,7 +259,8 @@ class L2DataBuilder < DataBuilderBase
     node = @layer1p.find_node_by_name(link_edge.node)
     tp = node.find_tp_by_name(link_edge.tp)
     tp_prop = @intf_props.find_record_by_node_intf(node.name, tp.name)
-    raise StandardError.new("Term point not found: #{link_edge}") unless tp_prop
+    raise StandardError, "Term point not found: #{link_edge}" unless tp_prop
+
     [
       node,
       tp_prop.lag_member? ? make_l1_lag_tp(tp_prop.lag_parent_interface, tp) : tp,
@@ -225,10 +271,11 @@ class L2DataBuilder < DataBuilderBase
   # @return [void]
   def setup_nodes_and_links
     @layer1p.links.each do |link|
-      debug_print "[0] link = #{link}"
+      debug_print "* L1 link = #{link}"
       src_node, src_tp, src_tp_prop = tp_prop_by_link_edge(link.src)
       dst_node, dst_tp, dst_tp_prop = tp_prop_by_link_edge(link.dst)
       check_result = port_l2_config_check(src_tp_prop, dst_tp_prop)
+      debug_print "  check_result = #{check_result}"
       add_l2_node_tp_link_by_config(src_node, src_tp, dst_node, dst_tp, check_result)
     end
   end

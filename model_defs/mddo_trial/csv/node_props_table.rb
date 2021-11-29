@@ -9,16 +9,13 @@ class NodePropsTableRecord < TableRecordBase
   #   @return [String]
   # @!attribute [rw] config_format
   #   @return [String]
-  # @!attribute [rw] interfaces
-  #   @return [Array<String>]
-  attr_accessor :node, :config_format, :interfaces
+  attr_accessor :node, :config_format
 
   # @param [Enumerable] record A row of csv table
   def initialize(record)
     super()
     @node = record[:node]
     @config_format = record[:configuration_format]
-    @interfaces = interfaces2array(record[:interfaces])
   end
 
   # @return [Boolean] true if this node is host
@@ -28,19 +25,12 @@ class NodePropsTableRecord < TableRecordBase
 
   # @return [Boolean] true if this node is network device
   def switch?
-    %w[CISCO_IOS].include?(@config_format)
+    %w[CISCO_IOS CISCO_IOS_XR ARISTA JUNIPER].include?(@config_format)
   end
 
-  private
-
-  # rubocop:disable Security/Eval
-
-  # @param [String] interfaces Multiple-interface string
-  # @return [Array<String>] Array of interface
-  def interfaces2array(interfaces)
-    eval(interfaces).sort
+  def juniper?
+    @config_format == 'JUNIPER'
   end
-  # rubocop:enable Security/Eval
 end
 
 # node-properties table

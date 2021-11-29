@@ -37,6 +37,6 @@ class DataBuilderBase
   # @param [Array] message Objects to debug print
   # @return [void]
   def debug_print(*message)
-    warn '# DEBUG: ', message if @use_debug
+    warn message if @use_debug
   end
 end

@@ -88,6 +88,12 @@ class InterfacePropertiesTableRecord < TableRecordBase
     !@channel_group.nil?
   end
 
+  # Unit interface number (for junos interface)
+  # @return [nil, String] unit number string
+  def unit_number
+    %r{[\w\-/]+\d+\.(\d+)}.match(interface).to_a[1]
+  end
+
   # @return [String]
   def to_s
     "InterfacePropertiesTableRecord: #{@node}, #{@interface}"
@@ -152,5 +158,15 @@ class InterfacePropertiesTable < TableBase
   # @return [nil, InterfacePropertiesTableRecord] Record if found or nil if not found
   def find_record_by_node_intf(node_name, intf_name)
     @records.find { |r| r.node == node_name && r.interface == intf_name }
+  end
+
+  # For junos, find all unit interface property of physical interface
+  # @param [String] node_name Node name
+  # @param [String] intf_name Interface name (physical interface)
+  # @return [Array<InterfacePropertiesTableRecord>] Found records
+  def find_all_unit_records_by_node_intf(node_name, intf_name)
+    @records.find_all do |rec|
+      rec.node == node_name && rec.interface =~ /#{intf_name}.\d+/
+    end
   end
 end

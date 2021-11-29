@@ -54,6 +54,11 @@ def convert_l1topology_to_csv(snapshot_dir):
 
 
 if __name__ == '__main__':
+    # print-omit avoidance
+    pd.set_option("display.width", 300)
+    pd.set_option("display.max_columns", 20)
+    pd.set_option("display.max_rows", 200)
+
     base_dir = '../batfish-test-topology/'
     config_sub_path_list = [
         'l2/sample3',
@@ -73,7 +78,7 @@ if __name__ == '__main__':
             'Switchport', 'Switchport_Mode', 'Channel_Group', 'Channel_Group_Members'
         ])),
         'node_props': lambda: bfq.nodeProperties(nodes='.*', properties=', '.join([
-            'Configuration_Format', 'Interfaces'
+            'Configuration_Format'
         ])),
         'sw_vlan_props': lambda: bfq.switchedVlanProperties(nodes='.*')
     }
