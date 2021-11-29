@@ -6,10 +6,12 @@ require_relative 'l2_data_builder'
 require_relative 'l3_data_builder'
 require_relative 'expanded_l3_data_builder'
 
-# @param [Netomox::DSL::Networks] nws Networks
+# @param [Array<PNetworks>] nws Networks
 # @return [String] RFC8345-structure json string
 def to_json(nws)
-  JSON.pretty_generate(nws.topo_data)
+  nmx_nws = Netomox::DSL::Networks.new
+  nmx_nws.networks = nws.map(&:interpret).map(&:networks).flatten
+  JSON.pretty_generate(nmx_nws.topo_data)
 end
 
 # @param [Boolean] debug Debug mode
@@ -30,7 +32,10 @@ def generate_json(target, layer: 'layer1', debug: false)
   l1_debug = debug_layer?(debug, layer, 1)
   l1_builder = L1DataBuilder.new(target: target, debug: l1_debug)
   layer1_nws = l1_builder.make_networks
-  return layer1_nws.dump if l1_debug
+  if l1_debug
+    layer1_nws.dump
+    return to_json([layer1_nws])
+  end
 
   l2_debug = debug_layer?(debug, layer, 2)
   l2_builder = L2DataBuilder.new(
@@ -39,7 +44,10 @@ def generate_json(target, layer: 'layer1', debug: false)
     debug: l2_debug
   )
   layer2_nws = l2_builder.make_networks
-  return layer2_nws.dump if l2_debug
+  if l2_debug
+    layer2_nws.dump
+    return to_json([layer2_nws, layer1_nws])
+  end
 
   l3_debug = debug_layer?(debug, layer, 3)
   l3_builder = L3DataBuilder.new(
@@ -48,7 +56,10 @@ def generate_json(target, layer: 'layer1', debug: false)
     debug: l3_debug
   )
   layer3_nws = l3_builder.make_networks
-  return layer3_nws.dump if l3_debug
+  if l3_debug
+    layer3_nws.dump
+    return to_json([layer3_nws, layer2_nws, layer1_nws])
+  end
 
   l3exp_debug = debug_layer?(debug, layer, '3p')
   l3exp_builder = ExpandedL3DataBuilder.new(
@@ -56,11 +67,7 @@ def generate_json(target, layer: 'layer1', debug: false)
     debug: l3exp_debug
   )
   layer3exp_nws = l3exp_builder.make_networks
-  return layer3exp_nws.dump if l3exp_debug
-
-  nws = [layer3exp_nws, layer3_nws, layer2_nws, layer1_nws]
-  nmx_nws = Netomox::DSL::Networks.new
-  nmx_nws.networks = nws.map(&:interpret).map(&:networks).flatten
-  to_json(nmx_nws)
+  layer3exp_nws.dump if l3exp_debug
+  to_json([layer3exp_nws, layer3_nws, layer2_nws, layer1_nws])
 end
 # rubocop:enable Metrics/AbcSize, Metrics/MethodLength

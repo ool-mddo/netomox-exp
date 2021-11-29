@@ -53,7 +53,7 @@ def convert_l1topology_to_csv(snapshot_dir):
 
 
 if __name__ == '__main__':
-    base_dir = path.expanduser('../batfish-test-topology/')
+    base_dir = '../batfish-test-topology/'
     config_sub_path_list = [
         'l2/sample3',
         'l2/sample4',
@@ -83,10 +83,13 @@ if __name__ == '__main__':
 
     parser = argparse.ArgumentParser(description='Batfish query exec')
     parser.add_argument('--base', '-b', type=str, default=base_dir, help='Base directory path of configs')
-    parser.add_argument('--sub', '-s', type=str, choices=config_sub_path_list, help='Sub-directory path of configs')
+    parser.add_argument('--sub', '-s', type=str, help='Sub-directory path of configs')
     query_keys = list(other_query_dict.keys()) + list(bf_query_dict.keys())
     parser.add_argument('--query', '-q', type=str, choices=query_keys, help='A Query to exec')
     args = parser.parse_args()
+
+    # base directory settings
+    base_dir = path.expanduser(args.base if args.base else base_dir)
 
     # limiting target when using --sub arg
     if args.sub:
