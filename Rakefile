@@ -151,7 +151,6 @@ begin
   require 'yard'
   require 'yard/rake/yardoc_task'
   YARD::Rake::YardocTask.new do |task|
-    task.options = %w[--private --protected --list-undoc]
     task.files = FileList[
       './model_defs/mddo_trial/**/*.rb',
       './model_defs/bf_common/**/*.rb',

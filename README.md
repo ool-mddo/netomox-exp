@@ -80,6 +80,8 @@ python -m pip install --upgrade git+https://github.com/batfish/pybatfish.git
 
 # Generate YARD documents
 
+YARD options are in `.yardopts` file.
+
 ```shell
 bundle exec rake yard
 ```
