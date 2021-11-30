@@ -106,7 +106,9 @@ class L2DataBuilder < DataBuilderBase
     {
       type: :access,
       src_vlan_id: access_port_vlan_id(src_tp_prop),
-      dst_vlan_id: access_port_vlan_id(dst_tp_prop)
+      dst_vlan_id: access_port_vlan_id(dst_tp_prop),
+      src_tp_prop: src_tp_prop,
+      dst_tp_prop: dst_tp_prop
     }
   end
 
@@ -117,7 +119,9 @@ class L2DataBuilder < DataBuilderBase
     {
       type: :trunk,
       # common vlan_ids in allowed vlans of src/dst port and src/dst switch vlans
-      vlan_ids: operative_trunk_vlans(src_tp_prop, dst_tp_prop)
+      vlan_ids: operative_trunk_vlans(src_tp_prop, dst_tp_prop),
+      src_tp_prop: src_tp_prop,
+      dst_tp_prop: dst_tp_prop
     }
   end
 
@@ -173,11 +177,11 @@ class L2DataBuilder < DataBuilderBase
   end
 
   # @param [PNode] l1_node A node under the new layer2 node
-  # @param [PTermPoint] l1_tp Layer1 term-point under the new layer2 term-point
   # @param [Integer] vlan_id VLAN id (if used)
+  # @param [InterfacePropertiesTableRecord] tp_prop Layer1 (phy) or unit interface property
   # @return [PNode] Added layer2 node
-  def add_l2_node(l1_node, l1_tp, vlan_id)
-    l2_node_name = l1_node.name + (vlan_id.positive? ? "_Vlan#{vlan_id}" : "_#{l1_tp.name}")
+  def add_l2_node(l1_node, vlan_id, tp_prop)
+    l2_node_name = l1_node.name + (vlan_id.positive? ? "_Vlan#{vlan_id}" : "_#{tp_prop.interface}")
     new_node = @network.node(l2_node_name)
     # TODO: using management vlan-id field temporary to keep vlan id of L2 bridge
     new_node.attribute = { name: l1_node.name, mgmt_vid: vlan_id }
@@ -190,9 +194,10 @@ class L2DataBuilder < DataBuilderBase
   # @param [PNode] l2_node Layer2 node to add new term-point
   # @param [PNode] l1_node layer1 node under l2_node
   # @param [PTermPoint] l1_tp layer1 term-point under the new layer2 term-point
+  # @param [InterfacePropertiesTableRecord] tp_prop Layer1 (phy) or unit interface property
   # @return [PTermPoint] Added layer2 term-point
-  def add_l2_tp(l2_node, l1_node, l1_tp)
-    new_tp = l2_node.term_point(l1_tp.name)
+  def add_l2_tp(l2_node, l1_node, l1_tp, tp_prop)
+    new_tp = l2_node.term_point(tp_prop.interface)
     l1_tp_prop = @intf_props.find_record_by_node_intf(l1_node.name, l1_tp.name)
     if l1_tp_prop.lag_parent?
       supports = l1_tp_prop.lag_member_interfaces.map { |intf| [@layer1p.name, l1_node.name, intf] }
@@ -207,10 +212,11 @@ class L2DataBuilder < DataBuilderBase
   # @param [PNode] l1_node A node under the new layer2 node
   # @param [PTermPoint] l1_tp Layer1 term-point under the new layer2 term-point
   # @param [Integer] vlan_id vlan_id VLAN id (if used)
+  # @param [InterfacePropertiesTableRecord] tp_prop Layer1 (phy) or unit interface property
   # @return [Array<PNode, PTermPoint>] A pair of added node name and tp name
-  def add_l2_node_tp(l1_node, l1_tp, vlan_id)
-    new_node = add_l2_node(l1_node, l1_tp, vlan_id)
-    new_tp = add_l2_tp(new_node, l1_node, l1_tp)
+  def add_l2_node_tp(l1_node, l1_tp, vlan_id, tp_prop)
+    new_node = add_l2_node(l1_node, vlan_id, tp_prop)
+    new_tp = add_l2_tp(new_node, l1_node, l1_tp, tp_prop)
     [new_node, new_tp]
   end
 
@@ -223,9 +229,9 @@ class L2DataBuilder < DataBuilderBase
   # @param [PTermPoint] dst_tp link destination port (on dst_node)
   # @param [Integer] dst_vlan_id VLAN id of dst_tp
   # @return [void]
-  def add_l2_node_tp_link(src_node, src_tp, src_vlan_id, dst_node, dst_tp, dst_vlan_id)
-    src_l2_node, src_l2_tp = add_l2_node_tp(src_node, src_tp, src_vlan_id).map(&:name)
-    dst_l2_node, dst_l2_tp = add_l2_node_tp(dst_node, dst_tp, dst_vlan_id).map(&:name)
+  def add_l2_node_tp_link(src_node, src_tp, src_vlan_id, src_tp_prop, dst_node, dst_tp, dst_vlan_id, dst_tp_prop)
+    src_l2_node, src_l2_tp = add_l2_node_tp(src_node, src_tp, src_vlan_id, src_tp_prop).map(&:name)
+    dst_l2_node, dst_l2_tp = add_l2_node_tp(dst_node, dst_tp, dst_vlan_id, dst_tp_prop).map(&:name)
     # NOTE: Layer2 link is added according to layer1 link.
     # Therefore, layer1 link is bidirectional, layer2 is same
     debug_print "  Add L2 ink: #{src_l2_node}[#{src_l2_tp}] > #{dst_l2_node}[#{dst_l2_tp}]"
@@ -242,10 +248,14 @@ class L2DataBuilder < DataBuilderBase
   def add_l2_node_tp_link_by_config(src_node, src_tp, dst_node, dst_tp, check_result)
     case check_result[:type]
     when :access
-      add_l2_node_tp_link(src_node, src_tp, check_result[:src_vlan_id], dst_node, dst_tp, check_result[:dst_vlan_id])
+      add_l2_node_tp_link(
+        src_node, src_tp, check_result[:src_vlan_id], check_result[:src_tp_prop],
+        dst_node, dst_tp, check_result[:dst_vlan_id], check_result[:dst_tp_prop]
+      )
     when :trunk
       check_result[:vlan_ids].each do |vlan_id|
-        add_l2_node_tp_link(src_node, src_tp, vlan_id, dst_node, dst_tp, vlan_id)
+        add_l2_node_tp_link(src_node, src_tp, vlan_id, check_result[:src_tp_prop],
+                            dst_node, dst_tp, vlan_id, check_result[:dst_tp_prop])
       end
     else
       warn '# WARNING: L2 trunk/access mode mismatch'

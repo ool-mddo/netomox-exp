@@ -72,7 +72,7 @@ class L3DataBuilder < DataBuilderBase
     # if rec not found, search virtual node (GRT/VRF)
     # TODO: using mgmt_vid field temporary
     rec ||= @ip_owners.find_vlan_intf_record_by_node(l2_node.attribute[:name], l2_node.attribute[:mgmt_vid])
-    warn "# DEBUG: l2_edge=#{l2_edge}, rec=#{rec}"
+    debug_print "  l2_edge=#{l2_edge}, rec=#{rec}"
 
     return [nil, nil] unless rec
 
@@ -105,7 +105,7 @@ class L3DataBuilder < DataBuilderBase
     l2_link = @layer2p.find_link_by_src_edge(l2_edge)
     l3_seg_tp = l3_seg_node.term_point(l3_seg_tp_name(l3_seg_node, l2_link, l3_node, l3_tp))
     l3_seg_tp.supports.push([@layer2p.name, l2_link.dst.node, l2_link.dst.tp])
-    debug_print "link: #{l3_seg_node.name}, #{l3_seg_tp.name}, #{l3_node.name}, #{l3_tp.name}"
+    debug_print "  link: #{l3_seg_node.name}, #{l3_seg_tp.name}, #{l3_node.name}, #{l3_tp.name}"
     @network.link(l3_seg_node.name, l3_seg_tp.name, l3_node.name, l3_tp.name)
     @network.link(l3_node.name, l3_tp.name, l3_seg_node.name, l3_seg_tp.name) # bidirectional
   end
@@ -117,11 +117,14 @@ class L3DataBuilder < DataBuilderBase
     @segments.each_with_index do |segment, i|
       # segment: Array(PLinkEdge)
       l3_seg_node = @network.node("Seg#{i}")
-      debug_print "-- Start L3 topology: Segment #{i} --"
+      debug_print "* Start L3 topology: Segment #{i}"
       segment.each do |l2_edge|
         l3_seg_node.supports.push([@layer2p.name, l2_edge.node])
         l3_node, l3_tp = add_l3_node_tp(l2_edge)
-        next if l3_node.nil? || l3_tp.nil?
+        if l3_node.nil? || l3_tp.nil?
+          warn "# WARNING: Can not link #{l3_seg_node.name} > #{l2_edge}"
+          next
+        end
 
         add_l3_link(l3_seg_node, l3_node, l3_tp, l2_edge)
       end
