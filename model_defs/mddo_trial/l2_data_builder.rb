@@ -179,14 +179,46 @@ class L2DataBuilder < DataBuilderBase
   # @param [PNode] l1_node A node under the new layer2 node
   # @param [Integer] vlan_id VLAN id (if used)
   # @param [InterfacePropertiesTableRecord] tp_prop Layer1 (phy) or unit interface property
+  # @return [String] Suffix string for Layer2 node name
+  def l2_node_name_suffix(l1_node, vlan_id, tp_prop)
+    return tp_prop.interface unless vlan_id.positive?
+    # Junos-style sub-interface
+    # NOTICE: "unit number = vlan-id" assumption
+    return "#{tp_prop.interface}.#{vlan_id}" if @node_props.find_record_by_node(l1_node.name)&.juniper?
+
+    "Vlan#{vlan_id}" # Cisco-IOS-style (SVI)
+  end
+
+  # @param [PNode] l1_node A node under the new layer2 node
+  # @param [Integer] vlan_id VLAN id (if used)
+  # @param [InterfacePropertiesTableRecord] tp_prop Layer1 (phy) or unit interface property
+  # @return [String] Name of layer2 node
+  def l2_node_name(l1_node, vlan_id, tp_prop)
+    "#{l1_node.name}_#{l2_node_name_suffix(l1_node, vlan_id, tp_prop)}"
+  end
+
+  # @param [PNode] l1_node A node under the new layer2 node
+  # @param [Integer] vlan_id VLAN id (if used)
+  # @param [InterfacePropertiesTableRecord] tp_prop Layer1 (phy) or unit interface property
   # @return [PNode] Added layer2 node
   def add_l2_node(l1_node, vlan_id, tp_prop)
-    l2_node_name = l1_node.name + (vlan_id.positive? ? "_Vlan#{vlan_id}" : "_#{tp_prop.interface}")
-    new_node = @network.node(l2_node_name)
+    new_node = @network.node(l2_node_name(l1_node, vlan_id, tp_prop))
     # TODO: using management vlan-id field temporary to keep vlan id of L2 bridge
     new_node.attribute = { name: l1_node.name, mgmt_vid: vlan_id }
     new_node.supports.push([@layer1p.name, l1_node.name])
     new_node
+  end
+
+  # @param [PNode] l1_node A node under the new layer2 node
+  # @param [Integer] vlan_id VLAN id (if used)
+  # @param [InterfacePropertiesTableRecord] tp_prop Layer1 (phy) or unit interface property
+  # @return [String] Name of layer2 term-point
+  def l2_tp_name(l1_node, vlan_id, tp_prop)
+    if vlan_id.positive? && @node_props.find_record_by_node(l1_node.name)&.juniper?
+      tp_prop.interface + ".#{vlan_id}"
+    else
+      tp_prop.interface
+    end
   end
 
   # rubocop:disable Metrics/AbcSize
@@ -194,11 +226,14 @@ class L2DataBuilder < DataBuilderBase
   # @param [PNode] l2_node Layer2 node to add new term-point
   # @param [PNode] l1_node layer1 node under l2_node
   # @param [PTermPoint] l1_tp layer1 term-point under the new layer2 term-point
+  # @param [Integer] vlan_id VLAN id (if used)
   # @param [InterfacePropertiesTableRecord] tp_prop Layer1 (phy) or unit interface property
   # @return [PTermPoint] Added layer2 term-point
-  def add_l2_tp(l2_node, l1_node, l1_tp, tp_prop)
-    new_tp = l2_node.term_point(tp_prop.interface)
+  def add_l2_tp(l2_node, l1_node, l1_tp, vlan_id, tp_prop)
+    new_tp = l2_node.term_point(l2_tp_name(l1_node, vlan_id, tp_prop))
     l1_tp_prop = @intf_props.find_record_by_node_intf(l1_node.name, l1_tp.name)
+    raise StandardError, "Layer1 term-point property not found: #{l1_node.name}[#{l1_tp.name}]" unless l1_tp_prop
+
     if l1_tp_prop.lag_parent?
       supports = l1_tp_prop.lag_member_interfaces.map { |intf| [@layer1p.name, l1_node.name, intf] }
       new_tp.supports.push(*supports)
@@ -216,7 +251,7 @@ class L2DataBuilder < DataBuilderBase
   # @return [Array<PNode, PTermPoint>] A pair of added node name and tp name
   def add_l2_node_tp(l1_node, l1_tp, vlan_id, tp_prop)
     new_node = add_l2_node(l1_node, vlan_id, tp_prop)
-    new_tp = add_l2_tp(new_node, l1_node, l1_tp, tp_prop)
+    new_tp = add_l2_tp(new_node, l1_node, l1_tp, vlan_id, tp_prop)
     [new_node, new_tp]
   end
 
@@ -238,6 +273,8 @@ class L2DataBuilder < DataBuilderBase
     @network.link(src_l2_node, src_l2_tp, dst_l2_node, dst_l2_tp)
   end
   # rubocop:enable Metrics/ParameterLists
+
+  # rubocop:disable Metrics/MethodLength
 
   # @param [PNode] src_node Link source node
   # @param [PTermPoint] src_tp Link source tp (on src_node)
@@ -261,6 +298,7 @@ class L2DataBuilder < DataBuilderBase
       warn '# WARNING: L2 trunk/access mode mismatch'
     end
   end
+  # rubocop:enable Metrics/MethodLength
 
   # @param [String] lag_tp_name Layer1 LAG (parent) term-point name
   # @param [PTermPoint] member_tp Layer1 LAG member term-point name

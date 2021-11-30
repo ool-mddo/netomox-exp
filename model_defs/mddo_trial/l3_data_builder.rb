@@ -111,6 +111,8 @@ class L3DataBuilder < DataBuilderBase
   end
   # rubocop:enable Metrics/AbcSize
 
+  # rubocop:disable Metrics/MethodLength
+
   # Add all layer3 node, tp and link
   # @return [void]
   def add_l3_node_tp_link
@@ -130,6 +132,7 @@ class L3DataBuilder < DataBuilderBase
       end
     end
   end
+  # rubocop:enable Metrics/MethodLength
 
   # rubocop:disable Metrics/AbcSize
 
