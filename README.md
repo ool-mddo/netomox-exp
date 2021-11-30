@@ -3,9 +3,22 @@ A trial of network model construction.
 
 # Setup
 
+## Clone sources
+
+Clone each repositories.
+
+```text
++ ool-mddo/
+  + netomox-exp/         # https://github.com/ool-mddo/netomox-exp (THIS repository)
+  + pushed_configs/      # https://github.com/ool-mddo/pushed_configs
+    - configs/           #   - network device configs
+  + netbox2inet-henge/   # https://github.com/ool-mddo/netbox2inet-henge
+    - layer1_topology.sample.json # L1 topology for batfish from netbox
+```
+
 ## Update submodules
 
-Pull network device configurations for experiments.
+Pull network device configurations for experiments (in netomox-exp directory).
 
 ```shell
 git submodule update --init --recursive
@@ -35,14 +48,17 @@ Note: venv and pybatfish are `~/batfish/bf-venv`
 ```shell
 . ~/batfish/bf-venv/bin/activate
 cd model_defs/mddo_trial
-pypthon exec_l2queries.py
+# for model_defs/batfish-test-topology data
+python exec_l2queries.py
+# for MDDO project (pushed_configs) data
+./make_csv.sh
 cd -
 ```
 
 ## Generate topology json for netoviz
 
 ```shell
-bundle exec rake
+bundle exec rake [TARGET=./model_defs/hoge.rb]
 ```
 
 # Setup python venv and pybatfish
