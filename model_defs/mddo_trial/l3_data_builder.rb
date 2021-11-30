@@ -24,14 +24,9 @@ class L3DataBuilder < L3DataChecker
   private
 
   # @param [IPOwnersTableRecord] rec A record of IP-Owners table
-  # @param [PNode] l2_node A layer2 node
   # @return [String] Name of layer3 node
-  def l3_node_name(rec, l2_node)
-    if rec.interface =~ /Vlan\d+/
-      rec.vrf == 'default' ? rec.node : "#{rec.node}_#{rec.vrf}"
-    else
-      l2_node.attribute[:name]
-    end
+  def l3_node_name(rec)
+    rec.vrf == 'default' ? rec.node : "#{rec.node}_#{rec.vrf}"
   end
 
   # @param [IPOwnersTableRecord] rec A record of IP-Owners table
@@ -39,7 +34,7 @@ class L3DataBuilder < L3DataChecker
   # @return [PNode] Added layer3 node
   def add_l3_node(rec, l2_node)
     # TODO: l2 node type determination
-    l3_node = @network.node(l3_node_name(rec, l2_node))
+    l3_node = @network.node(l3_node_name(rec))
     l3_node.supports.push([@layer2p.name, l2_node.name])
     l3_node
   end
