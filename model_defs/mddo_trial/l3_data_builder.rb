@@ -4,6 +4,8 @@ require_relative 'l3_data_checker'
 require_relative 'csv/ip_owners_table'
 require 'ipaddress'
 
+# rubocop:disable Metrics/ClassLength
+
 # L3 data builder
 class L3DataBuilder < L3DataChecker
   # @param [String] target Target network (config) data name
@@ -19,6 +21,7 @@ class L3DataBuilder < L3DataChecker
     @network.type = Netomox::NWTYPE_L3
     explore_l3_segment
     add_l3_node_tp_link
+    update_node_attribute
     @networks
   end
 
@@ -109,28 +112,26 @@ class L3DataBuilder < L3DataChecker
   # @return [Array<Hash>] A list of 'prefix' attribute
   def segment_prefixes(segment)
     prefixes = segment.map do |l2_edge|
-      rec, _ = ip_rec_by_l2_edge(l2_edge)
+      rec, = ip_rec_by_l2_edge(l2_edge)
       debug_print "  prefix in Segment: #{l2_edge}] -> #{rec}"
       IPAddress::IPv4.new(rec ? "#{rec.ip}/#{rec.mask}" : '0.0.0.0/0') # DUMMY: 0.0.0.0/0
     end
-    prefixes.map { |ip| "#{ip.network}/#{ip.prefix}" }.uniq.reject { |ip| ip == '0.0.0.0/0'}.map do |prefix|
-      {
-        prefix: prefix,
-        metric: 100 # default metric of connected route
-      }
+    prefixes.map { |ip| "#{ip.network}/#{ip.prefix}" }.uniq.reject { |ip| ip == '0.0.0.0/0' }.map do |prefix|
+      { prefix: prefix, metric: 0 } # metric = 0 : default metric of connected route
     end
   end
-
-  # rubocop:disable Metrics/MethodLength
 
   # @param [Array<PLinkEdge>] segment Edge list in same segment
   # @param [Integer] seg_index Index number of the segment
   # @return [PNode] Layer3 segment node
   def add_l3_seg_node(segment, seg_index)
-    l3_seg_node = @network.node("Seg#{seg_index}")
-    l3_seg_node.attribute = { prefixes: segment_prefixes(segment), flags: %w[segment] }
+    prefixes = segment_prefixes(segment)
+    l3_seg_node = @network.node("Seg_#{prefixes.length.positive? ? prefixes[0][:prefix] : seg_index}")
+    l3_seg_node.attribute = { prefixes: prefixes, flags: %w[segment] }
     l3_seg_node
   end
+
+  # rubocop:disable Metrics/MethodLength
 
   # Add all layer3 node, tp and link
   # @return [void]
@@ -152,4 +153,36 @@ class L3DataBuilder < L3DataChecker
     end
   end
   # rubocop:enable Metrics/MethodLength
+
+  # @param [String] flag A flag of node
+  # @return [Array<PNode>] Found nodes
+  def find_l3nodes_by_flags_include(flag)
+    @network.nodes.filter { |n| n.attribute[:flags].include?(flag) }
+  end
+
+  # @param [PNode] l3_node Layer3 node
+  # @return [Array<PTermPoint>] Found term-points
+  def find_l3_tps_has_ipaddr(l3_node)
+    l3_node.tps.filter { |tp| tp.attribute[:ip_addrs]&.length&.positive? }
+  end
+
+  # @param [PNode] l3_node Layer3 node
+  # @return [Array<Hash>] A list of layer3 node prefix (directly connected routes)
+  def node_prefixes_by_l3_node(l3_node)
+    find_l3_tps_has_ipaddr(l3_node).map do |tp|
+      ip = IPAddress::IPv4.new(tp.attribute[:ip_addrs][0])
+      { prefix: "#{ip.network}/#{ip.prefix}", metric: 0, flag: 'directly_connected' }
+    end
+  end
+
+  # Set layer3 node attribute (prefixes) according to its term-point
+  # @return [void]
+  def update_node_attribute
+    find_l3nodes_by_flags_include('node').each do |l3_node|
+      prefixes = node_prefixes_by_l3_node(l3_node)
+      l3_node.attribute[:prefixes] = prefixes
+    end
+  end
 end
+
+# rubocop:enable Metrics/ClassLength

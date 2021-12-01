@@ -22,10 +22,7 @@ class ExpandedL3DataBuilder < DataBuilderBase
 
   # @return [Array<PNode>] Layer3 segment nodes
   def find_all_segment_nodes
-    @layer3p.nodes.find_all do |node|
-      # TODO: node type detection
-      node.name =~ /Seg\d+/
-    end
+    @layer3p.nodes.find_all { |node| node.attribute[:flags].include?('segment') }
   end
 
   # @param [PNode] orig_l3_node Layer3 node (copy source)
