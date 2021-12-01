@@ -2,6 +2,7 @@
 
 require_relative 'l3_data_checker'
 require_relative 'csv/ip_owners_table'
+require 'ipaddress'
 
 # L3 data builder
 class L3DataBuilder < L3DataChecker
@@ -36,6 +37,7 @@ class L3DataBuilder < L3DataChecker
     # TODO: l2 node type determination
     l3_node = @network.node(l3_node_name(rec))
     l3_node.supports.push([@layer2p.name, l2_node.name])
+    l3_node.attribute = { flags: %w[node] }
     l3_node
   end
 
@@ -46,15 +48,21 @@ class L3DataBuilder < L3DataChecker
   def add_l3_tp(rec, l3_node, l2_edge)
     l3_tp = l3_node.term_point(rec.interface)
     l3_tp.supports.push([@layer2p.name, l2_edge.node, l2_edge.tp])
-    l3_tp.attribute = { ip_addrs: [rec.ip] }
+    l3_tp.attribute = { ip_addrs: ["#{rec.ip}/#{rec.mask}"] }
     l3_tp
+  end
+
+  # @param [PLinkEdge] l2_edge Layer2 link edge
+  # @return [Array<IPOwnersTableRecord, PNode>] L3 (IPOwners) record and corresponding L2 node
+  def ip_rec_by_l2_edge(l2_edge)
+    l2_node = @layer2p.node(l2_edge.node)
+    [@ip_owners.find_record_by_node_intf(l2_node.attribute[:name], l2_edge.tp), l2_node]
   end
 
   # @param [PLinkEdge] l2_edge A Link-edge in layer2 topology (in segment)
   # @return [Array<(PNode, PTermPoint)>] Added L3-Node and term-point pair
   def add_l3_node_tp(l2_edge)
-    l2_node = @layer2p.node(l2_edge.node)
-    rec = @ip_owners.find_record_by_node_intf(l2_node.attribute[:name], l2_edge.tp)
+    rec, l2_node = ip_rec_by_l2_edge(l2_edge)
     # if rec not found, search virtual node (GRT/VRF)
     # TODO: using mgmt_vid field temporary
     rec ||= @ip_owners.find_vlan_intf_record_by_node(l2_node.attribute[:name], l2_node.attribute[:mgmt_vid])
@@ -97,20 +105,45 @@ class L3DataBuilder < L3DataChecker
   end
   # rubocop:enable Metrics/AbcSize
 
+  # @param [Array<PLinkEdge>] segment Edge list in same segment
+  # @return [Array<Hash>] A list of 'prefix' attribute
+  def segment_prefixes(segment)
+    prefixes = segment.map do |l2_edge|
+      rec, _ = ip_rec_by_l2_edge(l2_edge)
+      debug_print "  prefix in Segment: #{l2_edge}] -> #{rec}"
+      IPAddress::IPv4.new(rec ? "#{rec.ip}/#{rec.mask}" : '0.0.0.0/0') # DUMMY: 0.0.0.0/0
+    end
+    prefixes.map { |ip| "#{ip.network}/#{ip.prefix}" }.uniq.reject { |ip| ip == '0.0.0.0/0'}.map do |prefix|
+      {
+        prefix: prefix,
+        metric: 100 # default metric of connected route
+      }
+    end
+  end
+
   # rubocop:disable Metrics/MethodLength
+
+  # @param [Array<PLinkEdge>] segment Edge list in same segment
+  # @param [Integer] seg_index Index number of the segment
+  # @return [PNode] Layer3 segment node
+  def add_l3_seg_node(segment, seg_index)
+    l3_seg_node = @network.node("Seg#{seg_index}")
+    l3_seg_node.attribute = { prefixes: segment_prefixes(segment), flags: %w[segment] }
+    l3_seg_node
+  end
 
   # Add all layer3 node, tp and link
   # @return [void]
   def add_l3_node_tp_link
     @segments.each_with_index do |segment, i|
       # segment: Array(PLinkEdge)
-      l3_seg_node = @network.node("Seg#{i}")
       debug_print "* Start L3 topology: Segment #{i}"
+      l3_seg_node = add_l3_seg_node(segment, i)
       segment.each do |l2_edge|
         l3_seg_node.supports.push([@layer2p.name, l2_edge.node])
         l3_node, l3_tp = add_l3_node_tp(l2_edge)
         if l3_node.nil? || l3_tp.nil?
-          warn "# WARNING: Can not link #{l3_seg_node.name} > #{l2_edge}"
+          warn "# WARNING: Can not link (it seems L2 link): #{l3_seg_node.name} > #{l2_edge}"
           next
         end
 

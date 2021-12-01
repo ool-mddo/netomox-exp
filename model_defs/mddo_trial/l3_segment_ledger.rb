@@ -5,6 +5,14 @@ require 'forwardable'
 # L3 segment data holder
 class L3SegmentLedger
   extend Forwardable
+  # @!method push
+  #   @see Array#size
+  # @!method each
+  #   @see Array#each
+  # @!method each_with_index
+  #   @see Array#each_with_index
+  # @!to_s
+  #   @see Array#to_s
   def_delegators :@segments, :push, :each, :each_with_index, :to_s
 
   def initialize
