@@ -114,9 +114,9 @@ class L3DataBuilder < L3DataChecker
     prefixes = segment.map do |l2_edge|
       rec, = ip_rec_by_l2_edge(l2_edge)
       debug_print "  prefix in Segment: #{l2_edge}] -> #{rec}"
-      IPAddress::IPv4.new(rec ? "#{rec.ip}/#{rec.mask}" : '0.0.0.0/0') # DUMMY: 0.0.0.0/0
+      rec && IPAddress::IPv4.new("#{rec.ip}/#{rec.mask}")
     end
-    prefixes.map { |ip| "#{ip.network}/#{ip.prefix}" }.uniq.reject { |ip| ip == '0.0.0.0/0' }.map do |prefix|
+    prefixes.compact.map { |ip| "#{ip.network}/#{ip.prefix}" }.uniq.map do |prefix|
       { prefix: prefix, metric: 0 } # metric = 0 : default metric of connected route
     end
   end
@@ -156,20 +156,20 @@ class L3DataBuilder < L3DataChecker
 
   # @param [String] flag A flag of node
   # @return [Array<PNode>] Found nodes
-  def find_l3nodes_by_flags_include(flag)
+  def find_all_l3_nodes_with_flag(flag)
     @network.nodes.filter { |n| n.attribute[:flags].include?(flag) }
   end
 
   # @param [PNode] l3_node Layer3 node
   # @return [Array<PTermPoint>] Found term-points
-  def find_l3_tps_has_ipaddr(l3_node)
+  def find_all_l3_tps_has_ipaddr(l3_node)
     l3_node.tps.filter { |tp| tp.attribute[:ip_addrs]&.length&.positive? }
   end
 
   # @param [PNode] l3_node Layer3 node
   # @return [Array<Hash>] A list of layer3 node prefix (directly connected routes)
-  def node_prefixes_by_l3_node(l3_node)
-    find_l3_tps_has_ipaddr(l3_node).map do |tp|
+  def node_prefixes_at_l3_node(l3_node)
+    find_all_l3_tps_has_ipaddr(l3_node).map do |tp|
       ip = IPAddress::IPv4.new(tp.attribute[:ip_addrs][0])
       { prefix: "#{ip.network}/#{ip.prefix}", metric: 0, flag: 'directly_connected' }
     end
@@ -178,8 +178,8 @@ class L3DataBuilder < L3DataChecker
   # Set layer3 node attribute (prefixes) according to its term-point
   # @return [void]
   def update_node_attribute
-    find_l3nodes_by_flags_include('node').each do |l3_node|
-      prefixes = node_prefixes_by_l3_node(l3_node)
+    find_all_l3_nodes_with_flag('node').each do |l3_node|
+      prefixes = node_prefixes_at_l3_node(l3_node)
       l3_node.attribute[:prefixes] = prefixes
     end
   end
