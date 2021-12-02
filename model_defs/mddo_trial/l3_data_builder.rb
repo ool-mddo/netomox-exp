@@ -37,7 +37,6 @@ class L3DataBuilder < L3DataChecker
   # @param [PNode] l2_node A layer2 node
   # @return [PNode] Added layer3 node
   def add_l3_node(rec, l2_node)
-    # TODO: l2 node type determination
     l3_node = @network.node(l3_node_name(rec))
     l3_node.supports.push([@layer2p.name, l2_node.name])
     l3_node.attribute = { flags: %w[node] }
@@ -59,17 +58,20 @@ class L3DataBuilder < L3DataChecker
   # @return [Array<IPOwnersTableRecord, PNode>] L3 (IPOwners) record and corresponding L2 node
   def ip_rec_by_l2_edge(l2_edge)
     l2_node = @layer2p.node(l2_edge.node)
-    [@ip_owners.find_record_by_node_intf(l2_node.attribute[:name], l2_edge.tp), l2_node]
+    rec = @ip_owners.find_record_by_node_intf(l2_node.attribute[:name], l2_edge.tp)
+
+    # if rec not found, search virtual node (GRT/VRF)
+    # TODO: using mgmt_vid field temporary
+    rec ||= @ip_owners.find_vlan_intf_record_by_node(l2_node.attribute[:name], l2_node.attribute[:mgmt_vid])
+    debug_print "  l2_edge=#{l2_edge}, rec=#{rec}"
+
+    [rec, l2_node]
   end
 
   # @param [PLinkEdge] l2_edge A Link-edge in layer2 topology (in segment)
   # @return [Array<(PNode, PTermPoint)>] Added L3-Node and term-point pair
   def add_l3_node_tp(l2_edge)
     rec, l2_node = ip_rec_by_l2_edge(l2_edge)
-    # if rec not found, search virtual node (GRT/VRF)
-    # TODO: using mgmt_vid field temporary
-    rec ||= @ip_owners.find_vlan_intf_record_by_node(l2_node.attribute[:name], l2_node.attribute[:mgmt_vid])
-    debug_print "  l2_edge=#{l2_edge}, rec=#{rec}"
 
     return [nil, nil] unless rec
 
@@ -116,6 +118,7 @@ class L3DataBuilder < L3DataChecker
       debug_print "  prefix in Segment: #{l2_edge}] -> #{rec}"
       rec && IPAddress::IPv4.new("#{rec.ip}/#{rec.mask}")
     end
+    warn "# WARNING: L2 closed segment?"
     prefixes.compact.map { |ip| "#{ip.network}/#{ip.prefix}" }.uniq.map do |prefix|
       { prefix: prefix, metric: 0 } # metric = 0 : default metric of connected route
     end
