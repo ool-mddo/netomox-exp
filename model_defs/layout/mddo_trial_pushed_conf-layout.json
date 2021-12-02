@@ -1,0 +1,32 @@
+{
+  "standard": {
+    "grid": {
+      "x": [50, 350, 650, 950],
+      "y": [50, 200, 350, 500]
+    },
+    "layout": {}
+  },
+  "reverse": {
+    "grid": {
+      "x": [50, 350, 650, 950],
+      "y": [50, 200, 350, 500]
+    },
+    "layout": {
+      "layer1__regiona-pe01": {"i": 0, "j": 0},
+      "layer1__regiona-pe02": {"i": 1, "j": 0},
+      "layer1__regiona-ce01": {"i": 0, "j": 1},
+      "layer1__regiona-ce02": {"i": 1, "j": 1},
+      "layer1__regiona-acc01": {"i": 0, "j": 2},
+      "layer1__regiona-svr01": {"i": 0, "j": 3},
+      "layer1__regiona-svr02": {"i": 1, "j": 3},
+      "layer1__regionb-pe01": {"i": 2, "j": 0},
+      "layer1__regionb-pe02": {"i": 3, "j": 0},
+      "layer1__regionb-ce01": {"i": 2, "j": 1},
+      "layer1__regionb-ce02": {"i": 3, "j": 1},
+      "layer1__regionb-acc01": {"i": 2, "j": 2},
+      "layer1__regionb-acc02": {"i": 3, "j": 2},
+      "layer1__regionb-svr01": {"i": 2, "j": 3},
+      "layer1__regionb-svr02": {"i": 3, "j": 3}
+    }
+  }
+}
