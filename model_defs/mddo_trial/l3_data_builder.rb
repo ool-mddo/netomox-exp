@@ -129,7 +129,10 @@ class L3DataBuilder < L3DataChecker
   # @return [PNode] Layer3 segment node
   def add_l3_seg_node(segment, seg_index)
     prefixes = segment_prefixes(segment)
-    l3_seg_node = @network.node("Seg_#{prefixes.length.positive? ? prefixes[0][:prefix] : seg_index}")
+    seg_suffix = prefixes.length.positive? ? "_#{prefixes[0][:prefix]}" : ''
+    # NOTICE: it needs seg_index to differentiate other-L2-seg but same network-addr segment case.
+    #   (when there are ip address block duplication)
+    l3_seg_node = @network.node("Seg#{seg_index}#{seg_suffix}")
     l3_seg_node.attribute = { prefixes: prefixes, flags: %w[segment] }
     l3_seg_node
   end
