@@ -117,7 +117,7 @@ class L3DataBuilder < L3DataChecker
       debug_print "  prefix in Segment: #{l2_edge}] -> #{rec}"
       rec && IPAddress::IPv4.new("#{rec.ip}/#{rec.mask}")
     end
-    warn "# WARNING: L2 closed segment?"
+    warn '# WARNING: L2 closed segment?'
     prefixes.compact.map { |ip| "#{ip.network}/#{ip.prefix}" }.uniq.map do |prefix|
       { prefix: prefix, metric: 0 } # metric = 0 : default metric of connected route
     end
