@@ -18,7 +18,7 @@ class L2DataBuilder < L2DataChecker
   # @return [PNetworks] Networks contains only layer2 network topology
   def make_networks
     @network = @networks.network('layer2')
-    @network.type = Netomox::NWTYPE_L2
+    @network.type = Netomox::NWTYPE_MDDO_L2
     @network.supports.push(@layer1p.name)
     setup_nodes_and_links
     @networks
@@ -79,8 +79,7 @@ class L2DataBuilder < L2DataChecker
   # @return [PNode] Added layer2 node
   def add_l2_node(l1_node, vlan_id, tp_prop)
     new_node = @network.node(l2_node_name(l1_node, vlan_id, tp_prop))
-    # TODO: using management vlan-id field temporary to keep vlan id of L2 bridge
-    new_node.attribute = { name: l1_node.name, mgmt_vid: vlan_id }
+    new_node.attribute = { name: l1_node.name, vlan_id: vlan_id }
     new_node.supports.push([@layer1p.name, l1_node.name])
     new_node
   end

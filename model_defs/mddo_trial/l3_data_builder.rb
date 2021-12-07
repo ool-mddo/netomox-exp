@@ -18,7 +18,7 @@ class L3DataBuilder < L3DataChecker
   # @return [PNetworks] Networks contains only layer3 network topology
   def make_networks
     @network = @networks.network('layer3')
-    @network.type = Netomox::NWTYPE_L3
+    @network.type = Netomox::NWTYPE_MDDO_L3
     explore_l3_segment
     add_l3_node_tp_link
     update_node_attribute
@@ -39,7 +39,7 @@ class L3DataBuilder < L3DataChecker
   def add_l3_node(rec, l2_node)
     l3_node = @network.node(l3_node_name(rec))
     l3_node.supports.push([@layer2p.name, l2_node.name])
-    l3_node.attribute = { flags: %w[node] }
+    l3_node.attribute = { node_type: 'node' }
     l3_node
   end
 
@@ -50,7 +50,7 @@ class L3DataBuilder < L3DataChecker
   def add_l3_tp(rec, l3_node, l2_edge)
     l3_tp = l3_node.term_point(rec.interface)
     l3_tp.supports.push([@layer2p.name, l2_edge.node, l2_edge.tp])
-    l3_tp.attribute = { ip_addrs: ["#{rec.ip}/#{rec.mask}"] }
+    l3_tp.attribute = { ip_address: ["#{rec.ip}/#{rec.mask}"] }
     l3_tp
   end
 
@@ -61,8 +61,7 @@ class L3DataBuilder < L3DataChecker
     rec = @ip_owners.find_record_by_node_intf(l2_node.attribute[:name], l2_edge.tp)
 
     # if rec not found, search virtual node (GRT/VRF)
-    # TODO: using mgmt_vid field temporary
-    rec ||= @ip_owners.find_vlan_intf_record_by_node(l2_node.attribute[:name], l2_node.attribute[:mgmt_vid])
+    rec ||= @ip_owners.find_vlan_intf_record_by_node(l2_node.attribute[:name], l2_node.attribute[:vlan_id])
     debug_print "  l2_edge=#{l2_edge}, rec=#{rec}"
 
     [rec, l2_node]
@@ -133,7 +132,7 @@ class L3DataBuilder < L3DataChecker
     # NOTICE: it needs seg_index to differentiate other-L2-seg but same network-addr segment case.
     #   (when there are ip address block duplication)
     l3_seg_node = @network.node("Seg#{seg_index}#{seg_suffix}")
-    l3_seg_node.attribute = { prefixes: prefixes, flags: %w[segment] }
+    l3_seg_node.attribute = { prefixes: prefixes, node_type: 'segment' }
     l3_seg_node
   end
 
@@ -160,31 +159,30 @@ class L3DataBuilder < L3DataChecker
   end
   # rubocop:enable Metrics/MethodLength
 
-  # @param [String] flag A flag of node
   # @return [Array<PNode>] Found nodes
-  def find_all_l3_nodes_with_flag(flag)
-    @network.nodes.filter { |n| n.attribute[:flags].include?(flag) }
+  def find_all_node_type_nodes
+    @network.nodes.filter { |n| n.attribute[:node_type] == 'node' }
   end
 
   # @param [PNode] l3_node Layer3 node
   # @return [Array<PTermPoint>] Found term-points
   def find_all_l3_tps_has_ipaddr(l3_node)
-    l3_node.tps.filter { |tp| tp.attribute[:ip_addrs]&.length&.positive? }
+    l3_node.tps.filter { |tp| tp.attribute[:ip_address]&.length&.positive? }
   end
 
   # @param [PNode] l3_node Layer3 node
   # @return [Array<Hash>] A list of layer3 node prefix (directly connected routes)
   def node_prefixes_at_l3_node(l3_node)
     find_all_l3_tps_has_ipaddr(l3_node).map do |tp|
-      ip = IPAddress::IPv4.new(tp.attribute[:ip_addrs][0])
-      { prefix: "#{ip.network}/#{ip.prefix}", metric: 0, flag: 'directly_connected' }
+      ip = IPAddress::IPv4.new(tp.attribute[:ip_address][0])
+      { prefix: "#{ip.network}/#{ip.prefix}", metric: 0, flags: %w[directly-connected] }
     end
   end
 
   # Set layer3 node attribute (prefixes) according to its term-point
   # @return [void]
   def update_node_attribute
-    find_all_l3_nodes_with_flag('node').each do |l3_node|
+    find_all_node_type_nodes.each do |l3_node|
       prefixes = node_prefixes_at_l3_node(l3_node)
       l3_node.attribute[:prefixes] = prefixes
     end

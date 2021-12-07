@@ -16,6 +16,7 @@ class L1DataBuilder < DataBuilderBase
   # @return [PNetworks] Networks contains only layer1 network topology
   def make_networks
     @network = @networks.network('layer1')
+    @network.type = Netomox::NWTYPE_MDDO_L1
     setup_node_tp_link
     @networks
   end

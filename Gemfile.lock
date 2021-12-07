@@ -1,7 +1,7 @@
 GIT
   remote: https://github.com/corestate55/netomox
-  revision: dc391ec0c55124e01152404415110d54a4ce6bc3
-  branch: develop
+  revision: 47726f877906766e00ca4f9a9e3a403251807f62
+  branch: mddo-trial
   specs:
     netomox (0.1.0)
       neography (~> 1.8.0)
@@ -27,13 +27,13 @@ GEM
       rubyzip (>= 1.0.0)
     os (1.1.4)
     parallel (1.21.0)
-    parser (3.0.2.0)
+    parser (3.0.3.1)
       ast (~> 2.4.1)
     rainbow (3.0.0)
     rake (13.0.6)
-    regexp_parser (2.1.1)
+    regexp_parser (2.2.0)
     rexml (3.2.5)
-    rubocop (1.22.3)
+    rubocop (1.23.0)
       parallel (~> 1.10)
       parser (>= 3.0.0.0)
       rainbow (>= 2.2.2, < 4.0)
@@ -42,7 +42,7 @@ GEM
       rubocop-ast (>= 1.12.0, < 2.0)
       ruby-progressbar (~> 1.7)
       unicode-display_width (>= 1.4.0, < 3.0)
-    rubocop-ast (1.13.0)
+    rubocop-ast (1.14.0)
       parser (>= 3.0.1.1)
     ruby-progressbar (1.11.0)
     rubyzip (2.3.2)
@@ -50,7 +50,9 @@ GEM
       highline (>= 1.5.0)
     thor (1.0.1)
     unicode-display_width (2.1.0)
-    yard (0.9.26)
+    webrick (1.7.0)
+    yard (0.9.27)
+      webrick (~> 1.7.0)
 
 PLATFORMS
   ruby

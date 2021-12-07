@@ -13,7 +13,7 @@ class ExpandedL3DataBuilder < DataBuilderBase
   # @return [PNetworks] Networks contains only layer3 network topology
   def make_networks
     @network = @networks.network('layer3exp')
-    @network.type = Netomox::NWTYPE_L3
+    @network.type = Netomox::NWTYPE_MDDO_L3
     expand_segment_to_p2p
     @networks
   end
@@ -21,8 +21,8 @@ class ExpandedL3DataBuilder < DataBuilderBase
   private
 
   # @return [Array<PNode>] Layer3 segment nodes
-  def find_all_segment_nodes
-    @layer3p.nodes.find_all { |node| node.attribute[:flags].include?('segment') }
+  def find_all_segment_type_nodes
+    @layer3p.nodes.find_all { |node| node.attribute[:node_type] == 'segment' }
   end
 
   # @param [PNode] orig_l3_node Layer3 node (copy source)
@@ -82,7 +82,7 @@ class ExpandedL3DataBuilder < DataBuilderBase
   # Expand links connected a layer3 segment to P2P links
   # @return [void]
   def expand_segment_to_p2p
-    segment_nodes = find_all_segment_nodes
+    segment_nodes = find_all_segment_type_nodes
     debug_print "seg nodes = #{segment_nodes.map(&:name)}"
     segment_nodes.each do |seg_node|
       seg_connected_edges = @layer3p.find_all_edges_by_src_name(seg_node.name)
