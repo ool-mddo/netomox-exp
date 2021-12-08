@@ -1,6 +1,6 @@
 GIT
   remote: https://github.com/corestate55/netomox
-  revision: 47726f877906766e00ca4f9a9e3a403251807f62
+  revision: a4c7ea925a9b274f1bc2430426994e949a4fd170
   branch: mddo-trial
   specs:
     netomox (0.1.0)
@@ -12,7 +12,7 @@ GEM
   remote: https://rubygems.org/
   specs:
     ast (2.4.2)
-    excon (0.88.0)
+    excon (0.89.0)
     hashie (5.0.0)
     highline (2.0.3)
     ipaddress (0.8.3)

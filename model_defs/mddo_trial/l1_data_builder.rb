@@ -47,7 +47,7 @@ class L1DataBuilder < DataBuilderBase
     node = @network.node(node_name)
     tp = node.term_point(intf_name)
     tp_rec = @intf_props.find_record_by_node_intf(node_name, intf_name)
-    tp.attribute = { description: tp_rec.description || '' } if tp_rec # nil to '' for intf without description
+    tp.attribute = { description: tp_rec.description } if tp_rec
   end
 
   # @param [String] src_node Source node name

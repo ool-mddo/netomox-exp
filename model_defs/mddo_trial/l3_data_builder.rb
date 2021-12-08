@@ -2,6 +2,7 @@
 
 require_relative 'l3_data_checker'
 require_relative 'csv/ip_owners_table'
+require_relative 'csv/interface_prop_table'
 require 'ipaddress'
 
 # rubocop:disable Metrics/ClassLength
@@ -13,6 +14,7 @@ class L3DataBuilder < L3DataChecker
   def initialize(target:, layer2p:, debug: false)
     super(layer2p: layer2p, debug: debug)
     @ip_owners = IPOwnersTable.new(target)
+    @intf_props = InterfacePropertiesTable.new(target)
   end
 
   # @return [PNetworks] Networks contains only layer3 network topology
@@ -50,12 +52,16 @@ class L3DataBuilder < L3DataChecker
   def add_l3_tp(rec, l3_node, l2_edge)
     l3_tp = l3_node.term_point(rec.interface)
     l3_tp.supports.push([@layer2p.name, l2_edge.node, l2_edge.tp])
-    l3_tp.attribute = { ip_address: ["#{rec.ip}/#{rec.mask}"] }
+    tp_prop = @intf_props.find_record_by_node_intf(rec.node, rec.interface)
+    l3_tp.attribute = {
+      ip_address: ["#{rec.ip}/#{rec.mask}"],
+      description: tp_prop ? tp_prop.description : ''
+    }
     l3_tp
   end
 
   # @param [PLinkEdge] l2_edge Layer2 link edge
-  # @return [Array<IPOwnersTableRecord, PNode>] L3 (IPOwners) record and corresponding L2 node
+  # @return [Array(IPOwnersTableRecord, PNode)] L3 (IPOwners) record and corresponding L2 node
   def ip_rec_by_l2_edge(l2_edge)
     l2_node = @layer2p.node(l2_edge.node)
     rec = @ip_owners.find_record_by_node_intf(l2_node.attribute[:name], l2_edge.tp)

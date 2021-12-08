@@ -75,7 +75,8 @@ if __name__ == '__main__':
         # 'edges_layer3': lambda: bfq.edges(edgeType='layer3'),
         'interface_props': lambda: bfq.interfaceProperties(nodes='.*', properties=', '.join([
             'VRF', 'Primary_Address', 'Access_VLAN', 'Allowed_VLANs',
-            'Switchport', 'Switchport_Mode', 'Channel_Group', 'Channel_Group_Members', 'Description'
+            'Switchport', 'Switchport_Mode', 'Switchport_Trunk_Encapsulation',
+            'Channel_Group', 'Channel_Group_Members', 'Description'
         ])),
         'node_props': lambda: bfq.nodeProperties(nodes='.*', properties=', '.join([
             'Configuration_Format'

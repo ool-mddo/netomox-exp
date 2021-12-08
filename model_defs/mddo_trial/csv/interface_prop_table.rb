@@ -21,6 +21,8 @@ class InterfacePropertiesTableRecord < TableRecordBase
   #   @return [String]
   # @!attribute [rw] switchport_mode
   #   @return [String]
+  # @!attribute [rw] switchport_trunk_encapsulation
+  #   @return [String]
   # @!attribute [rw] channel_group
   #   @return [String]
   # @!attribute [rw] channel_group_members
@@ -29,9 +31,8 @@ class InterfacePropertiesTableRecord < TableRecordBase
   #   @return [String]
   attr_accessor :node, :interface, :vrf, :primary_address,
                 :access_vlan, :allowed_vlans,
-                :switchport, :switchport_mode,
-                :channel_group, :channel_group_members,
-                :description
+                :switchport, :switchport_mode, :switchport_trunk_encapsulation,
+                :channel_group, :channel_group_members, :description
 
   alias lag_parent_interface channel_group
   alias lag_member_interfaces channel_group_members
@@ -50,6 +51,7 @@ class InterfacePropertiesTableRecord < TableRecordBase
     @primary_address = record[:primary_address]
     @switchport = record[:switchport]
     @switchport_mode = record[:switchport_mode]
+    @switchport_trunk_encapsulation = record[:switchport_trunk_encapsulation]
     @channel_group = record[:channel_group]
     @channel_group_members = interfaces2array(record[:channel_group_members])
     @description = record[:description]

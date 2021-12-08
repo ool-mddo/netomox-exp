@@ -86,17 +86,47 @@ class L2DataBuilder < L2DataChecker
 
   # @param [PNode] l1_node A node under the new layer2 node
   # @param [Integer] vlan_id VLAN id (if used)
+  # @return [Boolean] True if L3 sub-intf of junos
+  def junos_l3_sub_interface?(l1_node, vlan_id)
+    vlan_id.positive? && @node_props.find_record_by_node(l1_node.name)&.juniper?
+  end
+
+  # @param [PNode] l1_node A node under the new layer2 node
+  # @param [Integer] vlan_id VLAN id (if used)
   # @param [InterfacePropertiesTableRecord] tp_prop Layer1 (phy) or unit interface property
   # @return [String] Name of layer2 term-point
   def l2_tp_name(l1_node, vlan_id, tp_prop)
-    if vlan_id.positive? && @node_props.find_record_by_node(l1_node.name)&.juniper?
+    if junos_l3_sub_interface?(l1_node, vlan_id)
+      # for Junos L3 sub-interface (unit number = vlan-id rule)
       tp_prop.interface + ".#{vlan_id}"
     else
       tp_prop.interface
     end
   end
 
-  # rubocop:disable Metrics/AbcSize
+  # @param [PNode] l1_node layer1 node under l2_node
+  # @param [PTermPoint] l1_tp layer1 term-point under the new layer2 term-point
+  # @param [InterfacePropertiesTableRecord] l1_tp_prop Layer1 (phy) interface property
+  # return [Array<Array<String>>] Support node/tp data
+  def l2_tp_supports(l1_node, l1_tp, l1_tp_prop)
+    if l1_tp_prop.lag_parent?
+      l1_tp_prop.lag_member_interfaces.map { |intf| [@layer1p.name, l1_node.name, intf] }
+    else
+      [[@layer1p.name, l1_node.name, l1_tp.name]]
+    end
+  end
+
+  # @param [PNode] l1_node layer1 node under l2_node
+  # @param [Integer] vlan_id
+  # @param [InterfacePropertiesTableRecord] tp_prop Layer1 (phy) or unit interface property
+  def l2_tp_attribute(l1_node, vlan_id, tp_prop)
+    swp_mode = junos_l3_sub_interface?(l1_node, vlan_id) ? 'trunk' : tp_prop.switchport_mode.downcase
+    {
+      description: tp_prop.description,
+      switchport_mode: swp_mode,
+      encapsulation: swp_mode == 'trunk' ? tp_prop.switchport_trunk_encapsulation.downcase : ''
+    }
+  end
 
   # @param [PNode] l2_node Layer2 node to add new term-point
   # @param [PNode] l1_node layer1 node under l2_node
@@ -109,15 +139,10 @@ class L2DataBuilder < L2DataChecker
     l1_tp_prop = @intf_props.find_record_by_node_intf(l1_node.name, l1_tp.name)
     raise StandardError, "Layer1 term-point property not found: #{l1_node.name}[#{l1_tp.name}]" unless l1_tp_prop
 
-    if l1_tp_prop.lag_parent?
-      supports = l1_tp_prop.lag_member_interfaces.map { |intf| [@layer1p.name, l1_node.name, intf] }
-      new_tp.supports.push(*supports)
-    else
-      new_tp.supports.push([@layer1p.name, l1_node.name, l1_tp.name])
-    end
+    new_tp.supports.push(*l2_tp_supports(l1_node, l1_tp, l1_tp_prop))
+    new_tp.attribute = l2_tp_attribute(l1_node, vlan_id, tp_prop)
     new_tp
   end
-  # rubocop:enable Metrics/AbcSize
 
   # @param [PNode] l1_node A node under the new layer2 node
   # @param [PTermPoint] l1_tp Layer1 term-point under the new layer2 term-point
