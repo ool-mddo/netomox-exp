@@ -2,73 +2,78 @@
 
 require_relative '../bf_common/pseudo_model'
 require_relative 'csv/sw_vlan_props_table'
-require_relative 'csv/node_props_table'
 
 # L2 data builder for L1-edge config check
 class L2DataChecker < DataBuilderBase
   # @param [String] target Target network (config) data name
   def initialize(target:, debug: false)
     super(debug: debug)
-    @node_props = NodePropsTable.new(target)
     @sw_vlan_props = SwitchVlanPropsTable.new(target)
   end
 
   protected
 
+  # @param [PNode] src_node Source layer1 node
   # @param [InterfacePropertiesTableRecord] src_tp_prop Term-point properties of source
+  # @param [PNode] dst_node Destination layer1 node
   # @param [InterfacePropertiesTableRecord] dst_tp_prop Term-point properties of destination
   # @return [Hash] L2 config data for trunk-port
-  def port_l2_config_check(src_tp_prop, dst_tp_prop)
-    src_tp_prop = choose_tp_prop(src_tp_prop)
-    dst_tp_prop = choose_tp_prop(dst_tp_prop)
+  def port_l2_config_check(src_node, src_tp_prop, dst_node, dst_tp_prop)
+    src_tp_prop = choose_tp_prop(src_node, src_tp_prop)
+    dst_tp_prop = choose_tp_prop(dst_node, dst_tp_prop)
     if src_tp_prop.nil? || dst_tp_prop.nil?
       raise StandardError, "Term-point props not found: #{src_tp_prop} or #{dst_tp_prop}"
     end
     return port_l2_config_access(src_tp_prop, dst_tp_prop) if operative_access_port?(src_tp_prop, dst_tp_prop)
-    return port_l2_config_trunk(src_tp_prop, dst_tp_prop) if operative_trunk_port?(src_tp_prop, dst_tp_prop)
+    return port_l2_config_trunk(src_node, src_tp_prop, dst_node, dst_tp_prop) if operative_trunk_port?(src_tp_prop,
+                                                                                                       dst_tp_prop)
 
     { type: :error }
   end
 
   private
 
+  # @param [PNode] l1_node Layer1 node
+  # @return [Boolean] True if the node os-type is juniper
+  def juniper_node?(l1_node)
+    l1_node.attribute[:os_type].downcase == 'juniper'
+  end
+
+  # @param [PNode] l1_node Layer1 node
   # @param [InterfacePropertiesTableRecord] tp_prop Term-point property
   # @return [nil, InterfacePropertiesTableRecord] Term-point property
-  def choose_tp_prop(tp_prop)
+  def choose_tp_prop(l1_node, tp_prop)
     # NOTICE: if edge node is juniper device, use interface unit config instead of physical.
-    node_prop = @node_props.find_record_by_node(tp_prop.node)
-    raise StandardError, "Node props not found: #{tp_prop}" unless node_prop
-
-    node_prop.juniper? ? find_unit_prop_by_phy_prop(tp_prop) : tp_prop
+    juniper_node?(l1_node) ? find_unit_prop_by_phy_prop(tp_prop) : tp_prop
   end
 
   # Vlan-id list in switch (it has interface of tp_prop)
+  # @param [PNode] l1_node Layer1 node
   # @param [InterfacePropertiesTableRecord] tp_prop A record of term-point properties table
   # @return [Array<Integer>] List of vlan-id
-  def sw_vlans(tp_prop)
-    vlans = @sw_vlan_props.find_all_records_by_node_intf(tp_prop.node, tp_prop.interface).map(&:vlan_id).uniq
-    if vlans.empty?
-      # NOTICE: Batfish cannot handle vlan information with vlan sub-interface (in junos, probably ios...)
-      #   So, then it assumes that switch vlans = trunk allowed vlans
-      node_prop = @node_props.find_record_by_node(tp_prop.node)
-      vlans = tp_prop.allowed_vlans if node_prop&.juniper?
-    end
+  def sw_vlans(l1_node, tp_prop)
+    vlans = @sw_vlan_props.find_all_records_by_node_intf(l1_node.name, tp_prop.interface).map(&:vlan_id).uniq
+    # NOTICE: Batfish cannot handle vlan information with vlan sub-interface (for junos, probably ios...)
+    #   So, then it assumes that switch vlans = trunk allowed vlans
+    vlans = tp_prop.allowed_vlans if vlans.empty? && juniper_node?(l1_node)
     vlans
   end
 
   # Check port vlan config and switch vlan config to determine it is operative.
+  # @param [PNode] src_node Source layer1 node
   # @param [InterfacePropertiesTableRecord] src_tp_prop Term-point properties of source
+  # @param [PNode] dst_node Destination layer1 node
   # @param [InterfacePropertiesTableRecord] dst_tp_prop Term-point properties of destination
   # @return [Array<Integer>] A list of vlan-id (common-set of each port/node)
-  def operative_trunk_vlans(src_tp_prop, dst_tp_prop)
-    debug_print "  src #{src_tp_prop.node}[#{src_tp_prop.interface}]: " \
-                "operative_vlans: #{src_tp_prop.allowed_vlans}, #{sw_vlans(src_tp_prop)}"
-    debug_print "  dst #{dst_tp_prop.node}[#{dst_tp_prop.interface}]: " \
-                "operative_vlans: #{dst_tp_prop.allowed_vlans}, #{sw_vlans(dst_tp_prop)}"
+  def operative_trunk_vlans(src_node, src_tp_prop, dst_node, dst_tp_prop)
+    debug_print "  src #{src_node.name}[#{src_tp_prop.interface}]: " \
+                "operative_vlans: #{src_tp_prop.allowed_vlans}, #{sw_vlans(src_node, src_tp_prop)}"
+    debug_print "  dst #{dst_node.name}[#{dst_tp_prop.interface}]: " \
+                "operative_vlans: #{dst_tp_prop.allowed_vlans}, #{sw_vlans(dst_node, dst_tp_prop)}"
     src_tp_prop.allowed_vlans & # allowed-vlans on port
-      sw_vlans(src_tp_prop) & # vlans on device
+      sw_vlans(src_node, src_tp_prop) & # vlans on device
       dst_tp_prop.allowed_vlans & # allowed-vlans on port
-      sw_vlans(dst_tp_prop) # vlans on device
+      sw_vlans(dst_node, dst_tp_prop) # vlans on device
   end
 
   # Check access-port vlan config between layer1-connected port/node.
@@ -124,14 +129,16 @@ class L2DataChecker < DataBuilderBase
     }
   end
 
+  # @param [PNode] src_node Source layer1 node
   # @param [InterfacePropertiesTableRecord] src_tp_prop Term-point properties of source
+  # @param [PNode] dst_node Destination layer1 node
   # @param [InterfacePropertiesTableRecord] dst_tp_prop Term-point properties of destination
   # @return [Hash] L2 config data for trunk-port
-  def port_l2_config_trunk(src_tp_prop, dst_tp_prop)
+  def port_l2_config_trunk(src_node, src_tp_prop, dst_node, dst_tp_prop)
     {
       type: :trunk,
       # common vlan_ids in allowed vlans of src/dst port and src/dst switch vlans
-      vlan_ids: operative_trunk_vlans(src_tp_prop, dst_tp_prop),
+      vlan_ids: operative_trunk_vlans(src_node, src_tp_prop, dst_node, dst_tp_prop),
       src_tp_prop: src_tp_prop,
       dst_tp_prop: dst_tp_prop
     }

@@ -3,6 +3,7 @@
 require_relative '../bf_common/pseudo_model'
 require_relative 'csv/edges_layer1_table'
 require_relative 'csv/interface_prop_table'
+require_relative 'csv/node_props_table'
 
 # L1 data builder
 class L1DataBuilder < DataBuilderBase
@@ -11,6 +12,7 @@ class L1DataBuilder < DataBuilderBase
     super(debug: debug)
     @l1_edges = EdgesLayer1Table.new(target)
     @intf_props = InterfacePropertiesTable.new(target)
+    @node_props = NodePropsTable.new(target)
   end
 
   # @return [PNetworks] Networks contains only layer1 network topology
@@ -45,6 +47,7 @@ class L1DataBuilder < DataBuilderBase
   # @return [void]
   def add_node_tp(node_name, intf_name)
     node = @network.node(node_name)
+    node.attribute = { os_type: @node_props.find_record_by_node(node_name)&.config_format&.downcase }
     tp = node.term_point(intf_name)
     tp_rec = @intf_props.find_record_by_node_intf(node_name, intf_name)
     tp.attribute = { description: tp_rec.description } if tp_rec

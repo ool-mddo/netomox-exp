@@ -60,7 +60,7 @@ class L2DataBuilder < L2DataChecker
     return tp_prop.interface unless vlan_id.positive?
     # Junos-style sub-interface
     # NOTICE: "unit number = vlan-id" assumption
-    return "#{tp_prop.interface}.#{vlan_id}" if @node_props.find_record_by_node(l1_node.name)&.juniper?
+    return "#{tp_prop.interface}.#{vlan_id}" if juniper_node?(l1_node)
 
     "Vlan#{vlan_id}" # Cisco-IOS-style (SVI)
   end
@@ -88,7 +88,7 @@ class L2DataBuilder < L2DataChecker
   # @param [Integer] vlan_id VLAN id (if used)
   # @return [Boolean] True if L3 sub-intf of junos
   def junos_l3_sub_interface?(l1_node, vlan_id)
-    vlan_id.positive? && @node_props.find_record_by_node(l1_node.name)&.juniper?
+    vlan_id.positive? && juniper_node?(l1_node)
   end
 
   # @param [PNode] l1_node A node under the new layer2 node
@@ -232,7 +232,7 @@ class L2DataBuilder < L2DataChecker
       debug_print "* L1 link = #{link}"
       src_node, src_tp, src_tp_prop = tp_prop_by_link_edge(link.src)
       dst_node, dst_tp, dst_tp_prop = tp_prop_by_link_edge(link.dst)
-      check_result = port_l2_config_check(src_tp_prop, dst_tp_prop)
+      check_result = port_l2_config_check(src_node, src_tp_prop, dst_node, dst_tp_prop)
       debug_print "  check_result = #{check_result}"
       add_l2_node_tp_link_by_config(src_node, src_tp, dst_node, dst_tp, check_result)
     end
