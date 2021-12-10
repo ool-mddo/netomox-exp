@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-require 'forwardable'
 require_relative 'table_base'
 
 # row of interface-properties table
@@ -36,6 +35,7 @@ class InterfacePropertiesTableRecord < TableRecordBase
 
   alias lag_parent_interface channel_group
   alias lag_member_interfaces channel_group_members
+  alias trunk_encap switchport_trunk_encapsulation
 
   # rubocop:disable Metrics/MethodLength, Metrics/AbcSize
 
@@ -149,10 +149,6 @@ end
 
 # interface-properties table
 class InterfacePropertiesTable < TableBase
-  extend Forwardable
-
-  def_delegators :@records, :each, :find, :[]
-
   # @param [String] target Target network (config) data name
   def initialize(target)
     super(target, 'interface_props.csv')

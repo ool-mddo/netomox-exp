@@ -74,7 +74,7 @@ class L3DataChecker < DataBuilderBase
   # Convert a link edge (source) to source-destination link-edge pair
   # @param [PNode] src_node Source node
   # @param [PTermPoint] src_tp Source tp
-  # @return [Array<PLinkEdge>] Source/destination link-edge pair (layer2 link edge pair)
+  # @return [Array(PLinkEdge, PLinkEdge)] Source/destination link-edge pair (layer2 link edge pair)
   def link_edges_by_src(src_node, src_tp)
     src_edge = PLinkEdge.new(src_node.name, src_tp.name)
     dst_edge = dst_edge_connected_with(src_edge)

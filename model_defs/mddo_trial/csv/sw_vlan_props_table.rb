@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-require 'forwardable'
 require_relative 'table_base'
 
 # row of switch-vlan-properties table
@@ -36,10 +35,6 @@ end
 
 # switch-vlan-properties table
 class SwitchVlanPropsTable < TableBase
-  extend Forwardable
-
-  def_delegators :@records, :each, :find, :[]
-
   # @param [String] target Target network (config) data name
   def initialize(target)
     super(target, 'sw_vlan_props.csv')

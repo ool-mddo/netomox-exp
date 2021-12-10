@@ -41,6 +41,7 @@ class L2DataBuilder < L2DataChecker
   # for junos: physical-interface <> its unit matching
   # @param [InterfacePropertiesTableRecord] phy_prop Physical interface property
   # @return [nil, InterfacePropertiesTableRecord] interface unit property
+  # @raise [StandardError] If unit interface is not found
   def find_unit_prop_by_phy_prop(phy_prop)
     unit_props = @intf_props.find_all_unit_records_by_node_intf(phy_prop.node, phy_prop.interface)
     if unit_props.length == 1
@@ -134,6 +135,7 @@ class L2DataBuilder < L2DataChecker
   # @param [Integer] vlan_id VLAN id (if used)
   # @param [InterfacePropertiesTableRecord] tp_prop Layer1 (phy) or unit interface property
   # @return [PTermPoint] Added layer2 term-point
+  # @raise [StandardError] if layer1 term-point property is not found
   def add_l2_tp(l2_node, l1_node, l1_tp, vlan_id, tp_prop)
     new_tp = l2_node.term_point(l2_tp_name(l1_node, vlan_id, tp_prop))
     l1_tp_prop = @intf_props.find_record_by_node_intf(l1_node.name, l1_tp.name)
@@ -148,7 +150,7 @@ class L2DataBuilder < L2DataChecker
   # @param [PTermPoint] l1_tp Layer1 term-point under the new layer2 term-point
   # @param [Integer] vlan_id vlan_id VLAN id (if used)
   # @param [InterfacePropertiesTableRecord] tp_prop Layer1 (phy) or unit interface property
-  # @return [Array<PNode, PTermPoint>] A pair of added node name and tp name
+  # @return [Array(PNode, PTermPoint)] A pair of added node name and tp name
   def add_l2_node_tp(l1_node, l1_tp, vlan_id, tp_prop)
     new_node = add_l2_node(l1_node, vlan_id, tp_prop)
     new_tp = add_l2_tp(new_node, l1_node, l1_tp, vlan_id, tp_prop)
@@ -211,8 +213,9 @@ class L2DataBuilder < L2DataChecker
   end
 
   # @param [PLinkEdge] link_edge A Link-edge to get interface property
-  # @return [(Array<PNode, PTermPoint, InterfacePropertiesTableRecord)>]
+  # @return [Array(PNode, PTermPoint, InterfacePropertiesTableRecord)]
   #   Node, interface, interface property of the edge
+  # @raise [StandardError] if term-point props of the link-edge is not found
   def tp_prop_by_link_edge(link_edge)
     node = @layer1p.find_node_by_name(link_edge.node)
     tp = node.find_tp_by_name(link_edge.tp)

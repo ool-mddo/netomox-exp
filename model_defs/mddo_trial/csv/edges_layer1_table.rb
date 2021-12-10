@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-require 'forwardable'
 require_relative 'table_base'
 
 # row of layer1-edges table
@@ -27,10 +26,6 @@ end
 
 # layer1-edges table
 class EdgesLayer1Table < TableBase
-  extend Forwardable
-
-  def_delegators :@records, :each, :find, :[]
-
   # @param [String] target Target network (config) data name
   def initialize(target)
     super(target, 'edges_layer1.csv')

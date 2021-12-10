@@ -4,11 +4,16 @@ require 'csv'
 
 # Base class for csv-wrapper
 class TableBase
+  # @!attribute [rw] records
+  #   @return [Array]
+  attr_accessor :records
+
   # @param [String] target Target network (config) data name
   # @param [String] table_file CSV File name
   def initialize(target, table_file)
     csv_dir = "model_defs/mddo_trial/csv/#{target}"
     @orig_table = CSV.table("#{csv_dir}/#{table_file}")
+    @records = []
   end
 end
 
@@ -43,11 +48,6 @@ class EdgeBase < TableRecordBase
     interface_str =~ /(.+)\[(.+)\]/
     @node = Regexp.last_match(1)
     @interface = Regexp.last_match(2)
-  end
-
-  # @return [Boolean] true if its interface name matched `/Vlan/`
-  def physical_interface?
-    @interface !~ /Vlan*/
   end
 
   # @param [EdgeBase] other

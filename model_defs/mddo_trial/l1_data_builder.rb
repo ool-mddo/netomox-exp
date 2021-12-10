@@ -35,6 +35,7 @@ class L1DataBuilder < DataBuilderBase
 
   # @param [EdgeBase] edge LAG port
   # @return [Array<String>] Interfaces of the LAG member
+  # @raise [StandardError] If the lag term-point (edge) is not found.
   def lag_members(edge)
     intf_props = @intf_props.find_record_by_node_intf(edge.node, edge.interface)
     raise StandardError("LAG member props not found: #{edge}") unless intf_props
@@ -82,7 +83,7 @@ class L1DataBuilder < DataBuilderBase
   def setup_node_tp_link
     # NOTE: Layer1 edge data is bidirectional link.
     #   A physical link is expressed two unidirectional link record.
-    @l1_edges.each do |l1_link|
+    @l1_edges.records.each do |l1_link|
       # NOTE: if the `edges_layer1` is a result of batfish `edges(layer1)` query.
       #   when the table is a layer1_topology.json -converted data,
       #   it does not have LAG link (physical link ONLY)

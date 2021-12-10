@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-require 'forwardable'
 require_relative 'table_base'
 
 # row of ip-owners table
@@ -38,10 +37,6 @@ end
 
 # ip-owners table
 class IPOwnersTable < TableBase
-  extend Forwardable
-
-  def_delegators :@records, :each, :find, :[]
-
   # @param [String] target Target network (config) data name
   def initialize(target)
     super(target, 'ip_owners.csv')

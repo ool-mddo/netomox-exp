@@ -13,23 +13,30 @@ class L2DataChecker < DataBuilderBase
 
   protected
 
+  # rubocop:disable Metrics/MethodLength
+
   # @param [PNode] src_node Source layer1 node
   # @param [InterfacePropertiesTableRecord] src_tp_prop Term-point properties of source
   # @param [PNode] dst_node Destination layer1 node
   # @param [InterfacePropertiesTableRecord] dst_tp_prop Term-point properties of destination
   # @return [Hash] L2 config data for trunk-port
+  # @raise [StandardError] if source or destination term-point prop selection is failed
   def port_l2_config_check(src_node, src_tp_prop, dst_node, dst_tp_prop)
     src_tp_prop = choose_tp_prop(src_node, src_tp_prop)
     dst_tp_prop = choose_tp_prop(dst_node, dst_tp_prop)
     if src_tp_prop.nil? || dst_tp_prop.nil?
       raise StandardError, "Term-point props not found: #{src_tp_prop} or #{dst_tp_prop}"
     end
-    return port_l2_config_access(src_tp_prop, dst_tp_prop) if operative_access_port?(src_tp_prop, dst_tp_prop)
-    return port_l2_config_trunk(src_node, src_tp_prop, dst_node, dst_tp_prop) if operative_trunk_port?(src_tp_prop,
-                                                                                                       dst_tp_prop)
 
-    { type: :error }
+    if operative_access_port?(src_tp_prop, dst_tp_prop)
+      port_l2_config_access(src_tp_prop, dst_tp_prop)
+    elsif operative_trunk_port?(src_tp_prop, dst_tp_prop)
+      port_l2_config_trunk(src_node, src_tp_prop, dst_node, dst_tp_prop)
+    else
+      { type: :error }
+    end
   end
+  # rubocop:enable Metrics/MethodLength
 
   private
 
@@ -93,7 +100,7 @@ class L2DataChecker < DataBuilderBase
   # @param [InterfacePropertiesTableRecord] dst_tp_prop Term-point properties of destination
   # @return [Boolean] true if vlan-config are operative
   def operative_trunk_port?(src_tp_prop, dst_tp_prop)
-    src_tp_prop.swp_trunk? && dst_tp_prop.swp_trunk?
+    src_tp_prop.swp_trunk? && dst_tp_prop.swp_trunk? && src_tp_prop.trunk_encap == dst_tp_prop.trunk_encap
   end
 
   # @param [InterfacePropertiesTableRecord] tp_prop A record of term-point properties table

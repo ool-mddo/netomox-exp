@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-require 'forwardable'
 require_relative 'table_base'
 
 # row of node-properties table
@@ -17,28 +16,10 @@ class NodePropsTableRecord < TableRecordBase
     @node = record[:node]
     @config_format = record[:configuration_format]
   end
-
-  # @return [Boolean] true if this node is host
-  def host?
-    @config_format == 'HOST'
-  end
-
-  # @return [Boolean] true if this node is network device
-  def switch?
-    %w[CISCO_IOS CISCO_IOS_XR ARISTA JUNIPER].include?(@config_format)
-  end
-
-  def juniper?
-    @config_format == 'JUNIPER'
-  end
 end
 
 # node-properties table
 class NodePropsTable < TableBase
-  extend Forwardable
-
-  def_delegators :@records, :each, :find, :[]
-
   # @param [String] target Target network (config) data name
   def initialize(target)
     super(target, 'node_props.csv')
