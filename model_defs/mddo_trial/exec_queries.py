@@ -59,15 +59,6 @@ if __name__ == '__main__':
     pd.set_option("display.max_columns", 20)
     pd.set_option("display.max_rows", 200)
 
-    base_dir = '../batfish-test-topology/'
-    config_sub_path_list = [
-        'l2/sample3',
-        'l2/sample4',
-        'l2/sample5',
-        'l2l3/sample3',
-        'l2l3/sample3err2'
-    ]
-
     # for batfish
     bf_query_dict = {
         'ip_owners': lambda: bfq.ipOwners(),
@@ -89,18 +80,16 @@ if __name__ == '__main__':
     }
 
     parser = argparse.ArgumentParser(description='Batfish query exec')
-    parser.add_argument('--base', '-b', type=str, default=base_dir, help='Base directory path of configs')
-    parser.add_argument('--sub', '-s', type=str, help='Sub-directory path of configs')
+    parser.add_argument('--base', '-b', required=True, type=str, help='Base directory path of configs')
+    parser.add_argument('--subs', '-s', required=True, type=str, nargs='*', help='Sub-directories path of configs')
     query_keys = list(other_query_dict.keys()) + list(bf_query_dict.keys())
     parser.add_argument('--query', '-q', type=str, choices=query_keys, help='A Query to exec')
     args = parser.parse_args()
 
     # base directory settings
-    base_dir = path.expanduser(args.base if args.base else base_dir)
-
+    base_dir = path.expanduser(args.base)
     # limiting target when using --sub arg
-    if args.sub:
-        config_sub_path_list = [args.sub]
+    config_sub_path_list = args.subs
 
     # limiting target query when using --query arg
     if args.query:

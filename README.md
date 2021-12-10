@@ -48,9 +48,6 @@ Note: venv and pybatfish are `~/batfish/bf-venv`
 ```shell
 . ~/batfish/bf-venv/bin/activate
 cd model_defs/mddo_trial
-# for model_defs/batfish-test-topology data
-python exec_l2queries.py
-# for MDDO project (pushed_configs) data
 ./make_csv.sh
 cd -
 ```
