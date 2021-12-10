@@ -1,0 +1,5835 @@
+{
+  "ietf-network:networks": {
+    "network": [
+      {
+        "network-id": "layer1",
+        "network-types": {
+        },
+        "node": [
+          {
+            "node-id": "RegionA-PE01",
+            "ietf-network-topology:termination-point": [
+              {
+                "tp-id": "p0"
+              },
+              {
+                "tp-id": "p1"
+              },
+              {
+                "tp-id": "p2"
+              },
+              {
+                "tp-id": "p3"
+              }
+            ]
+          },
+          {
+            "node-id": "RegionA-PE02",
+            "ietf-network-topology:termination-point": [
+              {
+                "tp-id": "p0"
+              },
+              {
+                "tp-id": "p1"
+              },
+              {
+                "tp-id": "p2"
+              },
+              {
+                "tp-id": "p3"
+              }
+            ]
+          },
+          {
+            "node-id": "RegionA-CE01",
+            "ietf-network-topology:termination-point": [
+              {
+                "tp-id": "p0"
+              },
+              {
+                "tp-id": "p1"
+              },
+              {
+                "tp-id": "p2"
+              },
+              {
+                "tp-id": "p3"
+              },
+              {
+                "tp-id": "p4"
+              },
+              {
+                "tp-id": "p5"
+              }
+            ]
+          },
+          {
+            "node-id": "RegionA-CE02",
+            "ietf-network-topology:termination-point": [
+              {
+                "tp-id": "p0"
+              },
+              {
+                "tp-id": "p1"
+              },
+              {
+                "tp-id": "p2"
+              },
+              {
+                "tp-id": "p3"
+              },
+              {
+                "tp-id": "p4"
+              },
+              {
+                "tp-id": "p5"
+              }
+            ]
+          },
+          {
+            "node-id": "RegionA-Acc01",
+            "ietf-network-topology:termination-point": [
+              {
+                "tp-id": "p0"
+              },
+              {
+                "tp-id": "p1"
+              },
+              {
+                "tp-id": "p2"
+              },
+              {
+                "tp-id": "p3"
+              },
+              {
+                "tp-id": "p4"
+              },
+              {
+                "tp-id": "p5"
+              },
+              {
+                "tp-id": "p6"
+              },
+              {
+                "tp-id": "p7"
+              }
+            ]
+          },
+          {
+            "node-id": "RegionA-Svr01",
+            "ietf-network-topology:termination-point": [
+              {
+                "tp-id": "eno0"
+              },
+              {
+                "tp-id": "eno1"
+              }
+            ]
+          },
+          {
+            "node-id": "RegionA-Svr02",
+            "ietf-network-topology:termination-point": [
+              {
+                "tp-id": "eno0"
+              },
+              {
+                "tp-id": "eno1"
+              }
+            ]
+          },
+          {
+            "node-id": "RegionB-PE01",
+            "ietf-network-topology:termination-point": [
+              {
+                "tp-id": "p0"
+              },
+              {
+                "tp-id": "p1"
+              },
+              {
+                "tp-id": "p2"
+              },
+              {
+                "tp-id": "p3"
+              }
+            ]
+          },
+          {
+            "node-id": "RegionB-PE02",
+            "ietf-network-topology:termination-point": [
+              {
+                "tp-id": "p0"
+              },
+              {
+                "tp-id": "p1"
+              },
+              {
+                "tp-id": "p2"
+              },
+              {
+                "tp-id": "p3"
+              }
+            ]
+          },
+          {
+            "node-id": "RegionB-CE01",
+            "ietf-network-topology:termination-point": [
+              {
+                "tp-id": "p0"
+              },
+              {
+                "tp-id": "p1"
+              },
+              {
+                "tp-id": "p2"
+              },
+              {
+                "tp-id": "p3"
+              },
+              {
+                "tp-id": "p4"
+              },
+              {
+                "tp-id": "p5"
+              },
+              {
+                "tp-id": "p6"
+              },
+              {
+                "tp-id": "p7"
+              }
+            ]
+          },
+          {
+            "node-id": "RegionB-CE02",
+            "ietf-network-topology:termination-point": [
+              {
+                "tp-id": "p0"
+              },
+              {
+                "tp-id": "p1"
+              },
+              {
+                "tp-id": "p2"
+              },
+              {
+                "tp-id": "p3"
+              },
+              {
+                "tp-id": "p4"
+              },
+              {
+                "tp-id": "p5"
+              },
+              {
+                "tp-id": "p6"
+              },
+              {
+                "tp-id": "p7"
+              }
+            ]
+          },
+          {
+            "node-id": "RegionB-Acc01",
+            "ietf-network-topology:termination-point": [
+              {
+                "tp-id": "p0"
+              },
+              {
+                "tp-id": "p1"
+              },
+              {
+                "tp-id": "p2"
+              },
+              {
+                "tp-id": "p3"
+              },
+              {
+                "tp-id": "p4"
+              },
+              {
+                "tp-id": "p5"
+              }
+            ]
+          },
+          {
+            "node-id": "RegionB-Acc02",
+            "ietf-network-topology:termination-point": [
+              {
+                "tp-id": "p0"
+              },
+              {
+                "tp-id": "p1"
+              },
+              {
+                "tp-id": "p2"
+              },
+              {
+                "tp-id": "p3"
+              },
+              {
+                "tp-id": "p4"
+              },
+              {
+                "tp-id": "p5"
+              }
+            ]
+          },
+          {
+            "node-id": "RegionB-Svr01",
+            "ietf-network-topology:termination-point": [
+              {
+                "tp-id": "eno0"
+              },
+              {
+                "tp-id": "eno1"
+              }
+            ]
+          },
+          {
+            "node-id": "RegionB-Svr02",
+            "ietf-network-topology:termination-point": [
+              {
+                "tp-id": "eno0"
+              },
+              {
+                "tp-id": "eno1"
+              }
+            ]
+          }
+        ],
+        "ietf-network-topology:link": [
+          {
+            "link-id": "RegionA-PE01,p0,RegionA-PE02,p0",
+            "source": {
+              "source-node": "RegionA-PE01",
+              "source-tp": "p0"
+            },
+            "destination": {
+              "dest-node": "RegionA-PE02",
+              "dest-tp": "p0"
+            }
+          },
+          {
+            "link-id": "RegionA-PE02,p0,RegionA-PE01,p0",
+            "source": {
+              "source-node": "RegionA-PE02",
+              "source-tp": "p0"
+            },
+            "destination": {
+              "dest-node": "RegionA-PE01",
+              "dest-tp": "p0"
+            }
+          },
+          {
+            "link-id": "RegionA-PE01,p2,RegionA-CE01,p2",
+            "source": {
+              "source-node": "RegionA-PE01",
+              "source-tp": "p2"
+            },
+            "destination": {
+              "dest-node": "RegionA-CE01",
+              "dest-tp": "p2"
+            }
+          },
+          {
+            "link-id": "RegionA-CE01,p2,RegionA-PE01,p2",
+            "source": {
+              "source-node": "RegionA-CE01",
+              "source-tp": "p2"
+            },
+            "destination": {
+              "dest-node": "RegionA-PE01",
+              "dest-tp": "p2"
+            }
+          },
+          {
+            "link-id": "RegionA-PE01,p3,RegionA-CE02,p2",
+            "source": {
+              "source-node": "RegionA-PE01",
+              "source-tp": "p3"
+            },
+            "destination": {
+              "dest-node": "RegionA-CE02",
+              "dest-tp": "p2"
+            }
+          },
+          {
+            "link-id": "RegionA-CE02,p2,RegionA-PE01,p3",
+            "source": {
+              "source-node": "RegionA-CE02",
+              "source-tp": "p2"
+            },
+            "destination": {
+              "dest-node": "RegionA-PE01",
+              "dest-tp": "p3"
+            }
+          },
+          {
+            "link-id": "RegionA-PE02,p2,RegionA-CE01,p3",
+            "source": {
+              "source-node": "RegionA-PE02",
+              "source-tp": "p2"
+            },
+            "destination": {
+              "dest-node": "RegionA-CE01",
+              "dest-tp": "p3"
+            }
+          },
+          {
+            "link-id": "RegionA-CE01,p3,RegionA-PE02,p2",
+            "source": {
+              "source-node": "RegionA-CE01",
+              "source-tp": "p3"
+            },
+            "destination": {
+              "dest-node": "RegionA-PE02",
+              "dest-tp": "p2"
+            }
+          },
+          {
+            "link-id": "RegionA-PE02,p3,RegionA-CE02,p3",
+            "source": {
+              "source-node": "RegionA-PE02",
+              "source-tp": "p3"
+            },
+            "destination": {
+              "dest-node": "RegionA-CE02",
+              "dest-tp": "p3"
+            }
+          },
+          {
+            "link-id": "RegionA-CE02,p3,RegionA-PE02,p3",
+            "source": {
+              "source-node": "RegionA-CE02",
+              "source-tp": "p3"
+            },
+            "destination": {
+              "dest-node": "RegionA-PE02",
+              "dest-tp": "p3"
+            }
+          },
+          {
+            "link-id": "RegionA-CE01,p0,RegionA-CE02,p0",
+            "source": {
+              "source-node": "RegionA-CE01",
+              "source-tp": "p0"
+            },
+            "destination": {
+              "dest-node": "RegionA-CE02",
+              "dest-tp": "p0"
+            }
+          },
+          {
+            "link-id": "RegionA-CE02,p0,RegionA-CE01,p0",
+            "source": {
+              "source-node": "RegionA-CE02",
+              "source-tp": "p0"
+            },
+            "destination": {
+              "dest-node": "RegionA-CE01",
+              "dest-tp": "p0"
+            }
+          },
+          {
+            "link-id": "RegionA-CE01,p1,RegionA-CE02,p1",
+            "source": {
+              "source-node": "RegionA-CE01",
+              "source-tp": "p1"
+            },
+            "destination": {
+              "dest-node": "RegionA-CE02",
+              "dest-tp": "p1"
+            }
+          },
+          {
+            "link-id": "RegionA-CE02,p1,RegionA-CE01,p1",
+            "source": {
+              "source-node": "RegionA-CE02",
+              "source-tp": "p1"
+            },
+            "destination": {
+              "dest-node": "RegionA-CE01",
+              "dest-tp": "p1"
+            }
+          },
+          {
+            "link-id": "RegionA-CE01,p4,RegionA-Acc01,p0",
+            "source": {
+              "source-node": "RegionA-CE01",
+              "source-tp": "p4"
+            },
+            "destination": {
+              "dest-node": "RegionA-Acc01",
+              "dest-tp": "p0"
+            }
+          },
+          {
+            "link-id": "RegionA-Acc01,p0,RegionA-CE01,p4",
+            "source": {
+              "source-node": "RegionA-Acc01",
+              "source-tp": "p0"
+            },
+            "destination": {
+              "dest-node": "RegionA-CE01",
+              "dest-tp": "p4"
+            }
+          },
+          {
+            "link-id": "RegionA-CE01,p5,RegionA-Acc01,p1",
+            "source": {
+              "source-node": "RegionA-CE01",
+              "source-tp": "p5"
+            },
+            "destination": {
+              "dest-node": "RegionA-Acc01",
+              "dest-tp": "p1"
+            }
+          },
+          {
+            "link-id": "RegionA-Acc01,p1,RegionA-CE01,p5",
+            "source": {
+              "source-node": "RegionA-Acc01",
+              "source-tp": "p1"
+            },
+            "destination": {
+              "dest-node": "RegionA-CE01",
+              "dest-tp": "p5"
+            }
+          },
+          {
+            "link-id": "RegionA-CE02,p4,RegionA-Acc01,p2",
+            "source": {
+              "source-node": "RegionA-CE02",
+              "source-tp": "p4"
+            },
+            "destination": {
+              "dest-node": "RegionA-Acc01",
+              "dest-tp": "p2"
+            }
+          },
+          {
+            "link-id": "RegionA-Acc01,p2,RegionA-CE02,p4",
+            "source": {
+              "source-node": "RegionA-Acc01",
+              "source-tp": "p2"
+            },
+            "destination": {
+              "dest-node": "RegionA-CE02",
+              "dest-tp": "p4"
+            }
+          },
+          {
+            "link-id": "RegionA-CE02,p5,RegionA-Acc01,p3",
+            "source": {
+              "source-node": "RegionA-CE02",
+              "source-tp": "p5"
+            },
+            "destination": {
+              "dest-node": "RegionA-Acc01",
+              "dest-tp": "p3"
+            }
+          },
+          {
+            "link-id": "RegionA-Acc01,p3,RegionA-CE02,p5",
+            "source": {
+              "source-node": "RegionA-Acc01",
+              "source-tp": "p3"
+            },
+            "destination": {
+              "dest-node": "RegionA-CE02",
+              "dest-tp": "p5"
+            }
+          },
+          {
+            "link-id": "RegionA-Acc01,p4,RegionA-Svr01,eno0",
+            "source": {
+              "source-node": "RegionA-Acc01",
+              "source-tp": "p4"
+            },
+            "destination": {
+              "dest-node": "RegionA-Svr01",
+              "dest-tp": "eno0"
+            }
+          },
+          {
+            "link-id": "RegionA-Svr01,eno0,RegionA-Acc01,p4",
+            "source": {
+              "source-node": "RegionA-Svr01",
+              "source-tp": "eno0"
+            },
+            "destination": {
+              "dest-node": "RegionA-Acc01",
+              "dest-tp": "p4"
+            }
+          },
+          {
+            "link-id": "RegionA-Acc01,p5,RegionA-Svr01,eno1",
+            "source": {
+              "source-node": "RegionA-Acc01",
+              "source-tp": "p5"
+            },
+            "destination": {
+              "dest-node": "RegionA-Svr01",
+              "dest-tp": "eno1"
+            }
+          },
+          {
+            "link-id": "RegionA-Svr01,eno1,RegionA-Acc01,p5",
+            "source": {
+              "source-node": "RegionA-Svr01",
+              "source-tp": "eno1"
+            },
+            "destination": {
+              "dest-node": "RegionA-Acc01",
+              "dest-tp": "p5"
+            }
+          },
+          {
+            "link-id": "RegionA-Acc01,p6,RegionA-Svr02,eno0",
+            "source": {
+              "source-node": "RegionA-Acc01",
+              "source-tp": "p6"
+            },
+            "destination": {
+              "dest-node": "RegionA-Svr02",
+              "dest-tp": "eno0"
+            }
+          },
+          {
+            "link-id": "RegionA-Svr02,eno0,RegionA-Acc01,p6",
+            "source": {
+              "source-node": "RegionA-Svr02",
+              "source-tp": "eno0"
+            },
+            "destination": {
+              "dest-node": "RegionA-Acc01",
+              "dest-tp": "p6"
+            }
+          },
+          {
+            "link-id": "RegionA-Acc01,p7,RegionA-Svr02,eno1",
+            "source": {
+              "source-node": "RegionA-Acc01",
+              "source-tp": "p7"
+            },
+            "destination": {
+              "dest-node": "RegionA-Svr02",
+              "dest-tp": "eno1"
+            }
+          },
+          {
+            "link-id": "RegionA-Svr02,eno1,RegionA-Acc01,p7",
+            "source": {
+              "source-node": "RegionA-Svr02",
+              "source-tp": "eno1"
+            },
+            "destination": {
+              "dest-node": "RegionA-Acc01",
+              "dest-tp": "p7"
+            }
+          },
+          {
+            "link-id": "RegionB-PE01,p0,RegionB-PE02,p0",
+            "source": {
+              "source-node": "RegionB-PE01",
+              "source-tp": "p0"
+            },
+            "destination": {
+              "dest-node": "RegionB-PE02",
+              "dest-tp": "p0"
+            }
+          },
+          {
+            "link-id": "RegionB-PE02,p0,RegionB-PE01,p0",
+            "source": {
+              "source-node": "RegionB-PE02",
+              "source-tp": "p0"
+            },
+            "destination": {
+              "dest-node": "RegionB-PE01",
+              "dest-tp": "p0"
+            }
+          },
+          {
+            "link-id": "RegionB-PE01,p2,RegionB-CE01,p2",
+            "source": {
+              "source-node": "RegionB-PE01",
+              "source-tp": "p2"
+            },
+            "destination": {
+              "dest-node": "RegionB-CE01",
+              "dest-tp": "p2"
+            }
+          },
+          {
+            "link-id": "RegionB-CE01,p2,RegionB-PE01,p2",
+            "source": {
+              "source-node": "RegionB-CE01",
+              "source-tp": "p2"
+            },
+            "destination": {
+              "dest-node": "RegionB-PE01",
+              "dest-tp": "p2"
+            }
+          },
+          {
+            "link-id": "RegionB-PE01,p3,RegionB-CE02,p2",
+            "source": {
+              "source-node": "RegionB-PE01",
+              "source-tp": "p3"
+            },
+            "destination": {
+              "dest-node": "RegionB-CE02",
+              "dest-tp": "p2"
+            }
+          },
+          {
+            "link-id": "RegionB-CE02,p2,RegionB-PE01,p3",
+            "source": {
+              "source-node": "RegionB-CE02",
+              "source-tp": "p2"
+            },
+            "destination": {
+              "dest-node": "RegionB-PE01",
+              "dest-tp": "p3"
+            }
+          },
+          {
+            "link-id": "RegionB-PE02,p2,RegionB-CE01,p3",
+            "source": {
+              "source-node": "RegionB-PE02",
+              "source-tp": "p2"
+            },
+            "destination": {
+              "dest-node": "RegionB-CE01",
+              "dest-tp": "p3"
+            }
+          },
+          {
+            "link-id": "RegionB-CE01,p3,RegionB-PE02,p2",
+            "source": {
+              "source-node": "RegionB-CE01",
+              "source-tp": "p3"
+            },
+            "destination": {
+              "dest-node": "RegionB-PE02",
+              "dest-tp": "p2"
+            }
+          },
+          {
+            "link-id": "RegionB-PE02,p3,RegionB-CE02,p3",
+            "source": {
+              "source-node": "RegionB-PE02",
+              "source-tp": "p3"
+            },
+            "destination": {
+              "dest-node": "RegionB-CE02",
+              "dest-tp": "p3"
+            }
+          },
+          {
+            "link-id": "RegionB-CE02,p3,RegionB-PE02,p3",
+            "source": {
+              "source-node": "RegionB-CE02",
+              "source-tp": "p3"
+            },
+            "destination": {
+              "dest-node": "RegionB-PE02",
+              "dest-tp": "p3"
+            }
+          },
+          {
+            "link-id": "RegionB-CE01,p0,RegionB-CE02,p0",
+            "source": {
+              "source-node": "RegionB-CE01",
+              "source-tp": "p0"
+            },
+            "destination": {
+              "dest-node": "RegionB-CE02",
+              "dest-tp": "p0"
+            }
+          },
+          {
+            "link-id": "RegionB-CE02,p0,RegionB-CE01,p0",
+            "source": {
+              "source-node": "RegionB-CE02",
+              "source-tp": "p0"
+            },
+            "destination": {
+              "dest-node": "RegionB-CE01",
+              "dest-tp": "p0"
+            }
+          },
+          {
+            "link-id": "RegionB-CE01,p1,RegionB-CE02,p1",
+            "source": {
+              "source-node": "RegionB-CE01",
+              "source-tp": "p1"
+            },
+            "destination": {
+              "dest-node": "RegionB-CE02",
+              "dest-tp": "p1"
+            }
+          },
+          {
+            "link-id": "RegionB-CE02,p1,RegionB-CE01,p1",
+            "source": {
+              "source-node": "RegionB-CE02",
+              "source-tp": "p1"
+            },
+            "destination": {
+              "dest-node": "RegionB-CE01",
+              "dest-tp": "p1"
+            }
+          },
+          {
+            "link-id": "RegionB-CE01,p4,RegionB-Acc01,p0",
+            "source": {
+              "source-node": "RegionB-CE01",
+              "source-tp": "p4"
+            },
+            "destination": {
+              "dest-node": "RegionB-Acc01",
+              "dest-tp": "p0"
+            }
+          },
+          {
+            "link-id": "RegionB-Acc01,p0,RegionB-CE01,p4",
+            "source": {
+              "source-node": "RegionB-Acc01",
+              "source-tp": "p0"
+            },
+            "destination": {
+              "dest-node": "RegionB-CE01",
+              "dest-tp": "p4"
+            }
+          },
+          {
+            "link-id": "RegionB-CE01,p5,RegionB-Acc01,p1",
+            "source": {
+              "source-node": "RegionB-CE01",
+              "source-tp": "p5"
+            },
+            "destination": {
+              "dest-node": "RegionB-Acc01",
+              "dest-tp": "p1"
+            }
+          },
+          {
+            "link-id": "RegionB-Acc01,p1,RegionB-CE01,p5",
+            "source": {
+              "source-node": "RegionB-Acc01",
+              "source-tp": "p1"
+            },
+            "destination": {
+              "dest-node": "RegionB-CE01",
+              "dest-tp": "p5"
+            }
+          },
+          {
+            "link-id": "RegionB-CE01,p6,RegionB-Acc02,p0",
+            "source": {
+              "source-node": "RegionB-CE01",
+              "source-tp": "p6"
+            },
+            "destination": {
+              "dest-node": "RegionB-Acc02",
+              "dest-tp": "p0"
+            }
+          },
+          {
+            "link-id": "RegionB-Acc02,p0,RegionB-CE01,p6",
+            "source": {
+              "source-node": "RegionB-Acc02",
+              "source-tp": "p0"
+            },
+            "destination": {
+              "dest-node": "RegionB-CE01",
+              "dest-tp": "p6"
+            }
+          },
+          {
+            "link-id": "RegionB-CE01,p7,RegionB-Acc02,p1",
+            "source": {
+              "source-node": "RegionB-CE01",
+              "source-tp": "p7"
+            },
+            "destination": {
+              "dest-node": "RegionB-Acc02",
+              "dest-tp": "p1"
+            }
+          },
+          {
+            "link-id": "RegionB-Acc02,p1,RegionB-CE01,p7",
+            "source": {
+              "source-node": "RegionB-Acc02",
+              "source-tp": "p1"
+            },
+            "destination": {
+              "dest-node": "RegionB-CE01",
+              "dest-tp": "p7"
+            }
+          },
+          {
+            "link-id": "RegionB-CE02,p4,RegionB-Acc01,p2",
+            "source": {
+              "source-node": "RegionB-CE02",
+              "source-tp": "p4"
+            },
+            "destination": {
+              "dest-node": "RegionB-Acc01",
+              "dest-tp": "p2"
+            }
+          },
+          {
+            "link-id": "RegionB-Acc01,p2,RegionB-CE02,p4",
+            "source": {
+              "source-node": "RegionB-Acc01",
+              "source-tp": "p2"
+            },
+            "destination": {
+              "dest-node": "RegionB-CE02",
+              "dest-tp": "p4"
+            }
+          },
+          {
+            "link-id": "RegionB-CE02,p5,RegionB-Acc01,p3",
+            "source": {
+              "source-node": "RegionB-CE02",
+              "source-tp": "p5"
+            },
+            "destination": {
+              "dest-node": "RegionB-Acc01",
+              "dest-tp": "p3"
+            }
+          },
+          {
+            "link-id": "RegionB-Acc01,p3,RegionB-CE02,p5",
+            "source": {
+              "source-node": "RegionB-Acc01",
+              "source-tp": "p3"
+            },
+            "destination": {
+              "dest-node": "RegionB-CE02",
+              "dest-tp": "p5"
+            }
+          },
+          {
+            "link-id": "RegionB-CE02,p6,RegionB-Acc02,p2",
+            "source": {
+              "source-node": "RegionB-CE02",
+              "source-tp": "p6"
+            },
+            "destination": {
+              "dest-node": "RegionB-Acc02",
+              "dest-tp": "p2"
+            }
+          },
+          {
+            "link-id": "RegionB-Acc02,p2,RegionB-CE02,p6",
+            "source": {
+              "source-node": "RegionB-Acc02",
+              "source-tp": "p2"
+            },
+            "destination": {
+              "dest-node": "RegionB-CE02",
+              "dest-tp": "p6"
+            }
+          },
+          {
+            "link-id": "RegionB-CE02,p7,RegionB-Acc02,p3",
+            "source": {
+              "source-node": "RegionB-CE02",
+              "source-tp": "p7"
+            },
+            "destination": {
+              "dest-node": "RegionB-Acc02",
+              "dest-tp": "p3"
+            }
+          },
+          {
+            "link-id": "RegionB-Acc02,p3,RegionB-CE02,p7",
+            "source": {
+              "source-node": "RegionB-Acc02",
+              "source-tp": "p3"
+            },
+            "destination": {
+              "dest-node": "RegionB-CE02",
+              "dest-tp": "p7"
+            }
+          },
+          {
+            "link-id": "RegionB-Acc01,p4,RegionB-Svr01,eno0",
+            "source": {
+              "source-node": "RegionB-Acc01",
+              "source-tp": "p4"
+            },
+            "destination": {
+              "dest-node": "RegionB-Svr01",
+              "dest-tp": "eno0"
+            }
+          },
+          {
+            "link-id": "RegionB-Svr01,eno0,RegionB-Acc01,p4",
+            "source": {
+              "source-node": "RegionB-Svr01",
+              "source-tp": "eno0"
+            },
+            "destination": {
+              "dest-node": "RegionB-Acc01",
+              "dest-tp": "p4"
+            }
+          },
+          {
+            "link-id": "RegionB-Acc01,p5,RegionB-Svr01,eno1",
+            "source": {
+              "source-node": "RegionB-Acc01",
+              "source-tp": "p5"
+            },
+            "destination": {
+              "dest-node": "RegionB-Svr01",
+              "dest-tp": "eno1"
+            }
+          },
+          {
+            "link-id": "RegionB-Svr01,eno1,RegionB-Acc01,p5",
+            "source": {
+              "source-node": "RegionB-Svr01",
+              "source-tp": "eno1"
+            },
+            "destination": {
+              "dest-node": "RegionB-Acc01",
+              "dest-tp": "p5"
+            }
+          },
+          {
+            "link-id": "RegionB-Acc02,p4,RegionB-Svr02,eno0",
+            "source": {
+              "source-node": "RegionB-Acc02",
+              "source-tp": "p4"
+            },
+            "destination": {
+              "dest-node": "RegionB-Svr02",
+              "dest-tp": "eno0"
+            }
+          },
+          {
+            "link-id": "RegionB-Svr02,eno0,RegionB-Acc02,p4",
+            "source": {
+              "source-node": "RegionB-Svr02",
+              "source-tp": "eno0"
+            },
+            "destination": {
+              "dest-node": "RegionB-Acc02",
+              "dest-tp": "p4"
+            }
+          },
+          {
+            "link-id": "RegionB-Acc02,p5,RegionB-Svr02,eno1",
+            "source": {
+              "source-node": "RegionB-Acc02",
+              "source-tp": "p5"
+            },
+            "destination": {
+              "dest-node": "RegionB-Svr02",
+              "dest-tp": "eno1"
+            }
+          },
+          {
+            "link-id": "RegionB-Svr02,eno1,RegionB-Acc02,p5",
+            "source": {
+              "source-node": "RegionB-Svr02",
+              "source-tp": "eno1"
+            },
+            "destination": {
+              "dest-node": "RegionB-Acc02",
+              "dest-tp": "p5"
+            }
+          },
+          {
+            "link-id": "RegionA-PE01,p1,RegionB-PE01,p1",
+            "source": {
+              "source-node": "RegionA-PE01",
+              "source-tp": "p1"
+            },
+            "destination": {
+              "dest-node": "RegionB-PE01",
+              "dest-tp": "p1"
+            }
+          },
+          {
+            "link-id": "RegionB-PE01,p1,RegionA-PE01,p1",
+            "source": {
+              "source-node": "RegionB-PE01",
+              "source-tp": "p1"
+            },
+            "destination": {
+              "dest-node": "RegionA-PE01",
+              "dest-tp": "p1"
+            }
+          },
+          {
+            "link-id": "RegionA-PE02,p1,RegionB-PE02,p1",
+            "source": {
+              "source-node": "RegionA-PE02",
+              "source-tp": "p1"
+            },
+            "destination": {
+              "dest-node": "RegionB-PE02",
+              "dest-tp": "p1"
+            }
+          },
+          {
+            "link-id": "RegionB-PE02,p1,RegionA-PE02,p1",
+            "source": {
+              "source-node": "RegionB-PE02",
+              "source-tp": "p1"
+            },
+            "destination": {
+              "dest-node": "RegionA-PE02",
+              "dest-tp": "p1"
+            }
+          }
+        ]
+      },
+      {
+        "network-id": "layer15",
+        "network-types": {
+        },
+        "node": [
+          {
+            "node-id": "RegionA-CE01",
+            "ietf-network-topology:termination-point": [
+              {
+                "tp-id": "p01",
+                "supporting-termination-point": [
+                  {
+                    "network-ref": "layer1",
+                    "node-ref": "RegionA-CE01",
+                    "tp-ref": "p0"
+                  },
+                  {
+                    "network-ref": "layer1",
+                    "node-ref": "RegionA-CE01",
+                    "tp-ref": "p1"
+                  }
+                ]
+              },
+              {
+                "tp-id": "p45",
+                "supporting-termination-point": [
+                  {
+                    "network-ref": "layer1",
+                    "node-ref": "RegionA-CE01",
+                    "tp-ref": "p4"
+                  },
+                  {
+                    "network-ref": "layer1",
+                    "node-ref": "RegionA-CE01",
+                    "tp-ref": "p5"
+                  }
+                ]
+              }
+            ],
+            "supporting-node": [
+              {
+                "network-ref": "layer1",
+                "node-ref": "RegionA-CE01"
+              }
+            ]
+          },
+          {
+            "node-id": "RegionA-CE02",
+            "ietf-network-topology:termination-point": [
+              {
+                "tp-id": "p01",
+                "supporting-termination-point": [
+                  {
+                    "network-ref": "layer1",
+                    "node-ref": "RegionA-CE02",
+                    "tp-ref": "p0"
+                  },
+                  {
+                    "network-ref": "layer1",
+                    "node-ref": "RegionA-CE02",
+                    "tp-ref": "p1"
+                  }
+                ]
+              },
+              {
+                "tp-id": "p45",
+                "supporting-termination-point": [
+                  {
+                    "network-ref": "layer1",
+                    "node-ref": "RegionA-CE02",
+                    "tp-ref": "p4"
+                  },
+                  {
+                    "network-ref": "layer1",
+                    "node-ref": "RegionA-CE02",
+                    "tp-ref": "p5"
+                  }
+                ]
+              }
+            ],
+            "supporting-node": [
+              {
+                "network-ref": "layer1",
+                "node-ref": "RegionA-CE02"
+              }
+            ]
+          },
+          {
+            "node-id": "RegionA-Acc01",
+            "ietf-network-topology:termination-point": [
+              {
+                "tp-id": "p01",
+                "supporting-termination-point": [
+                  {
+                    "network-ref": "layer1",
+                    "node-ref": "RegionA-Acc01",
+                    "tp-ref": "p0"
+                  },
+                  {
+                    "network-ref": "layer1",
+                    "node-ref": "RegionA-Acc01",
+                    "tp-ref": "p1"
+                  }
+                ]
+              },
+              {
+                "tp-id": "p23",
+                "supporting-termination-point": [
+                  {
+                    "network-ref": "layer1",
+                    "node-ref": "RegionA-Acc01",
+                    "tp-ref": "p2"
+                  },
+                  {
+                    "network-ref": "layer1",
+                    "node-ref": "RegionA-Acc01",
+                    "tp-ref": "p3"
+                  }
+                ]
+              }
+            ],
+            "supporting-node": [
+              {
+                "network-ref": "layer1",
+                "node-ref": "RegionA-Acc01"
+              }
+            ]
+          },
+          {
+            "node-id": "RegionB-CE01",
+            "ietf-network-topology:termination-point": [
+              {
+                "tp-id": "p01",
+                "supporting-termination-point": [
+                  {
+                    "network-ref": "layer1",
+                    "node-ref": "RegionB-CE01",
+                    "tp-ref": "p0"
+                  },
+                  {
+                    "network-ref": "layer1",
+                    "node-ref": "RegionB-CE01",
+                    "tp-ref": "p1"
+                  }
+                ]
+              },
+              {
+                "tp-id": "p45",
+                "supporting-termination-point": [
+                  {
+                    "network-ref": "layer1",
+                    "node-ref": "RegionB-CE01",
+                    "tp-ref": "p4"
+                  },
+                  {
+                    "network-ref": "layer1",
+                    "node-ref": "RegionB-CE01",
+                    "tp-ref": "p5"
+                  }
+                ]
+              },
+              {
+                "tp-id": "p67",
+                "supporting-termination-point": [
+                  {
+                    "network-ref": "layer1",
+                    "node-ref": "RegionB-CE01",
+                    "tp-ref": "p6"
+                  },
+                  {
+                    "network-ref": "layer1",
+                    "node-ref": "RegionB-CE01",
+                    "tp-ref": "p7"
+                  }
+                ]
+              }
+            ],
+            "supporting-node": [
+              {
+                "network-ref": "layer1",
+                "node-ref": "RegionB-CE01"
+              }
+            ]
+          },
+          {
+            "node-id": "RegionB-CE02",
+            "ietf-network-topology:termination-point": [
+              {
+                "tp-id": "p01",
+                "supporting-termination-point": [
+                  {
+                    "network-ref": "layer1",
+                    "node-ref": "RegionB-CE02",
+                    "tp-ref": "p0"
+                  },
+                  {
+                    "network-ref": "layer1",
+                    "node-ref": "RegionB-CE02",
+                    "tp-ref": "p1"
+                  }
+                ]
+              },
+              {
+                "tp-id": "p45",
+                "supporting-termination-point": [
+                  {
+                    "network-ref": "layer1",
+                    "node-ref": "RegionB-CE02",
+                    "tp-ref": "p4"
+                  },
+                  {
+                    "network-ref": "layer1",
+                    "node-ref": "RegionB-CE02",
+                    "tp-ref": "p5"
+                  }
+                ]
+              },
+              {
+                "tp-id": "p67",
+                "supporting-termination-point": [
+                  {
+                    "network-ref": "layer1",
+                    "node-ref": "RegionB-CE02",
+                    "tp-ref": "p6"
+                  },
+                  {
+                    "network-ref": "layer1",
+                    "node-ref": "RegionB-CE02",
+                    "tp-ref": "p7"
+                  }
+                ]
+              }
+            ],
+            "supporting-node": [
+              {
+                "network-ref": "layer1",
+                "node-ref": "RegionB-CE02"
+              }
+            ]
+          },
+          {
+            "node-id": "RegionB-Acc01",
+            "ietf-network-topology:termination-point": [
+              {
+                "tp-id": "p01",
+                "supporting-termination-point": [
+                  {
+                    "network-ref": "layer1",
+                    "node-ref": "RegionB-Acc01",
+                    "tp-ref": "p0"
+                  },
+                  {
+                    "network-ref": "layer1",
+                    "node-ref": "RegionB-Acc01",
+                    "tp-ref": "p1"
+                  }
+                ]
+              },
+              {
+                "tp-id": "p23",
+                "supporting-termination-point": [
+                  {
+                    "network-ref": "layer1",
+                    "node-ref": "RegionB-Acc01",
+                    "tp-ref": "p2"
+                  },
+                  {
+                    "network-ref": "layer1",
+                    "node-ref": "RegionB-Acc01",
+                    "tp-ref": "p3"
+                  }
+                ]
+              }
+            ],
+            "supporting-node": [
+              {
+                "network-ref": "layer1",
+                "node-ref": "RegionB-Acc01"
+              }
+            ]
+          },
+          {
+            "node-id": "RegionB-Acc02",
+            "ietf-network-topology:termination-point": [
+              {
+                "tp-id": "p01",
+                "supporting-termination-point": [
+                  {
+                    "network-ref": "layer1",
+                    "node-ref": "RegionB-Acc02",
+                    "tp-ref": "p0"
+                  },
+                  {
+                    "network-ref": "layer1",
+                    "node-ref": "RegionB-Acc02",
+                    "tp-ref": "p1"
+                  }
+                ]
+              },
+              {
+                "tp-id": "p23",
+                "supporting-termination-point": [
+                  {
+                    "network-ref": "layer1",
+                    "node-ref": "RegionB-Acc02",
+                    "tp-ref": "p2"
+                  },
+                  {
+                    "network-ref": "layer1",
+                    "node-ref": "RegionB-Acc02",
+                    "tp-ref": "p3"
+                  }
+                ]
+              }
+            ],
+            "supporting-node": [
+              {
+                "network-ref": "layer1",
+                "node-ref": "RegionB-Acc02"
+              }
+            ]
+          }
+        ],
+        "ietf-network-topology:link": [
+          {
+            "link-id": "RegionA-CE01,p01,RegionA-CE02,p01",
+            "source": {
+              "source-node": "RegionA-CE01",
+              "source-tp": "p01"
+            },
+            "destination": {
+              "dest-node": "RegionA-CE02",
+              "dest-tp": "p01"
+            }
+          },
+          {
+            "link-id": "RegionA-CE02,p01,RegionA-CE01,p01",
+            "source": {
+              "source-node": "RegionA-CE02",
+              "source-tp": "p01"
+            },
+            "destination": {
+              "dest-node": "RegionA-CE01",
+              "dest-tp": "p01"
+            }
+          },
+          {
+            "link-id": "RegionA-CE01,p45,RegionA-Acc01,p01",
+            "source": {
+              "source-node": "RegionA-CE01",
+              "source-tp": "p45"
+            },
+            "destination": {
+              "dest-node": "RegionA-Acc01",
+              "dest-tp": "p01"
+            }
+          },
+          {
+            "link-id": "RegionA-Acc01,p01,RegionA-CE01,p45",
+            "source": {
+              "source-node": "RegionA-Acc01",
+              "source-tp": "p01"
+            },
+            "destination": {
+              "dest-node": "RegionA-CE01",
+              "dest-tp": "p45"
+            }
+          },
+          {
+            "link-id": "RegionA-CE02,p45,RegionA-Acc01,p23",
+            "source": {
+              "source-node": "RegionA-CE02",
+              "source-tp": "p45"
+            },
+            "destination": {
+              "dest-node": "RegionA-Acc01",
+              "dest-tp": "p23"
+            }
+          },
+          {
+            "link-id": "RegionA-Acc01,p23,RegionA-CE02,p45",
+            "source": {
+              "source-node": "RegionA-Acc01",
+              "source-tp": "p23"
+            },
+            "destination": {
+              "dest-node": "RegionA-CE02",
+              "dest-tp": "p45"
+            }
+          },
+          {
+            "link-id": "RegionB-CE01,p01,RegionB-CE02,p01",
+            "source": {
+              "source-node": "RegionB-CE01",
+              "source-tp": "p01"
+            },
+            "destination": {
+              "dest-node": "RegionB-CE02",
+              "dest-tp": "p01"
+            }
+          },
+          {
+            "link-id": "RegionB-CE02,p01,RegionB-CE01,p01",
+            "source": {
+              "source-node": "RegionB-CE02",
+              "source-tp": "p01"
+            },
+            "destination": {
+              "dest-node": "RegionB-CE01",
+              "dest-tp": "p01"
+            }
+          },
+          {
+            "link-id": "RegionB-CE01,p45,RegionB-Acc01,p01",
+            "source": {
+              "source-node": "RegionB-CE01",
+              "source-tp": "p45"
+            },
+            "destination": {
+              "dest-node": "RegionB-Acc01",
+              "dest-tp": "p01"
+            }
+          },
+          {
+            "link-id": "RegionB-Acc01,p01,RegionB-CE01,p45",
+            "source": {
+              "source-node": "RegionB-Acc01",
+              "source-tp": "p01"
+            },
+            "destination": {
+              "dest-node": "RegionB-CE01",
+              "dest-tp": "p45"
+            }
+          },
+          {
+            "link-id": "RegionB-CE02,p45,RegionB-Acc01,p23",
+            "source": {
+              "source-node": "RegionB-CE02",
+              "source-tp": "p45"
+            },
+            "destination": {
+              "dest-node": "RegionB-Acc01",
+              "dest-tp": "p23"
+            }
+          },
+          {
+            "link-id": "RegionB-Acc01,p23,RegionB-CE02,p45",
+            "source": {
+              "source-node": "RegionB-Acc01",
+              "source-tp": "p23"
+            },
+            "destination": {
+              "dest-node": "RegionB-CE02",
+              "dest-tp": "p45"
+            }
+          }
+        ],
+        "supporting-network": [
+          {
+            "network-ref": "layer1"
+          }
+        ]
+      },
+      {
+        "network-id": "layer2",
+        "network-types": {
+        },
+        "node": [
+          {
+            "node-id": "RegionA-CE01-GRT",
+            "ietf-network-topology:termination-point": [
+              {
+                "tp-id": "p0"
+              },
+              {
+                "tp-id": "p1"
+              }
+            ],
+            "supporting-node": [
+              {
+                "network-ref": "layer15",
+                "node-ref": "RegionA-CE01"
+              }
+            ]
+          },
+          {
+            "node-id": "RegionA-CE01-VRF",
+            "ietf-network-topology:termination-point": [
+              {
+                "tp-id": "p0"
+              },
+              {
+                "tp-id": "p1"
+              }
+            ],
+            "supporting-node": [
+              {
+                "network-ref": "layer15",
+                "node-ref": "RegionA-CE01"
+              }
+            ]
+          },
+          {
+            "node-id": "RegionA-CE02-GRT",
+            "ietf-network-topology:termination-point": [
+              {
+                "tp-id": "p0"
+              },
+              {
+                "tp-id": "p1"
+              }
+            ],
+            "supporting-node": [
+              {
+                "network-ref": "layer15",
+                "node-ref": "RegionA-CE02"
+              }
+            ]
+          },
+          {
+            "node-id": "RegionA-CE02-VRF",
+            "ietf-network-topology:termination-point": [
+              {
+                "tp-id": "p0"
+              },
+              {
+                "tp-id": "p1"
+              }
+            ],
+            "supporting-node": [
+              {
+                "network-ref": "layer15",
+                "node-ref": "RegionA-CE02"
+              }
+            ]
+          },
+          {
+            "node-id": "RegionA-CE01-VL10",
+            "ietf-network-topology:termination-point": [
+              {
+                "tp-id": "p0"
+              },
+              {
+                "tp-id": "p1",
+                "supporting-termination-point": [
+                  {
+                    "network-ref": "layer15",
+                    "node-ref": "RegionA-CE01",
+                    "tp-ref": "p45"
+                  }
+                ]
+              },
+              {
+                "tp-id": "p2",
+                "supporting-termination-point": [
+                  {
+                    "network-ref": "layer15",
+                    "node-ref": "RegionA-CE01",
+                    "tp-ref": "p01"
+                  }
+                ]
+              }
+            ],
+            "supporting-node": [
+              {
+                "network-ref": "layer15",
+                "node-ref": "RegionA-CE01"
+              }
+            ]
+          },
+          {
+            "node-id": "RegionA-CE01-VL20",
+            "ietf-network-topology:termination-point": [
+              {
+                "tp-id": "p0"
+              },
+              {
+                "tp-id": "p1",
+                "supporting-termination-point": [
+                  {
+                    "network-ref": "layer15",
+                    "node-ref": "RegionA-CE01",
+                    "tp-ref": "p01"
+                  }
+                ]
+              }
+            ],
+            "supporting-node": [
+              {
+                "network-ref": "layer15",
+                "node-ref": "RegionA-CE01"
+              }
+            ]
+          },
+          {
+            "node-id": "RegionA-CE01-VL110",
+            "ietf-network-topology:termination-point": [
+              {
+                "tp-id": "p0"
+              },
+              {
+                "tp-id": "p1",
+                "supporting-termination-point": [
+                  {
+                    "network-ref": "layer15",
+                    "node-ref": "RegionA-CE01",
+                    "tp-ref": "p45"
+                  }
+                ]
+              },
+              {
+                "tp-id": "p2",
+                "supporting-termination-point": [
+                  {
+                    "network-ref": "layer15",
+                    "node-ref": "RegionA-CE01",
+                    "tp-ref": "p01"
+                  }
+                ]
+              }
+            ],
+            "supporting-node": [
+              {
+                "network-ref": "layer15",
+                "node-ref": "RegionA-CE01"
+              }
+            ]
+          },
+          {
+            "node-id": "RegionA-CE01-VL120",
+            "ietf-network-topology:termination-point": [
+              {
+                "tp-id": "p0"
+              },
+              {
+                "tp-id": "p1",
+                "supporting-termination-point": [
+                  {
+                    "network-ref": "layer15",
+                    "node-ref": "RegionA-CE01",
+                    "tp-ref": "p01"
+                  }
+                ]
+              }
+            ],
+            "supporting-node": [
+              {
+                "network-ref": "layer15",
+                "node-ref": "RegionA-CE01"
+              }
+            ]
+          },
+          {
+            "node-id": "RegionA-CE02-VL10",
+            "ietf-network-topology:termination-point": [
+              {
+                "tp-id": "p0"
+              },
+              {
+                "tp-id": "p1",
+                "supporting-termination-point": [
+                  {
+                    "network-ref": "layer15",
+                    "node-ref": "RegionA-CE02",
+                    "tp-ref": "p45"
+                  }
+                ]
+              },
+              {
+                "tp-id": "p2",
+                "supporting-termination-point": [
+                  {
+                    "network-ref": "layer15",
+                    "node-ref": "RegionA-CE02",
+                    "tp-ref": "p01"
+                  }
+                ]
+              }
+            ],
+            "supporting-node": [
+              {
+                "network-ref": "layer15",
+                "node-ref": "RegionA-CE02"
+              }
+            ]
+          },
+          {
+            "node-id": "RegionA-CE02-VL20",
+            "ietf-network-topology:termination-point": [
+              {
+                "tp-id": "p0"
+              },
+              {
+                "tp-id": "p1",
+                "supporting-termination-point": [
+                  {
+                    "network-ref": "layer15",
+                    "node-ref": "RegionA-CE02",
+                    "tp-ref": "p01"
+                  }
+                ]
+              }
+            ],
+            "supporting-node": [
+              {
+                "network-ref": "layer15",
+                "node-ref": "RegionA-CE02"
+              }
+            ]
+          },
+          {
+            "node-id": "RegionA-CE02-VL110",
+            "ietf-network-topology:termination-point": [
+              {
+                "tp-id": "p0"
+              },
+              {
+                "tp-id": "p1",
+                "supporting-termination-point": [
+                  {
+                    "network-ref": "layer15",
+                    "node-ref": "RegionA-CE02",
+                    "tp-ref": "p45"
+                  }
+                ]
+              },
+              {
+                "tp-id": "p2",
+                "supporting-termination-point": [
+                  {
+                    "network-ref": "layer15",
+                    "node-ref": "RegionA-CE02",
+                    "tp-ref": "p01"
+                  }
+                ]
+              }
+            ],
+            "supporting-node": [
+              {
+                "network-ref": "layer15",
+                "node-ref": "RegionA-CE02"
+              }
+            ]
+          },
+          {
+            "node-id": "RegionA-CE02-VL120",
+            "ietf-network-topology:termination-point": [
+              {
+                "tp-id": "p0"
+              },
+              {
+                "tp-id": "p1",
+                "supporting-termination-point": [
+                  {
+                    "network-ref": "layer15",
+                    "node-ref": "RegionA-CE02",
+                    "tp-ref": "p01"
+                  }
+                ]
+              }
+            ],
+            "supporting-node": [
+              {
+                "network-ref": "layer15",
+                "node-ref": "RegionA-CE02"
+              }
+            ]
+          },
+          {
+            "node-id": "RegionA-Acc01-VL10",
+            "ietf-network-topology:termination-point": [
+              {
+                "tp-id": "p0",
+                "supporting-termination-point": [
+                  {
+                    "network-ref": "layer15",
+                    "node-ref": "RegionA-Acc01",
+                    "tp-ref": "p01"
+                  }
+                ]
+              },
+              {
+                "tp-id": "p1",
+                "supporting-termination-point": [
+                  {
+                    "network-ref": "layer15",
+                    "node-ref": "RegionA-Acc01",
+                    "tp-ref": "p23"
+                  }
+                ]
+              },
+              {
+                "tp-id": "p2",
+                "supporting-termination-point": [
+                  {
+                    "network-ref": "layer1",
+                    "node-ref": "RegionA-Acc01",
+                    "tp-ref": "p4"
+                  }
+                ]
+              },
+              {
+                "tp-id": "p3",
+                "supporting-termination-point": [
+                  {
+                    "network-ref": "layer1",
+                    "node-ref": "RegionA-Acc01",
+                    "tp-ref": "p6"
+                  }
+                ]
+              }
+            ],
+            "supporting-node": [
+              {
+                "network-ref": "layer15",
+                "node-ref": "RegionA-Acc01"
+              }
+            ]
+          },
+          {
+            "node-id": "RegionA-Acc01-VL110",
+            "ietf-network-topology:termination-point": [
+              {
+                "tp-id": "p0",
+                "supporting-termination-point": [
+                  {
+                    "network-ref": "layer15",
+                    "node-ref": "RegionA-Acc01",
+                    "tp-ref": "p01"
+                  }
+                ]
+              },
+              {
+                "tp-id": "p1",
+                "supporting-termination-point": [
+                  {
+                    "network-ref": "layer15",
+                    "node-ref": "RegionA-Acc01",
+                    "tp-ref": "p23"
+                  }
+                ]
+              },
+              {
+                "tp-id": "p2",
+                "supporting-termination-point": [
+                  {
+                    "network-ref": "layer1",
+                    "node-ref": "RegionA-Acc01",
+                    "tp-ref": "p5"
+                  }
+                ]
+              },
+              {
+                "tp-id": "p3",
+                "supporting-termination-point": [
+                  {
+                    "network-ref": "layer1",
+                    "node-ref": "RegionA-Acc01",
+                    "tp-ref": "p7"
+                  }
+                ]
+              }
+            ],
+            "supporting-node": [
+              {
+                "network-ref": "layer15",
+                "node-ref": "RegionA-Acc01"
+              }
+            ]
+          },
+          {
+            "node-id": "RegionA-Svr01",
+            "ietf-network-topology:termination-point": [
+              {
+                "tp-id": "eno0",
+                "supporting-termination-point": [
+                  {
+                    "network-ref": "layer1",
+                    "node-ref": "RegionA-Svr01",
+                    "tp-ref": "eno0"
+                  }
+                ]
+              },
+              {
+                "tp-id": "eno1",
+                "supporting-termination-point": [
+                  {
+                    "network-ref": "layer1",
+                    "node-ref": "RegionA-Svr01",
+                    "tp-ref": "eno1"
+                  }
+                ]
+              }
+            ],
+            "supporting-node": [
+              {
+                "network-ref": "layer1",
+                "node-ref": "RegionA-Svr01"
+              }
+            ]
+          },
+          {
+            "node-id": "RegionA-Svr02",
+            "ietf-network-topology:termination-point": [
+              {
+                "tp-id": "eno0",
+                "supporting-termination-point": [
+                  {
+                    "network-ref": "layer1",
+                    "node-ref": "RegionA-Svr02",
+                    "tp-ref": "eno0"
+                  }
+                ]
+              },
+              {
+                "tp-id": "eno1",
+                "supporting-termination-point": [
+                  {
+                    "network-ref": "layer1",
+                    "node-ref": "RegionA-Svr02",
+                    "tp-ref": "eno1"
+                  }
+                ]
+              }
+            ],
+            "supporting-node": [
+              {
+                "network-ref": "layer1",
+                "node-ref": "RegionA-Svr02"
+              }
+            ]
+          },
+          {
+            "node-id": "RegionB-CE01-GRT",
+            "ietf-network-topology:termination-point": [
+              {
+                "tp-id": "p0"
+              },
+              {
+                "tp-id": "p1"
+              }
+            ],
+            "supporting-node": [
+              {
+                "network-ref": "layer15",
+                "node-ref": "RegionB-CE01"
+              }
+            ]
+          },
+          {
+            "node-id": "RegionB-CE01-VRF",
+            "ietf-network-topology:termination-point": [
+              {
+                "tp-id": "p0"
+              },
+              {
+                "tp-id": "p1"
+              }
+            ],
+            "supporting-node": [
+              {
+                "network-ref": "layer15",
+                "node-ref": "RegionB-CE01"
+              }
+            ]
+          },
+          {
+            "node-id": "RegionB-CE02-GRT",
+            "ietf-network-topology:termination-point": [
+              {
+                "tp-id": "p0"
+              },
+              {
+                "tp-id": "p1"
+              }
+            ],
+            "supporting-node": [
+              {
+                "network-ref": "layer15",
+                "node-ref": "RegionB-CE02"
+              }
+            ]
+          },
+          {
+            "node-id": "RegionB-CE02-VRF",
+            "ietf-network-topology:termination-point": [
+              {
+                "tp-id": "p0"
+              },
+              {
+                "tp-id": "p1"
+              }
+            ],
+            "supporting-node": [
+              {
+                "network-ref": "layer15",
+                "node-ref": "RegionB-CE02"
+              }
+            ]
+          },
+          {
+            "node-id": "RegionB-CE01-VL10",
+            "ietf-network-topology:termination-point": [
+              {
+                "tp-id": "p0"
+              },
+              {
+                "tp-id": "p1",
+                "supporting-termination-point": [
+                  {
+                    "network-ref": "layer15",
+                    "node-ref": "RegionB-CE01",
+                    "tp-ref": "p45"
+                  }
+                ]
+              },
+              {
+                "tp-id": "p2",
+                "supporting-termination-point": [
+                  {
+                    "network-ref": "layer15",
+                    "node-ref": "RegionB-CE01",
+                    "tp-ref": "p01"
+                  }
+                ]
+              }
+            ],
+            "supporting-node": [
+              {
+                "network-ref": "layer15",
+                "node-ref": "RegionB-CE01"
+              }
+            ]
+          },
+          {
+            "node-id": "RegionB-CE01-VL20",
+            "ietf-network-topology:termination-point": [
+              {
+                "tp-id": "p0"
+              },
+              {
+                "tp-id": "p1",
+                "supporting-termination-point": [
+                  {
+                    "network-ref": "layer15",
+                    "node-ref": "RegionB-CE01",
+                    "tp-ref": "p45"
+                  }
+                ]
+              },
+              {
+                "tp-id": "p2",
+                "supporting-termination-point": [
+                  {
+                    "network-ref": "layer15",
+                    "node-ref": "RegionB-CE01",
+                    "tp-ref": "p01"
+                  }
+                ]
+              }
+            ],
+            "supporting-node": [
+              {
+                "network-ref": "layer15",
+                "node-ref": "RegionB-CE01"
+              }
+            ]
+          },
+          {
+            "node-id": "RegionB-CE01-VL110",
+            "ietf-network-topology:termination-point": [
+              {
+                "tp-id": "p0"
+              },
+              {
+                "tp-id": "p1",
+                "supporting-termination-point": [
+                  {
+                    "network-ref": "layer15",
+                    "node-ref": "RegionB-CE01",
+                    "tp-ref": "p45"
+                  }
+                ]
+              },
+              {
+                "tp-id": "p2",
+                "supporting-termination-point": [
+                  {
+                    "network-ref": "layer15",
+                    "node-ref": "RegionB-CE01",
+                    "tp-ref": "p01"
+                  }
+                ]
+              }
+            ],
+            "supporting-node": [
+              {
+                "network-ref": "layer15",
+                "node-ref": "RegionB-CE01"
+              }
+            ]
+          },
+          {
+            "node-id": "RegionB-CE01-VL120",
+            "ietf-network-topology:termination-point": [
+              {
+                "tp-id": "p0"
+              },
+              {
+                "tp-id": "p1",
+                "supporting-termination-point": [
+                  {
+                    "network-ref": "layer15",
+                    "node-ref": "RegionB-CE01",
+                    "tp-ref": "p45"
+                  }
+                ]
+              },
+              {
+                "tp-id": "p2",
+                "supporting-termination-point": [
+                  {
+                    "network-ref": "layer15",
+                    "node-ref": "RegionB-CE01",
+                    "tp-ref": "p01"
+                  }
+                ]
+              }
+            ],
+            "supporting-node": [
+              {
+                "network-ref": "layer15",
+                "node-ref": "RegionB-CE01"
+              }
+            ]
+          },
+          {
+            "node-id": "RegionB-CE02-VL10",
+            "ietf-network-topology:termination-point": [
+              {
+                "tp-id": "p0"
+              },
+              {
+                "tp-id": "p1",
+                "supporting-termination-point": [
+                  {
+                    "network-ref": "layer15",
+                    "node-ref": "RegionB-CE02",
+                    "tp-ref": "p45"
+                  }
+                ]
+              },
+              {
+                "tp-id": "p2",
+                "supporting-termination-point": [
+                  {
+                    "network-ref": "layer15",
+                    "node-ref": "RegionB-CE02",
+                    "tp-ref": "p01"
+                  }
+                ]
+              }
+            ],
+            "supporting-node": [
+              {
+                "network-ref": "layer15",
+                "node-ref": "RegionB-CE02"
+              }
+            ]
+          },
+          {
+            "node-id": "RegionB-CE02-VL20",
+            "ietf-network-topology:termination-point": [
+              {
+                "tp-id": "p0"
+              },
+              {
+                "tp-id": "p1",
+                "supporting-termination-point": [
+                  {
+                    "network-ref": "layer15",
+                    "node-ref": "RegionB-CE02",
+                    "tp-ref": "p01"
+                  }
+                ]
+              }
+            ],
+            "supporting-node": [
+              {
+                "network-ref": "layer15",
+                "node-ref": "RegionB-CE02"
+              }
+            ]
+          },
+          {
+            "node-id": "RegionB-CE02-VL110",
+            "ietf-network-topology:termination-point": [
+              {
+                "tp-id": "p0"
+              },
+              {
+                "tp-id": "p1",
+                "supporting-termination-point": [
+                  {
+                    "network-ref": "layer15",
+                    "node-ref": "RegionB-CE02",
+                    "tp-ref": "p45"
+                  }
+                ]
+              },
+              {
+                "tp-id": "p2",
+                "supporting-termination-point": [
+                  {
+                    "network-ref": "layer15",
+                    "node-ref": "RegionB-CE02",
+                    "tp-ref": "p01"
+                  }
+                ]
+              }
+            ],
+            "supporting-node": [
+              {
+                "network-ref": "layer15",
+                "node-ref": "RegionB-CE02"
+              }
+            ]
+          },
+          {
+            "node-id": "RegionB-CE02-VL120",
+            "ietf-network-topology:termination-point": [
+              {
+                "tp-id": "p0"
+              },
+              {
+                "tp-id": "p1",
+                "supporting-termination-point": [
+                  {
+                    "network-ref": "layer15",
+                    "node-ref": "RegionB-CE02",
+                    "tp-ref": "p01"
+                  }
+                ]
+              }
+            ],
+            "supporting-node": [
+              {
+                "network-ref": "layer15",
+                "node-ref": "RegionB-CE02"
+              }
+            ]
+          },
+          {
+            "node-id": "RegionB-Acc01-VL10",
+            "ietf-network-topology:termination-point": [
+              {
+                "tp-id": "p0",
+                "supporting-termination-point": [
+                  {
+                    "network-ref": "layer15",
+                    "node-ref": "RegionB-Acc01",
+                    "tp-ref": "p01"
+                  }
+                ]
+              },
+              {
+                "tp-id": "p1",
+                "supporting-termination-point": [
+                  {
+                    "network-ref": "layer15",
+                    "node-ref": "RegionB-Acc01",
+                    "tp-ref": "p23"
+                  }
+                ]
+              },
+              {
+                "tp-id": "p2",
+                "supporting-termination-point": [
+                  {
+                    "network-ref": "layer1",
+                    "node-ref": "RegionB-Acc01",
+                    "tp-ref": "p4"
+                  }
+                ]
+              }
+            ],
+            "supporting-node": [
+              {
+                "network-ref": "layer15",
+                "node-ref": "RegionB-Acc01"
+              }
+            ]
+          },
+          {
+            "node-id": "RegionB-Acc01-VL110",
+            "ietf-network-topology:termination-point": [
+              {
+                "tp-id": "p0",
+                "supporting-termination-point": [
+                  {
+                    "network-ref": "layer15",
+                    "node-ref": "RegionB-Acc01",
+                    "tp-ref": "p01"
+                  }
+                ]
+              },
+              {
+                "tp-id": "p1",
+                "supporting-termination-point": [
+                  {
+                    "network-ref": "layer15",
+                    "node-ref": "RegionB-Acc01",
+                    "tp-ref": "p23"
+                  }
+                ]
+              },
+              {
+                "tp-id": "p2",
+                "supporting-termination-point": [
+                  {
+                    "network-ref": "layer1",
+                    "node-ref": "RegionB-Acc01",
+                    "tp-ref": "p5"
+                  }
+                ]
+              }
+            ],
+            "supporting-node": [
+              {
+                "network-ref": "layer15",
+                "node-ref": "RegionB-Acc01"
+              }
+            ]
+          },
+          {
+            "node-id": "RegionB-Acc02-VL20",
+            "ietf-network-topology:termination-point": [
+              {
+                "tp-id": "p0",
+                "supporting-termination-point": [
+                  {
+                    "network-ref": "layer15",
+                    "node-ref": "RegionB-Acc02",
+                    "tp-ref": "p01"
+                  }
+                ]
+              },
+              {
+                "tp-id": "p1",
+                "supporting-termination-point": [
+                  {
+                    "network-ref": "layer15",
+                    "node-ref": "RegionB-Acc02",
+                    "tp-ref": "p23"
+                  }
+                ]
+              },
+              {
+                "tp-id": "p2",
+                "supporting-termination-point": [
+                  {
+                    "network-ref": "layer1",
+                    "node-ref": "RegionB-Acc02",
+                    "tp-ref": "p4"
+                  }
+                ]
+              }
+            ],
+            "supporting-node": [
+              {
+                "network-ref": "layer15",
+                "node-ref": "RegionB-Acc02"
+              }
+            ]
+          },
+          {
+            "node-id": "RegionB-Acc02-VL120",
+            "ietf-network-topology:termination-point": [
+              {
+                "tp-id": "p0",
+                "supporting-termination-point": [
+                  {
+                    "network-ref": "layer15",
+                    "node-ref": "RegionB-Acc02",
+                    "tp-ref": "p01"
+                  }
+                ]
+              },
+              {
+                "tp-id": "p1",
+                "supporting-termination-point": [
+                  {
+                    "network-ref": "layer15",
+                    "node-ref": "RegionB-Acc02",
+                    "tp-ref": "p23"
+                  }
+                ]
+              },
+              {
+                "tp-id": "p2",
+                "supporting-termination-point": [
+                  {
+                    "network-ref": "layer1",
+                    "node-ref": "RegionB-Acc02",
+                    "tp-ref": "p5"
+                  }
+                ]
+              }
+            ],
+            "supporting-node": [
+              {
+                "network-ref": "layer15",
+                "node-ref": "RegionB-Acc02"
+              }
+            ]
+          },
+          {
+            "node-id": "RegionB-Svr01",
+            "ietf-network-topology:termination-point": [
+              {
+                "tp-id": "eno0",
+                "supporting-termination-point": [
+                  {
+                    "network-ref": "layer1",
+                    "node-ref": "RegionB-Svr01",
+                    "tp-ref": "eno0"
+                  }
+                ]
+              },
+              {
+                "tp-id": "eno1",
+                "supporting-termination-point": [
+                  {
+                    "network-ref": "layer1",
+                    "node-ref": "RegionB-Svr01",
+                    "tp-ref": "eno1"
+                  }
+                ]
+              }
+            ],
+            "supporting-node": [
+              {
+                "network-ref": "layer1",
+                "node-ref": "RegionB-Svr01"
+              }
+            ]
+          },
+          {
+            "node-id": "RegionB-Svr02",
+            "ietf-network-topology:termination-point": [
+              {
+                "tp-id": "eno0",
+                "supporting-termination-point": [
+                  {
+                    "network-ref": "layer1",
+                    "node-ref": "RegionB-Svr02",
+                    "tp-ref": "eno0"
+                  }
+                ]
+              },
+              {
+                "tp-id": "eno1",
+                "supporting-termination-point": [
+                  {
+                    "network-ref": "layer1",
+                    "node-ref": "RegionB-Svr02",
+                    "tp-ref": "eno1"
+                  }
+                ]
+              }
+            ],
+            "supporting-node": [
+              {
+                "network-ref": "layer1",
+                "node-ref": "RegionB-Svr02"
+              }
+            ]
+          }
+        ],
+        "ietf-network-topology:link": [
+          {
+            "link-id": "RegionA-CE01-GRT,p0,RegionA-CE01-VL10,p0",
+            "source": {
+              "source-node": "RegionA-CE01-GRT",
+              "source-tp": "p0"
+            },
+            "destination": {
+              "dest-node": "RegionA-CE01-VL10",
+              "dest-tp": "p0"
+            }
+          },
+          {
+            "link-id": "RegionA-CE01-VL10,p0,RegionA-CE01-GRT,p0",
+            "source": {
+              "source-node": "RegionA-CE01-VL10",
+              "source-tp": "p0"
+            },
+            "destination": {
+              "dest-node": "RegionA-CE01-GRT",
+              "dest-tp": "p0"
+            }
+          },
+          {
+            "link-id": "RegionA-CE01-GRT,p1,RegionA-CE01-VL20,p0",
+            "source": {
+              "source-node": "RegionA-CE01-GRT",
+              "source-tp": "p1"
+            },
+            "destination": {
+              "dest-node": "RegionA-CE01-VL20",
+              "dest-tp": "p0"
+            }
+          },
+          {
+            "link-id": "RegionA-CE01-VL20,p0,RegionA-CE01-GRT,p1",
+            "source": {
+              "source-node": "RegionA-CE01-VL20",
+              "source-tp": "p0"
+            },
+            "destination": {
+              "dest-node": "RegionA-CE01-GRT",
+              "dest-tp": "p1"
+            }
+          },
+          {
+            "link-id": "RegionA-CE01-VRF,p0,RegionA-CE01-VL110,p0",
+            "source": {
+              "source-node": "RegionA-CE01-VRF",
+              "source-tp": "p0"
+            },
+            "destination": {
+              "dest-node": "RegionA-CE01-VL110",
+              "dest-tp": "p0"
+            }
+          },
+          {
+            "link-id": "RegionA-CE01-VL110,p0,RegionA-CE01-VRF,p0",
+            "source": {
+              "source-node": "RegionA-CE01-VL110",
+              "source-tp": "p0"
+            },
+            "destination": {
+              "dest-node": "RegionA-CE01-VRF",
+              "dest-tp": "p0"
+            }
+          },
+          {
+            "link-id": "RegionA-CE01-VRF,p1,RegionA-CE01-VL120,p0",
+            "source": {
+              "source-node": "RegionA-CE01-VRF",
+              "source-tp": "p1"
+            },
+            "destination": {
+              "dest-node": "RegionA-CE01-VL120",
+              "dest-tp": "p0"
+            }
+          },
+          {
+            "link-id": "RegionA-CE01-VL120,p0,RegionA-CE01-VRF,p1",
+            "source": {
+              "source-node": "RegionA-CE01-VL120",
+              "source-tp": "p0"
+            },
+            "destination": {
+              "dest-node": "RegionA-CE01-VRF",
+              "dest-tp": "p1"
+            }
+          },
+          {
+            "link-id": "RegionA-CE02-GRT,p0,RegionA-CE02-VL10,p0",
+            "source": {
+              "source-node": "RegionA-CE02-GRT",
+              "source-tp": "p0"
+            },
+            "destination": {
+              "dest-node": "RegionA-CE02-VL10",
+              "dest-tp": "p0"
+            }
+          },
+          {
+            "link-id": "RegionA-CE02-VL10,p0,RegionA-CE02-GRT,p0",
+            "source": {
+              "source-node": "RegionA-CE02-VL10",
+              "source-tp": "p0"
+            },
+            "destination": {
+              "dest-node": "RegionA-CE02-GRT",
+              "dest-tp": "p0"
+            }
+          },
+          {
+            "link-id": "RegionA-CE02-GRT,p1,RegionA-CE02-VL20,p0",
+            "source": {
+              "source-node": "RegionA-CE02-GRT",
+              "source-tp": "p1"
+            },
+            "destination": {
+              "dest-node": "RegionA-CE02-VL20",
+              "dest-tp": "p0"
+            }
+          },
+          {
+            "link-id": "RegionA-CE02-VL20,p0,RegionA-CE02-GRT,p1",
+            "source": {
+              "source-node": "RegionA-CE02-VL20",
+              "source-tp": "p0"
+            },
+            "destination": {
+              "dest-node": "RegionA-CE02-GRT",
+              "dest-tp": "p1"
+            }
+          },
+          {
+            "link-id": "RegionA-CE02-VRF,p0,RegionA-CE02-VL110,p0",
+            "source": {
+              "source-node": "RegionA-CE02-VRF",
+              "source-tp": "p0"
+            },
+            "destination": {
+              "dest-node": "RegionA-CE02-VL110",
+              "dest-tp": "p0"
+            }
+          },
+          {
+            "link-id": "RegionA-CE02-VL110,p0,RegionA-CE02-VRF,p0",
+            "source": {
+              "source-node": "RegionA-CE02-VL110",
+              "source-tp": "p0"
+            },
+            "destination": {
+              "dest-node": "RegionA-CE02-VRF",
+              "dest-tp": "p0"
+            }
+          },
+          {
+            "link-id": "RegionA-CE02-VRF,p1,RegionA-CE02-VL120,p0",
+            "source": {
+              "source-node": "RegionA-CE02-VRF",
+              "source-tp": "p1"
+            },
+            "destination": {
+              "dest-node": "RegionA-CE02-VL120",
+              "dest-tp": "p0"
+            }
+          },
+          {
+            "link-id": "RegionA-CE02-VL120,p0,RegionA-CE02-VRF,p1",
+            "source": {
+              "source-node": "RegionA-CE02-VL120",
+              "source-tp": "p0"
+            },
+            "destination": {
+              "dest-node": "RegionA-CE02-VRF",
+              "dest-tp": "p1"
+            }
+          },
+          {
+            "link-id": "RegionA-CE01-VL10,p2,RegionA-CE02-VL10,p2",
+            "source": {
+              "source-node": "RegionA-CE01-VL10",
+              "source-tp": "p2"
+            },
+            "destination": {
+              "dest-node": "RegionA-CE02-VL10",
+              "dest-tp": "p2"
+            }
+          },
+          {
+            "link-id": "RegionA-CE02-VL10,p2,RegionA-CE01-VL10,p2",
+            "source": {
+              "source-node": "RegionA-CE02-VL10",
+              "source-tp": "p2"
+            },
+            "destination": {
+              "dest-node": "RegionA-CE01-VL10",
+              "dest-tp": "p2"
+            }
+          },
+          {
+            "link-id": "RegionA-CE01-VL110,p2,RegionA-CE02-VL110,p2",
+            "source": {
+              "source-node": "RegionA-CE01-VL110",
+              "source-tp": "p2"
+            },
+            "destination": {
+              "dest-node": "RegionA-CE02-VL110",
+              "dest-tp": "p2"
+            }
+          },
+          {
+            "link-id": "RegionA-CE02-VL110,p2,RegionA-CE01-VL110,p2",
+            "source": {
+              "source-node": "RegionA-CE02-VL110",
+              "source-tp": "p2"
+            },
+            "destination": {
+              "dest-node": "RegionA-CE01-VL110",
+              "dest-tp": "p2"
+            }
+          },
+          {
+            "link-id": "RegionA-CE01-VL20,p1,RegionA-CE02-VL20,p1",
+            "source": {
+              "source-node": "RegionA-CE01-VL20",
+              "source-tp": "p1"
+            },
+            "destination": {
+              "dest-node": "RegionA-CE02-VL20",
+              "dest-tp": "p1"
+            }
+          },
+          {
+            "link-id": "RegionA-CE02-VL20,p1,RegionA-CE01-VL20,p1",
+            "source": {
+              "source-node": "RegionA-CE02-VL20",
+              "source-tp": "p1"
+            },
+            "destination": {
+              "dest-node": "RegionA-CE01-VL20",
+              "dest-tp": "p1"
+            }
+          },
+          {
+            "link-id": "RegionA-CE01-VL120,p1,RegionA-CE02-VL120,p1",
+            "source": {
+              "source-node": "RegionA-CE01-VL120",
+              "source-tp": "p1"
+            },
+            "destination": {
+              "dest-node": "RegionA-CE02-VL120",
+              "dest-tp": "p1"
+            }
+          },
+          {
+            "link-id": "RegionA-CE02-VL120,p1,RegionA-CE01-VL120,p1",
+            "source": {
+              "source-node": "RegionA-CE02-VL120",
+              "source-tp": "p1"
+            },
+            "destination": {
+              "dest-node": "RegionA-CE01-VL120",
+              "dest-tp": "p1"
+            }
+          },
+          {
+            "link-id": "RegionA-CE01-VL10,p1,RegionA-Acc01-VL10,p0",
+            "source": {
+              "source-node": "RegionA-CE01-VL10",
+              "source-tp": "p1"
+            },
+            "destination": {
+              "dest-node": "RegionA-Acc01-VL10",
+              "dest-tp": "p0"
+            }
+          },
+          {
+            "link-id": "RegionA-Acc01-VL10,p0,RegionA-CE01-VL10,p1",
+            "source": {
+              "source-node": "RegionA-Acc01-VL10",
+              "source-tp": "p0"
+            },
+            "destination": {
+              "dest-node": "RegionA-CE01-VL10",
+              "dest-tp": "p1"
+            }
+          },
+          {
+            "link-id": "RegionA-CE01-VL110,p1,RegionA-Acc01-VL110,p0",
+            "source": {
+              "source-node": "RegionA-CE01-VL110",
+              "source-tp": "p1"
+            },
+            "destination": {
+              "dest-node": "RegionA-Acc01-VL110",
+              "dest-tp": "p0"
+            }
+          },
+          {
+            "link-id": "RegionA-Acc01-VL110,p0,RegionA-CE01-VL110,p1",
+            "source": {
+              "source-node": "RegionA-Acc01-VL110",
+              "source-tp": "p0"
+            },
+            "destination": {
+              "dest-node": "RegionA-CE01-VL110",
+              "dest-tp": "p1"
+            }
+          },
+          {
+            "link-id": "RegionA-CE02-VL10,p1,RegionA-Acc01-VL10,p1",
+            "source": {
+              "source-node": "RegionA-CE02-VL10",
+              "source-tp": "p1"
+            },
+            "destination": {
+              "dest-node": "RegionA-Acc01-VL10",
+              "dest-tp": "p1"
+            }
+          },
+          {
+            "link-id": "RegionA-Acc01-VL10,p1,RegionA-CE02-VL10,p1",
+            "source": {
+              "source-node": "RegionA-Acc01-VL10",
+              "source-tp": "p1"
+            },
+            "destination": {
+              "dest-node": "RegionA-CE02-VL10",
+              "dest-tp": "p1"
+            }
+          },
+          {
+            "link-id": "RegionA-CE02-VL110,p1,RegionA-Acc01-VL110,p1",
+            "source": {
+              "source-node": "RegionA-CE02-VL110",
+              "source-tp": "p1"
+            },
+            "destination": {
+              "dest-node": "RegionA-Acc01-VL110",
+              "dest-tp": "p1"
+            }
+          },
+          {
+            "link-id": "RegionA-Acc01-VL110,p1,RegionA-CE02-VL110,p1",
+            "source": {
+              "source-node": "RegionA-Acc01-VL110",
+              "source-tp": "p1"
+            },
+            "destination": {
+              "dest-node": "RegionA-CE02-VL110",
+              "dest-tp": "p1"
+            }
+          },
+          {
+            "link-id": "RegionA-Acc01-VL10,p2,RegionA-Svr01,eno0",
+            "source": {
+              "source-node": "RegionA-Acc01-VL10",
+              "source-tp": "p2"
+            },
+            "destination": {
+              "dest-node": "RegionA-Svr01",
+              "dest-tp": "eno0"
+            }
+          },
+          {
+            "link-id": "RegionA-Svr01,eno0,RegionA-Acc01-VL10,p2",
+            "source": {
+              "source-node": "RegionA-Svr01",
+              "source-tp": "eno0"
+            },
+            "destination": {
+              "dest-node": "RegionA-Acc01-VL10",
+              "dest-tp": "p2"
+            }
+          },
+          {
+            "link-id": "RegionA-Acc01-VL10,p3,RegionA-Svr02,eno0",
+            "source": {
+              "source-node": "RegionA-Acc01-VL10",
+              "source-tp": "p3"
+            },
+            "destination": {
+              "dest-node": "RegionA-Svr02",
+              "dest-tp": "eno0"
+            }
+          },
+          {
+            "link-id": "RegionA-Svr02,eno0,RegionA-Acc01-VL10,p3",
+            "source": {
+              "source-node": "RegionA-Svr02",
+              "source-tp": "eno0"
+            },
+            "destination": {
+              "dest-node": "RegionA-Acc01-VL10",
+              "dest-tp": "p3"
+            }
+          },
+          {
+            "link-id": "RegionA-Acc01-VL110,p2,RegionA-Svr01,eno1",
+            "source": {
+              "source-node": "RegionA-Acc01-VL110",
+              "source-tp": "p2"
+            },
+            "destination": {
+              "dest-node": "RegionA-Svr01",
+              "dest-tp": "eno1"
+            }
+          },
+          {
+            "link-id": "RegionA-Svr01,eno1,RegionA-Acc01-VL110,p2",
+            "source": {
+              "source-node": "RegionA-Svr01",
+              "source-tp": "eno1"
+            },
+            "destination": {
+              "dest-node": "RegionA-Acc01-VL110",
+              "dest-tp": "p2"
+            }
+          },
+          {
+            "link-id": "RegionA-Acc01-VL110,p3,RegionA-Svr02,eno1",
+            "source": {
+              "source-node": "RegionA-Acc01-VL110",
+              "source-tp": "p3"
+            },
+            "destination": {
+              "dest-node": "RegionA-Svr02",
+              "dest-tp": "eno1"
+            }
+          },
+          {
+            "link-id": "RegionA-Svr02,eno1,RegionA-Acc01-VL110,p3",
+            "source": {
+              "source-node": "RegionA-Svr02",
+              "source-tp": "eno1"
+            },
+            "destination": {
+              "dest-node": "RegionA-Acc01-VL110",
+              "dest-tp": "p3"
+            }
+          },
+          {
+            "link-id": "RegionB-CE01-GRT,p0,RegionB-CE01-VL10,p0",
+            "source": {
+              "source-node": "RegionB-CE01-GRT",
+              "source-tp": "p0"
+            },
+            "destination": {
+              "dest-node": "RegionB-CE01-VL10",
+              "dest-tp": "p0"
+            }
+          },
+          {
+            "link-id": "RegionB-CE01-VL10,p0,RegionB-CE01-GRT,p0",
+            "source": {
+              "source-node": "RegionB-CE01-VL10",
+              "source-tp": "p0"
+            },
+            "destination": {
+              "dest-node": "RegionB-CE01-GRT",
+              "dest-tp": "p0"
+            }
+          },
+          {
+            "link-id": "RegionB-CE01-GRT,p1,RegionB-CE01-VL20,p0",
+            "source": {
+              "source-node": "RegionB-CE01-GRT",
+              "source-tp": "p1"
+            },
+            "destination": {
+              "dest-node": "RegionB-CE01-VL20",
+              "dest-tp": "p0"
+            }
+          },
+          {
+            "link-id": "RegionB-CE01-VL20,p0,RegionB-CE01-GRT,p1",
+            "source": {
+              "source-node": "RegionB-CE01-VL20",
+              "source-tp": "p0"
+            },
+            "destination": {
+              "dest-node": "RegionB-CE01-GRT",
+              "dest-tp": "p1"
+            }
+          },
+          {
+            "link-id": "RegionB-CE01-VRF,p0,RegionB-CE01-VL110,p0",
+            "source": {
+              "source-node": "RegionB-CE01-VRF",
+              "source-tp": "p0"
+            },
+            "destination": {
+              "dest-node": "RegionB-CE01-VL110",
+              "dest-tp": "p0"
+            }
+          },
+          {
+            "link-id": "RegionB-CE01-VL110,p0,RegionB-CE01-VRF,p0",
+            "source": {
+              "source-node": "RegionB-CE01-VL110",
+              "source-tp": "p0"
+            },
+            "destination": {
+              "dest-node": "RegionB-CE01-VRF",
+              "dest-tp": "p0"
+            }
+          },
+          {
+            "link-id": "RegionB-CE01-VRF,p1,RegionB-CE01-VL120,p0",
+            "source": {
+              "source-node": "RegionB-CE01-VRF",
+              "source-tp": "p1"
+            },
+            "destination": {
+              "dest-node": "RegionB-CE01-VL120",
+              "dest-tp": "p0"
+            }
+          },
+          {
+            "link-id": "RegionB-CE01-VL120,p0,RegionB-CE01-VRF,p1",
+            "source": {
+              "source-node": "RegionB-CE01-VL120",
+              "source-tp": "p0"
+            },
+            "destination": {
+              "dest-node": "RegionB-CE01-VRF",
+              "dest-tp": "p1"
+            }
+          },
+          {
+            "link-id": "RegionB-CE02-GRT,p0,RegionB-CE02-VL10,p0",
+            "source": {
+              "source-node": "RegionB-CE02-GRT",
+              "source-tp": "p0"
+            },
+            "destination": {
+              "dest-node": "RegionB-CE02-VL10",
+              "dest-tp": "p0"
+            }
+          },
+          {
+            "link-id": "RegionB-CE02-VL10,p0,RegionB-CE02-GRT,p0",
+            "source": {
+              "source-node": "RegionB-CE02-VL10",
+              "source-tp": "p0"
+            },
+            "destination": {
+              "dest-node": "RegionB-CE02-GRT",
+              "dest-tp": "p0"
+            }
+          },
+          {
+            "link-id": "RegionB-CE02-GRT,p1,RegionB-CE02-VL20,p0",
+            "source": {
+              "source-node": "RegionB-CE02-GRT",
+              "source-tp": "p1"
+            },
+            "destination": {
+              "dest-node": "RegionB-CE02-VL20",
+              "dest-tp": "p0"
+            }
+          },
+          {
+            "link-id": "RegionB-CE02-VL20,p0,RegionB-CE02-GRT,p1",
+            "source": {
+              "source-node": "RegionB-CE02-VL20",
+              "source-tp": "p0"
+            },
+            "destination": {
+              "dest-node": "RegionB-CE02-GRT",
+              "dest-tp": "p1"
+            }
+          },
+          {
+            "link-id": "RegionB-CE02-VRF,p0,RegionB-CE02-VL110,p0",
+            "source": {
+              "source-node": "RegionB-CE02-VRF",
+              "source-tp": "p0"
+            },
+            "destination": {
+              "dest-node": "RegionB-CE02-VL110",
+              "dest-tp": "p0"
+            }
+          },
+          {
+            "link-id": "RegionB-CE02-VL110,p0,RegionB-CE02-VRF,p0",
+            "source": {
+              "source-node": "RegionB-CE02-VL110",
+              "source-tp": "p0"
+            },
+            "destination": {
+              "dest-node": "RegionB-CE02-VRF",
+              "dest-tp": "p0"
+            }
+          },
+          {
+            "link-id": "RegionB-CE02-VRF,p1,RegionB-CE02-VL120,p0",
+            "source": {
+              "source-node": "RegionB-CE02-VRF",
+              "source-tp": "p1"
+            },
+            "destination": {
+              "dest-node": "RegionB-CE02-VL120",
+              "dest-tp": "p0"
+            }
+          },
+          {
+            "link-id": "RegionB-CE02-VL120,p0,RegionB-CE02-VRF,p1",
+            "source": {
+              "source-node": "RegionB-CE02-VL120",
+              "source-tp": "p0"
+            },
+            "destination": {
+              "dest-node": "RegionB-CE02-VRF",
+              "dest-tp": "p1"
+            }
+          },
+          {
+            "link-id": "RegionB-CE01-VL10,p2,RegionB-CE02-VL10,p2",
+            "source": {
+              "source-node": "RegionB-CE01-VL10",
+              "source-tp": "p2"
+            },
+            "destination": {
+              "dest-node": "RegionB-CE02-VL10",
+              "dest-tp": "p2"
+            }
+          },
+          {
+            "link-id": "RegionB-CE02-VL10,p2,RegionB-CE01-VL10,p2",
+            "source": {
+              "source-node": "RegionB-CE02-VL10",
+              "source-tp": "p2"
+            },
+            "destination": {
+              "dest-node": "RegionB-CE01-VL10",
+              "dest-tp": "p2"
+            }
+          },
+          {
+            "link-id": "RegionB-CE01-VL110,p2,RegionB-CE02-VL110,p2",
+            "source": {
+              "source-node": "RegionB-CE01-VL110",
+              "source-tp": "p2"
+            },
+            "destination": {
+              "dest-node": "RegionB-CE02-VL110",
+              "dest-tp": "p2"
+            }
+          },
+          {
+            "link-id": "RegionB-CE02-VL110,p2,RegionB-CE01-VL110,p2",
+            "source": {
+              "source-node": "RegionB-CE02-VL110",
+              "source-tp": "p2"
+            },
+            "destination": {
+              "dest-node": "RegionB-CE01-VL110",
+              "dest-tp": "p2"
+            }
+          },
+          {
+            "link-id": "RegionB-CE01-VL20,p1,RegionB-CE02-VL20,p1",
+            "source": {
+              "source-node": "RegionB-CE01-VL20",
+              "source-tp": "p1"
+            },
+            "destination": {
+              "dest-node": "RegionB-CE02-VL20",
+              "dest-tp": "p1"
+            }
+          },
+          {
+            "link-id": "RegionB-CE02-VL20,p1,RegionB-CE01-VL20,p1",
+            "source": {
+              "source-node": "RegionB-CE02-VL20",
+              "source-tp": "p1"
+            },
+            "destination": {
+              "dest-node": "RegionB-CE01-VL20",
+              "dest-tp": "p1"
+            }
+          },
+          {
+            "link-id": "RegionB-CE01-VL120,p1,RegionB-CE02-VL120,p1",
+            "source": {
+              "source-node": "RegionB-CE01-VL120",
+              "source-tp": "p1"
+            },
+            "destination": {
+              "dest-node": "RegionB-CE02-VL120",
+              "dest-tp": "p1"
+            }
+          },
+          {
+            "link-id": "RegionB-CE02-VL120,p1,RegionB-CE01-VL120,p1",
+            "source": {
+              "source-node": "RegionB-CE02-VL120",
+              "source-tp": "p1"
+            },
+            "destination": {
+              "dest-node": "RegionB-CE01-VL120",
+              "dest-tp": "p1"
+            }
+          },
+          {
+            "link-id": "RegionB-CE01-VL10,p1,RegionB-Acc01-VL10,p0",
+            "source": {
+              "source-node": "RegionB-CE01-VL10",
+              "source-tp": "p1"
+            },
+            "destination": {
+              "dest-node": "RegionB-Acc01-VL10",
+              "dest-tp": "p0"
+            }
+          },
+          {
+            "link-id": "RegionB-Acc01-VL10,p0,RegionB-CE01-VL10,p1",
+            "source": {
+              "source-node": "RegionB-Acc01-VL10",
+              "source-tp": "p0"
+            },
+            "destination": {
+              "dest-node": "RegionB-CE01-VL10",
+              "dest-tp": "p1"
+            }
+          },
+          {
+            "link-id": "RegionB-CE01-VL20,p1,RegionB-Acc02-VL20,p0",
+            "source": {
+              "source-node": "RegionB-CE01-VL20",
+              "source-tp": "p1"
+            },
+            "destination": {
+              "dest-node": "RegionB-Acc02-VL20",
+              "dest-tp": "p0"
+            }
+          },
+          {
+            "link-id": "RegionB-Acc02-VL20,p0,RegionB-CE01-VL20,p1",
+            "source": {
+              "source-node": "RegionB-Acc02-VL20",
+              "source-tp": "p0"
+            },
+            "destination": {
+              "dest-node": "RegionB-CE01-VL20",
+              "dest-tp": "p1"
+            }
+          },
+          {
+            "link-id": "RegionB-CE01-VL110,p1,RegionB-Acc01-VL110,p0",
+            "source": {
+              "source-node": "RegionB-CE01-VL110",
+              "source-tp": "p1"
+            },
+            "destination": {
+              "dest-node": "RegionB-Acc01-VL110",
+              "dest-tp": "p0"
+            }
+          },
+          {
+            "link-id": "RegionB-Acc01-VL110,p0,RegionB-CE01-VL110,p1",
+            "source": {
+              "source-node": "RegionB-Acc01-VL110",
+              "source-tp": "p0"
+            },
+            "destination": {
+              "dest-node": "RegionB-CE01-VL110",
+              "dest-tp": "p1"
+            }
+          },
+          {
+            "link-id": "RegionB-CE01-VL120,p1,RegionB-Acc02-VL120,p0",
+            "source": {
+              "source-node": "RegionB-CE01-VL120",
+              "source-tp": "p1"
+            },
+            "destination": {
+              "dest-node": "RegionB-Acc02-VL120",
+              "dest-tp": "p0"
+            }
+          },
+          {
+            "link-id": "RegionB-Acc02-VL120,p0,RegionB-CE01-VL120,p1",
+            "source": {
+              "source-node": "RegionB-Acc02-VL120",
+              "source-tp": "p0"
+            },
+            "destination": {
+              "dest-node": "RegionB-CE01-VL120",
+              "dest-tp": "p1"
+            }
+          },
+          {
+            "link-id": "RegionB-CE02-VL10,p1,RegionB-Acc01-VL10,p1",
+            "source": {
+              "source-node": "RegionB-CE02-VL10",
+              "source-tp": "p1"
+            },
+            "destination": {
+              "dest-node": "RegionB-Acc01-VL10",
+              "dest-tp": "p1"
+            }
+          },
+          {
+            "link-id": "RegionB-Acc01-VL10,p1,RegionB-CE02-VL10,p1",
+            "source": {
+              "source-node": "RegionB-Acc01-VL10",
+              "source-tp": "p1"
+            },
+            "destination": {
+              "dest-node": "RegionB-CE02-VL10",
+              "dest-tp": "p1"
+            }
+          },
+          {
+            "link-id": "RegionB-CE02-VL20,p1,RegionB-Acc02-VL20,p1",
+            "source": {
+              "source-node": "RegionB-CE02-VL20",
+              "source-tp": "p1"
+            },
+            "destination": {
+              "dest-node": "RegionB-Acc02-VL20",
+              "dest-tp": "p1"
+            }
+          },
+          {
+            "link-id": "RegionB-Acc02-VL20,p1,RegionB-CE02-VL20,p1",
+            "source": {
+              "source-node": "RegionB-Acc02-VL20",
+              "source-tp": "p1"
+            },
+            "destination": {
+              "dest-node": "RegionB-CE02-VL20",
+              "dest-tp": "p1"
+            }
+          },
+          {
+            "link-id": "RegionB-CE02-VL110,p1,RegionB-Acc01-VL110,p1",
+            "source": {
+              "source-node": "RegionB-CE02-VL110",
+              "source-tp": "p1"
+            },
+            "destination": {
+              "dest-node": "RegionB-Acc01-VL110",
+              "dest-tp": "p1"
+            }
+          },
+          {
+            "link-id": "RegionB-Acc01-VL110,p1,RegionB-CE02-VL110,p1",
+            "source": {
+              "source-node": "RegionB-Acc01-VL110",
+              "source-tp": "p1"
+            },
+            "destination": {
+              "dest-node": "RegionB-CE02-VL110",
+              "dest-tp": "p1"
+            }
+          },
+          {
+            "link-id": "RegionB-CE02-VL120,p1,RegionB-Acc02-VL120,p1",
+            "source": {
+              "source-node": "RegionB-CE02-VL120",
+              "source-tp": "p1"
+            },
+            "destination": {
+              "dest-node": "RegionB-Acc02-VL120",
+              "dest-tp": "p1"
+            }
+          },
+          {
+            "link-id": "RegionB-Acc02-VL120,p1,RegionB-CE02-VL120,p1",
+            "source": {
+              "source-node": "RegionB-Acc02-VL120",
+              "source-tp": "p1"
+            },
+            "destination": {
+              "dest-node": "RegionB-CE02-VL120",
+              "dest-tp": "p1"
+            }
+          },
+          {
+            "link-id": "RegionB-Acc01-VL10,p2,RegionB-Svr01,eno0",
+            "source": {
+              "source-node": "RegionB-Acc01-VL10",
+              "source-tp": "p2"
+            },
+            "destination": {
+              "dest-node": "RegionB-Svr01",
+              "dest-tp": "eno0"
+            }
+          },
+          {
+            "link-id": "RegionB-Svr01,eno0,RegionB-Acc01-VL10,p2",
+            "source": {
+              "source-node": "RegionB-Svr01",
+              "source-tp": "eno0"
+            },
+            "destination": {
+              "dest-node": "RegionB-Acc01-VL10",
+              "dest-tp": "p2"
+            }
+          },
+          {
+            "link-id": "RegionB-Acc01-VL110,p2,RegionB-Svr01,eno1",
+            "source": {
+              "source-node": "RegionB-Acc01-VL110",
+              "source-tp": "p2"
+            },
+            "destination": {
+              "dest-node": "RegionB-Svr01",
+              "dest-tp": "eno1"
+            }
+          },
+          {
+            "link-id": "RegionB-Svr01,eno1,RegionB-Acc01-VL110,p2",
+            "source": {
+              "source-node": "RegionB-Svr01",
+              "source-tp": "eno1"
+            },
+            "destination": {
+              "dest-node": "RegionB-Acc01-VL110",
+              "dest-tp": "p2"
+            }
+          },
+          {
+            "link-id": "RegionB-Acc02-VL20,p2,RegionB-Svr02,eno0",
+            "source": {
+              "source-node": "RegionB-Acc02-VL20",
+              "source-tp": "p2"
+            },
+            "destination": {
+              "dest-node": "RegionB-Svr02",
+              "dest-tp": "eno0"
+            }
+          },
+          {
+            "link-id": "RegionB-Svr02,eno0,RegionB-Acc02-VL20,p2",
+            "source": {
+              "source-node": "RegionB-Svr02",
+              "source-tp": "eno0"
+            },
+            "destination": {
+              "dest-node": "RegionB-Acc02-VL20",
+              "dest-tp": "p2"
+            }
+          },
+          {
+            "link-id": "RegionB-Acc02-VL120,p2,RegionB-Svr02,eno1",
+            "source": {
+              "source-node": "RegionB-Acc02-VL120",
+              "source-tp": "p2"
+            },
+            "destination": {
+              "dest-node": "RegionB-Svr02",
+              "dest-tp": "eno1"
+            }
+          },
+          {
+            "link-id": "RegionB-Svr02,eno1,RegionB-Acc02-VL120,p2",
+            "source": {
+              "source-node": "RegionB-Svr02",
+              "source-tp": "eno1"
+            },
+            "destination": {
+              "dest-node": "RegionB-Acc02-VL120",
+              "dest-tp": "p2"
+            }
+          }
+        ],
+        "supporting-network": [
+          {
+            "network-ref": "layer1"
+          }
+        ]
+      },
+      {
+        "network-id": "layer3",
+        "network-types": {
+        },
+        "node": [
+          {
+            "node-id": "RegionA-PE01-GRT",
+            "ietf-network-topology:termination-point": [
+              {
+                "tp-id": "p0"
+              },
+              {
+                "tp-id": "p1"
+              },
+              {
+                "tp-id": "p2"
+              },
+              {
+                "tp-id": "p3"
+              }
+            ],
+            "supporting-node": [
+              {
+                "network-ref": "layer1",
+                "node-ref": "RegionA-PE01"
+              }
+            ]
+          },
+          {
+            "node-id": "RegionA-PE02-GRT",
+            "ietf-network-topology:termination-point": [
+              {
+                "tp-id": "p0"
+              },
+              {
+                "tp-id": "p1"
+              },
+              {
+                "tp-id": "p2"
+              },
+              {
+                "tp-id": "p3"
+              }
+            ],
+            "supporting-node": [
+              {
+                "network-ref": "layer1",
+                "node-ref": "RegionA-PE02"
+              }
+            ]
+          },
+          {
+            "node-id": "RegionA-CE01-GRT",
+            "ietf-network-topology:termination-point": [
+              {
+                "tp-id": "p0"
+              },
+              {
+                "tp-id": "p1"
+              },
+              {
+                "tp-id": "p2"
+              },
+              {
+                "tp-id": "p3"
+              },
+              {
+                "tp-id": "p4"
+              },
+              {
+                "tp-id": "p5"
+              }
+            ],
+            "supporting-node": [
+              {
+                "network-ref": "layer2",
+                "node-ref": "RegionA-CE01-GRT"
+              }
+            ]
+          },
+          {
+            "node-id": "RegionA-CE01-VRF",
+            "ietf-network-topology:termination-point": [
+              {
+                "tp-id": "p4"
+              },
+              {
+                "tp-id": "p5"
+              }
+            ],
+            "supporting-node": [
+              {
+                "network-ref": "layer2",
+                "node-ref": "RegionA-CE01-VRF"
+              }
+            ]
+          },
+          {
+            "node-id": "RegionA-CE02-GRT",
+            "ietf-network-topology:termination-point": [
+              {
+                "tp-id": "p0"
+              },
+              {
+                "tp-id": "p1"
+              },
+              {
+                "tp-id": "p2"
+              },
+              {
+                "tp-id": "p3"
+              },
+              {
+                "tp-id": "p4"
+              },
+              {
+                "tp-id": "p5"
+              }
+            ],
+            "supporting-node": [
+              {
+                "network-ref": "layer2",
+                "node-ref": "RegionA-CE02-GRT"
+              }
+            ]
+          },
+          {
+            "node-id": "RegionA-CE02-VRF",
+            "ietf-network-topology:termination-point": [
+              {
+                "tp-id": "p4"
+              },
+              {
+                "tp-id": "p5"
+              }
+            ],
+            "supporting-node": [
+              {
+                "network-ref": "layer2",
+                "node-ref": "RegionA-CE02-VRF"
+              }
+            ]
+          },
+          {
+            "node-id": "RegionA-VL10",
+            "ietf-network-topology:termination-point": [
+              {
+                "tp-id": "p0"
+              },
+              {
+                "tp-id": "p1"
+              },
+              {
+                "tp-id": "p2"
+              },
+              {
+                "tp-id": "p3"
+              }
+            ],
+            "supporting-node": [
+              {
+                "network-ref": "layer2",
+                "node-ref": "RegionA-CE01-VL10"
+              },
+              {
+                "network-ref": "layer2",
+                "node-ref": "RegionA-CE02-VL10"
+              },
+              {
+                "network-ref": "layer2",
+                "node-ref": "RegionA-Acc01-VL10"
+              }
+            ]
+          },
+          {
+            "node-id": "RegionA-VL20",
+            "ietf-network-topology:termination-point": [
+              {
+                "tp-id": "p0"
+              },
+              {
+                "tp-id": "p1"
+              }
+            ],
+            "supporting-node": [
+              {
+                "network-ref": "layer2",
+                "node-ref": "RegionA-CE01-VL20"
+              },
+              {
+                "network-ref": "layer2",
+                "node-ref": "RegionA-CE02-VL20"
+              }
+            ]
+          },
+          {
+            "node-id": "RegionA-VL110",
+            "ietf-network-topology:termination-point": [
+              {
+                "tp-id": "p0"
+              },
+              {
+                "tp-id": "p1"
+              },
+              {
+                "tp-id": "p2"
+              },
+              {
+                "tp-id": "p3"
+              }
+            ],
+            "supporting-node": [
+              {
+                "network-ref": "layer2",
+                "node-ref": "RegionA-CE01-VL110"
+              },
+              {
+                "network-ref": "layer2",
+                "node-ref": "RegionA-CE02-VL110"
+              },
+              {
+                "network-ref": "layer2",
+                "node-ref": "RegionA-Acc01-VL110"
+              }
+            ]
+          },
+          {
+            "node-id": "RegionA-VL120",
+            "ietf-network-topology:termination-point": [
+              {
+                "tp-id": "p0"
+              },
+              {
+                "tp-id": "p1"
+              }
+            ],
+            "supporting-node": [
+              {
+                "network-ref": "layer2",
+                "node-ref": "RegionA-CE01-VL120"
+              },
+              {
+                "network-ref": "layer2",
+                "node-ref": "RegionA-CE02-VL120"
+              }
+            ]
+          },
+          {
+            "node-id": "RegionA-Svr01",
+            "ietf-network-topology:termination-point": [
+              {
+                "tp-id": "eno0"
+              },
+              {
+                "tp-id": "eno1"
+              }
+            ],
+            "supporting-node": [
+              {
+                "network-ref": "layer2",
+                "node-ref": "RegionA-Svr01"
+              }
+            ]
+          },
+          {
+            "node-id": "RegionA-Svr02",
+            "ietf-network-topology:termination-point": [
+              {
+                "tp-id": "eno0"
+              },
+              {
+                "tp-id": "eno1"
+              }
+            ],
+            "supporting-node": [
+              {
+                "network-ref": "layer2",
+                "node-ref": "RegionA-Svr02"
+              }
+            ]
+          },
+          {
+            "node-id": "RegionB-PE01-GRT",
+            "ietf-network-topology:termination-point": [
+              {
+                "tp-id": "p0"
+              },
+              {
+                "tp-id": "p1"
+              },
+              {
+                "tp-id": "p2"
+              },
+              {
+                "tp-id": "p3"
+              }
+            ],
+            "supporting-node": [
+              {
+                "network-ref": "layer1",
+                "node-ref": "RegionB-PE01"
+              }
+            ]
+          },
+          {
+            "node-id": "RegionB-PE02-GRT",
+            "ietf-network-topology:termination-point": [
+              {
+                "tp-id": "p0"
+              },
+              {
+                "tp-id": "p1"
+              },
+              {
+                "tp-id": "p2"
+              },
+              {
+                "tp-id": "p3"
+              }
+            ],
+            "supporting-node": [
+              {
+                "network-ref": "layer1",
+                "node-ref": "RegionB-PE02"
+              }
+            ]
+          },
+          {
+            "node-id": "RegionB-CE01-GRT",
+            "ietf-network-topology:termination-point": [
+              {
+                "tp-id": "p0"
+              },
+              {
+                "tp-id": "p1"
+              },
+              {
+                "tp-id": "p2"
+              },
+              {
+                "tp-id": "p3"
+              },
+              {
+                "tp-id": "p4"
+              },
+              {
+                "tp-id": "p5"
+              }
+            ],
+            "supporting-node": [
+              {
+                "network-ref": "layer2",
+                "node-ref": "RegionB-CE01-GRT"
+              }
+            ]
+          },
+          {
+            "node-id": "RegionB-CE01-VRF",
+            "ietf-network-topology:termination-point": [
+              {
+                "tp-id": "p4"
+              },
+              {
+                "tp-id": "p5"
+              }
+            ],
+            "supporting-node": [
+              {
+                "network-ref": "layer2",
+                "node-ref": "RegionB-CE01-VRF"
+              }
+            ]
+          },
+          {
+            "node-id": "RegionB-CE02-GRT",
+            "ietf-network-topology:termination-point": [
+              {
+                "tp-id": "p0"
+              },
+              {
+                "tp-id": "p1"
+              },
+              {
+                "tp-id": "p2"
+              },
+              {
+                "tp-id": "p3"
+              },
+              {
+                "tp-id": "p4"
+              },
+              {
+                "tp-id": "p5"
+              }
+            ],
+            "supporting-node": [
+              {
+                "network-ref": "layer2",
+                "node-ref": "RegionB-CE02-GRT"
+              }
+            ]
+          },
+          {
+            "node-id": "RegionB-CE02-VRF",
+            "ietf-network-topology:termination-point": [
+              {
+                "tp-id": "p4"
+              },
+              {
+                "tp-id": "p5"
+              }
+            ],
+            "supporting-node": [
+              {
+                "network-ref": "layer2",
+                "node-ref": "RegionB-CE02-VRF"
+              }
+            ]
+          },
+          {
+            "node-id": "RegionB-VL10",
+            "ietf-network-topology:termination-point": [
+              {
+                "tp-id": "p0"
+              },
+              {
+                "tp-id": "p1"
+              },
+              {
+                "tp-id": "p2"
+              }
+            ],
+            "supporting-node": [
+              {
+                "network-ref": "layer2",
+                "node-ref": "RegionB-CE01-VL10"
+              },
+              {
+                "network-ref": "layer2",
+                "node-ref": "RegionB-CE02-VL10"
+              },
+              {
+                "network-ref": "layer2",
+                "node-ref": "RegionB-Acc01-VL10"
+              }
+            ]
+          },
+          {
+            "node-id": "RegionB-VL20",
+            "ietf-network-topology:termination-point": [
+              {
+                "tp-id": "p0"
+              },
+              {
+                "tp-id": "p1"
+              },
+              {
+                "tp-id": "p2"
+              }
+            ],
+            "supporting-node": [
+              {
+                "network-ref": "layer2",
+                "node-ref": "RegionB-CE01-VL20"
+              },
+              {
+                "network-ref": "layer2",
+                "node-ref": "RegionB-CE02-VL20"
+              },
+              {
+                "network-ref": "layer2",
+                "node-ref": "RegionB-Acc02-VL20"
+              }
+            ]
+          },
+          {
+            "node-id": "RegionB-VL110",
+            "ietf-network-topology:termination-point": [
+              {
+                "tp-id": "p0"
+              },
+              {
+                "tp-id": "p1"
+              },
+              {
+                "tp-id": "p2"
+              }
+            ],
+            "supporting-node": [
+              {
+                "network-ref": "layer2",
+                "node-ref": "RegionB-CE01-VL110"
+              },
+              {
+                "network-ref": "layer2",
+                "node-ref": "RegionB-CE02-VL110"
+              },
+              {
+                "network-ref": "layer2",
+                "node-ref": "RegionB-Acc01-VL110"
+              }
+            ]
+          },
+          {
+            "node-id": "RegionB-VL120",
+            "ietf-network-topology:termination-point": [
+              {
+                "tp-id": "p0"
+              },
+              {
+                "tp-id": "p1"
+              },
+              {
+                "tp-id": "p2"
+              }
+            ],
+            "supporting-node": [
+              {
+                "network-ref": "layer2",
+                "node-ref": "RegionB-CE01-VL120"
+              },
+              {
+                "network-ref": "layer2",
+                "node-ref": "RegionB-CE02-VL120"
+              },
+              {
+                "network-ref": "layer2",
+                "node-ref": "RegionB-Acc02-VL120"
+              }
+            ]
+          },
+          {
+            "node-id": "RegionB-Svr01",
+            "ietf-network-topology:termination-point": [
+              {
+                "tp-id": "eno0"
+              },
+              {
+                "tp-id": "eno1"
+              }
+            ],
+            "supporting-node": [
+              {
+                "network-ref": "layer2",
+                "node-ref": "RegionB-Svr01"
+              }
+            ]
+          },
+          {
+            "node-id": "RegionB-Svr02",
+            "ietf-network-topology:termination-point": [
+              {
+                "tp-id": "eno0"
+              },
+              {
+                "tp-id": "eno1"
+              }
+            ],
+            "supporting-node": [
+              {
+                "network-ref": "layer2",
+                "node-ref": "RegionB-Svr02"
+              }
+            ]
+          }
+        ],
+        "ietf-network-topology:link": [
+          {
+            "link-id": "RegionA-PE01-GRT,p0,RegionA-PE02-GRT,p0",
+            "source": {
+              "source-node": "RegionA-PE01-GRT",
+              "source-tp": "p0"
+            },
+            "destination": {
+              "dest-node": "RegionA-PE02-GRT",
+              "dest-tp": "p0"
+            }
+          },
+          {
+            "link-id": "RegionA-PE02-GRT,p0,RegionA-PE01-GRT,p0",
+            "source": {
+              "source-node": "RegionA-PE02-GRT",
+              "source-tp": "p0"
+            },
+            "destination": {
+              "dest-node": "RegionA-PE01-GRT",
+              "dest-tp": "p0"
+            }
+          },
+          {
+            "link-id": "RegionA-PE01-GRT,p2,RegionA-CE01-GRT,p2",
+            "source": {
+              "source-node": "RegionA-PE01-GRT",
+              "source-tp": "p2"
+            },
+            "destination": {
+              "dest-node": "RegionA-CE01-GRT",
+              "dest-tp": "p2"
+            }
+          },
+          {
+            "link-id": "RegionA-CE01-GRT,p2,RegionA-PE01-GRT,p2",
+            "source": {
+              "source-node": "RegionA-CE01-GRT",
+              "source-tp": "p2"
+            },
+            "destination": {
+              "dest-node": "RegionA-PE01-GRT",
+              "dest-tp": "p2"
+            }
+          },
+          {
+            "link-id": "RegionA-PE01-GRT,p3,RegionA-CE02-GRT,p2",
+            "source": {
+              "source-node": "RegionA-PE01-GRT",
+              "source-tp": "p3"
+            },
+            "destination": {
+              "dest-node": "RegionA-CE02-GRT",
+              "dest-tp": "p2"
+            }
+          },
+          {
+            "link-id": "RegionA-CE02-GRT,p2,RegionA-PE01-GRT,p3",
+            "source": {
+              "source-node": "RegionA-CE02-GRT",
+              "source-tp": "p2"
+            },
+            "destination": {
+              "dest-node": "RegionA-PE01-GRT",
+              "dest-tp": "p3"
+            }
+          },
+          {
+            "link-id": "RegionA-PE02-GRT,p2,RegionA-CE01-GRT,p3",
+            "source": {
+              "source-node": "RegionA-PE02-GRT",
+              "source-tp": "p2"
+            },
+            "destination": {
+              "dest-node": "RegionA-CE01-GRT",
+              "dest-tp": "p3"
+            }
+          },
+          {
+            "link-id": "RegionA-CE01-GRT,p3,RegionA-PE02-GRT,p2",
+            "source": {
+              "source-node": "RegionA-CE01-GRT",
+              "source-tp": "p3"
+            },
+            "destination": {
+              "dest-node": "RegionA-PE02-GRT",
+              "dest-tp": "p2"
+            }
+          },
+          {
+            "link-id": "RegionA-PE02-GRT,p3,RegionA-CE02-GRT,p3",
+            "source": {
+              "source-node": "RegionA-PE02-GRT",
+              "source-tp": "p3"
+            },
+            "destination": {
+              "dest-node": "RegionA-CE02-GRT",
+              "dest-tp": "p3"
+            }
+          },
+          {
+            "link-id": "RegionA-CE02-GRT,p3,RegionA-PE02-GRT,p3",
+            "source": {
+              "source-node": "RegionA-CE02-GRT",
+              "source-tp": "p3"
+            },
+            "destination": {
+              "dest-node": "RegionA-PE02-GRT",
+              "dest-tp": "p3"
+            }
+          },
+          {
+            "link-id": "RegionA-CE01-GRT,p0,RegionA-CE01-GRT,p0",
+            "source": {
+              "source-node": "RegionA-CE01-GRT",
+              "source-tp": "p0"
+            },
+            "destination": {
+              "dest-node": "RegionA-CE01-GRT",
+              "dest-tp": "p0"
+            }
+          },
+          {
+            "link-id": "RegionA-CE01-GRT,p4,RegionA-VL10,p0",
+            "source": {
+              "source-node": "RegionA-CE01-GRT",
+              "source-tp": "p4"
+            },
+            "destination": {
+              "dest-node": "RegionA-VL10",
+              "dest-tp": "p0"
+            }
+          },
+          {
+            "link-id": "RegionA-VL10,p0,RegionA-CE01-GRT,p4",
+            "source": {
+              "source-node": "RegionA-VL10",
+              "source-tp": "p0"
+            },
+            "destination": {
+              "dest-node": "RegionA-CE01-GRT",
+              "dest-tp": "p4"
+            }
+          },
+          {
+            "link-id": "RegionA-CE01-GRT,p5,RegionA-VL20,p0",
+            "source": {
+              "source-node": "RegionA-CE01-GRT",
+              "source-tp": "p5"
+            },
+            "destination": {
+              "dest-node": "RegionA-VL20",
+              "dest-tp": "p0"
+            }
+          },
+          {
+            "link-id": "RegionA-VL20,p0,RegionA-CE01-GRT,p5",
+            "source": {
+              "source-node": "RegionA-VL20",
+              "source-tp": "p0"
+            },
+            "destination": {
+              "dest-node": "RegionA-CE01-GRT",
+              "dest-tp": "p5"
+            }
+          },
+          {
+            "link-id": "RegionA-CE02-GRT,p4,RegionA-VL10,p1",
+            "source": {
+              "source-node": "RegionA-CE02-GRT",
+              "source-tp": "p4"
+            },
+            "destination": {
+              "dest-node": "RegionA-VL10",
+              "dest-tp": "p1"
+            }
+          },
+          {
+            "link-id": "RegionA-VL10,p1,RegionA-CE02-GRT,p4",
+            "source": {
+              "source-node": "RegionA-VL10",
+              "source-tp": "p1"
+            },
+            "destination": {
+              "dest-node": "RegionA-CE02-GRT",
+              "dest-tp": "p4"
+            }
+          },
+          {
+            "link-id": "RegionA-CE02-GRT,p5,RegionA-VL20,p1",
+            "source": {
+              "source-node": "RegionA-CE02-GRT",
+              "source-tp": "p5"
+            },
+            "destination": {
+              "dest-node": "RegionA-VL20",
+              "dest-tp": "p1"
+            }
+          },
+          {
+            "link-id": "RegionA-VL20,p1,RegionA-CE02-GRT,p5",
+            "source": {
+              "source-node": "RegionA-VL20",
+              "source-tp": "p1"
+            },
+            "destination": {
+              "dest-node": "RegionA-CE02-GRT",
+              "dest-tp": "p5"
+            }
+          },
+          {
+            "link-id": "RegionA-CE01-VRF,p4,RegionA-VL110,p0",
+            "source": {
+              "source-node": "RegionA-CE01-VRF",
+              "source-tp": "p4"
+            },
+            "destination": {
+              "dest-node": "RegionA-VL110",
+              "dest-tp": "p0"
+            }
+          },
+          {
+            "link-id": "RegionA-VL110,p0,RegionA-CE01-VRF,p4",
+            "source": {
+              "source-node": "RegionA-VL110",
+              "source-tp": "p0"
+            },
+            "destination": {
+              "dest-node": "RegionA-CE01-VRF",
+              "dest-tp": "p4"
+            }
+          },
+          {
+            "link-id": "RegionA-CE01-VRF,p5,RegionA-VL120,p0",
+            "source": {
+              "source-node": "RegionA-CE01-VRF",
+              "source-tp": "p5"
+            },
+            "destination": {
+              "dest-node": "RegionA-VL120",
+              "dest-tp": "p0"
+            }
+          },
+          {
+            "link-id": "RegionA-VL120,p0,RegionA-CE01-VRF,p5",
+            "source": {
+              "source-node": "RegionA-VL120",
+              "source-tp": "p0"
+            },
+            "destination": {
+              "dest-node": "RegionA-CE01-VRF",
+              "dest-tp": "p5"
+            }
+          },
+          {
+            "link-id": "RegionA-CE02-VRF,p4,RegionA-VL110,p1",
+            "source": {
+              "source-node": "RegionA-CE02-VRF",
+              "source-tp": "p4"
+            },
+            "destination": {
+              "dest-node": "RegionA-VL110",
+              "dest-tp": "p1"
+            }
+          },
+          {
+            "link-id": "RegionA-VL110,p1,RegionA-CE02-VRF,p4",
+            "source": {
+              "source-node": "RegionA-VL110",
+              "source-tp": "p1"
+            },
+            "destination": {
+              "dest-node": "RegionA-CE02-VRF",
+              "dest-tp": "p4"
+            }
+          },
+          {
+            "link-id": "RegionA-CE02-VRF,p5,RegionA-VL120,p1",
+            "source": {
+              "source-node": "RegionA-CE02-VRF",
+              "source-tp": "p5"
+            },
+            "destination": {
+              "dest-node": "RegionA-VL120",
+              "dest-tp": "p1"
+            }
+          },
+          {
+            "link-id": "RegionA-VL120,p1,RegionA-CE02-VRF,p5",
+            "source": {
+              "source-node": "RegionA-VL120",
+              "source-tp": "p1"
+            },
+            "destination": {
+              "dest-node": "RegionA-CE02-VRF",
+              "dest-tp": "p5"
+            }
+          },
+          {
+            "link-id": "RegionA-VL10,p2,RegionA-Svr01,eno0",
+            "source": {
+              "source-node": "RegionA-VL10",
+              "source-tp": "p2"
+            },
+            "destination": {
+              "dest-node": "RegionA-Svr01",
+              "dest-tp": "eno0"
+            }
+          },
+          {
+            "link-id": "RegionA-Svr01,eno0,RegionA-VL10,p2",
+            "source": {
+              "source-node": "RegionA-Svr01",
+              "source-tp": "eno0"
+            },
+            "destination": {
+              "dest-node": "RegionA-VL10",
+              "dest-tp": "p2"
+            }
+          },
+          {
+            "link-id": "RegionA-VL10,p3,RegionA-Svr02,eno0",
+            "source": {
+              "source-node": "RegionA-VL10",
+              "source-tp": "p3"
+            },
+            "destination": {
+              "dest-node": "RegionA-Svr02",
+              "dest-tp": "eno0"
+            }
+          },
+          {
+            "link-id": "RegionA-Svr02,eno0,RegionA-VL10,p3",
+            "source": {
+              "source-node": "RegionA-Svr02",
+              "source-tp": "eno0"
+            },
+            "destination": {
+              "dest-node": "RegionA-VL10",
+              "dest-tp": "p3"
+            }
+          },
+          {
+            "link-id": "RegionA-VL110,p2,RegionA-Svr01,eno1",
+            "source": {
+              "source-node": "RegionA-VL110",
+              "source-tp": "p2"
+            },
+            "destination": {
+              "dest-node": "RegionA-Svr01",
+              "dest-tp": "eno1"
+            }
+          },
+          {
+            "link-id": "RegionA-Svr01,eno1,RegionA-VL110,p2",
+            "source": {
+              "source-node": "RegionA-Svr01",
+              "source-tp": "eno1"
+            },
+            "destination": {
+              "dest-node": "RegionA-VL110",
+              "dest-tp": "p2"
+            }
+          },
+          {
+            "link-id": "RegionA-VL110,p3,RegionA-Svr02,eno1",
+            "source": {
+              "source-node": "RegionA-VL110",
+              "source-tp": "p3"
+            },
+            "destination": {
+              "dest-node": "RegionA-Svr02",
+              "dest-tp": "eno1"
+            }
+          },
+          {
+            "link-id": "RegionA-Svr02,eno1,RegionA-VL110,p3",
+            "source": {
+              "source-node": "RegionA-Svr02",
+              "source-tp": "eno1"
+            },
+            "destination": {
+              "dest-node": "RegionA-VL110",
+              "dest-tp": "p3"
+            }
+          },
+          {
+            "link-id": "RegionB-PE01-GRT,p0,RegionB-PE02-GRT,p0",
+            "source": {
+              "source-node": "RegionB-PE01-GRT",
+              "source-tp": "p0"
+            },
+            "destination": {
+              "dest-node": "RegionB-PE02-GRT",
+              "dest-tp": "p0"
+            }
+          },
+          {
+            "link-id": "RegionB-PE02-GRT,p0,RegionB-PE01-GRT,p0",
+            "source": {
+              "source-node": "RegionB-PE02-GRT",
+              "source-tp": "p0"
+            },
+            "destination": {
+              "dest-node": "RegionB-PE01-GRT",
+              "dest-tp": "p0"
+            }
+          },
+          {
+            "link-id": "RegionB-PE01-GRT,p2,RegionB-CE01-GRT,p2",
+            "source": {
+              "source-node": "RegionB-PE01-GRT",
+              "source-tp": "p2"
+            },
+            "destination": {
+              "dest-node": "RegionB-CE01-GRT",
+              "dest-tp": "p2"
+            }
+          },
+          {
+            "link-id": "RegionB-CE01-GRT,p2,RegionB-PE01-GRT,p2",
+            "source": {
+              "source-node": "RegionB-CE01-GRT",
+              "source-tp": "p2"
+            },
+            "destination": {
+              "dest-node": "RegionB-PE01-GRT",
+              "dest-tp": "p2"
+            }
+          },
+          {
+            "link-id": "RegionB-PE01-GRT,p3,RegionB-CE02-GRT,p2",
+            "source": {
+              "source-node": "RegionB-PE01-GRT",
+              "source-tp": "p3"
+            },
+            "destination": {
+              "dest-node": "RegionB-CE02-GRT",
+              "dest-tp": "p2"
+            }
+          },
+          {
+            "link-id": "RegionB-CE02-GRT,p2,RegionB-PE01-GRT,p3",
+            "source": {
+              "source-node": "RegionB-CE02-GRT",
+              "source-tp": "p2"
+            },
+            "destination": {
+              "dest-node": "RegionB-PE01-GRT",
+              "dest-tp": "p3"
+            }
+          },
+          {
+            "link-id": "RegionB-PE02-GRT,p2,RegionB-CE01-GRT,p3",
+            "source": {
+              "source-node": "RegionB-PE02-GRT",
+              "source-tp": "p2"
+            },
+            "destination": {
+              "dest-node": "RegionB-CE01-GRT",
+              "dest-tp": "p3"
+            }
+          },
+          {
+            "link-id": "RegionB-CE01-GRT,p3,RegionB-PE02-GRT,p2",
+            "source": {
+              "source-node": "RegionB-CE01-GRT",
+              "source-tp": "p3"
+            },
+            "destination": {
+              "dest-node": "RegionB-PE02-GRT",
+              "dest-tp": "p2"
+            }
+          },
+          {
+            "link-id": "RegionB-PE02-GRT,p3,RegionB-CE02-GRT,p3",
+            "source": {
+              "source-node": "RegionB-PE02-GRT",
+              "source-tp": "p3"
+            },
+            "destination": {
+              "dest-node": "RegionB-CE02-GRT",
+              "dest-tp": "p3"
+            }
+          },
+          {
+            "link-id": "RegionB-CE02-GRT,p3,RegionB-PE02-GRT,p3",
+            "source": {
+              "source-node": "RegionB-CE02-GRT",
+              "source-tp": "p3"
+            },
+            "destination": {
+              "dest-node": "RegionB-PE02-GRT",
+              "dest-tp": "p3"
+            }
+          },
+          {
+            "link-id": "RegionB-CE01-GRT,p0,RegionB-CE01-GRT,p0",
+            "source": {
+              "source-node": "RegionB-CE01-GRT",
+              "source-tp": "p0"
+            },
+            "destination": {
+              "dest-node": "RegionB-CE01-GRT",
+              "dest-tp": "p0"
+            }
+          },
+          {
+            "link-id": "RegionB-CE01-GRT,p4,RegionB-VL10,p0",
+            "source": {
+              "source-node": "RegionB-CE01-GRT",
+              "source-tp": "p4"
+            },
+            "destination": {
+              "dest-node": "RegionB-VL10",
+              "dest-tp": "p0"
+            }
+          },
+          {
+            "link-id": "RegionB-VL10,p0,RegionB-CE01-GRT,p4",
+            "source": {
+              "source-node": "RegionB-VL10",
+              "source-tp": "p0"
+            },
+            "destination": {
+              "dest-node": "RegionB-CE01-GRT",
+              "dest-tp": "p4"
+            }
+          },
+          {
+            "link-id": "RegionB-CE01-GRT,p5,RegionB-VL20,p0",
+            "source": {
+              "source-node": "RegionB-CE01-GRT",
+              "source-tp": "p5"
+            },
+            "destination": {
+              "dest-node": "RegionB-VL20",
+              "dest-tp": "p0"
+            }
+          },
+          {
+            "link-id": "RegionB-VL20,p0,RegionB-CE01-GRT,p5",
+            "source": {
+              "source-node": "RegionB-VL20",
+              "source-tp": "p0"
+            },
+            "destination": {
+              "dest-node": "RegionB-CE01-GRT",
+              "dest-tp": "p5"
+            }
+          },
+          {
+            "link-id": "RegionB-CE02-GRT,p4,RegionB-VL10,p1",
+            "source": {
+              "source-node": "RegionB-CE02-GRT",
+              "source-tp": "p4"
+            },
+            "destination": {
+              "dest-node": "RegionB-VL10",
+              "dest-tp": "p1"
+            }
+          },
+          {
+            "link-id": "RegionB-VL10,p1,RegionB-CE02-GRT,p4",
+            "source": {
+              "source-node": "RegionB-VL10",
+              "source-tp": "p1"
+            },
+            "destination": {
+              "dest-node": "RegionB-CE02-GRT",
+              "dest-tp": "p4"
+            }
+          },
+          {
+            "link-id": "RegionB-CE02-GRT,p5,RegionB-VL20,p1",
+            "source": {
+              "source-node": "RegionB-CE02-GRT",
+              "source-tp": "p5"
+            },
+            "destination": {
+              "dest-node": "RegionB-VL20",
+              "dest-tp": "p1"
+            }
+          },
+          {
+            "link-id": "RegionB-VL20,p1,RegionB-CE02-GRT,p5",
+            "source": {
+              "source-node": "RegionB-VL20",
+              "source-tp": "p1"
+            },
+            "destination": {
+              "dest-node": "RegionB-CE02-GRT",
+              "dest-tp": "p5"
+            }
+          },
+          {
+            "link-id": "RegionB-CE01-VRF,p4,RegionB-VL110,p0",
+            "source": {
+              "source-node": "RegionB-CE01-VRF",
+              "source-tp": "p4"
+            },
+            "destination": {
+              "dest-node": "RegionB-VL110",
+              "dest-tp": "p0"
+            }
+          },
+          {
+            "link-id": "RegionB-VL110,p0,RegionB-CE01-VRF,p4",
+            "source": {
+              "source-node": "RegionB-VL110",
+              "source-tp": "p0"
+            },
+            "destination": {
+              "dest-node": "RegionB-CE01-VRF",
+              "dest-tp": "p4"
+            }
+          },
+          {
+            "link-id": "RegionB-CE01-VRF,p5,RegionB-VL120,p0",
+            "source": {
+              "source-node": "RegionB-CE01-VRF",
+              "source-tp": "p5"
+            },
+            "destination": {
+              "dest-node": "RegionB-VL120",
+              "dest-tp": "p0"
+            }
+          },
+          {
+            "link-id": "RegionB-VL120,p0,RegionB-CE01-VRF,p5",
+            "source": {
+              "source-node": "RegionB-VL120",
+              "source-tp": "p0"
+            },
+            "destination": {
+              "dest-node": "RegionB-CE01-VRF",
+              "dest-tp": "p5"
+            }
+          },
+          {
+            "link-id": "RegionB-CE02-VRF,p4,RegionB-VL110,p1",
+            "source": {
+              "source-node": "RegionB-CE02-VRF",
+              "source-tp": "p4"
+            },
+            "destination": {
+              "dest-node": "RegionB-VL110",
+              "dest-tp": "p1"
+            }
+          },
+          {
+            "link-id": "RegionB-VL110,p1,RegionB-CE02-VRF,p4",
+            "source": {
+              "source-node": "RegionB-VL110",
+              "source-tp": "p1"
+            },
+            "destination": {
+              "dest-node": "RegionB-CE02-VRF",
+              "dest-tp": "p4"
+            }
+          },
+          {
+            "link-id": "RegionB-CE02-VRF,p5,RegionB-VL120,p1",
+            "source": {
+              "source-node": "RegionB-CE02-VRF",
+              "source-tp": "p5"
+            },
+            "destination": {
+              "dest-node": "RegionB-VL120",
+              "dest-tp": "p1"
+            }
+          },
+          {
+            "link-id": "RegionB-VL120,p1,RegionB-CE02-VRF,p5",
+            "source": {
+              "source-node": "RegionB-VL120",
+              "source-tp": "p1"
+            },
+            "destination": {
+              "dest-node": "RegionB-CE02-VRF",
+              "dest-tp": "p5"
+            }
+          },
+          {
+            "link-id": "RegionB-VL10,p2,RegionB-Svr01,eno0",
+            "source": {
+              "source-node": "RegionB-VL10",
+              "source-tp": "p2"
+            },
+            "destination": {
+              "dest-node": "RegionB-Svr01",
+              "dest-tp": "eno0"
+            }
+          },
+          {
+            "link-id": "RegionB-Svr01,eno0,RegionB-VL10,p2",
+            "source": {
+              "source-node": "RegionB-Svr01",
+              "source-tp": "eno0"
+            },
+            "destination": {
+              "dest-node": "RegionB-VL10",
+              "dest-tp": "p2"
+            }
+          },
+          {
+            "link-id": "RegionB-VL20,p2,RegionB-Svr02,eno0",
+            "source": {
+              "source-node": "RegionB-VL20",
+              "source-tp": "p2"
+            },
+            "destination": {
+              "dest-node": "RegionB-Svr02",
+              "dest-tp": "eno0"
+            }
+          },
+          {
+            "link-id": "RegionB-Svr02,eno0,RegionB-VL20,p2",
+            "source": {
+              "source-node": "RegionB-Svr02",
+              "source-tp": "eno0"
+            },
+            "destination": {
+              "dest-node": "RegionB-VL20",
+              "dest-tp": "p2"
+            }
+          },
+          {
+            "link-id": "RegionB-VL110,p2,RegionB-Svr01,eno1",
+            "source": {
+              "source-node": "RegionB-VL110",
+              "source-tp": "p2"
+            },
+            "destination": {
+              "dest-node": "RegionB-Svr01",
+              "dest-tp": "eno1"
+            }
+          },
+          {
+            "link-id": "RegionB-Svr01,eno1,RegionB-VL110,p2",
+            "source": {
+              "source-node": "RegionB-Svr01",
+              "source-tp": "eno1"
+            },
+            "destination": {
+              "dest-node": "RegionB-VL110",
+              "dest-tp": "p2"
+            }
+          },
+          {
+            "link-id": "RegionB-VL120,p2,RegionB-Svr02,eno1",
+            "source": {
+              "source-node": "RegionB-VL120",
+              "source-tp": "p2"
+            },
+            "destination": {
+              "dest-node": "RegionB-Svr02",
+              "dest-tp": "eno1"
+            }
+          },
+          {
+            "link-id": "RegionB-Svr02,eno1,RegionB-VL120,p2",
+            "source": {
+              "source-node": "RegionB-Svr02",
+              "source-tp": "eno1"
+            },
+            "destination": {
+              "dest-node": "RegionB-VL120",
+              "dest-tp": "p2"
+            }
+          },
+          {
+            "link-id": "RegionA-PE01-GRT,p1,RegionB-PE01-GRT,p1",
+            "source": {
+              "source-node": "RegionA-PE01-GRT",
+              "source-tp": "p1"
+            },
+            "destination": {
+              "dest-node": "RegionB-PE01-GRT",
+              "dest-tp": "p1"
+            }
+          },
+          {
+            "link-id": "RegionB-PE01-GRT,p1,RegionA-PE01-GRT,p1",
+            "source": {
+              "source-node": "RegionB-PE01-GRT",
+              "source-tp": "p1"
+            },
+            "destination": {
+              "dest-node": "RegionA-PE01-GRT",
+              "dest-tp": "p1"
+            }
+          },
+          {
+            "link-id": "RegionA-PE02-GRT,p1,RegionB-PE02-GRT,p1",
+            "source": {
+              "source-node": "RegionA-PE02-GRT",
+              "source-tp": "p1"
+            },
+            "destination": {
+              "dest-node": "RegionB-PE02-GRT",
+              "dest-tp": "p1"
+            }
+          },
+          {
+            "link-id": "RegionB-PE02-GRT,p1,RegionA-PE02-GRT,p1",
+            "source": {
+              "source-node": "RegionB-PE02-GRT",
+              "source-tp": "p1"
+            },
+            "destination": {
+              "dest-node": "RegionA-PE02-GRT",
+              "dest-tp": "p1"
+            }
+          }
+        ],
+        "supporting-network": [
+          {
+            "network-ref": "layer1"
+          },
+          {
+            "network-ref": "layer2"
+          }
+        ]
+      },
+      {
+        "network-id": "ospf-proc",
+        "network-types": {
+        },
+        "node": [
+          {
+            "node-id": "RegionA-PE01",
+            "ietf-network-topology:termination-point": [
+              {
+                "tp-id": "p2",
+                "supporting-termination-point": [
+                  {
+                    "network-ref": "layer3",
+                    "node-ref": "RegionA-PE01-GRT",
+                    "tp-ref": "p2"
+                  }
+                ]
+              },
+              {
+                "tp-id": "p3",
+                "supporting-termination-point": [
+                  {
+                    "network-ref": "layer3",
+                    "node-ref": "RegionA-PE01-GRT",
+                    "tp-ref": "p3"
+                  }
+                ]
+              }
+            ],
+            "supporting-node": [
+              {
+                "network-ref": "layer3",
+                "node-ref": "RegionA-PE01-GRT"
+              }
+            ]
+          },
+          {
+            "node-id": "RegionA-PE02",
+            "ietf-network-topology:termination-point": [
+              {
+                "tp-id": "p2",
+                "supporting-termination-point": [
+                  {
+                    "network-ref": "layer3",
+                    "node-ref": "RegionA-PE02-GRT",
+                    "tp-ref": "p2"
+                  }
+                ]
+              },
+              {
+                "tp-id": "p3",
+                "supporting-termination-point": [
+                  {
+                    "network-ref": "layer3",
+                    "node-ref": "RegionA-PE02-GRT",
+                    "tp-ref": "p3"
+                  }
+                ]
+              }
+            ],
+            "supporting-node": [
+              {
+                "network-ref": "layer3",
+                "node-ref": "RegionA-PE02-GRT"
+              }
+            ]
+          },
+          {
+            "node-id": "RegionA-CE01",
+            "ietf-network-topology:termination-point": [
+              {
+                "tp-id": "p2",
+                "supporting-termination-point": [
+                  {
+                    "network-ref": "layer3",
+                    "node-ref": "RegionA-CE01-GRT",
+                    "tp-ref": "p2"
+                  }
+                ]
+              },
+              {
+                "tp-id": "p3",
+                "supporting-termination-point": [
+                  {
+                    "network-ref": "layer3",
+                    "node-ref": "RegionA-CE01-GRT",
+                    "tp-ref": "p3"
+                  }
+                ]
+              }
+            ],
+            "supporting-node": [
+              {
+                "network-ref": "layer3",
+                "node-ref": "RegionA-CE01-GRT"
+              }
+            ]
+          },
+          {
+            "node-id": "RegionA-CE02",
+            "ietf-network-topology:termination-point": [
+              {
+                "tp-id": "p2",
+                "supporting-termination-point": [
+                  {
+                    "network-ref": "layer3",
+                    "node-ref": "RegionA-CE02-GRT",
+                    "tp-ref": "p2"
+                  }
+                ]
+              },
+              {
+                "tp-id": "p3",
+                "supporting-termination-point": [
+                  {
+                    "network-ref": "layer3",
+                    "node-ref": "RegionA-CE02-GRT",
+                    "tp-ref": "p3"
+                  }
+                ]
+              }
+            ],
+            "supporting-node": [
+              {
+                "network-ref": "layer3",
+                "node-ref": "RegionA-CE02-GRT"
+              }
+            ]
+          },
+          {
+            "node-id": "RegionB-PE01",
+            "ietf-network-topology:termination-point": [
+              {
+                "tp-id": "p2",
+                "supporting-termination-point": [
+                  {
+                    "network-ref": "layer3",
+                    "node-ref": "RegionB-PE01-GRT",
+                    "tp-ref": "p2"
+                  }
+                ]
+              },
+              {
+                "tp-id": "p3",
+                "supporting-termination-point": [
+                  {
+                    "network-ref": "layer3",
+                    "node-ref": "RegionB-PE01-GRT",
+                    "tp-ref": "p3"
+                  }
+                ]
+              }
+            ],
+            "supporting-node": [
+              {
+                "network-ref": "layer3",
+                "node-ref": "RegionB-PE01-GRT"
+              }
+            ]
+          },
+          {
+            "node-id": "RegionB-PE02",
+            "ietf-network-topology:termination-point": [
+              {
+                "tp-id": "p2",
+                "supporting-termination-point": [
+                  {
+                    "network-ref": "layer3",
+                    "node-ref": "RegionB-PE02-GRT",
+                    "tp-ref": "p2"
+                  }
+                ]
+              },
+              {
+                "tp-id": "p3",
+                "supporting-termination-point": [
+                  {
+                    "network-ref": "layer3",
+                    "node-ref": "RegionB-PE02-GRT",
+                    "tp-ref": "p3"
+                  }
+                ]
+              }
+            ],
+            "supporting-node": [
+              {
+                "network-ref": "layer3",
+                "node-ref": "RegionB-PE02-GRT"
+              }
+            ]
+          },
+          {
+            "node-id": "RegionB-CE01",
+            "ietf-network-topology:termination-point": [
+              {
+                "tp-id": "p2",
+                "supporting-termination-point": [
+                  {
+                    "network-ref": "layer3",
+                    "node-ref": "RegionB-CE01-GRT",
+                    "tp-ref": "p2"
+                  }
+                ]
+              },
+              {
+                "tp-id": "p3",
+                "supporting-termination-point": [
+                  {
+                    "network-ref": "layer3",
+                    "node-ref": "RegionB-CE01-GRT",
+                    "tp-ref": "p3"
+                  }
+                ]
+              }
+            ],
+            "supporting-node": [
+              {
+                "network-ref": "layer3",
+                "node-ref": "RegionB-CE01-GRT"
+              }
+            ]
+          },
+          {
+            "node-id": "RegionB-CE02",
+            "ietf-network-topology:termination-point": [
+              {
+                "tp-id": "p2",
+                "supporting-termination-point": [
+                  {
+                    "network-ref": "layer3",
+                    "node-ref": "RegionB-CE02-GRT",
+                    "tp-ref": "p2"
+                  }
+                ]
+              },
+              {
+                "tp-id": "p3",
+                "supporting-termination-point": [
+                  {
+                    "network-ref": "layer3",
+                    "node-ref": "RegionB-CE02-GRT",
+                    "tp-ref": "p3"
+                  }
+                ]
+              }
+            ],
+            "supporting-node": [
+              {
+                "network-ref": "layer3",
+                "node-ref": "RegionB-CE02-GRT"
+              }
+            ]
+          }
+        ],
+        "ietf-network-topology:link": [
+          {
+            "link-id": "RegionA-PE01,p2,RegionA-CE01,p2",
+            "source": {
+              "source-node": "RegionA-PE01",
+              "source-tp": "p2"
+            },
+            "destination": {
+              "dest-node": "RegionA-CE01",
+              "dest-tp": "p2"
+            }
+          },
+          {
+            "link-id": "RegionA-CE01,p2,RegionA-PE01,p2",
+            "source": {
+              "source-node": "RegionA-CE01",
+              "source-tp": "p2"
+            },
+            "destination": {
+              "dest-node": "RegionA-PE01",
+              "dest-tp": "p2"
+            }
+          },
+          {
+            "link-id": "RegionA-PE01,p3,RegionA-CE02,p2",
+            "source": {
+              "source-node": "RegionA-PE01",
+              "source-tp": "p3"
+            },
+            "destination": {
+              "dest-node": "RegionA-CE02",
+              "dest-tp": "p2"
+            }
+          },
+          {
+            "link-id": "RegionA-CE02,p2,RegionA-PE01,p3",
+            "source": {
+              "source-node": "RegionA-CE02",
+              "source-tp": "p2"
+            },
+            "destination": {
+              "dest-node": "RegionA-PE01",
+              "dest-tp": "p3"
+            }
+          },
+          {
+            "link-id": "RegionA-PE02,p2,RegionA-CE01,p3",
+            "source": {
+              "source-node": "RegionA-PE02",
+              "source-tp": "p2"
+            },
+            "destination": {
+              "dest-node": "RegionA-CE01",
+              "dest-tp": "p3"
+            }
+          },
+          {
+            "link-id": "RegionA-CE01,p3,RegionA-PE02,p2",
+            "source": {
+              "source-node": "RegionA-CE01",
+              "source-tp": "p3"
+            },
+            "destination": {
+              "dest-node": "RegionA-PE02",
+              "dest-tp": "p2"
+            }
+          },
+          {
+            "link-id": "RegionA-PE02,p3,RegionA-CE02,p3",
+            "source": {
+              "source-node": "RegionA-PE02",
+              "source-tp": "p3"
+            },
+            "destination": {
+              "dest-node": "RegionA-CE02",
+              "dest-tp": "p3"
+            }
+          },
+          {
+            "link-id": "RegionA-CE02,p3,RegionA-PE02,p3",
+            "source": {
+              "source-node": "RegionA-CE02",
+              "source-tp": "p3"
+            },
+            "destination": {
+              "dest-node": "RegionA-PE02",
+              "dest-tp": "p3"
+            }
+          },
+          {
+            "link-id": "RegionB-PE01,p2,RegionB-CE01,p2",
+            "source": {
+              "source-node": "RegionB-PE01",
+              "source-tp": "p2"
+            },
+            "destination": {
+              "dest-node": "RegionB-CE01",
+              "dest-tp": "p2"
+            }
+          },
+          {
+            "link-id": "RegionB-CE01,p2,RegionB-PE01,p2",
+            "source": {
+              "source-node": "RegionB-CE01",
+              "source-tp": "p2"
+            },
+            "destination": {
+              "dest-node": "RegionB-PE01",
+              "dest-tp": "p2"
+            }
+          },
+          {
+            "link-id": "RegionB-PE01,p3,RegionB-CE02,p2",
+            "source": {
+              "source-node": "RegionB-PE01",
+              "source-tp": "p3"
+            },
+            "destination": {
+              "dest-node": "RegionB-CE02",
+              "dest-tp": "p2"
+            }
+          },
+          {
+            "link-id": "RegionB-CE02,p2,RegionB-PE01,p3",
+            "source": {
+              "source-node": "RegionB-CE02",
+              "source-tp": "p2"
+            },
+            "destination": {
+              "dest-node": "RegionB-PE01",
+              "dest-tp": "p3"
+            }
+          },
+          {
+            "link-id": "RegionB-PE02,p2,RegionB-CE01,p3",
+            "source": {
+              "source-node": "RegionB-PE02",
+              "source-tp": "p2"
+            },
+            "destination": {
+              "dest-node": "RegionB-CE01",
+              "dest-tp": "p3"
+            }
+          },
+          {
+            "link-id": "RegionB-CE01,p3,RegionB-PE02,p2",
+            "source": {
+              "source-node": "RegionB-CE01",
+              "source-tp": "p3"
+            },
+            "destination": {
+              "dest-node": "RegionB-PE02",
+              "dest-tp": "p2"
+            }
+          },
+          {
+            "link-id": "RegionB-PE02,p3,RegionB-CE02,p3",
+            "source": {
+              "source-node": "RegionB-PE02",
+              "source-tp": "p3"
+            },
+            "destination": {
+              "dest-node": "RegionB-CE02",
+              "dest-tp": "p3"
+            }
+          },
+          {
+            "link-id": "RegionB-CE02,p3,RegionB-PE02,p3",
+            "source": {
+              "source-node": "RegionB-CE02",
+              "source-tp": "p3"
+            },
+            "destination": {
+              "dest-node": "RegionB-PE02",
+              "dest-tp": "p3"
+            }
+          }
+        ],
+        "supporting-network": [
+          {
+            "network-ref": "layer3"
+          }
+        ]
+      },
+      {
+        "network-id": "bgp-proc",
+        "network-types": {
+        },
+        "node": [
+          {
+            "node-id": "RegionA-PE01",
+            "ietf-network-topology:termination-point": [
+              {
+                "tp-id": "p0",
+                "supporting-termination-point": [
+                  {
+                    "network-ref": "layer3",
+                    "node-ref": "RegionA-PE01-GRT",
+                    "tp-ref": "p0"
+                  }
+                ]
+              },
+              {
+                "tp-id": "p1",
+                "supporting-termination-point": [
+                  {
+                    "network-ref": "layer3",
+                    "node-ref": "RegionA-PE01-GRT",
+                    "tp-ref": "p1"
+                  }
+                ]
+              }
+            ],
+            "supporting-node": [
+              {
+                "network-ref": "layer3",
+                "node-ref": "RegionA-PE01-GRT"
+              }
+            ]
+          },
+          {
+            "node-id": "RegionA-PE02",
+            "ietf-network-topology:termination-point": [
+              {
+                "tp-id": "p0",
+                "supporting-termination-point": [
+                  {
+                    "network-ref": "layer3",
+                    "node-ref": "RegionA-PE02-GRT",
+                    "tp-ref": "p0"
+                  }
+                ]
+              },
+              {
+                "tp-id": "p1",
+                "supporting-termination-point": [
+                  {
+                    "network-ref": "layer3",
+                    "node-ref": "RegionA-PE02-GRT",
+                    "tp-ref": "p1"
+                  }
+                ]
+              }
+            ],
+            "supporting-node": [
+              {
+                "network-ref": "layer3",
+                "node-ref": "RegionA-PE02-GRT"
+              }
+            ]
+          },
+          {
+            "node-id": "RegionB-PE01",
+            "ietf-network-topology:termination-point": [
+              {
+                "tp-id": "p0",
+                "supporting-termination-point": [
+                  {
+                    "network-ref": "layer3",
+                    "node-ref": "RegionB-PE01-GRT",
+                    "tp-ref": "p0"
+                  }
+                ]
+              },
+              {
+                "tp-id": "p1",
+                "supporting-termination-point": [
+                  {
+                    "network-ref": "layer3",
+                    "node-ref": "RegionB-PE01-GRT",
+                    "tp-ref": "p1"
+                  }
+                ]
+              }
+            ],
+            "supporting-node": [
+              {
+                "network-ref": "layer3",
+                "node-ref": "RegionB-PE01-GRT"
+              }
+            ]
+          },
+          {
+            "node-id": "RegionB-PE02",
+            "ietf-network-topology:termination-point": [
+              {
+                "tp-id": "p0",
+                "supporting-termination-point": [
+                  {
+                    "network-ref": "layer3",
+                    "node-ref": "RegionB-PE02-GRT",
+                    "tp-ref": "p0"
+                  }
+                ]
+              },
+              {
+                "tp-id": "p1",
+                "supporting-termination-point": [
+                  {
+                    "network-ref": "layer3",
+                    "node-ref": "RegionB-PE02-GRT",
+                    "tp-ref": "p1"
+                  }
+                ]
+              }
+            ],
+            "supporting-node": [
+              {
+                "network-ref": "layer3",
+                "node-ref": "RegionB-PE02-GRT"
+              }
+            ]
+          }
+        ],
+        "ietf-network-topology:link": [
+          {
+            "link-id": "RegionA-PE01,p0,RegionA-PE02,p0",
+            "source": {
+              "source-node": "RegionA-PE01",
+              "source-tp": "p0"
+            },
+            "destination": {
+              "dest-node": "RegionA-PE02",
+              "dest-tp": "p0"
+            }
+          },
+          {
+            "link-id": "RegionA-PE02,p0,RegionA-PE01,p0",
+            "source": {
+              "source-node": "RegionA-PE02",
+              "source-tp": "p0"
+            },
+            "destination": {
+              "dest-node": "RegionA-PE01",
+              "dest-tp": "p0"
+            }
+          },
+          {
+            "link-id": "RegionB-PE01,p0,RegionB-PE02,p0",
+            "source": {
+              "source-node": "RegionB-PE01",
+              "source-tp": "p0"
+            },
+            "destination": {
+              "dest-node": "RegionB-PE02",
+              "dest-tp": "p0"
+            }
+          },
+          {
+            "link-id": "RegionB-PE02,p0,RegionB-PE01,p0",
+            "source": {
+              "source-node": "RegionB-PE02",
+              "source-tp": "p0"
+            },
+            "destination": {
+              "dest-node": "RegionB-PE01",
+              "dest-tp": "p0"
+            }
+          },
+          {
+            "link-id": "RegionA-PE01,p1,RegionB-PE01,p1",
+            "source": {
+              "source-node": "RegionA-PE01",
+              "source-tp": "p1"
+            },
+            "destination": {
+              "dest-node": "RegionB-PE01",
+              "dest-tp": "p1"
+            }
+          },
+          {
+            "link-id": "RegionB-PE01,p1,RegionA-PE01,p1",
+            "source": {
+              "source-node": "RegionB-PE01",
+              "source-tp": "p1"
+            },
+            "destination": {
+              "dest-node": "RegionA-PE01",
+              "dest-tp": "p1"
+            }
+          },
+          {
+            "link-id": "RegionA-PE02,p1,RegionB-PE02,p1",
+            "source": {
+              "source-node": "RegionA-PE02",
+              "source-tp": "p1"
+            },
+            "destination": {
+              "dest-node": "RegionB-PE02",
+              "dest-tp": "p1"
+            }
+          },
+          {
+            "link-id": "RegionB-PE02,p1,RegionA-PE02,p1",
+            "source": {
+              "source-node": "RegionB-PE02",
+              "source-tp": "p1"
+            },
+            "destination": {
+              "dest-node": "RegionA-PE02",
+              "dest-tp": "p1"
+            }
+          }
+        ],
+        "supporting-network": [
+          {
+            "network-ref": "layer3"
+          }
+        ]
+      },
+      {
+        "network-id": "region",
+        "network-types": {
+        },
+        "node": [
+          {
+            "node-id": "RegionA",
+            "ietf-network-topology:termination-point": [
+              {
+                "tp-id": "p0",
+                "supporting-termination-point": [
+                  {
+                    "network-ref": "bgp-proc",
+                    "node-ref": "RegionA-PE01",
+                    "tp-ref": "p0"
+                  }
+                ]
+              },
+              {
+                "tp-id": "p1",
+                "supporting-termination-point": [
+                  {
+                    "network-ref": "bgp-proc",
+                    "node-ref": "RegionA-PE02",
+                    "tp-ref": "p0"
+                  }
+                ]
+              }
+            ],
+            "supporting-node": [
+              {
+                "network-ref": "bgp-proc",
+                "node-ref": "RegionA-PE01"
+              },
+              {
+                "network-ref": "bgp-proc",
+                "node-ref": "RegionA-PE02"
+              },
+              {
+                "network-ref": "ospf-proc",
+                "node-ref": "RegionA-PE01"
+              },
+              {
+                "network-ref": "ospf-proc",
+                "node-ref": "RegionA-PE02"
+              },
+              {
+                "network-ref": "ospf-proc",
+                "node-ref": "RegionA-CE01"
+              },
+              {
+                "network-ref": "ospf-proc",
+                "node-ref": "RegionA-CE02"
+              },
+              {
+                "network-ref": "layer3",
+                "node-ref": "RegionA-CE01-VRF"
+              },
+              {
+                "network-ref": "layer3",
+                "node-ref": "RegionA-CE02-VRF"
+              },
+              {
+                "network-ref": "layer3",
+                "node-ref": "RegionA-VL10"
+              },
+              {
+                "network-ref": "layer3",
+                "node-ref": "RegionA-VL20"
+              },
+              {
+                "network-ref": "layer3",
+                "node-ref": "RegionA-VL110"
+              },
+              {
+                "network-ref": "layer3",
+                "node-ref": "RegionA-VL120"
+              },
+              {
+                "network-ref": "layer3",
+                "node-ref": "RegionA-Svr01"
+              },
+              {
+                "network-ref": "layer3",
+                "node-ref": "RegionA-Svr02"
+              }
+            ]
+          },
+          {
+            "node-id": "RegionB",
+            "ietf-network-topology:termination-point": [
+              {
+                "tp-id": "p0",
+                "supporting-termination-point": [
+                  {
+                    "network-ref": "bgp-proc",
+                    "node-ref": "RegionB-PE01",
+                    "tp-ref": "p0"
+                  }
+                ]
+              },
+              {
+                "tp-id": "p1",
+                "supporting-termination-point": [
+                  {
+                    "network-ref": "bgp-proc",
+                    "node-ref": "RegionB-PE02",
+                    "tp-ref": "p0"
+                  }
+                ]
+              }
+            ],
+            "supporting-node": [
+              {
+                "network-ref": "bgp-proc",
+                "node-ref": "RegionB-PE01"
+              },
+              {
+                "network-ref": "bgp-proc",
+                "node-ref": "RegionB-PE02"
+              },
+              {
+                "network-ref": "ospf-proc",
+                "node-ref": "RegionB-PE01"
+              },
+              {
+                "network-ref": "ospf-proc",
+                "node-ref": "RegionB-PE02"
+              },
+              {
+                "network-ref": "ospf-proc",
+                "node-ref": "RegionB-CE01"
+              },
+              {
+                "network-ref": "ospf-proc",
+                "node-ref": "RegionB-CE02"
+              },
+              {
+                "network-ref": "layer3",
+                "node-ref": "RegionB-CE01-VRF"
+              },
+              {
+                "network-ref": "layer3",
+                "node-ref": "RegionB-CE02-VRF"
+              },
+              {
+                "network-ref": "layer3",
+                "node-ref": "RegionB-VL10"
+              },
+              {
+                "network-ref": "layer3",
+                "node-ref": "RegionB-VL20"
+              },
+              {
+                "network-ref": "layer3",
+                "node-ref": "RegionB-VL110"
+              },
+              {
+                "network-ref": "layer3",
+                "node-ref": "RegionB-VL120"
+              },
+              {
+                "network-ref": "layer3",
+                "node-ref": "RegionB-Svr01"
+              },
+              {
+                "network-ref": "layer3",
+                "node-ref": "RegionB-Svr02"
+              }
+            ]
+          }
+        ],
+        "ietf-network-topology:link": [
+          {
+            "link-id": "RegionA,p0,RegionB,p0",
+            "source": {
+              "source-node": "RegionA",
+              "source-tp": "p0"
+            },
+            "destination": {
+              "dest-node": "RegionB",
+              "dest-tp": "p0"
+            }
+          },
+          {
+            "link-id": "RegionB,p0,RegionA,p0",
+            "source": {
+              "source-node": "RegionB",
+              "source-tp": "p0"
+            },
+            "destination": {
+              "dest-node": "RegionA",
+              "dest-tp": "p0"
+            }
+          },
+          {
+            "link-id": "RegionA,p1,RegionB,p1",
+            "source": {
+              "source-node": "RegionA",
+              "source-tp": "p1"
+            },
+            "destination": {
+              "dest-node": "RegionB",
+              "dest-tp": "p1"
+            }
+          },
+          {
+            "link-id": "RegionB,p1,RegionA,p1",
+            "source": {
+              "source-node": "RegionB",
+              "source-tp": "p1"
+            },
+            "destination": {
+              "dest-node": "RegionA",
+              "dest-tp": "p1"
+            }
+          }
+        ],
+        "supporting-network": [
+          {
+            "network-ref": "bgp-proc"
+          },
+          {
+            "network-ref": "ospf-proc"
+          }
+        ]
+      }
+    ]
+  }
+}
