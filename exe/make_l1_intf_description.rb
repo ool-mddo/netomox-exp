@@ -24,6 +24,16 @@ def layer1_link_table(l1_nw)
 end
 # rubocop:enable Metrics/MethodLength
 
+def normal_hostname(hostname)
+  hostname.gsub!(/region([ab])-(pe|ce)(\d+)/) do
+    "Region#{Regexp.last_match(1).upcase}-#{Regexp.last_match(2).upcase}#{Regexp.last_match(3)}"
+  end
+  hostname.gsub!(/region([ab])-(acc|svr)(\d+)/) do
+    "Region#{Regexp.last_match(1).upcase}-#{Regexp.last_match(2).capitalize}#{Regexp.last_match(3)}"
+  end
+  hostname
+end
+
 ## main
 
 opts = ARGV.getopts('i:', 'input:')
@@ -38,11 +48,11 @@ nws = Netomox::Topology::Networks.new(raw_topology_data)
 l1_nw = nws.find_network('layer1')
 
 puts ' , Source_Node, Source_Interface, Destination_Node, Destination_Interface, Source_Interface_Description'
-layer1_link_table(l1_nw).each do |l|
+layer1_link_table(l1_nw).each do |rec|
   puts [
-    l[:number],
-    l[:src_node], l[:src_tp],
-    l[:dst_node], l[:dst_tp],
-    "to_#{l[:dst_node]}_#{l[:dst_tp]}"
+    rec[:number],
+    normal_hostname(rec[:src_node]), rec[:src_tp],
+    normal_hostname(rec[:dst_node]), rec[:dst_tp],
+    "to_#{normal_hostname(rec[:dst_node])}_#{rec[:dst_tp]}"
   ].join(', ')
 end
