@@ -54,7 +54,7 @@ class L3DataBuilder < L3DataChecker
     l3_tp.supports.push([@layer2p.name, l2_edge.node, l2_edge.tp])
     tp_prop = @intf_props.find_record_by_node_intf(rec.node, rec.interface)
     l3_tp.attribute = {
-      ip_address: ["#{rec.ip}/#{rec.mask}"],
+      ip_addrs: ["#{rec.ip}/#{rec.mask}"],
       description: tp_prop ? tp_prop.description : ''
     }
     l3_tp
@@ -173,14 +173,14 @@ class L3DataBuilder < L3DataChecker
   # @param [PNode] l3_node Layer3 node
   # @return [Array<PTermPoint>] Found term-points
   def find_all_l3_tps_has_ipaddr(l3_node)
-    l3_node.tps.filter { |tp| tp.attribute[:ip_address]&.length&.positive? }
+    l3_node.tps.filter { |tp| tp.attribute[:ip_addrs]&.length&.positive? }
   end
 
   # @param [PNode] l3_node Layer3 node
   # @return [Array<Hash>] A list of layer3 node prefix (directly connected routes)
   def node_prefixes_at_l3_node(l3_node)
     find_all_l3_tps_has_ipaddr(l3_node).map do |tp|
-      ip = IPAddress::IPv4.new(tp.attribute[:ip_address][0])
+      ip = IPAddress::IPv4.new(tp.attribute[:ip_addrs][0])
       { prefix: "#{ip.network}/#{ip.prefix}", metric: 0, flags: %w[directly-connected] }
     end
   end
@@ -188,8 +188,10 @@ class L3DataBuilder < L3DataChecker
   # Set layer3 node attribute (prefixes) according to its term-point
   # @return [void]
   def update_node_attribute
+    debug_print '# update node attribute'
     find_all_node_type_nodes.each do |l3_node|
       prefixes = node_prefixes_at_l3_node(l3_node)
+      debug_print "- node: #{l3_node.name}, prefixes: #{prefixes}"
       l3_node.attribute[:prefixes] = prefixes
     end
   end
