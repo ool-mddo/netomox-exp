@@ -21,7 +21,7 @@
                   }
                 ],
                 "mddo-topology:l3-termination-point-attributes": {
-                  "description": "",
+                  "description": "to_RegionA-PE01_GigabitEthernet0/0/0/0",
                   "ip-address": [
                     "10.1.0.2/30"
                   ],
@@ -40,7 +40,7 @@
                   }
                 ],
                 "mddo-topology:l3-termination-point-attributes": {
-                  "description": "",
+                  "description": "to_RegionB-PE02_ge-0/0/1",
                   "ip-address": [
                     "172.17.0.1/30"
                   ],
@@ -59,7 +59,7 @@
                   }
                 ],
                 "mddo-topology:l3-termination-point-attributes": {
-                  "description": "",
+                  "description": "to_RegionB-CE01_ge-0/0/0",
                   "ip-address": [
                     "172.17.1.1/30"
                   ],
@@ -78,7 +78,7 @@
                   }
                 ],
                 "mddo-topology:l3-termination-point-attributes": {
-                  "description": "",
+                  "description": "to_RegionB-CE02_ge-0/0/0",
                   "ip-address": [
                     "172.17.2.1/30"
                   ],
@@ -156,7 +156,7 @@
                   }
                 ],
                 "mddo-topology:l3-termination-point-attributes": {
-                  "description": "",
+                  "description": "to_RegionB-PE01_ge-0/0/0",
                   "ip-address": [
                     "10.1.0.1/30"
                   ],
@@ -175,7 +175,7 @@
                   }
                 ],
                 "mddo-topology:l3-termination-point-attributes": {
-                  "description": "",
+                  "description": "to_RegionA-PE02_GigabitEthernet0/0/0/1",
                   "ip-address": [
                     "172.16.0.1/30"
                   ],
@@ -194,7 +194,7 @@
                   }
                 ],
                 "mddo-topology:l3-termination-point-attributes": {
-                  "description": "",
+                  "description": "to_RegionA-CE02_Ethernet1",
                   "ip-address": [
                     "172.16.2.1/30"
                   ],
@@ -213,7 +213,7 @@
                   }
                 ],
                 "mddo-topology:l3-termination-point-attributes": {
-                  "description": "",
+                  "description": "to_RegionA-CE01_Ethernet1",
                   "ip-address": [
                     "172.16.1.1/30"
                   ],
@@ -291,7 +291,7 @@
                   }
                 ],
                 "mddo-topology:l3-termination-point-attributes": {
-                  "description": "",
+                  "description": "to_RegionB-PE01_ge-0/0/1",
                   "ip-address": [
                     "172.17.0.2/30"
                   ],
@@ -310,7 +310,7 @@
                   }
                 ],
                 "mddo-topology:l3-termination-point-attributes": {
-                  "description": "",
+                  "description": "to_RegionB-CE02_ge-0/0/1",
                   "ip-address": [
                     "172.17.4.1/30"
                   ],
@@ -329,7 +329,7 @@
                   }
                 ],
                 "mddo-topology:l3-termination-point-attributes": {
-                  "description": "",
+                  "description": "to_RegionB-CE01_ge-0/0/1",
                   "ip-address": [
                     "172.17.3.1/30"
                   ],
@@ -348,7 +348,7 @@
                   }
                 ],
                 "mddo-topology:l3-termination-point-attributes": {
-                  "description": "",
+                  "description": "to_RegionA-PE02_GigabitEthernet0/0/0/0",
                   "ip-address": [
                     "10.1.1.2/30"
                   ],
@@ -426,7 +426,7 @@
                   }
                 ],
                 "mddo-topology:l3-termination-point-attributes": {
-                  "description": "",
+                  "description": "to_RegionB-PE01_ge-0/0/2",
                   "ip-address": [
                     "172.17.1.2/30"
                   ],
@@ -540,7 +540,7 @@
                   }
                 ],
                 "mddo-topology:l3-termination-point-attributes": {
-                  "description": "",
+                  "description": "to_RegionB-PE02_ge-0/0/2",
                   "ip-address": [
                     "172.17.3.2/30"
                   ],
@@ -629,7 +629,7 @@
                   }
                 ],
                 "mddo-topology:l3-termination-point-attributes": {
-                  "description": "",
+                  "description": "to_RegionB-PE01_ge-0/0/3",
                   "ip-address": [
                     "172.17.2.2/30"
                   ],
@@ -648,7 +648,7 @@
                   }
                 ],
                 "mddo-topology:l3-termination-point-attributes": {
-                  "description": "",
+                  "description": "to_RegionB-PE02_ge-0/0/3",
                   "ip-address": [
                     "172.17.4.2/30"
                   ],
@@ -832,7 +832,7 @@
                   }
                 ],
                 "mddo-topology:l3-termination-point-attributes": {
-                  "description": "",
+                  "description": "to_RegionB-Acc01_Ethernet5",
                   "ip-address": [
                     "172.31.10.100/24"
                   ],
@@ -851,7 +851,7 @@
                   }
                 ],
                 "mddo-topology:l3-termination-point-attributes": {
-                  "description": "",
+                  "description": "to_RegionB-Acc01_Ethernet5",
                   "ip-address": [
                     "172.31.10.100/24"
                   ],
@@ -870,7 +870,7 @@
                   }
                 ],
                 "mddo-topology:l3-termination-point-attributes": {
-                  "description": "",
+                  "description": "to_RegionB-Acc01_Ethernet6",
                   "ip-address": [
                     "172.31.110.100/24"
                   ],
@@ -889,7 +889,7 @@
                   }
                 ],
                 "mddo-topology:l3-termination-point-attributes": {
-                  "description": "",
+                  "description": "to_RegionB-Acc01_Ethernet6",
                   "ip-address": [
                     "172.31.110.100/24"
                   ],
@@ -1171,7 +1171,7 @@
                   }
                 ],
                 "mddo-topology:l3-termination-point-attributes": {
-                  "description": "",
+                  "description": "to_RegionB-Acc02_Ethernet5",
                   "ip-address": [
                     "172.31.20.100/24"
                   ],
@@ -1190,7 +1190,7 @@
                   }
                 ],
                 "mddo-topology:l3-termination-point-attributes": {
-                  "description": "",
+                  "description": "to_RegionB-Acc02_Ethernet5",
                   "ip-address": [
                     "172.31.20.100/24"
                   ],
@@ -1209,7 +1209,7 @@
                   }
                 ],
                 "mddo-topology:l3-termination-point-attributes": {
-                  "description": "",
+                  "description": "to_RegionB-Acc02_Ethernet6",
                   "ip-address": [
                     "172.31.120.100/24"
                   ],
@@ -1228,7 +1228,7 @@
                   }
                 ],
                 "mddo-topology:l3-termination-point-attributes": {
-                  "description": "",
+                  "description": "to_RegionB-Acc02_Ethernet6",
                   "ip-address": [
                     "172.31.120.100/24"
                   ],
@@ -1284,7 +1284,7 @@
                   }
                 ],
                 "mddo-topology:l3-termination-point-attributes": {
-                  "description": "",
+                  "description": "to_RegionB-PE02_ge-0/0/0",
                   "ip-address": [
                     "10.1.1.1/30"
                   ],
@@ -1303,7 +1303,7 @@
                   }
                 ],
                 "mddo-topology:l3-termination-point-attributes": {
-                  "description": "",
+                  "description": "to_RegionA-PE01_GigabitEthernet0/0/0/1",
                   "ip-address": [
                     "172.16.0.2/30"
                   ],
@@ -1322,7 +1322,7 @@
                   }
                 ],
                 "mddo-topology:l3-termination-point-attributes": {
-                  "description": "",
+                  "description": "to_RegionA-CE01_Ethernet2",
                   "ip-address": [
                     "172.16.3.1/30"
                   ],
@@ -1341,7 +1341,7 @@
                   }
                 ],
                 "mddo-topology:l3-termination-point-attributes": {
-                  "description": "",
+                  "description": "to_RegionA-CE02_Ethernet2",
                   "ip-address": [
                     "172.16.4.1/30"
                   ],
@@ -1419,7 +1419,7 @@
                   }
                 ],
                 "mddo-topology:l3-termination-point-attributes": {
-                  "description": "",
+                  "description": "to_RegionA-PE02_GigabitEthernet0/0/0/2",
                   "ip-address": [
                     "172.16.3.2/30"
                   ],
@@ -1533,7 +1533,7 @@
                   }
                 ],
                 "mddo-topology:l3-termination-point-attributes": {
-                  "description": "",
+                  "description": "to_RegionA-PE01_GigabitEthernet0/0/0/2",
                   "ip-address": [
                     "172.16.1.2/30"
                   ],
@@ -1622,7 +1622,7 @@
                   }
                 ],
                 "mddo-topology:l3-termination-point-attributes": {
-                  "description": "",
+                  "description": "to_RegionA-PE02_GigabitEthernet0/0/0/3",
                   "ip-address": [
                     "172.16.4.2/30"
                   ],
@@ -1641,7 +1641,7 @@
                   }
                 ],
                 "mddo-topology:l3-termination-point-attributes": {
-                  "description": "",
+                  "description": "to_RegionA-PE01_GigabitEthernet0/0/0/3",
                   "ip-address": [
                     "172.16.2.2/30"
                   ],
@@ -1825,7 +1825,7 @@
                   }
                 ],
                 "mddo-topology:l3-termination-point-attributes": {
-                  "description": "",
+                  "description": "to_RegionA-Acc01_Ethernet9",
                   "ip-address": [
                     "172.30.10.100/24"
                   ],
@@ -1844,7 +1844,7 @@
                   }
                 ],
                 "mddo-topology:l3-termination-point-attributes": {
-                  "description": "",
+                  "description": "to_RegionA-Acc01_Ethernet9",
                   "ip-address": [
                     "172.30.10.100/24"
                   ],
@@ -1863,7 +1863,7 @@
                   }
                 ],
                 "mddo-topology:l3-termination-point-attributes": {
-                  "description": "",
+                  "description": "to_RegionA-Acc01_Ethernet9",
                   "ip-address": [
                     "172.30.10.100/24"
                   ],
@@ -1882,7 +1882,7 @@
                   }
                 ],
                 "mddo-topology:l3-termination-point-attributes": {
-                  "description": "",
+                  "description": "to_RegionA-Acc01_Ethernet10",
                   "ip-address": [
                     "172.30.110.100/24"
                   ],
@@ -1901,7 +1901,7 @@
                   }
                 ],
                 "mddo-topology:l3-termination-point-attributes": {
-                  "description": "",
+                  "description": "to_RegionA-Acc01_Ethernet10",
                   "ip-address": [
                     "172.30.110.100/24"
                   ],
@@ -1920,7 +1920,7 @@
                   }
                 ],
                 "mddo-topology:l3-termination-point-attributes": {
-                  "description": "",
+                  "description": "to_RegionA-Acc01_Ethernet10",
                   "ip-address": [
                     "172.30.110.100/24"
                   ],
@@ -1976,7 +1976,7 @@
                   }
                 ],
                 "mddo-topology:l3-termination-point-attributes": {
-                  "description": "",
+                  "description": "to_RegionA-Acc01_Ethernet11",
                   "ip-address": [
                     "172.30.10.101/24"
                   ],
@@ -1995,7 +1995,7 @@
                   }
                 ],
                 "mddo-topology:l3-termination-point-attributes": {
-                  "description": "",
+                  "description": "to_RegionA-Acc01_Ethernet11",
                   "ip-address": [
                     "172.30.10.101/24"
                   ],
@@ -2014,7 +2014,7 @@
                   }
                 ],
                 "mddo-topology:l3-termination-point-attributes": {
-                  "description": "",
+                  "description": "to_RegionA-Acc01_Ethernet11",
                   "ip-address": [
                     "172.30.10.101/24"
                   ],
@@ -2033,7 +2033,7 @@
                   }
                 ],
                 "mddo-topology:l3-termination-point-attributes": {
-                  "description": "",
+                  "description": "to_RegionA-Acc01_Ethernet12",
                   "ip-address": [
                     "172.30.110.101/24"
                   ],
@@ -2052,7 +2052,7 @@
                   }
                 ],
                 "mddo-topology:l3-termination-point-attributes": {
-                  "description": "",
+                  "description": "to_RegionA-Acc01_Ethernet12",
                   "ip-address": [
                     "172.30.110.101/24"
                   ],
@@ -2071,7 +2071,7 @@
                   }
                 ],
                 "mddo-topology:l3-termination-point-attributes": {
-                  "description": "",
+                  "description": "to_RegionA-Acc01_Ethernet12",
                   "ip-address": [
                     "172.30.110.101/24"
                   ],
@@ -3294,7 +3294,7 @@
                   }
                 ],
                 "mddo-topology:l3-termination-point-attributes": {
-                  "description": "",
+                  "description": "to_RegionA-PE01_GigabitEthernet0/0/0/0",
                   "ip-address": [
                     "10.1.0.2/30"
                   ],
@@ -3313,7 +3313,7 @@
                   }
                 ],
                 "mddo-topology:l3-termination-point-attributes": {
-                  "description": "",
+                  "description": "to_RegionB-PE02_ge-0/0/1",
                   "ip-address": [
                     "172.17.0.1/30"
                   ],
@@ -3332,7 +3332,7 @@
                   }
                 ],
                 "mddo-topology:l3-termination-point-attributes": {
-                  "description": "",
+                  "description": "to_RegionB-CE01_ge-0/0/0",
                   "ip-address": [
                     "172.17.1.1/30"
                   ],
@@ -3351,7 +3351,7 @@
                   }
                 ],
                 "mddo-topology:l3-termination-point-attributes": {
-                  "description": "",
+                  "description": "to_RegionB-CE02_ge-0/0/0",
                   "ip-address": [
                     "172.17.2.1/30"
                   ],
@@ -3429,7 +3429,7 @@
                   }
                 ],
                 "mddo-topology:l3-termination-point-attributes": {
-                  "description": "",
+                  "description": "to_RegionB-PE01_ge-0/0/0",
                   "ip-address": [
                     "10.1.0.1/30"
                   ],
@@ -3448,7 +3448,7 @@
                   }
                 ],
                 "mddo-topology:l3-termination-point-attributes": {
-                  "description": "",
+                  "description": "to_RegionA-PE02_GigabitEthernet0/0/0/1",
                   "ip-address": [
                     "172.16.0.1/30"
                   ],
@@ -3467,7 +3467,7 @@
                   }
                 ],
                 "mddo-topology:l3-termination-point-attributes": {
-                  "description": "",
+                  "description": "to_RegionA-CE02_Ethernet1",
                   "ip-address": [
                     "172.16.2.1/30"
                   ],
@@ -3486,7 +3486,7 @@
                   }
                 ],
                 "mddo-topology:l3-termination-point-attributes": {
-                  "description": "",
+                  "description": "to_RegionA-CE01_Ethernet1",
                   "ip-address": [
                     "172.16.1.1/30"
                   ],
@@ -3614,7 +3614,7 @@
                   }
                 ],
                 "mddo-topology:l3-termination-point-attributes": {
-                  "description": "",
+                  "description": "to_RegionB-PE01_ge-0/0/1",
                   "ip-address": [
                     "172.17.0.2/30"
                   ],
@@ -3633,7 +3633,7 @@
                   }
                 ],
                 "mddo-topology:l3-termination-point-attributes": {
-                  "description": "",
+                  "description": "to_RegionB-CE02_ge-0/0/1",
                   "ip-address": [
                     "172.17.4.1/30"
                   ],
@@ -3652,7 +3652,7 @@
                   }
                 ],
                 "mddo-topology:l3-termination-point-attributes": {
-                  "description": "",
+                  "description": "to_RegionB-CE01_ge-0/0/1",
                   "ip-address": [
                     "172.17.3.1/30"
                   ],
@@ -3671,7 +3671,7 @@
                   }
                 ],
                 "mddo-topology:l3-termination-point-attributes": {
-                  "description": "",
+                  "description": "to_RegionA-PE02_GigabitEthernet0/0/0/0",
                   "ip-address": [
                     "10.1.1.2/30"
                   ],
@@ -3799,7 +3799,7 @@
                   }
                 ],
                 "mddo-topology:l3-termination-point-attributes": {
-                  "description": "",
+                  "description": "to_RegionB-PE01_ge-0/0/2",
                   "ip-address": [
                     "172.17.1.2/30"
                   ],
@@ -3875,7 +3875,7 @@
                   }
                 ],
                 "mddo-topology:l3-termination-point-attributes": {
-                  "description": "",
+                  "description": "to_RegionB-PE02_ge-0/0/2",
                   "ip-address": [
                     "172.17.3.2/30"
                   ],
@@ -4014,7 +4014,7 @@
                   }
                 ],
                 "mddo-topology:l3-termination-point-attributes": {
-                  "description": "",
+                  "description": "to_RegionB-PE01_ge-0/0/3",
                   "ip-address": [
                     "172.17.2.2/30"
                   ],
@@ -4033,7 +4033,7 @@
                   }
                 ],
                 "mddo-topology:l3-termination-point-attributes": {
-                  "description": "",
+                  "description": "to_RegionB-PE02_ge-0/0/3",
                   "ip-address": [
                     "172.17.4.2/30"
                   ],
@@ -4347,7 +4347,7 @@
                   }
                 ],
                 "mddo-topology:l3-termination-point-attributes": {
-                  "description": "",
+                  "description": "to_RegionB-Acc01_Ethernet5",
                   "ip-address": [
                     "172.31.10.100/24"
                   ],
@@ -4366,7 +4366,7 @@
                   }
                 ],
                 "mddo-topology:l3-termination-point-attributes": {
-                  "description": "",
+                  "description": "to_RegionB-Acc01_Ethernet6",
                   "ip-address": [
                     "172.31.110.100/24"
                   ],
@@ -4708,7 +4708,7 @@
                   }
                 ],
                 "mddo-topology:l3-termination-point-attributes": {
-                  "description": "",
+                  "description": "to_RegionB-Acc02_Ethernet5",
                   "ip-address": [
                     "172.31.20.100/24"
                   ],
@@ -4727,7 +4727,7 @@
                   }
                 ],
                 "mddo-topology:l3-termination-point-attributes": {
-                  "description": "",
+                  "description": "to_RegionB-Acc02_Ethernet6",
                   "ip-address": [
                     "172.31.120.100/24"
                   ],
@@ -4951,7 +4951,7 @@
                   }
                 ],
                 "mddo-topology:l3-termination-point-attributes": {
-                  "description": "",
+                  "description": "to_RegionB-PE02_ge-0/0/0",
                   "ip-address": [
                     "10.1.1.1/30"
                   ],
@@ -4970,7 +4970,7 @@
                   }
                 ],
                 "mddo-topology:l3-termination-point-attributes": {
-                  "description": "",
+                  "description": "to_RegionA-PE01_GigabitEthernet0/0/0/1",
                   "ip-address": [
                     "172.16.0.2/30"
                   ],
@@ -4989,7 +4989,7 @@
                   }
                 ],
                 "mddo-topology:l3-termination-point-attributes": {
-                  "description": "",
+                  "description": "to_RegionA-CE01_Ethernet2",
                   "ip-address": [
                     "172.16.3.1/30"
                   ],
@@ -5008,7 +5008,7 @@
                   }
                 ],
                 "mddo-topology:l3-termination-point-attributes": {
-                  "description": "",
+                  "description": "to_RegionA-CE02_Ethernet2",
                   "ip-address": [
                     "172.16.4.1/30"
                   ],
@@ -5186,7 +5186,7 @@
                   }
                 ],
                 "mddo-topology:l3-termination-point-attributes": {
-                  "description": "",
+                  "description": "to_RegionA-PE02_GigabitEthernet0/0/0/2",
                   "ip-address": [
                     "172.16.3.2/30"
                   ],
@@ -5262,7 +5262,7 @@
                   }
                 ],
                 "mddo-topology:l3-termination-point-attributes": {
-                  "description": "",
+                  "description": "to_RegionA-PE01_GigabitEthernet0/0/0/2",
                   "ip-address": [
                     "172.16.1.2/30"
                   ],
@@ -5401,7 +5401,7 @@
                   }
                 ],
                 "mddo-topology:l3-termination-point-attributes": {
-                  "description": "",
+                  "description": "to_RegionA-PE02_GigabitEthernet0/0/0/3",
                   "ip-address": [
                     "172.16.4.2/30"
                   ],
@@ -5420,7 +5420,7 @@
                   }
                 ],
                 "mddo-topology:l3-termination-point-attributes": {
-                  "description": "",
+                  "description": "to_RegionA-PE01_GigabitEthernet0/0/0/3",
                   "ip-address": [
                     "172.16.2.2/30"
                   ],
@@ -5748,7 +5748,7 @@
                   }
                 ],
                 "mddo-topology:l3-termination-point-attributes": {
-                  "description": "",
+                  "description": "to_RegionA-Acc01_Ethernet9",
                   "ip-address": [
                     "172.30.10.100/24"
                   ],
@@ -5767,7 +5767,7 @@
                   }
                 ],
                 "mddo-topology:l3-termination-point-attributes": {
-                  "description": "",
+                  "description": "to_RegionA-Acc01_Ethernet10",
                   "ip-address": [
                     "172.30.110.100/24"
                   ],
@@ -5823,7 +5823,7 @@
                   }
                 ],
                 "mddo-topology:l3-termination-point-attributes": {
-                  "description": "",
+                  "description": "to_RegionA-Acc01_Ethernet11",
                   "ip-address": [
                     "172.30.10.101/24"
                   ],
@@ -5842,7 +5842,7 @@
                   }
                 ],
                 "mddo-topology:l3-termination-point-attributes": {
-                  "description": "",
+                  "description": "to_RegionA-Acc01_Ethernet12",
                   "ip-address": [
                     "172.30.110.101/24"
                   ],
@@ -7443,7 +7443,7 @@
                   }
                 ],
                 "mddo-topology:l2-termination-point-attributes": {
-                  "description": "",
+                  "description": "to_RegionA-PE01_GigabitEthernet0/0/0/0",
                   "encapsulation": "",
                   "switchport-mode": "none",
                   "flag": [
@@ -7479,7 +7479,7 @@
                   }
                 ],
                 "mddo-topology:l2-termination-point-attributes": {
-                  "description": "",
+                  "description": "to_RegionB-PE01_ge-0/0/0",
                   "encapsulation": "",
                   "switchport-mode": "none",
                   "flag": [
@@ -7515,7 +7515,7 @@
                   }
                 ],
                 "mddo-topology:l2-termination-point-attributes": {
-                  "description": "",
+                  "description": "to_RegionB-PE02_ge-0/0/1",
                   "encapsulation": "",
                   "switchport-mode": "none",
                   "flag": [
@@ -7551,7 +7551,7 @@
                   }
                 ],
                 "mddo-topology:l2-termination-point-attributes": {
-                  "description": "",
+                  "description": "to_RegionB-PE01_ge-0/0/1",
                   "encapsulation": "",
                   "switchport-mode": "none",
                   "flag": [
@@ -7587,7 +7587,7 @@
                   }
                 ],
                 "mddo-topology:l2-termination-point-attributes": {
-                  "description": "",
+                  "description": "to_RegionB-CE01_ge-0/0/0",
                   "encapsulation": "",
                   "switchport-mode": "none",
                   "flag": [
@@ -7623,7 +7623,7 @@
                   }
                 ],
                 "mddo-topology:l2-termination-point-attributes": {
-                  "description": "",
+                  "description": "to_RegionB-PE01_ge-0/0/2",
                   "encapsulation": "",
                   "switchport-mode": "none",
                   "flag": [
@@ -7659,7 +7659,7 @@
                   }
                 ],
                 "mddo-topology:l2-termination-point-attributes": {
-                  "description": "",
+                  "description": "to_RegionB-CE02_ge-0/0/0",
                   "encapsulation": "",
                   "switchport-mode": "none",
                   "flag": [
@@ -7695,7 +7695,7 @@
                   }
                 ],
                 "mddo-topology:l2-termination-point-attributes": {
-                  "description": "",
+                  "description": "to_RegionB-PE01_ge-0/0/3",
                   "encapsulation": "",
                   "switchport-mode": "none",
                   "flag": [
@@ -7731,7 +7731,7 @@
                   }
                 ],
                 "mddo-topology:l2-termination-point-attributes": {
-                  "description": "",
+                  "description": "to_RegionB-PE02_ge-0/0/3",
                   "encapsulation": "",
                   "switchport-mode": "none",
                   "flag": [
@@ -7767,7 +7767,7 @@
                   }
                 ],
                 "mddo-topology:l2-termination-point-attributes": {
-                  "description": "",
+                  "description": "to_RegionB-CE02_ge-0/0/1",
                   "encapsulation": "",
                   "switchport-mode": "none",
                   "flag": [
@@ -7972,7 +7972,7 @@
                   }
                 ],
                 "mddo-topology:l2-termination-point-attributes": {
-                  "description": "",
+                  "description": "to_RegionB-Svr01_Ethernet1",
                   "encapsulation": "",
                   "switchport-mode": "access",
                   "flag": [
@@ -8095,7 +8095,7 @@
                   }
                 ],
                 "mddo-topology:l2-termination-point-attributes": {
-                  "description": "",
+                  "description": "to_RegionB-Svr01_Ethernet2",
                   "encapsulation": "",
                   "switchport-mode": "access",
                   "flag": [
@@ -8218,7 +8218,7 @@
                   }
                 ],
                 "mddo-topology:l2-termination-point-attributes": {
-                  "description": "",
+                  "description": "to_RegionB-Svr02_Ethernet1",
                   "encapsulation": "",
                   "switchport-mode": "access",
                   "flag": [
@@ -8341,7 +8341,7 @@
                   }
                 ],
                 "mddo-topology:l2-termination-point-attributes": {
-                  "description": "",
+                  "description": "to_RegionB-Svr02_Ethernet2",
                   "encapsulation": "",
                   "switchport-mode": "access",
                   "flag": [
@@ -8459,7 +8459,7 @@
                   }
                 ],
                 "mddo-topology:l2-termination-point-attributes": {
-                  "description": "",
+                  "description": "to_RegionB-Acc02_Ethernet5",
                   "encapsulation": "",
                   "switchport-mode": "none",
                   "flag": [
@@ -8495,7 +8495,7 @@
                   }
                 ],
                 "mddo-topology:l2-termination-point-attributes": {
-                  "description": "",
+                  "description": "to_RegionB-Acc02_Ethernet6",
                   "encapsulation": "",
                   "switchport-mode": "none",
                   "flag": [
@@ -8613,7 +8613,7 @@
                   }
                 ],
                 "mddo-topology:l2-termination-point-attributes": {
-                  "description": "",
+                  "description": "to_RegionB-Acc01_Ethernet5",
                   "encapsulation": "",
                   "switchport-mode": "none",
                   "flag": [
@@ -8649,7 +8649,7 @@
                   }
                 ],
                 "mddo-topology:l2-termination-point-attributes": {
-                  "description": "",
+                  "description": "to_RegionB-Acc01_Ethernet6",
                   "encapsulation": "",
                   "switchport-mode": "none",
                   "flag": [
@@ -8685,7 +8685,7 @@
                   }
                 ],
                 "mddo-topology:l2-termination-point-attributes": {
-                  "description": "",
+                  "description": "to_RegionB-PE02_ge-0/0/2",
                   "encapsulation": "",
                   "switchport-mode": "none",
                   "flag": [
@@ -8721,7 +8721,7 @@
                   }
                 ],
                 "mddo-topology:l2-termination-point-attributes": {
-                  "description": "",
+                  "description": "to_RegionB-CE01_ge-0/0/1",
                   "encapsulation": "",
                   "switchport-mode": "none",
                   "flag": [
@@ -8757,7 +8757,7 @@
                   }
                 ],
                 "mddo-topology:l2-termination-point-attributes": {
-                  "description": "",
+                  "description": "to_RegionA-PE02_GigabitEthernet0/0/0/0",
                   "encapsulation": "",
                   "switchport-mode": "none",
                   "flag": [
@@ -8793,7 +8793,7 @@
                   }
                 ],
                 "mddo-topology:l2-termination-point-attributes": {
-                  "description": "",
+                  "description": "to_RegionB-PE02_ge-0/0/0",
                   "encapsulation": "",
                   "switchport-mode": "none",
                   "flag": [
@@ -8829,7 +8829,7 @@
                   }
                 ],
                 "mddo-topology:l2-termination-point-attributes": {
-                  "description": "",
+                  "description": "to_RegionA-PE01_GigabitEthernet0/0/0/1",
                   "encapsulation": "",
                   "switchport-mode": "none",
                   "flag": [
@@ -8865,7 +8865,7 @@
                   }
                 ],
                 "mddo-topology:l2-termination-point-attributes": {
-                  "description": "",
+                  "description": "to_RegionA-PE02_GigabitEthernet0/0/0/1",
                   "encapsulation": "",
                   "switchport-mode": "none",
                   "flag": [
@@ -8901,7 +8901,7 @@
                   }
                 ],
                 "mddo-topology:l2-termination-point-attributes": {
-                  "description": "",
+                  "description": "to_RegionA-CE01_Ethernet2",
                   "encapsulation": "",
                   "switchport-mode": "none",
                   "flag": [
@@ -8937,7 +8937,7 @@
                   }
                 ],
                 "mddo-topology:l2-termination-point-attributes": {
-                  "description": "",
+                  "description": "to_RegionA-PE02_GigabitEthernet0/0/0/2",
                   "encapsulation": "",
                   "switchport-mode": "none",
                   "flag": [
@@ -8973,7 +8973,7 @@
                   }
                 ],
                 "mddo-topology:l2-termination-point-attributes": {
-                  "description": "",
+                  "description": "to_RegionA-CE02_Ethernet2",
                   "encapsulation": "",
                   "switchport-mode": "none",
                   "flag": [
@@ -9009,7 +9009,7 @@
                   }
                 ],
                 "mddo-topology:l2-termination-point-attributes": {
-                  "description": "",
+                  "description": "to_RegionA-PE02_GigabitEthernet0/0/0/3",
                   "encapsulation": "",
                   "switchport-mode": "none",
                   "flag": [
@@ -9045,7 +9045,7 @@
                   }
                 ],
                 "mddo-topology:l2-termination-point-attributes": {
-                  "description": "",
+                  "description": "to_RegionA-PE01_GigabitEthernet0/0/0/3",
                   "encapsulation": "",
                   "switchport-mode": "none",
                   "flag": [
@@ -9081,7 +9081,7 @@
                   }
                 ],
                 "mddo-topology:l2-termination-point-attributes": {
-                  "description": "",
+                  "description": "to_RegionA-CE02_Ethernet1",
                   "encapsulation": "",
                   "switchport-mode": "none",
                   "flag": [
@@ -9286,7 +9286,7 @@
                   }
                 ],
                 "mddo-topology:l2-termination-point-attributes": {
-                  "description": "",
+                  "description": "to_RegionA-Svr01_Ethernet1",
                   "encapsulation": "",
                   "switchport-mode": "access",
                   "flag": [
@@ -9304,7 +9304,7 @@
                   }
                 ],
                 "mddo-topology:l2-termination-point-attributes": {
-                  "description": "",
+                  "description": "to_RegionA-Svr02_Ethernet1",
                   "encapsulation": "",
                   "switchport-mode": "access",
                   "flag": [
@@ -9427,7 +9427,7 @@
                   }
                 ],
                 "mddo-topology:l2-termination-point-attributes": {
-                  "description": "",
+                  "description": "to_RegionA-Svr01_Ethernet2",
                   "encapsulation": "",
                   "switchport-mode": "access",
                   "flag": [
@@ -9445,7 +9445,7 @@
                   }
                 ],
                 "mddo-topology:l2-termination-point-attributes": {
-                  "description": "",
+                  "description": "to_RegionA-Svr02_Ethernet2",
                   "encapsulation": "",
                   "switchport-mode": "access",
                   "flag": [
@@ -9855,7 +9855,7 @@
                   }
                 ],
                 "mddo-topology:l2-termination-point-attributes": {
-                  "description": "",
+                  "description": "to_RegionA-Acc01_Ethernet9",
                   "encapsulation": "",
                   "switchport-mode": "none",
                   "flag": [
@@ -9891,7 +9891,7 @@
                   }
                 ],
                 "mddo-topology:l2-termination-point-attributes": {
-                  "description": "",
+                  "description": "to_RegionA-Acc01_Ethernet10",
                   "encapsulation": "",
                   "switchport-mode": "none",
                   "flag": [
@@ -9927,7 +9927,7 @@
                   }
                 ],
                 "mddo-topology:l2-termination-point-attributes": {
-                  "description": "",
+                  "description": "to_RegionA-Acc01_Ethernet11",
                   "encapsulation": "",
                   "switchport-mode": "none",
                   "flag": [
@@ -9963,7 +9963,7 @@
                   }
                 ],
                 "mddo-topology:l2-termination-point-attributes": {
-                  "description": "",
+                  "description": "to_RegionA-Acc01_Ethernet12",
                   "encapsulation": "",
                   "switchport-mode": "none",
                   "flag": [
@@ -9999,7 +9999,7 @@
                   }
                 ],
                 "mddo-topology:l2-termination-point-attributes": {
-                  "description": "",
+                  "description": "to_RegionA-PE01_GigabitEthernet0/0/0/2",
                   "encapsulation": "",
                   "switchport-mode": "none",
                   "flag": [
@@ -10035,7 +10035,7 @@
                   }
                 ],
                 "mddo-topology:l2-termination-point-attributes": {
-                  "description": "",
+                  "description": "to_RegionA-CE01_Ethernet1",
                   "encapsulation": "",
                   "switchport-mode": "none",
                   "flag": [
@@ -10914,16 +10914,40 @@
             "node-id": "regionb-pe01",
             "ietf-network-topology:termination-point": [
               {
-                "tp-id": "ge-0/0/0"
+                "tp-id": "ge-0/0/0",
+                "mddo-topology:l1-termination-point-attributes": {
+                  "description": "to_RegionA-PE01_GigabitEthernet0/0/0/0",
+                  "flag": [
+
+                  ]
+                }
               },
               {
-                "tp-id": "ge-0/0/1"
+                "tp-id": "ge-0/0/1",
+                "mddo-topology:l1-termination-point-attributes": {
+                  "description": "to_RegionB-PE02_ge-0/0/1",
+                  "flag": [
+
+                  ]
+                }
               },
               {
-                "tp-id": "ge-0/0/2"
+                "tp-id": "ge-0/0/2",
+                "mddo-topology:l1-termination-point-attributes": {
+                  "description": "to_RegionB-CE01_ge-0/0/0",
+                  "flag": [
+
+                  ]
+                }
               },
               {
-                "tp-id": "ge-0/0/3"
+                "tp-id": "ge-0/0/3",
+                "mddo-topology:l1-termination-point-attributes": {
+                  "description": "to_RegionB-CE02_ge-0/0/0",
+                  "flag": [
+
+                  ]
+                }
               }
             ],
             "mddo-topology:l1-node-attributes": {
@@ -10937,16 +10961,40 @@
             "node-id": "regiona-pe01",
             "ietf-network-topology:termination-point": [
               {
-                "tp-id": "GigabitEthernet0/0/0/0"
+                "tp-id": "GigabitEthernet0/0/0/0",
+                "mddo-topology:l1-termination-point-attributes": {
+                  "description": "to_RegionB-PE01_ge-0/0/0",
+                  "flag": [
+
+                  ]
+                }
               },
               {
-                "tp-id": "GigabitEthernet0/0/0/1"
+                "tp-id": "GigabitEthernet0/0/0/1",
+                "mddo-topology:l1-termination-point-attributes": {
+                  "description": "to_RegionA-PE02_GigabitEthernet0/0/0/1",
+                  "flag": [
+
+                  ]
+                }
               },
               {
-                "tp-id": "GigabitEthernet0/0/0/3"
+                "tp-id": "GigabitEthernet0/0/0/3",
+                "mddo-topology:l1-termination-point-attributes": {
+                  "description": "to_RegionA-CE02_Ethernet1",
+                  "flag": [
+
+                  ]
+                }
               },
               {
-                "tp-id": "GigabitEthernet0/0/0/2"
+                "tp-id": "GigabitEthernet0/0/0/2",
+                "mddo-topology:l1-termination-point-attributes": {
+                  "description": "to_RegionA-CE01_Ethernet1",
+                  "flag": [
+
+                  ]
+                }
               }
             ],
             "mddo-topology:l1-node-attributes": {
@@ -10960,16 +11008,40 @@
             "node-id": "regionb-pe02",
             "ietf-network-topology:termination-point": [
               {
-                "tp-id": "ge-0/0/1"
+                "tp-id": "ge-0/0/1",
+                "mddo-topology:l1-termination-point-attributes": {
+                  "description": "to_RegionB-PE01_ge-0/0/1",
+                  "flag": [
+
+                  ]
+                }
               },
               {
-                "tp-id": "ge-0/0/3"
+                "tp-id": "ge-0/0/3",
+                "mddo-topology:l1-termination-point-attributes": {
+                  "description": "to_RegionB-CE02_ge-0/0/1",
+                  "flag": [
+
+                  ]
+                }
               },
               {
-                "tp-id": "ge-0/0/2"
+                "tp-id": "ge-0/0/2",
+                "mddo-topology:l1-termination-point-attributes": {
+                  "description": "to_RegionB-CE01_ge-0/0/1",
+                  "flag": [
+
+                  ]
+                }
               },
               {
-                "tp-id": "ge-0/0/0"
+                "tp-id": "ge-0/0/0",
+                "mddo-topology:l1-termination-point-attributes": {
+                  "description": "to_RegionA-PE02_GigabitEthernet0/0/0/0",
+                  "flag": [
+
+                  ]
+                }
               }
             ],
             "mddo-topology:l1-node-attributes": {
@@ -10983,28 +11055,76 @@
             "node-id": "regionb-ce01",
             "ietf-network-topology:termination-point": [
               {
-                "tp-id": "ge-0/0/0"
+                "tp-id": "ge-0/0/0",
+                "mddo-topology:l1-termination-point-attributes": {
+                  "description": "to_RegionB-PE01_ge-0/0/2",
+                  "flag": [
+
+                  ]
+                }
               },
               {
-                "tp-id": "ge-0/0/2"
+                "tp-id": "ge-0/0/2",
+                "mddo-topology:l1-termination-point-attributes": {
+                  "description": "to_RegionB-CE02_ge-0/0/2",
+                  "flag": [
+
+                  ]
+                }
               },
               {
-                "tp-id": "ge-0/0/3"
+                "tp-id": "ge-0/0/3",
+                "mddo-topology:l1-termination-point-attributes": {
+                  "description": "to_RegionB-CE02_ge-0/0/3",
+                  "flag": [
+
+                  ]
+                }
               },
               {
-                "tp-id": "ge-0/0/6"
+                "tp-id": "ge-0/0/6",
+                "mddo-topology:l1-termination-point-attributes": {
+                  "description": "to_RegionB-Acc02_Ethernet1",
+                  "flag": [
+
+                  ]
+                }
               },
               {
-                "tp-id": "ge-0/0/7"
+                "tp-id": "ge-0/0/7",
+                "mddo-topology:l1-termination-point-attributes": {
+                  "description": "to_RegionB-Acc02_Ethernet2",
+                  "flag": [
+
+                  ]
+                }
               },
               {
-                "tp-id": "ge-0/0/4"
+                "tp-id": "ge-0/0/4",
+                "mddo-topology:l1-termination-point-attributes": {
+                  "description": "to_RegionB-Acc01_Ethernet1",
+                  "flag": [
+
+                  ]
+                }
               },
               {
-                "tp-id": "ge-0/0/5"
+                "tp-id": "ge-0/0/5",
+                "mddo-topology:l1-termination-point-attributes": {
+                  "description": "to_RegionB-Acc01_Ethernet2",
+                  "flag": [
+
+                  ]
+                }
               },
               {
-                "tp-id": "ge-0/0/1"
+                "tp-id": "ge-0/0/1",
+                "mddo-topology:l1-termination-point-attributes": {
+                  "description": "to_RegionB-PE02_ge-0/0/2",
+                  "flag": [
+
+                  ]
+                }
               }
             ],
             "mddo-topology:l1-node-attributes": {
@@ -11018,28 +11138,76 @@
             "node-id": "regionb-ce02",
             "ietf-network-topology:termination-point": [
               {
-                "tp-id": "ge-0/0/0"
+                "tp-id": "ge-0/0/0",
+                "mddo-topology:l1-termination-point-attributes": {
+                  "description": "to_RegionB-PE01_ge-0/0/3",
+                  "flag": [
+
+                  ]
+                }
               },
               {
-                "tp-id": "ge-0/0/1"
+                "tp-id": "ge-0/0/1",
+                "mddo-topology:l1-termination-point-attributes": {
+                  "description": "to_RegionB-PE02_ge-0/0/3",
+                  "flag": [
+
+                  ]
+                }
               },
               {
-                "tp-id": "ge-0/0/2"
+                "tp-id": "ge-0/0/2",
+                "mddo-topology:l1-termination-point-attributes": {
+                  "description": "to_RegionB-CE01_ge-0/0/2",
+                  "flag": [
+
+                  ]
+                }
               },
               {
-                "tp-id": "ge-0/0/3"
+                "tp-id": "ge-0/0/3",
+                "mddo-topology:l1-termination-point-attributes": {
+                  "description": "to_RegionB-CE01_ge-0/0/3",
+                  "flag": [
+
+                  ]
+                }
               },
               {
-                "tp-id": "ge-0/0/4"
+                "tp-id": "ge-0/0/4",
+                "mddo-topology:l1-termination-point-attributes": {
+                  "description": "to_RegionB-Acc01_Ethernet3",
+                  "flag": [
+
+                  ]
+                }
               },
               {
-                "tp-id": "ge-0/0/5"
+                "tp-id": "ge-0/0/5",
+                "mddo-topology:l1-termination-point-attributes": {
+                  "description": "to_RegionB-Acc01_Ethernet4",
+                  "flag": [
+
+                  ]
+                }
               },
               {
-                "tp-id": "ge-0/0/6"
+                "tp-id": "ge-0/0/6",
+                "mddo-topology:l1-termination-point-attributes": {
+                  "description": "to_RegionB-Acc02_Ethernet3",
+                  "flag": [
+
+                  ]
+                }
               },
               {
-                "tp-id": "ge-0/0/7"
+                "tp-id": "ge-0/0/7",
+                "mddo-topology:l1-termination-point-attributes": {
+                  "description": "to_RegionB-Acc02_Ethernet4",
+                  "flag": [
+
+                  ]
+                }
               }
             ],
             "mddo-topology:l1-node-attributes": {
@@ -11053,22 +11221,58 @@
             "node-id": "regionb-acc01",
             "ietf-network-topology:termination-point": [
               {
-                "tp-id": "Ethernet3"
+                "tp-id": "Ethernet3",
+                "mddo-topology:l1-termination-point-attributes": {
+                  "description": "to_RegionB-CE02_ge-0/0/4",
+                  "flag": [
+
+                  ]
+                }
               },
               {
-                "tp-id": "Ethernet4"
+                "tp-id": "Ethernet4",
+                "mddo-topology:l1-termination-point-attributes": {
+                  "description": "to_RegionB-CE02_ge-0/0/5",
+                  "flag": [
+
+                  ]
+                }
               },
               {
-                "tp-id": "Ethernet1"
+                "tp-id": "Ethernet1",
+                "mddo-topology:l1-termination-point-attributes": {
+                  "description": "to_RegionB-CE01_ge-0/0/4",
+                  "flag": [
+
+                  ]
+                }
               },
               {
-                "tp-id": "Ethernet2"
+                "tp-id": "Ethernet2",
+                "mddo-topology:l1-termination-point-attributes": {
+                  "description": "to_RegionB-CE01_ge-0/0/5",
+                  "flag": [
+
+                  ]
+                }
               },
               {
-                "tp-id": "Ethernet5"
+                "tp-id": "Ethernet5",
+                "mddo-topology:l1-termination-point-attributes": {
+                  "description": "to_RegionB-Svr01_Ethernet1",
+                  "flag": [
+
+                  ]
+                }
               },
               {
-                "tp-id": "Ethernet6"
+                "tp-id": "Ethernet6",
+                "mddo-topology:l1-termination-point-attributes": {
+                  "description": "to_RegionB-Svr01_Ethernet2",
+                  "flag": [
+
+                  ]
+                }
               }
             ],
             "mddo-topology:l1-node-attributes": {
@@ -11082,22 +11286,58 @@
             "node-id": "regionb-acc02",
             "ietf-network-topology:termination-point": [
               {
-                "tp-id": "Ethernet3"
+                "tp-id": "Ethernet3",
+                "mddo-topology:l1-termination-point-attributes": {
+                  "description": "to_RegionB-CE02_ge-0/0/6",
+                  "flag": [
+
+                  ]
+                }
               },
               {
-                "tp-id": "Ethernet4"
+                "tp-id": "Ethernet4",
+                "mddo-topology:l1-termination-point-attributes": {
+                  "description": "to_RegionB-CE02_ge-0/0/7",
+                  "flag": [
+
+                  ]
+                }
               },
               {
-                "tp-id": "Ethernet1"
+                "tp-id": "Ethernet1",
+                "mddo-topology:l1-termination-point-attributes": {
+                  "description": "to_RegionB-CE01_ge-0/0/6",
+                  "flag": [
+
+                  ]
+                }
               },
               {
-                "tp-id": "Ethernet2"
+                "tp-id": "Ethernet2",
+                "mddo-topology:l1-termination-point-attributes": {
+                  "description": "to_RegionB-CE01_ge-0/0/7",
+                  "flag": [
+
+                  ]
+                }
               },
               {
-                "tp-id": "Ethernet5"
+                "tp-id": "Ethernet5",
+                "mddo-topology:l1-termination-point-attributes": {
+                  "description": "to_RegionB-Svr02_Ethernet1",
+                  "flag": [
+
+                  ]
+                }
               },
               {
-                "tp-id": "Ethernet6"
+                "tp-id": "Ethernet6",
+                "mddo-topology:l1-termination-point-attributes": {
+                  "description": "to_RegionB-Svr02_Ethernet2",
+                  "flag": [
+
+                  ]
+                }
               }
             ],
             "mddo-topology:l1-node-attributes": {
@@ -11111,10 +11351,22 @@
             "node-id": "regionb-svr02",
             "ietf-network-topology:termination-point": [
               {
-                "tp-id": "Ethernet1"
+                "tp-id": "Ethernet1",
+                "mddo-topology:l1-termination-point-attributes": {
+                  "description": "to_RegionB-Acc02_Ethernet5",
+                  "flag": [
+
+                  ]
+                }
               },
               {
-                "tp-id": "Ethernet2"
+                "tp-id": "Ethernet2",
+                "mddo-topology:l1-termination-point-attributes": {
+                  "description": "to_RegionB-Acc02_Ethernet6",
+                  "flag": [
+
+                  ]
+                }
               }
             ],
             "mddo-topology:l1-node-attributes": {
@@ -11128,10 +11380,22 @@
             "node-id": "regionb-svr01",
             "ietf-network-topology:termination-point": [
               {
-                "tp-id": "Ethernet1"
+                "tp-id": "Ethernet1",
+                "mddo-topology:l1-termination-point-attributes": {
+                  "description": "to_RegionB-Acc01_Ethernet5",
+                  "flag": [
+
+                  ]
+                }
               },
               {
-                "tp-id": "Ethernet2"
+                "tp-id": "Ethernet2",
+                "mddo-topology:l1-termination-point-attributes": {
+                  "description": "to_RegionB-Acc01_Ethernet6",
+                  "flag": [
+
+                  ]
+                }
               }
             ],
             "mddo-topology:l1-node-attributes": {
@@ -11145,16 +11409,40 @@
             "node-id": "regiona-pe02",
             "ietf-network-topology:termination-point": [
               {
-                "tp-id": "GigabitEthernet0/0/0/0"
+                "tp-id": "GigabitEthernet0/0/0/0",
+                "mddo-topology:l1-termination-point-attributes": {
+                  "description": "to_RegionB-PE02_ge-0/0/0",
+                  "flag": [
+
+                  ]
+                }
               },
               {
-                "tp-id": "GigabitEthernet0/0/0/1"
+                "tp-id": "GigabitEthernet0/0/0/1",
+                "mddo-topology:l1-termination-point-attributes": {
+                  "description": "to_RegionA-PE01_GigabitEthernet0/0/0/1",
+                  "flag": [
+
+                  ]
+                }
               },
               {
-                "tp-id": "GigabitEthernet0/0/0/2"
+                "tp-id": "GigabitEthernet0/0/0/2",
+                "mddo-topology:l1-termination-point-attributes": {
+                  "description": "to_RegionA-CE01_Ethernet2",
+                  "flag": [
+
+                  ]
+                }
               },
               {
-                "tp-id": "GigabitEthernet0/0/0/3"
+                "tp-id": "GigabitEthernet0/0/0/3",
+                "mddo-topology:l1-termination-point-attributes": {
+                  "description": "to_RegionA-CE02_Ethernet2",
+                  "flag": [
+
+                  ]
+                }
               }
             ],
             "mddo-topology:l1-node-attributes": {
@@ -11168,28 +11456,76 @@
             "node-id": "regiona-ce01",
             "ietf-network-topology:termination-point": [
               {
-                "tp-id": "Ethernet2"
+                "tp-id": "Ethernet2",
+                "mddo-topology:l1-termination-point-attributes": {
+                  "description": "to_RegionA-PE02_GigabitEthernet0/0/0/2",
+                  "flag": [
+
+                  ]
+                }
               },
               {
-                "tp-id": "Ethernet3"
+                "tp-id": "Ethernet3",
+                "mddo-topology:l1-termination-point-attributes": {
+                  "description": "to_RegionA-CE02_Ethernet3",
+                  "flag": [
+
+                  ]
+                }
               },
               {
-                "tp-id": "Ethernet4"
+                "tp-id": "Ethernet4",
+                "mddo-topology:l1-termination-point-attributes": {
+                  "description": "to_RegionA-CE02_Ethernet4",
+                  "flag": [
+
+                  ]
+                }
               },
               {
-                "tp-id": "Ethernet5"
+                "tp-id": "Ethernet5",
+                "mddo-topology:l1-termination-point-attributes": {
+                  "description": "to_RegionA-Acc01_Ethernet1",
+                  "flag": [
+
+                  ]
+                }
               },
               {
-                "tp-id": "Ethernet6"
+                "tp-id": "Ethernet6",
+                "mddo-topology:l1-termination-point-attributes": {
+                  "description": "to_RegionA-Acc01_Ethernet2",
+                  "flag": [
+
+                  ]
+                }
               },
               {
-                "tp-id": "Ethernet7"
+                "tp-id": "Ethernet7",
+                "mddo-topology:l1-termination-point-attributes": {
+                  "description": "to_RegionA-Acc01_Ethernet5",
+                  "flag": [
+
+                  ]
+                }
               },
               {
-                "tp-id": "Ethernet8"
+                "tp-id": "Ethernet8",
+                "mddo-topology:l1-termination-point-attributes": {
+                  "description": "to_RegionA-Acc01_Ethernet6",
+                  "flag": [
+
+                  ]
+                }
               },
               {
-                "tp-id": "Ethernet1"
+                "tp-id": "Ethernet1",
+                "mddo-topology:l1-termination-point-attributes": {
+                  "description": "to_RegionA-PE01_GigabitEthernet0/0/0/2",
+                  "flag": [
+
+                  ]
+                }
               }
             ],
             "mddo-topology:l1-node-attributes": {
@@ -11203,28 +11539,76 @@
             "node-id": "regiona-ce02",
             "ietf-network-topology:termination-point": [
               {
-                "tp-id": "Ethernet2"
+                "tp-id": "Ethernet2",
+                "mddo-topology:l1-termination-point-attributes": {
+                  "description": "to_RegionA-PE02_GigabitEthernet0/0/0/3",
+                  "flag": [
+
+                  ]
+                }
               },
               {
-                "tp-id": "Ethernet1"
+                "tp-id": "Ethernet1",
+                "mddo-topology:l1-termination-point-attributes": {
+                  "description": "to_RegionA-PE01_GigabitEthernet0/0/0/3",
+                  "flag": [
+
+                  ]
+                }
               },
               {
-                "tp-id": "Ethernet3"
+                "tp-id": "Ethernet3",
+                "mddo-topology:l1-termination-point-attributes": {
+                  "description": "to_RegionA-CE01_Ethernet3",
+                  "flag": [
+
+                  ]
+                }
               },
               {
-                "tp-id": "Ethernet4"
+                "tp-id": "Ethernet4",
+                "mddo-topology:l1-termination-point-attributes": {
+                  "description": "to_RegionA-CE01_Ethernet4",
+                  "flag": [
+
+                  ]
+                }
               },
               {
-                "tp-id": "Ethernet5"
+                "tp-id": "Ethernet5",
+                "mddo-topology:l1-termination-point-attributes": {
+                  "description": "to_RegionA-Acc01_Ethernet3",
+                  "flag": [
+
+                  ]
+                }
               },
               {
-                "tp-id": "Ethernet6"
+                "tp-id": "Ethernet6",
+                "mddo-topology:l1-termination-point-attributes": {
+                  "description": "to_RegionA-Acc01_Ethernet4",
+                  "flag": [
+
+                  ]
+                }
               },
               {
-                "tp-id": "Ethernet7"
+                "tp-id": "Ethernet7",
+                "mddo-topology:l1-termination-point-attributes": {
+                  "description": "to_RegionA-Acc01_Ethernet7",
+                  "flag": [
+
+                  ]
+                }
               },
               {
-                "tp-id": "Ethernet8"
+                "tp-id": "Ethernet8",
+                "mddo-topology:l1-termination-point-attributes": {
+                  "description": "to_RegionA-Acc01_Ethernet8",
+                  "flag": [
+
+                  ]
+                }
               }
             ],
             "mddo-topology:l1-node-attributes": {
@@ -11238,40 +11622,112 @@
             "node-id": "regiona-acc01",
             "ietf-network-topology:termination-point": [
               {
-                "tp-id": "Ethernet3"
+                "tp-id": "Ethernet3",
+                "mddo-topology:l1-termination-point-attributes": {
+                  "description": "to_RegionA-CE02_Ethernet5",
+                  "flag": [
+
+                  ]
+                }
               },
               {
-                "tp-id": "Ethernet4"
+                "tp-id": "Ethernet4",
+                "mddo-topology:l1-termination-point-attributes": {
+                  "description": "to_RegionA-CE02_Ethernet6",
+                  "flag": [
+
+                  ]
+                }
               },
               {
-                "tp-id": "Ethernet7"
+                "tp-id": "Ethernet7",
+                "mddo-topology:l1-termination-point-attributes": {
+                  "description": "to_RegionA-CE02_Ethernet7",
+                  "flag": [
+
+                  ]
+                }
               },
               {
-                "tp-id": "Ethernet8"
+                "tp-id": "Ethernet8",
+                "mddo-topology:l1-termination-point-attributes": {
+                  "description": "to_RegionA-CE02_Ethernet8",
+                  "flag": [
+
+                  ]
+                }
               },
               {
-                "tp-id": "Ethernet1"
+                "tp-id": "Ethernet1",
+                "mddo-topology:l1-termination-point-attributes": {
+                  "description": "to_RegionA-CE01_Ethernet5",
+                  "flag": [
+
+                  ]
+                }
               },
               {
-                "tp-id": "Ethernet2"
+                "tp-id": "Ethernet2",
+                "mddo-topology:l1-termination-point-attributes": {
+                  "description": "to_RegionA-CE01_Ethernet6",
+                  "flag": [
+
+                  ]
+                }
               },
               {
-                "tp-id": "Ethernet5"
+                "tp-id": "Ethernet5",
+                "mddo-topology:l1-termination-point-attributes": {
+                  "description": "to_RegionA-CE01_Ethernet7",
+                  "flag": [
+
+                  ]
+                }
               },
               {
-                "tp-id": "Ethernet6"
+                "tp-id": "Ethernet6",
+                "mddo-topology:l1-termination-point-attributes": {
+                  "description": "to_RegionA-CE01_Ethernet8",
+                  "flag": [
+
+                  ]
+                }
               },
               {
-                "tp-id": "Ethernet9"
+                "tp-id": "Ethernet9",
+                "mddo-topology:l1-termination-point-attributes": {
+                  "description": "to_RegionA-Svr01_Ethernet1",
+                  "flag": [
+
+                  ]
+                }
               },
               {
-                "tp-id": "Ethernet10"
+                "tp-id": "Ethernet10",
+                "mddo-topology:l1-termination-point-attributes": {
+                  "description": "to_RegionA-Svr01_Ethernet2",
+                  "flag": [
+
+                  ]
+                }
               },
               {
-                "tp-id": "Ethernet11"
+                "tp-id": "Ethernet11",
+                "mddo-topology:l1-termination-point-attributes": {
+                  "description": "to_RegionA-Svr02_Ethernet1",
+                  "flag": [
+
+                  ]
+                }
               },
               {
-                "tp-id": "Ethernet12"
+                "tp-id": "Ethernet12",
+                "mddo-topology:l1-termination-point-attributes": {
+                  "description": "to_RegionA-Svr02_Ethernet2",
+                  "flag": [
+
+                  ]
+                }
               }
             ],
             "mddo-topology:l1-node-attributes": {
@@ -11285,10 +11741,22 @@
             "node-id": "regiona-svr01",
             "ietf-network-topology:termination-point": [
               {
-                "tp-id": "Ethernet1"
+                "tp-id": "Ethernet1",
+                "mddo-topology:l1-termination-point-attributes": {
+                  "description": "to_RegionA-Acc01_Ethernet9",
+                  "flag": [
+
+                  ]
+                }
               },
               {
-                "tp-id": "Ethernet2"
+                "tp-id": "Ethernet2",
+                "mddo-topology:l1-termination-point-attributes": {
+                  "description": "to_RegionA-Acc01_Ethernet10",
+                  "flag": [
+
+                  ]
+                }
               }
             ],
             "mddo-topology:l1-node-attributes": {
@@ -11302,10 +11770,22 @@
             "node-id": "regiona-svr02",
             "ietf-network-topology:termination-point": [
               {
-                "tp-id": "Ethernet1"
+                "tp-id": "Ethernet1",
+                "mddo-topology:l1-termination-point-attributes": {
+                  "description": "to_RegionA-Acc01_Ethernet11",
+                  "flag": [
+
+                  ]
+                }
               },
               {
-                "tp-id": "Ethernet2"
+                "tp-id": "Ethernet2",
+                "mddo-topology:l1-termination-point-attributes": {
+                  "description": "to_RegionA-Acc01_Ethernet12",
+                  "flag": [
+
+                  ]
+                }
               }
             ],
             "mddo-topology:l1-node-attributes": {
