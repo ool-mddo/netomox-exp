@@ -4,10 +4,6 @@ require 'optparse'
 require 'netomox'
 require 'json'
 
-def read_model_data(file)
-  JSON.parse(File.read(file))
-end
-
 # rubocop:disable Metrics/MethodLength
 def layer1_link_table(l1_nw)
   l1_nw.links.map.with_index do |link, i|
@@ -43,7 +39,7 @@ unless input_file
   exit 1
 end
 
-raw_topology_data = read_model_data(input_file)
+raw_topology_data = JSON.parse(File.read(input_file))
 nws = Netomox::Topology::Networks.new(raw_topology_data)
 l1_nw = nws.find_network('layer1')
 
