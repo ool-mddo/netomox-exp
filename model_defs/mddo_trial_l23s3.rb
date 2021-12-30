@@ -9,11 +9,11 @@ if opts['d']
   exit 0
 end
 
-target_config = 'l2l3_sample3'
+target_data_dir = 'models/batfish-test-topology/l2l3/sample3'
 
 if opts['debug']
-  generate_json(target_config, layer: opts['debug'], debug: true)
+  generate_json(target_data_dir, layer: opts['debug'], debug: true)
   exit 0
 end
 
-puts generate_json(target_config)
+puts generate_json(target_data_dir)

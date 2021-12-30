@@ -11,8 +11,7 @@ class TableBase
   # @param [String] target Target network (config) data name
   # @param [String] table_file CSV File name
   def initialize(target, table_file)
-    csv_dir = "model_defs/mddo_trial/csv/#{target}"
-    @orig_table = CSV.table("#{csv_dir}/#{table_file}")
+    @orig_table = CSV.table("#{target}/#{table_file}")
     @records = []
   end
 end

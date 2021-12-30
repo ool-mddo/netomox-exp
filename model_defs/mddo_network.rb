@@ -9,11 +9,11 @@ if opts['d']
   exit 0
 end
 
-target_config = 'mddo_network'
+target_data_dir = 'models/pushed_configs/mddo_network'
 
 if opts['debug']
-  puts generate_json(target_config, layer: opts['debug'], debug: true)
+  puts generate_json(target_data_dir, layer: opts['debug'], debug: true)
   exit 0
 end
 
-puts generate_json(target_config)
+puts generate_json(target_data_dir)
