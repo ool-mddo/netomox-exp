@@ -7,6 +7,7 @@ require 'json'
 
 module Netomox
   module Topology
+    # Networks with DisconnectedVerifiableNetwork
     class DisconnectedVerifiableNetworks < Networks
       def find_all_disconnected_sub_graphs
         @networks.map do |nw|
@@ -24,6 +25,7 @@ module Netomox
       end
     end
 
+    # Network class to find disconnected sub-graph
     class DisconnectedVerifiableNetwork < Network
       def find_sub_graphs
         sub_graphs = []

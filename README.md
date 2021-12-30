@@ -1,33 +1,47 @@
 # netomox-exp
-A trial of network model construction.
 
-# Setup
+A trial of network model construction. (original: https://github.com/corestate55/netomox-examples)
 
-## Clone sources
-
-Clone each repositories.
+## Directories
 
 ```text
-+ ool-mddo/
-  + netomox-exp/         # https://github.com/ool-mddo/netomox-exp (THIS repository)
-  + pushed_configs/      # https://github.com/ool-mddo/pushed_configs
-    - configs/           #   - network device configs
-  + netbox2inet-henge/   # https://github.com/ool-mddo/netbox2inet-henge
-    - layer1_topology.sample.json # L1 topology for batfish from netbox
++ netomox-exp/         # https://github.com/ool-mddo/netomox-exp (THIS repository)
+  + configs/           # configuration files (batfish snapshots)
+  + doc/               # class documents (generated w/yard)
+  + exe/               # executable scripts
+  + figs/              # design diagrams
+  + model_defs/        # scripts to generate topology data
+  + models/            # normalized network data (batfish query outputs)
+  + netoviz_models/    # topology data for netoviz (scripts in model_defs outputs)
+  + yang               # yang schema to validate topology data (TODO)
 ```
 
-## Update submodules
+## Setup
 
-Pull network device configurations for experiments (in netomox-exp directory).
+### Update submodules
+
+Pull network device configurations for experiments (at netomox-exp directory).
+
+- [configs/batfish-test-topology](https://github.com/corestate55/batfish-test-topology)
+- [configs/pushed_configs](https://github.com/ool-mddo/pushed_configs)
+
 
 ```shell
 git submodule update --init --recursive
 ```
 
-## Install ruby gems
+### Install ruby gems
 
 ```shell
 bundle install --path=vendor/bundle
+```
+
+### Install python packages
+
+```shell
+cd configs
+pip install -r requirements.txt
+cd -
 ```
 
 ## Generate normalized CSV files from configs
@@ -41,41 +55,23 @@ docker-compose up -d
 - netoviz: `http://localhost:3000/` with browser.
 - batfish: localhost `tcp/9996-9997`
 
-### Activate pybatfish environment (w/venv)
-
-Note: venv and pybatfish are `~/batfish/bf-venv`
+### Generate normalized network data from configs (snapshots)
 
 ```shell
-. ~/batfish/bf-venv/bin/activate
-cd model_defs/mddo_trial
+cd model_defs/configs
 ./make_csv.sh
 cd -
 ```
 
-## Generate topology json for netoviz
+## Generate topology json from normalized network data
 
 ```shell
 bundle exec rake [TARGET=./model_defs/hoge.rb]
 ```
 
-# Setup python venv and pybatfish
+## Development
 
-[Pybatfish](https://github.com/batfish/pybatfish) is a python frontend for batfish.
-Setup venv for python3 before install pybatfish.
-
-ref: [pybatfish on github](https://github.com/batfish/pybatfish#install-pybatfish)
-
-```
-mkdir -p ~/batfish
-cd ~/batfish
-
-python -m venv bf-venv
-. bf-venv/bin/activate
-pip install wheel
-python -m pip install --upgrade git+https://github.com/batfish/pybatfish.git
-```
-
-# Generate YARD documents
+### Generate YARD documents
 
 YARD options are in `.yardopts` file.
 
@@ -89,12 +85,10 @@ Run yard document server (access `http://localhost:8808/` with browser)
 bundle exec yard server
 ```
 
-# Repository configuration
+### Code analysis
 
-## Original
-
-- https://github.com/corestate55/netomox-examples
-
-## Submodule
-
-- [model_defs/batfish-test-topology](https://github.com/corestate55/batfish-test-topology)
+```shell
+bundle exec rake rubocop
+# or
+bundle exec rake rubocop:auto_correct
+```
