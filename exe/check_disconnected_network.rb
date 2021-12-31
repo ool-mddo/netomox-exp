@@ -28,6 +28,7 @@ module Netomox
     # Network class to find disconnected sub-graph
     class DisconnectedVerifiableNetwork < Network
       def find_sub_graphs
+        delete_objects_has_deleted_state
         sub_graphs = []
         @nodes.each do |node|
           connected_graphs = []
@@ -42,6 +43,19 @@ module Netomox
       end
 
       private
+
+      def delete_objects_has_deleted_state()
+        puts "# #{@name} before: nodes=#{@nodes.length}, links=#{@links.length}"
+        @nodes.delete_if { |node| node.diff_state.detect == :deleted }
+        @nodes.each do |node|
+          node.termination_points.delete_if { |tp| tp.diff_state.detect == :deleted }
+        end
+        @links.delete_if do |link|
+          puts "  # link: #{link.name}, diff_state = #{link.diff_state}, (#{link.diff_state.class.name}), <#{link.diff_state.detect}>"
+          link.diff_state.detect == :deleted
+        end
+        puts "# #{@name} after : nodes=#{@nodes.length}, links=#{@links.length}"
+      end
 
       def find_connected_nodes_recursively(node, term_point, connected_graphs)
         connected_graphs.push(term_point.path)
