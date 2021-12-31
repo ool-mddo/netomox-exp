@@ -62,7 +62,7 @@ docker-compose up -d
 ## Generate topology json from normalized network data
 
 ```shell
-bundle exec rake [TARGET=./model_defs/hoge.rb]
+bundle exec rake
 ```
 
 ## Development

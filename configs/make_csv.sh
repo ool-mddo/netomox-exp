@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-set -euo pipefail
+set -euxo pipefail
 
 # origin is the directory which owns this script
 cd "$(dirname "$0")"

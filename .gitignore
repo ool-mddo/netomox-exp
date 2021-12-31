@@ -1,6 +1,7 @@
 .idea/
 configs/*_linkdown
 models/*_linkdown
+netoviz_model/*_linkdown*.json
 
 *.gem
 *.rbc

@@ -48,7 +48,10 @@ def make_output_configs(src_snapshot_configs_dir_path, dst_snapshot_dir_path, co
     for config_file in config_files:
         src_file = path.join(src_snapshot_configs_dir_path, config_file)
         dst_file = path.join(dst_snapshot_configs_dir_path, config_file)
-        link(src_file, dst_file)  # hard link
+        if path.exists(dst_file):
+            print('Warning: dst file: %s already exists' % dst_file, file=sys.stderr)
+        else:
+            link(src_file, dst_file)  # hard link
 
 
 if __name__ == "__main__":
@@ -75,7 +78,7 @@ if __name__ == "__main__":
     #     + configs/ (fixed, refer as "snapshot_configs_dir")
     #     - layer1_topology.json (fixed name)
     input_snapshot_dir_path = path.expanduser(args.snapshot)
-    input_snapshot_dir_name = path.basename(path.dirname(args.snapshot))
+    input_snapshot_dir_name = path.basename(args.snapshot)
     input_snapshot_configs_dir_path = path.join(input_snapshot_dir_path, "configs")
     output_snapshot_base_dir_path = path.expanduser(args.output)
 
@@ -91,10 +94,6 @@ if __name__ == "__main__":
     # make outputs
     makedirs(output_snapshot_base_dir_path, exist_ok=True)
     for index, edge in enumerate(uniq_edges):
-        # debug
-        if index > 1:
-            continue
-
         # output directory defs
         output_snapshot_dir_name = "%s_%02d" % (input_snapshot_dir_name, index + 1)
         output_snapshot_dir_path = path.join(output_snapshot_base_dir_path, output_snapshot_dir_name)
