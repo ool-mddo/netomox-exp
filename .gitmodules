@@ -1,3 +1,6 @@
-[submodule "model_defs/batfish-test-topology"]
-	path = model_defs/batfish-test-topology
-	url = https://github.com/corestate55/batfish-test-topology.git
+[submodule "configs/batfish-test-topology"]
+	path = configs/batfish-test-topology
+	url = git@github.com:corestate55/batfish-test-topology.git
+[submodule "configs/pushed_configs"]
+	path = configs/pushed_configs
+	url = git@github.com:ool-mddo/pushed_configs.git
