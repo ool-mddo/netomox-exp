@@ -9,6 +9,7 @@ module Netomox
   module Topology
     # Networks with DisconnectedVerifiableNetwork
     class DisconnectedVerifiableNetworks < Networks
+      # @return [Array<Hash>] Found disconnected sub-graphs
       def find_all_disconnected_sub_graphs
         @networks.map do |nw|
           {
@@ -20,6 +21,7 @@ module Netomox
 
       private
 
+      # @overload
       def create_network(data)
         DisconnectedVerifiableNetwork.new(data)
       end
@@ -27,9 +29,12 @@ module Netomox
 
     # Network class to find disconnected sub-graph
     class DisconnectedVerifiableNetwork < Network
+      # rubocop:disable Metrics/MethodLength
+
+      # @return [Array<Array<String>>] List of connected term-point paths (as sub-graph)
       def find_sub_graphs
-        delete_objects_has_deleted_state
-        sub_graphs = []
+        delete_objects_own_deleted_state
+        sub_graphs = [] # Array<Array<String>> : list of connected-sub-graph
         @nodes.each do |node|
           connected_graphs = []
           node.termination_points.each do |tp|
@@ -41,22 +46,25 @@ module Netomox
         end
         sub_graphs
       end
+      # rubocop:enable Metrics/MethodLength
 
       private
 
-      def delete_objects_has_deleted_state()
-        puts "# #{@name} before: nodes=#{@nodes.length}, links=#{@links.length}"
+      # Delete node/tp, link which has "deleted" diff_state
+      #   Note: destructive method
+      # @return [void]
+      def delete_objects_own_deleted_state
         @nodes.delete_if { |node| node.diff_state.detect == :deleted }
         @nodes.each do |node|
           node.termination_points.delete_if { |tp| tp.diff_state.detect == :deleted }
         end
-        @links.delete_if do |link|
-          puts "  # link: #{link.name}, diff_state = #{link.diff_state}, (#{link.diff_state.class.name}), <#{link.diff_state.detect}>"
-          link.diff_state.detect == :deleted
-        end
-        puts "# #{@name} after : nodes=#{@nodes.length}, links=#{@links.length}"
+        @links.delete_if { |link| link.diff_state.detect == :deleted }
       end
 
+      # @param [Node] node (Source) Node
+      # @param [TermPoint] term_point (Source) Term-point
+      # @param [Array<String>] connected_graphs Connected term-point paths (as sub-graph)
+      # @return [void]
       def find_connected_nodes_recursively(node, term_point, connected_graphs)
         connected_graphs.push(term_point.path)
         link = find_link_by_source(node.name, term_point.name)

@@ -132,9 +132,9 @@ class L3DataBuilder < L3DataChecker
   # @param [Array<PLinkEdge>] segment Edge list in same segment
   # @param [Integer] seg_index Index number of the segment
   # @return [PNode] Layer3 segment node
-  def add_l3_seg_node(segment, seg_index)
+  def add_l3_seg_node(segment, _seg_index)
     prefixes = segment_prefixes(segment)
-    seg_suffix = prefixes.length.positive? ? "#{prefixes[0][:prefix]}" : ''
+    seg_suffix = prefixes.length.positive? ? (prefixes[0][:prefix]).to_s : ''
     # NOTICE: it needs seg_index to differentiate other-L2-seg but same network-addr segment case.
     #   (when there are ip address block duplication)
     # l3_seg_node = @network.node("Seg#{seg_index}_#{seg_suffix}")

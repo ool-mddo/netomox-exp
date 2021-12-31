@@ -88,9 +88,7 @@ task :netoviz_index do
       exit 1
     end
   end
-  File.open("#{NETOVIZ_MODEL_DIR}/_index.json", 'w') do |f|
-    f.write(JSON.pretty_generate(index_data.flatten))
-  end
+  File.write("#{NETOVIZ_MODEL_DIR}/_index.json", JSON.pretty_generate(index_data.flatten))
 end
 
 task :netoviz_models do
