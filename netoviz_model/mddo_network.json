@@ -3232,7 +3232,7 @@
         },
         "node": [
           {
-            "node-id": "Seg0_172.30.10.0/24",
+            "node-id": "Seg_172.30.10.0/24",
             "ietf-network-topology:termination-point": [
               {
                 "tp-id": "regiona-ce01_Vlan10",
@@ -3794,7 +3794,7 @@
             }
           },
           {
-            "node-id": "Seg1_172.30.110.0/24",
+            "node-id": "Seg_172.30.110.0/24",
             "ietf-network-topology:termination-point": [
               {
                 "tp-id": "regiona-ce01_vrf1_Vlan110",
@@ -4026,7 +4026,7 @@
             }
           },
           {
-            "node-id": "Seg2_172.30.20.0/24",
+            "node-id": "Seg_172.30.20.0/24",
             "ietf-network-topology:termination-point": [
               {
                 "tp-id": "regiona-ce01_Vlan20",
@@ -4080,7 +4080,7 @@
             }
           },
           {
-            "node-id": "Seg3_172.30.120.0/24",
+            "node-id": "Seg_172.30.120.0/24",
             "ietf-network-topology:termination-point": [
               {
                 "tp-id": "regiona-ce01_vrf1_Vlan120",
@@ -4134,7 +4134,7 @@
             }
           },
           {
-            "node-id": "Seg4_172.16.2.0/30",
+            "node-id": "Seg_172.16.2.0/30",
             "ietf-network-topology:termination-point": [
               {
                 "tp-id": "regiona-pe01_GigabitEthernet0/0/0/3",
@@ -4319,7 +4319,7 @@
             }
           },
           {
-            "node-id": "Seg5_172.16.4.0/30",
+            "node-id": "Seg_172.16.4.0/30",
             "ietf-network-topology:termination-point": [
               {
                 "tp-id": "regiona-pe02_GigabitEthernet0/0/0/3",
@@ -4504,7 +4504,7 @@
             }
           },
           {
-            "node-id": "Seg6_172.16.5.0/30",
+            "node-id": "Seg_172.16.5.0/30",
             "ietf-network-topology:termination-point": [
               {
                 "tp-id": "regiona-ce01_Port-Channel1",
@@ -4554,7 +4554,7 @@
             }
           },
           {
-            "node-id": "Seg7_10.1.1.0/30",
+            "node-id": "Seg_10.1.1.0/30",
             "ietf-network-topology:termination-point": [
               {
                 "tp-id": "regionb-pe02_ge-0/0/0.0",
@@ -4739,7 +4739,7 @@
             }
           },
           {
-            "node-id": "Seg8_172.16.0.0/30",
+            "node-id": "Seg_172.16.0.0/30",
             "ietf-network-topology:termination-point": [
               {
                 "tp-id": "regiona-pe01_GigabitEthernet0/0/0/1",
@@ -4789,7 +4789,7 @@
             }
           },
           {
-            "node-id": "Seg9_172.16.3.0/30",
+            "node-id": "Seg_172.16.3.0/30",
             "ietf-network-topology:termination-point": [
               {
                 "tp-id": "regiona-ce01_Ethernet2",
@@ -4839,7 +4839,7 @@
             }
           },
           {
-            "node-id": "Seg10_172.17.0.0/30",
+            "node-id": "Seg_172.17.0.0/30",
             "ietf-network-topology:termination-point": [
               {
                 "tp-id": "regionb-pe01_ge-0/0/1.0",
@@ -5024,7 +5024,7 @@
             }
           },
           {
-            "node-id": "Seg11_172.17.3.0/30",
+            "node-id": "Seg_172.17.3.0/30",
             "ietf-network-topology:termination-point": [
               {
                 "tp-id": "regionb-ce01_ge-0/0/1.0",
@@ -5239,7 +5239,7 @@
             }
           },
           {
-            "node-id": "Seg12_172.17.4.0/30",
+            "node-id": "Seg_172.17.4.0/30",
             "ietf-network-topology:termination-point": [
               {
                 "tp-id": "regionb-ce02_ge-0/0/1.0",
@@ -5454,7 +5454,7 @@
             }
           },
           {
-            "node-id": "Seg13_172.17.2.0/30",
+            "node-id": "Seg_172.17.2.0/30",
             "ietf-network-topology:termination-point": [
               {
                 "tp-id": "regionb-pe01_ge-0/0/3.0",
@@ -5504,7 +5504,7 @@
             }
           },
           {
-            "node-id": "Seg14_172.17.5.0/30",
+            "node-id": "Seg_172.17.5.0/30",
             "ietf-network-topology:termination-point": [
               {
                 "tp-id": "regionb-ce01_ae0.0",
@@ -5554,7 +5554,7 @@
             }
           },
           {
-            "node-id": "Seg15_172.31.10.0/24",
+            "node-id": "Seg_172.31.10.0/24",
             "ietf-network-topology:termination-point": [
               {
                 "tp-id": "regionb-acc01_Port-Channel2",
@@ -5697,7 +5697,7 @@
             }
           },
           {
-            "node-id": "Seg16_172.31.110.0/24",
+            "node-id": "Seg_172.31.110.0/24",
             "ietf-network-topology:termination-point": [
               {
                 "tp-id": "regionb-acc01_Port-Channel2",
@@ -5915,7 +5915,7 @@
             }
           },
           {
-            "node-id": "Seg17_172.31.20.0/24",
+            "node-id": "Seg_172.31.20.0/24",
             "ietf-network-topology:termination-point": [
               {
                 "tp-id": "regionb-acc02_Port-Channel2",
@@ -6058,7 +6058,7 @@
             }
           },
           {
-            "node-id": "Seg18_172.31.120.0/24",
+            "node-id": "Seg_172.31.120.0/24",
             "ietf-network-topology:termination-point": [
               {
                 "tp-id": "regionb-acc02_Port-Channel2",
@@ -6126,7 +6126,7 @@
             }
           },
           {
-            "node-id": "Seg19_172.17.1.0/30",
+            "node-id": "Seg_172.17.1.0/30",
             "ietf-network-topology:termination-point": [
               {
                 "tp-id": "regionb-pe01_ge-0/0/2.0",
@@ -6176,7 +6176,7 @@
             }
           },
           {
-            "node-id": "Seg20_10.1.0.0/30",
+            "node-id": "Seg_10.1.0.0/30",
             "ietf-network-topology:termination-point": [
               {
                 "tp-id": "regiona-pe01_GigabitEthernet0/0/0/0",
@@ -6226,7 +6226,7 @@
             }
           },
           {
-            "node-id": "Seg21_172.16.1.0/30",
+            "node-id": "Seg_172.16.1.0/30",
             "ietf-network-topology:termination-point": [
               {
                 "tp-id": "regiona-ce01_Ethernet1",
@@ -6278,9 +6278,9 @@
         ],
         "ietf-network-topology:link": [
           {
-            "link-id": "Seg0_172.30.10.0/24,regiona-ce01_Vlan10,regiona-ce01,Vlan10",
+            "link-id": "Seg_172.30.10.0/24,regiona-ce01_Vlan10,regiona-ce01,Vlan10",
             "source": {
-              "source-node": "Seg0_172.30.10.0/24",
+              "source-node": "Seg_172.30.10.0/24",
               "source-tp": "regiona-ce01_Vlan10"
             },
             "destination": {
@@ -6289,20 +6289,20 @@
             }
           },
           {
-            "link-id": "regiona-ce01,Vlan10,Seg0_172.30.10.0/24,regiona-ce01_Vlan10",
+            "link-id": "regiona-ce01,Vlan10,Seg_172.30.10.0/24,regiona-ce01_Vlan10",
             "source": {
               "source-node": "regiona-ce01",
               "source-tp": "Vlan10"
             },
             "destination": {
-              "dest-node": "Seg0_172.30.10.0/24",
+              "dest-node": "Seg_172.30.10.0/24",
               "dest-tp": "regiona-ce01_Vlan10"
             }
           },
           {
-            "link-id": "Seg0_172.30.10.0/24,regiona-ce02_Vlan10,regiona-ce02,Vlan10",
+            "link-id": "Seg_172.30.10.0/24,regiona-ce02_Vlan10,regiona-ce02,Vlan10",
             "source": {
-              "source-node": "Seg0_172.30.10.0/24",
+              "source-node": "Seg_172.30.10.0/24",
               "source-tp": "regiona-ce02_Vlan10"
             },
             "destination": {
@@ -6311,20 +6311,20 @@
             }
           },
           {
-            "link-id": "regiona-ce02,Vlan10,Seg0_172.30.10.0/24,regiona-ce02_Vlan10",
+            "link-id": "regiona-ce02,Vlan10,Seg_172.30.10.0/24,regiona-ce02_Vlan10",
             "source": {
               "source-node": "regiona-ce02",
               "source-tp": "Vlan10"
             },
             "destination": {
-              "dest-node": "Seg0_172.30.10.0/24",
+              "dest-node": "Seg_172.30.10.0/24",
               "dest-tp": "regiona-ce02_Vlan10"
             }
           },
           {
-            "link-id": "Seg0_172.30.10.0/24,regiona-acc01_Ethernet9,regiona-svr01,Ethernet1",
+            "link-id": "Seg_172.30.10.0/24,regiona-acc01_Ethernet9,regiona-svr01,Ethernet1",
             "source": {
-              "source-node": "Seg0_172.30.10.0/24",
+              "source-node": "Seg_172.30.10.0/24",
               "source-tp": "regiona-acc01_Ethernet9"
             },
             "destination": {
@@ -6333,20 +6333,20 @@
             }
           },
           {
-            "link-id": "regiona-svr01,Ethernet1,Seg0_172.30.10.0/24,regiona-acc01_Ethernet9",
+            "link-id": "regiona-svr01,Ethernet1,Seg_172.30.10.0/24,regiona-acc01_Ethernet9",
             "source": {
               "source-node": "regiona-svr01",
               "source-tp": "Ethernet1"
             },
             "destination": {
-              "dest-node": "Seg0_172.30.10.0/24",
+              "dest-node": "Seg_172.30.10.0/24",
               "dest-tp": "regiona-acc01_Ethernet9"
             }
           },
           {
-            "link-id": "Seg0_172.30.10.0/24,regiona-acc01_Ethernet11,regiona-svr02,Ethernet1",
+            "link-id": "Seg_172.30.10.0/24,regiona-acc01_Ethernet11,regiona-svr02,Ethernet1",
             "source": {
-              "source-node": "Seg0_172.30.10.0/24",
+              "source-node": "Seg_172.30.10.0/24",
               "source-tp": "regiona-acc01_Ethernet11"
             },
             "destination": {
@@ -6355,20 +6355,20 @@
             }
           },
           {
-            "link-id": "regiona-svr02,Ethernet1,Seg0_172.30.10.0/24,regiona-acc01_Ethernet11",
+            "link-id": "regiona-svr02,Ethernet1,Seg_172.30.10.0/24,regiona-acc01_Ethernet11",
             "source": {
               "source-node": "regiona-svr02",
               "source-tp": "Ethernet1"
             },
             "destination": {
-              "dest-node": "Seg0_172.30.10.0/24",
+              "dest-node": "Seg_172.30.10.0/24",
               "dest-tp": "regiona-acc01_Ethernet11"
             }
           },
           {
-            "link-id": "Seg1_172.30.110.0/24,regiona-ce01_vrf1_Vlan110,regiona-ce01_vrf1,Vlan110",
+            "link-id": "Seg_172.30.110.0/24,regiona-ce01_vrf1_Vlan110,regiona-ce01_vrf1,Vlan110",
             "source": {
-              "source-node": "Seg1_172.30.110.0/24",
+              "source-node": "Seg_172.30.110.0/24",
               "source-tp": "regiona-ce01_vrf1_Vlan110"
             },
             "destination": {
@@ -6377,20 +6377,20 @@
             }
           },
           {
-            "link-id": "regiona-ce01_vrf1,Vlan110,Seg1_172.30.110.0/24,regiona-ce01_vrf1_Vlan110",
+            "link-id": "regiona-ce01_vrf1,Vlan110,Seg_172.30.110.0/24,regiona-ce01_vrf1_Vlan110",
             "source": {
               "source-node": "regiona-ce01_vrf1",
               "source-tp": "Vlan110"
             },
             "destination": {
-              "dest-node": "Seg1_172.30.110.0/24",
+              "dest-node": "Seg_172.30.110.0/24",
               "dest-tp": "regiona-ce01_vrf1_Vlan110"
             }
           },
           {
-            "link-id": "Seg1_172.30.110.0/24,regiona-ce02_vrf1_Vlan110,regiona-ce02_vrf1,Vlan110",
+            "link-id": "Seg_172.30.110.0/24,regiona-ce02_vrf1_Vlan110,regiona-ce02_vrf1,Vlan110",
             "source": {
-              "source-node": "Seg1_172.30.110.0/24",
+              "source-node": "Seg_172.30.110.0/24",
               "source-tp": "regiona-ce02_vrf1_Vlan110"
             },
             "destination": {
@@ -6399,20 +6399,20 @@
             }
           },
           {
-            "link-id": "regiona-ce02_vrf1,Vlan110,Seg1_172.30.110.0/24,regiona-ce02_vrf1_Vlan110",
+            "link-id": "regiona-ce02_vrf1,Vlan110,Seg_172.30.110.0/24,regiona-ce02_vrf1_Vlan110",
             "source": {
               "source-node": "regiona-ce02_vrf1",
               "source-tp": "Vlan110"
             },
             "destination": {
-              "dest-node": "Seg1_172.30.110.0/24",
+              "dest-node": "Seg_172.30.110.0/24",
               "dest-tp": "regiona-ce02_vrf1_Vlan110"
             }
           },
           {
-            "link-id": "Seg1_172.30.110.0/24,regiona-acc01_Ethernet10,regiona-svr01,Ethernet2",
+            "link-id": "Seg_172.30.110.0/24,regiona-acc01_Ethernet10,regiona-svr01,Ethernet2",
             "source": {
-              "source-node": "Seg1_172.30.110.0/24",
+              "source-node": "Seg_172.30.110.0/24",
               "source-tp": "regiona-acc01_Ethernet10"
             },
             "destination": {
@@ -6421,20 +6421,20 @@
             }
           },
           {
-            "link-id": "regiona-svr01,Ethernet2,Seg1_172.30.110.0/24,regiona-acc01_Ethernet10",
+            "link-id": "regiona-svr01,Ethernet2,Seg_172.30.110.0/24,regiona-acc01_Ethernet10",
             "source": {
               "source-node": "regiona-svr01",
               "source-tp": "Ethernet2"
             },
             "destination": {
-              "dest-node": "Seg1_172.30.110.0/24",
+              "dest-node": "Seg_172.30.110.0/24",
               "dest-tp": "regiona-acc01_Ethernet10"
             }
           },
           {
-            "link-id": "Seg1_172.30.110.0/24,regiona-acc01_Ethernet12,regiona-svr02,Ethernet2",
+            "link-id": "Seg_172.30.110.0/24,regiona-acc01_Ethernet12,regiona-svr02,Ethernet2",
             "source": {
-              "source-node": "Seg1_172.30.110.0/24",
+              "source-node": "Seg_172.30.110.0/24",
               "source-tp": "regiona-acc01_Ethernet12"
             },
             "destination": {
@@ -6443,20 +6443,20 @@
             }
           },
           {
-            "link-id": "regiona-svr02,Ethernet2,Seg1_172.30.110.0/24,regiona-acc01_Ethernet12",
+            "link-id": "regiona-svr02,Ethernet2,Seg_172.30.110.0/24,regiona-acc01_Ethernet12",
             "source": {
               "source-node": "regiona-svr02",
               "source-tp": "Ethernet2"
             },
             "destination": {
-              "dest-node": "Seg1_172.30.110.0/24",
+              "dest-node": "Seg_172.30.110.0/24",
               "dest-tp": "regiona-acc01_Ethernet12"
             }
           },
           {
-            "link-id": "Seg2_172.30.20.0/24,regiona-ce01_Vlan20,regiona-ce01,Vlan20",
+            "link-id": "Seg_172.30.20.0/24,regiona-ce01_Vlan20,regiona-ce01,Vlan20",
             "source": {
-              "source-node": "Seg2_172.30.20.0/24",
+              "source-node": "Seg_172.30.20.0/24",
               "source-tp": "regiona-ce01_Vlan20"
             },
             "destination": {
@@ -6465,20 +6465,20 @@
             }
           },
           {
-            "link-id": "regiona-ce01,Vlan20,Seg2_172.30.20.0/24,regiona-ce01_Vlan20",
+            "link-id": "regiona-ce01,Vlan20,Seg_172.30.20.0/24,regiona-ce01_Vlan20",
             "source": {
               "source-node": "regiona-ce01",
               "source-tp": "Vlan20"
             },
             "destination": {
-              "dest-node": "Seg2_172.30.20.0/24",
+              "dest-node": "Seg_172.30.20.0/24",
               "dest-tp": "regiona-ce01_Vlan20"
             }
           },
           {
-            "link-id": "Seg2_172.30.20.0/24,regiona-ce02_Vlan20,regiona-ce02,Vlan20",
+            "link-id": "Seg_172.30.20.0/24,regiona-ce02_Vlan20,regiona-ce02,Vlan20",
             "source": {
-              "source-node": "Seg2_172.30.20.0/24",
+              "source-node": "Seg_172.30.20.0/24",
               "source-tp": "regiona-ce02_Vlan20"
             },
             "destination": {
@@ -6487,20 +6487,20 @@
             }
           },
           {
-            "link-id": "regiona-ce02,Vlan20,Seg2_172.30.20.0/24,regiona-ce02_Vlan20",
+            "link-id": "regiona-ce02,Vlan20,Seg_172.30.20.0/24,regiona-ce02_Vlan20",
             "source": {
               "source-node": "regiona-ce02",
               "source-tp": "Vlan20"
             },
             "destination": {
-              "dest-node": "Seg2_172.30.20.0/24",
+              "dest-node": "Seg_172.30.20.0/24",
               "dest-tp": "regiona-ce02_Vlan20"
             }
           },
           {
-            "link-id": "Seg3_172.30.120.0/24,regiona-ce01_vrf1_Vlan120,regiona-ce01_vrf1,Vlan120",
+            "link-id": "Seg_172.30.120.0/24,regiona-ce01_vrf1_Vlan120,regiona-ce01_vrf1,Vlan120",
             "source": {
-              "source-node": "Seg3_172.30.120.0/24",
+              "source-node": "Seg_172.30.120.0/24",
               "source-tp": "regiona-ce01_vrf1_Vlan120"
             },
             "destination": {
@@ -6509,20 +6509,20 @@
             }
           },
           {
-            "link-id": "regiona-ce01_vrf1,Vlan120,Seg3_172.30.120.0/24,regiona-ce01_vrf1_Vlan120",
+            "link-id": "regiona-ce01_vrf1,Vlan120,Seg_172.30.120.0/24,regiona-ce01_vrf1_Vlan120",
             "source": {
               "source-node": "regiona-ce01_vrf1",
               "source-tp": "Vlan120"
             },
             "destination": {
-              "dest-node": "Seg3_172.30.120.0/24",
+              "dest-node": "Seg_172.30.120.0/24",
               "dest-tp": "regiona-ce01_vrf1_Vlan120"
             }
           },
           {
-            "link-id": "Seg3_172.30.120.0/24,regiona-ce02_vrf1_Vlan120,regiona-ce02_vrf1,Vlan120",
+            "link-id": "Seg_172.30.120.0/24,regiona-ce02_vrf1_Vlan120,regiona-ce02_vrf1,Vlan120",
             "source": {
-              "source-node": "Seg3_172.30.120.0/24",
+              "source-node": "Seg_172.30.120.0/24",
               "source-tp": "regiona-ce02_vrf1_Vlan120"
             },
             "destination": {
@@ -6531,20 +6531,20 @@
             }
           },
           {
-            "link-id": "regiona-ce02_vrf1,Vlan120,Seg3_172.30.120.0/24,regiona-ce02_vrf1_Vlan120",
+            "link-id": "regiona-ce02_vrf1,Vlan120,Seg_172.30.120.0/24,regiona-ce02_vrf1_Vlan120",
             "source": {
               "source-node": "regiona-ce02_vrf1",
               "source-tp": "Vlan120"
             },
             "destination": {
-              "dest-node": "Seg3_172.30.120.0/24",
+              "dest-node": "Seg_172.30.120.0/24",
               "dest-tp": "regiona-ce02_vrf1_Vlan120"
             }
           },
           {
-            "link-id": "Seg4_172.16.2.0/30,regiona-pe01_GigabitEthernet0/0/0/3,regiona-ce02,Ethernet1",
+            "link-id": "Seg_172.16.2.0/30,regiona-pe01_GigabitEthernet0/0/0/3,regiona-ce02,Ethernet1",
             "source": {
-              "source-node": "Seg4_172.16.2.0/30",
+              "source-node": "Seg_172.16.2.0/30",
               "source-tp": "regiona-pe01_GigabitEthernet0/0/0/3"
             },
             "destination": {
@@ -6553,20 +6553,20 @@
             }
           },
           {
-            "link-id": "regiona-ce02,Ethernet1,Seg4_172.16.2.0/30,regiona-pe01_GigabitEthernet0/0/0/3",
+            "link-id": "regiona-ce02,Ethernet1,Seg_172.16.2.0/30,regiona-pe01_GigabitEthernet0/0/0/3",
             "source": {
               "source-node": "regiona-ce02",
               "source-tp": "Ethernet1"
             },
             "destination": {
-              "dest-node": "Seg4_172.16.2.0/30",
+              "dest-node": "Seg_172.16.2.0/30",
               "dest-tp": "regiona-pe01_GigabitEthernet0/0/0/3"
             }
           },
           {
-            "link-id": "Seg4_172.16.2.0/30,regiona-ce02_Ethernet1,regiona-pe01,GigabitEthernet0/0/0/3",
+            "link-id": "Seg_172.16.2.0/30,regiona-ce02_Ethernet1,regiona-pe01,GigabitEthernet0/0/0/3",
             "source": {
-              "source-node": "Seg4_172.16.2.0/30",
+              "source-node": "Seg_172.16.2.0/30",
               "source-tp": "regiona-ce02_Ethernet1"
             },
             "destination": {
@@ -6575,20 +6575,20 @@
             }
           },
           {
-            "link-id": "regiona-pe01,GigabitEthernet0/0/0/3,Seg4_172.16.2.0/30,regiona-ce02_Ethernet1",
+            "link-id": "regiona-pe01,GigabitEthernet0/0/0/3,Seg_172.16.2.0/30,regiona-ce02_Ethernet1",
             "source": {
               "source-node": "regiona-pe01",
               "source-tp": "GigabitEthernet0/0/0/3"
             },
             "destination": {
-              "dest-node": "Seg4_172.16.2.0/30",
+              "dest-node": "Seg_172.16.2.0/30",
               "dest-tp": "regiona-ce02_Ethernet1"
             }
           },
           {
-            "link-id": "Seg5_172.16.4.0/30,regiona-pe02_GigabitEthernet0/0/0/3,regiona-ce02,Ethernet2",
+            "link-id": "Seg_172.16.4.0/30,regiona-pe02_GigabitEthernet0/0/0/3,regiona-ce02,Ethernet2",
             "source": {
-              "source-node": "Seg5_172.16.4.0/30",
+              "source-node": "Seg_172.16.4.0/30",
               "source-tp": "regiona-pe02_GigabitEthernet0/0/0/3"
             },
             "destination": {
@@ -6597,20 +6597,20 @@
             }
           },
           {
-            "link-id": "regiona-ce02,Ethernet2,Seg5_172.16.4.0/30,regiona-pe02_GigabitEthernet0/0/0/3",
+            "link-id": "regiona-ce02,Ethernet2,Seg_172.16.4.0/30,regiona-pe02_GigabitEthernet0/0/0/3",
             "source": {
               "source-node": "regiona-ce02",
               "source-tp": "Ethernet2"
             },
             "destination": {
-              "dest-node": "Seg5_172.16.4.0/30",
+              "dest-node": "Seg_172.16.4.0/30",
               "dest-tp": "regiona-pe02_GigabitEthernet0/0/0/3"
             }
           },
           {
-            "link-id": "Seg5_172.16.4.0/30,regiona-ce02_Ethernet2,regiona-pe02,GigabitEthernet0/0/0/3",
+            "link-id": "Seg_172.16.4.0/30,regiona-ce02_Ethernet2,regiona-pe02,GigabitEthernet0/0/0/3",
             "source": {
-              "source-node": "Seg5_172.16.4.0/30",
+              "source-node": "Seg_172.16.4.0/30",
               "source-tp": "regiona-ce02_Ethernet2"
             },
             "destination": {
@@ -6619,20 +6619,20 @@
             }
           },
           {
-            "link-id": "regiona-pe02,GigabitEthernet0/0/0/3,Seg5_172.16.4.0/30,regiona-ce02_Ethernet2",
+            "link-id": "regiona-pe02,GigabitEthernet0/0/0/3,Seg_172.16.4.0/30,regiona-ce02_Ethernet2",
             "source": {
               "source-node": "regiona-pe02",
               "source-tp": "GigabitEthernet0/0/0/3"
             },
             "destination": {
-              "dest-node": "Seg5_172.16.4.0/30",
+              "dest-node": "Seg_172.16.4.0/30",
               "dest-tp": "regiona-ce02_Ethernet2"
             }
           },
           {
-            "link-id": "Seg6_172.16.5.0/30,regiona-ce01_Port-Channel1,regiona-ce02,Port-Channel1",
+            "link-id": "Seg_172.16.5.0/30,regiona-ce01_Port-Channel1,regiona-ce02,Port-Channel1",
             "source": {
-              "source-node": "Seg6_172.16.5.0/30",
+              "source-node": "Seg_172.16.5.0/30",
               "source-tp": "regiona-ce01_Port-Channel1"
             },
             "destination": {
@@ -6641,20 +6641,20 @@
             }
           },
           {
-            "link-id": "regiona-ce02,Port-Channel1,Seg6_172.16.5.0/30,regiona-ce01_Port-Channel1",
+            "link-id": "regiona-ce02,Port-Channel1,Seg_172.16.5.0/30,regiona-ce01_Port-Channel1",
             "source": {
               "source-node": "regiona-ce02",
               "source-tp": "Port-Channel1"
             },
             "destination": {
-              "dest-node": "Seg6_172.16.5.0/30",
+              "dest-node": "Seg_172.16.5.0/30",
               "dest-tp": "regiona-ce01_Port-Channel1"
             }
           },
           {
-            "link-id": "Seg6_172.16.5.0/30,regiona-ce02_Port-Channel1,regiona-ce01,Port-Channel1",
+            "link-id": "Seg_172.16.5.0/30,regiona-ce02_Port-Channel1,regiona-ce01,Port-Channel1",
             "source": {
-              "source-node": "Seg6_172.16.5.0/30",
+              "source-node": "Seg_172.16.5.0/30",
               "source-tp": "regiona-ce02_Port-Channel1"
             },
             "destination": {
@@ -6663,20 +6663,20 @@
             }
           },
           {
-            "link-id": "regiona-ce01,Port-Channel1,Seg6_172.16.5.0/30,regiona-ce02_Port-Channel1",
+            "link-id": "regiona-ce01,Port-Channel1,Seg_172.16.5.0/30,regiona-ce02_Port-Channel1",
             "source": {
               "source-node": "regiona-ce01",
               "source-tp": "Port-Channel1"
             },
             "destination": {
-              "dest-node": "Seg6_172.16.5.0/30",
+              "dest-node": "Seg_172.16.5.0/30",
               "dest-tp": "regiona-ce02_Port-Channel1"
             }
           },
           {
-            "link-id": "Seg7_10.1.1.0/30,regionb-pe02_ge-0/0/0.0,regiona-pe02,GigabitEthernet0/0/0/0",
+            "link-id": "Seg_10.1.1.0/30,regionb-pe02_ge-0/0/0.0,regiona-pe02,GigabitEthernet0/0/0/0",
             "source": {
-              "source-node": "Seg7_10.1.1.0/30",
+              "source-node": "Seg_10.1.1.0/30",
               "source-tp": "regionb-pe02_ge-0/0/0.0"
             },
             "destination": {
@@ -6685,20 +6685,20 @@
             }
           },
           {
-            "link-id": "regiona-pe02,GigabitEthernet0/0/0/0,Seg7_10.1.1.0/30,regionb-pe02_ge-0/0/0.0",
+            "link-id": "regiona-pe02,GigabitEthernet0/0/0/0,Seg_10.1.1.0/30,regionb-pe02_ge-0/0/0.0",
             "source": {
               "source-node": "regiona-pe02",
               "source-tp": "GigabitEthernet0/0/0/0"
             },
             "destination": {
-              "dest-node": "Seg7_10.1.1.0/30",
+              "dest-node": "Seg_10.1.1.0/30",
               "dest-tp": "regionb-pe02_ge-0/0/0.0"
             }
           },
           {
-            "link-id": "Seg7_10.1.1.0/30,regiona-pe02_GigabitEthernet0/0/0/0,regionb-pe02,ge-0/0/0.0",
+            "link-id": "Seg_10.1.1.0/30,regiona-pe02_GigabitEthernet0/0/0/0,regionb-pe02,ge-0/0/0.0",
             "source": {
-              "source-node": "Seg7_10.1.1.0/30",
+              "source-node": "Seg_10.1.1.0/30",
               "source-tp": "regiona-pe02_GigabitEthernet0/0/0/0"
             },
             "destination": {
@@ -6707,20 +6707,20 @@
             }
           },
           {
-            "link-id": "regionb-pe02,ge-0/0/0.0,Seg7_10.1.1.0/30,regiona-pe02_GigabitEthernet0/0/0/0",
+            "link-id": "regionb-pe02,ge-0/0/0.0,Seg_10.1.1.0/30,regiona-pe02_GigabitEthernet0/0/0/0",
             "source": {
               "source-node": "regionb-pe02",
               "source-tp": "ge-0/0/0.0"
             },
             "destination": {
-              "dest-node": "Seg7_10.1.1.0/30",
+              "dest-node": "Seg_10.1.1.0/30",
               "dest-tp": "regiona-pe02_GigabitEthernet0/0/0/0"
             }
           },
           {
-            "link-id": "Seg8_172.16.0.0/30,regiona-pe01_GigabitEthernet0/0/0/1,regiona-pe02,GigabitEthernet0/0/0/1",
+            "link-id": "Seg_172.16.0.0/30,regiona-pe01_GigabitEthernet0/0/0/1,regiona-pe02,GigabitEthernet0/0/0/1",
             "source": {
-              "source-node": "Seg8_172.16.0.0/30",
+              "source-node": "Seg_172.16.0.0/30",
               "source-tp": "regiona-pe01_GigabitEthernet0/0/0/1"
             },
             "destination": {
@@ -6729,20 +6729,20 @@
             }
           },
           {
-            "link-id": "regiona-pe02,GigabitEthernet0/0/0/1,Seg8_172.16.0.0/30,regiona-pe01_GigabitEthernet0/0/0/1",
+            "link-id": "regiona-pe02,GigabitEthernet0/0/0/1,Seg_172.16.0.0/30,regiona-pe01_GigabitEthernet0/0/0/1",
             "source": {
               "source-node": "regiona-pe02",
               "source-tp": "GigabitEthernet0/0/0/1"
             },
             "destination": {
-              "dest-node": "Seg8_172.16.0.0/30",
+              "dest-node": "Seg_172.16.0.0/30",
               "dest-tp": "regiona-pe01_GigabitEthernet0/0/0/1"
             }
           },
           {
-            "link-id": "Seg8_172.16.0.0/30,regiona-pe02_GigabitEthernet0/0/0/1,regiona-pe01,GigabitEthernet0/0/0/1",
+            "link-id": "Seg_172.16.0.0/30,regiona-pe02_GigabitEthernet0/0/0/1,regiona-pe01,GigabitEthernet0/0/0/1",
             "source": {
-              "source-node": "Seg8_172.16.0.0/30",
+              "source-node": "Seg_172.16.0.0/30",
               "source-tp": "regiona-pe02_GigabitEthernet0/0/0/1"
             },
             "destination": {
@@ -6751,20 +6751,20 @@
             }
           },
           {
-            "link-id": "regiona-pe01,GigabitEthernet0/0/0/1,Seg8_172.16.0.0/30,regiona-pe02_GigabitEthernet0/0/0/1",
+            "link-id": "regiona-pe01,GigabitEthernet0/0/0/1,Seg_172.16.0.0/30,regiona-pe02_GigabitEthernet0/0/0/1",
             "source": {
               "source-node": "regiona-pe01",
               "source-tp": "GigabitEthernet0/0/0/1"
             },
             "destination": {
-              "dest-node": "Seg8_172.16.0.0/30",
+              "dest-node": "Seg_172.16.0.0/30",
               "dest-tp": "regiona-pe02_GigabitEthernet0/0/0/1"
             }
           },
           {
-            "link-id": "Seg9_172.16.3.0/30,regiona-ce01_Ethernet2,regiona-pe02,GigabitEthernet0/0/0/2",
+            "link-id": "Seg_172.16.3.0/30,regiona-ce01_Ethernet2,regiona-pe02,GigabitEthernet0/0/0/2",
             "source": {
-              "source-node": "Seg9_172.16.3.0/30",
+              "source-node": "Seg_172.16.3.0/30",
               "source-tp": "regiona-ce01_Ethernet2"
             },
             "destination": {
@@ -6773,20 +6773,20 @@
             }
           },
           {
-            "link-id": "regiona-pe02,GigabitEthernet0/0/0/2,Seg9_172.16.3.0/30,regiona-ce01_Ethernet2",
+            "link-id": "regiona-pe02,GigabitEthernet0/0/0/2,Seg_172.16.3.0/30,regiona-ce01_Ethernet2",
             "source": {
               "source-node": "regiona-pe02",
               "source-tp": "GigabitEthernet0/0/0/2"
             },
             "destination": {
-              "dest-node": "Seg9_172.16.3.0/30",
+              "dest-node": "Seg_172.16.3.0/30",
               "dest-tp": "regiona-ce01_Ethernet2"
             }
           },
           {
-            "link-id": "Seg9_172.16.3.0/30,regiona-pe02_GigabitEthernet0/0/0/2,regiona-ce01,Ethernet2",
+            "link-id": "Seg_172.16.3.0/30,regiona-pe02_GigabitEthernet0/0/0/2,regiona-ce01,Ethernet2",
             "source": {
-              "source-node": "Seg9_172.16.3.0/30",
+              "source-node": "Seg_172.16.3.0/30",
               "source-tp": "regiona-pe02_GigabitEthernet0/0/0/2"
             },
             "destination": {
@@ -6795,20 +6795,20 @@
             }
           },
           {
-            "link-id": "regiona-ce01,Ethernet2,Seg9_172.16.3.0/30,regiona-pe02_GigabitEthernet0/0/0/2",
+            "link-id": "regiona-ce01,Ethernet2,Seg_172.16.3.0/30,regiona-pe02_GigabitEthernet0/0/0/2",
             "source": {
               "source-node": "regiona-ce01",
               "source-tp": "Ethernet2"
             },
             "destination": {
-              "dest-node": "Seg9_172.16.3.0/30",
+              "dest-node": "Seg_172.16.3.0/30",
               "dest-tp": "regiona-pe02_GigabitEthernet0/0/0/2"
             }
           },
           {
-            "link-id": "Seg10_172.17.0.0/30,regionb-pe01_ge-0/0/1.0,regionb-pe02,ge-0/0/1.0",
+            "link-id": "Seg_172.17.0.0/30,regionb-pe01_ge-0/0/1.0,regionb-pe02,ge-0/0/1.0",
             "source": {
-              "source-node": "Seg10_172.17.0.0/30",
+              "source-node": "Seg_172.17.0.0/30",
               "source-tp": "regionb-pe01_ge-0/0/1.0"
             },
             "destination": {
@@ -6817,20 +6817,20 @@
             }
           },
           {
-            "link-id": "regionb-pe02,ge-0/0/1.0,Seg10_172.17.0.0/30,regionb-pe01_ge-0/0/1.0",
+            "link-id": "regionb-pe02,ge-0/0/1.0,Seg_172.17.0.0/30,regionb-pe01_ge-0/0/1.0",
             "source": {
               "source-node": "regionb-pe02",
               "source-tp": "ge-0/0/1.0"
             },
             "destination": {
-              "dest-node": "Seg10_172.17.0.0/30",
+              "dest-node": "Seg_172.17.0.0/30",
               "dest-tp": "regionb-pe01_ge-0/0/1.0"
             }
           },
           {
-            "link-id": "Seg10_172.17.0.0/30,regionb-pe02_ge-0/0/1.0,regionb-pe01,ge-0/0/1.0",
+            "link-id": "Seg_172.17.0.0/30,regionb-pe02_ge-0/0/1.0,regionb-pe01,ge-0/0/1.0",
             "source": {
-              "source-node": "Seg10_172.17.0.0/30",
+              "source-node": "Seg_172.17.0.0/30",
               "source-tp": "regionb-pe02_ge-0/0/1.0"
             },
             "destination": {
@@ -6839,20 +6839,20 @@
             }
           },
           {
-            "link-id": "regionb-pe01,ge-0/0/1.0,Seg10_172.17.0.0/30,regionb-pe02_ge-0/0/1.0",
+            "link-id": "regionb-pe01,ge-0/0/1.0,Seg_172.17.0.0/30,regionb-pe02_ge-0/0/1.0",
             "source": {
               "source-node": "regionb-pe01",
               "source-tp": "ge-0/0/1.0"
             },
             "destination": {
-              "dest-node": "Seg10_172.17.0.0/30",
+              "dest-node": "Seg_172.17.0.0/30",
               "dest-tp": "regionb-pe02_ge-0/0/1.0"
             }
           },
           {
-            "link-id": "Seg11_172.17.3.0/30,regionb-ce01_ge-0/0/1.0,regionb-pe02,ge-0/0/2.0",
+            "link-id": "Seg_172.17.3.0/30,regionb-ce01_ge-0/0/1.0,regionb-pe02,ge-0/0/2.0",
             "source": {
-              "source-node": "Seg11_172.17.3.0/30",
+              "source-node": "Seg_172.17.3.0/30",
               "source-tp": "regionb-ce01_ge-0/0/1.0"
             },
             "destination": {
@@ -6861,20 +6861,20 @@
             }
           },
           {
-            "link-id": "regionb-pe02,ge-0/0/2.0,Seg11_172.17.3.0/30,regionb-ce01_ge-0/0/1.0",
+            "link-id": "regionb-pe02,ge-0/0/2.0,Seg_172.17.3.0/30,regionb-ce01_ge-0/0/1.0",
             "source": {
               "source-node": "regionb-pe02",
               "source-tp": "ge-0/0/2.0"
             },
             "destination": {
-              "dest-node": "Seg11_172.17.3.0/30",
+              "dest-node": "Seg_172.17.3.0/30",
               "dest-tp": "regionb-ce01_ge-0/0/1.0"
             }
           },
           {
-            "link-id": "Seg11_172.17.3.0/30,regionb-pe02_ge-0/0/2.0,regionb-ce01,ge-0/0/1.0",
+            "link-id": "Seg_172.17.3.0/30,regionb-pe02_ge-0/0/2.0,regionb-ce01,ge-0/0/1.0",
             "source": {
-              "source-node": "Seg11_172.17.3.0/30",
+              "source-node": "Seg_172.17.3.0/30",
               "source-tp": "regionb-pe02_ge-0/0/2.0"
             },
             "destination": {
@@ -6883,20 +6883,20 @@
             }
           },
           {
-            "link-id": "regionb-ce01,ge-0/0/1.0,Seg11_172.17.3.0/30,regionb-pe02_ge-0/0/2.0",
+            "link-id": "regionb-ce01,ge-0/0/1.0,Seg_172.17.3.0/30,regionb-pe02_ge-0/0/2.0",
             "source": {
               "source-node": "regionb-ce01",
               "source-tp": "ge-0/0/1.0"
             },
             "destination": {
-              "dest-node": "Seg11_172.17.3.0/30",
+              "dest-node": "Seg_172.17.3.0/30",
               "dest-tp": "regionb-pe02_ge-0/0/2.0"
             }
           },
           {
-            "link-id": "Seg12_172.17.4.0/30,regionb-ce02_ge-0/0/1.0,regionb-pe02,ge-0/0/3.0",
+            "link-id": "Seg_172.17.4.0/30,regionb-ce02_ge-0/0/1.0,regionb-pe02,ge-0/0/3.0",
             "source": {
-              "source-node": "Seg12_172.17.4.0/30",
+              "source-node": "Seg_172.17.4.0/30",
               "source-tp": "regionb-ce02_ge-0/0/1.0"
             },
             "destination": {
@@ -6905,20 +6905,20 @@
             }
           },
           {
-            "link-id": "regionb-pe02,ge-0/0/3.0,Seg12_172.17.4.0/30,regionb-ce02_ge-0/0/1.0",
+            "link-id": "regionb-pe02,ge-0/0/3.0,Seg_172.17.4.0/30,regionb-ce02_ge-0/0/1.0",
             "source": {
               "source-node": "regionb-pe02",
               "source-tp": "ge-0/0/3.0"
             },
             "destination": {
-              "dest-node": "Seg12_172.17.4.0/30",
+              "dest-node": "Seg_172.17.4.0/30",
               "dest-tp": "regionb-ce02_ge-0/0/1.0"
             }
           },
           {
-            "link-id": "Seg12_172.17.4.0/30,regionb-pe02_ge-0/0/3.0,regionb-ce02,ge-0/0/1.0",
+            "link-id": "Seg_172.17.4.0/30,regionb-pe02_ge-0/0/3.0,regionb-ce02,ge-0/0/1.0",
             "source": {
-              "source-node": "Seg12_172.17.4.0/30",
+              "source-node": "Seg_172.17.4.0/30",
               "source-tp": "regionb-pe02_ge-0/0/3.0"
             },
             "destination": {
@@ -6927,20 +6927,20 @@
             }
           },
           {
-            "link-id": "regionb-ce02,ge-0/0/1.0,Seg12_172.17.4.0/30,regionb-pe02_ge-0/0/3.0",
+            "link-id": "regionb-ce02,ge-0/0/1.0,Seg_172.17.4.0/30,regionb-pe02_ge-0/0/3.0",
             "source": {
               "source-node": "regionb-ce02",
               "source-tp": "ge-0/0/1.0"
             },
             "destination": {
-              "dest-node": "Seg12_172.17.4.0/30",
+              "dest-node": "Seg_172.17.4.0/30",
               "dest-tp": "regionb-pe02_ge-0/0/3.0"
             }
           },
           {
-            "link-id": "Seg13_172.17.2.0/30,regionb-pe01_ge-0/0/3.0,regionb-ce02,ge-0/0/0.0",
+            "link-id": "Seg_172.17.2.0/30,regionb-pe01_ge-0/0/3.0,regionb-ce02,ge-0/0/0.0",
             "source": {
-              "source-node": "Seg13_172.17.2.0/30",
+              "source-node": "Seg_172.17.2.0/30",
               "source-tp": "regionb-pe01_ge-0/0/3.0"
             },
             "destination": {
@@ -6949,20 +6949,20 @@
             }
           },
           {
-            "link-id": "regionb-ce02,ge-0/0/0.0,Seg13_172.17.2.0/30,regionb-pe01_ge-0/0/3.0",
+            "link-id": "regionb-ce02,ge-0/0/0.0,Seg_172.17.2.0/30,regionb-pe01_ge-0/0/3.0",
             "source": {
               "source-node": "regionb-ce02",
               "source-tp": "ge-0/0/0.0"
             },
             "destination": {
-              "dest-node": "Seg13_172.17.2.0/30",
+              "dest-node": "Seg_172.17.2.0/30",
               "dest-tp": "regionb-pe01_ge-0/0/3.0"
             }
           },
           {
-            "link-id": "Seg13_172.17.2.0/30,regionb-ce02_ge-0/0/0.0,regionb-pe01,ge-0/0/3.0",
+            "link-id": "Seg_172.17.2.0/30,regionb-ce02_ge-0/0/0.0,regionb-pe01,ge-0/0/3.0",
             "source": {
-              "source-node": "Seg13_172.17.2.0/30",
+              "source-node": "Seg_172.17.2.0/30",
               "source-tp": "regionb-ce02_ge-0/0/0.0"
             },
             "destination": {
@@ -6971,20 +6971,20 @@
             }
           },
           {
-            "link-id": "regionb-pe01,ge-0/0/3.0,Seg13_172.17.2.0/30,regionb-ce02_ge-0/0/0.0",
+            "link-id": "regionb-pe01,ge-0/0/3.0,Seg_172.17.2.0/30,regionb-ce02_ge-0/0/0.0",
             "source": {
               "source-node": "regionb-pe01",
               "source-tp": "ge-0/0/3.0"
             },
             "destination": {
-              "dest-node": "Seg13_172.17.2.0/30",
+              "dest-node": "Seg_172.17.2.0/30",
               "dest-tp": "regionb-ce02_ge-0/0/0.0"
             }
           },
           {
-            "link-id": "Seg14_172.17.5.0/30,regionb-ce01_ae0.0,regionb-ce02,ae0.0",
+            "link-id": "Seg_172.17.5.0/30,regionb-ce01_ae0.0,regionb-ce02,ae0.0",
             "source": {
-              "source-node": "Seg14_172.17.5.0/30",
+              "source-node": "Seg_172.17.5.0/30",
               "source-tp": "regionb-ce01_ae0.0"
             },
             "destination": {
@@ -6993,20 +6993,20 @@
             }
           },
           {
-            "link-id": "regionb-ce02,ae0.0,Seg14_172.17.5.0/30,regionb-ce01_ae0.0",
+            "link-id": "regionb-ce02,ae0.0,Seg_172.17.5.0/30,regionb-ce01_ae0.0",
             "source": {
               "source-node": "regionb-ce02",
               "source-tp": "ae0.0"
             },
             "destination": {
-              "dest-node": "Seg14_172.17.5.0/30",
+              "dest-node": "Seg_172.17.5.0/30",
               "dest-tp": "regionb-ce01_ae0.0"
             }
           },
           {
-            "link-id": "Seg14_172.17.5.0/30,regionb-ce02_ae0.0,regionb-ce01,ae0.0",
+            "link-id": "Seg_172.17.5.0/30,regionb-ce02_ae0.0,regionb-ce01,ae0.0",
             "source": {
-              "source-node": "Seg14_172.17.5.0/30",
+              "source-node": "Seg_172.17.5.0/30",
               "source-tp": "regionb-ce02_ae0.0"
             },
             "destination": {
@@ -7015,20 +7015,20 @@
             }
           },
           {
-            "link-id": "regionb-ce01,ae0.0,Seg14_172.17.5.0/30,regionb-ce02_ae0.0",
+            "link-id": "regionb-ce01,ae0.0,Seg_172.17.5.0/30,regionb-ce02_ae0.0",
             "source": {
               "source-node": "regionb-ce01",
               "source-tp": "ae0.0"
             },
             "destination": {
-              "dest-node": "Seg14_172.17.5.0/30",
+              "dest-node": "Seg_172.17.5.0/30",
               "dest-tp": "regionb-ce02_ae0.0"
             }
           },
           {
-            "link-id": "Seg15_172.31.10.0/24,regionb-acc01_Port-Channel2,regionb-ce02,ae1.1010",
+            "link-id": "Seg_172.31.10.0/24,regionb-acc01_Port-Channel2,regionb-ce02,ae1.1010",
             "source": {
-              "source-node": "Seg15_172.31.10.0/24",
+              "source-node": "Seg_172.31.10.0/24",
               "source-tp": "regionb-acc01_Port-Channel2"
             },
             "destination": {
@@ -7037,20 +7037,20 @@
             }
           },
           {
-            "link-id": "regionb-ce02,ae1.1010,Seg15_172.31.10.0/24,regionb-acc01_Port-Channel2",
+            "link-id": "regionb-ce02,ae1.1010,Seg_172.31.10.0/24,regionb-acc01_Port-Channel2",
             "source": {
               "source-node": "regionb-ce02",
               "source-tp": "ae1.1010"
             },
             "destination": {
-              "dest-node": "Seg15_172.31.10.0/24",
+              "dest-node": "Seg_172.31.10.0/24",
               "dest-tp": "regionb-acc01_Port-Channel2"
             }
           },
           {
-            "link-id": "Seg15_172.31.10.0/24,regionb-acc01_Port-Channel1,regionb-ce01,ae1.1010",
+            "link-id": "Seg_172.31.10.0/24,regionb-acc01_Port-Channel1,regionb-ce01,ae1.1010",
             "source": {
-              "source-node": "Seg15_172.31.10.0/24",
+              "source-node": "Seg_172.31.10.0/24",
               "source-tp": "regionb-acc01_Port-Channel1"
             },
             "destination": {
@@ -7059,20 +7059,20 @@
             }
           },
           {
-            "link-id": "regionb-ce01,ae1.1010,Seg15_172.31.10.0/24,regionb-acc01_Port-Channel1",
+            "link-id": "regionb-ce01,ae1.1010,Seg_172.31.10.0/24,regionb-acc01_Port-Channel1",
             "source": {
               "source-node": "regionb-ce01",
               "source-tp": "ae1.1010"
             },
             "destination": {
-              "dest-node": "Seg15_172.31.10.0/24",
+              "dest-node": "Seg_172.31.10.0/24",
               "dest-tp": "regionb-acc01_Port-Channel1"
             }
           },
           {
-            "link-id": "Seg15_172.31.10.0/24,regionb-acc01_Ethernet5,regionb-svr01,Ethernet1",
+            "link-id": "Seg_172.31.10.0/24,regionb-acc01_Ethernet5,regionb-svr01,Ethernet1",
             "source": {
-              "source-node": "Seg15_172.31.10.0/24",
+              "source-node": "Seg_172.31.10.0/24",
               "source-tp": "regionb-acc01_Ethernet5"
             },
             "destination": {
@@ -7081,20 +7081,20 @@
             }
           },
           {
-            "link-id": "regionb-svr01,Ethernet1,Seg15_172.31.10.0/24,regionb-acc01_Ethernet5",
+            "link-id": "regionb-svr01,Ethernet1,Seg_172.31.10.0/24,regionb-acc01_Ethernet5",
             "source": {
               "source-node": "regionb-svr01",
               "source-tp": "Ethernet1"
             },
             "destination": {
-              "dest-node": "Seg15_172.31.10.0/24",
+              "dest-node": "Seg_172.31.10.0/24",
               "dest-tp": "regionb-acc01_Ethernet5"
             }
           },
           {
-            "link-id": "Seg16_172.31.110.0/24,regionb-acc01_Port-Channel2,regionb-ce02_VR1,ae1.1110",
+            "link-id": "Seg_172.31.110.0/24,regionb-acc01_Port-Channel2,regionb-ce02_VR1,ae1.1110",
             "source": {
-              "source-node": "Seg16_172.31.110.0/24",
+              "source-node": "Seg_172.31.110.0/24",
               "source-tp": "regionb-acc01_Port-Channel2"
             },
             "destination": {
@@ -7103,20 +7103,20 @@
             }
           },
           {
-            "link-id": "regionb-ce02_VR1,ae1.1110,Seg16_172.31.110.0/24,regionb-acc01_Port-Channel2",
+            "link-id": "regionb-ce02_VR1,ae1.1110,Seg_172.31.110.0/24,regionb-acc01_Port-Channel2",
             "source": {
               "source-node": "regionb-ce02_VR1",
               "source-tp": "ae1.1110"
             },
             "destination": {
-              "dest-node": "Seg16_172.31.110.0/24",
+              "dest-node": "Seg_172.31.110.0/24",
               "dest-tp": "regionb-acc01_Port-Channel2"
             }
           },
           {
-            "link-id": "Seg16_172.31.110.0/24,regionb-acc01_Port-Channel1,regionb-ce01_VR1,ae1.1110",
+            "link-id": "Seg_172.31.110.0/24,regionb-acc01_Port-Channel1,regionb-ce01_VR1,ae1.1110",
             "source": {
-              "source-node": "Seg16_172.31.110.0/24",
+              "source-node": "Seg_172.31.110.0/24",
               "source-tp": "regionb-acc01_Port-Channel1"
             },
             "destination": {
@@ -7125,20 +7125,20 @@
             }
           },
           {
-            "link-id": "regionb-ce01_VR1,ae1.1110,Seg16_172.31.110.0/24,regionb-acc01_Port-Channel1",
+            "link-id": "regionb-ce01_VR1,ae1.1110,Seg_172.31.110.0/24,regionb-acc01_Port-Channel1",
             "source": {
               "source-node": "regionb-ce01_VR1",
               "source-tp": "ae1.1110"
             },
             "destination": {
-              "dest-node": "Seg16_172.31.110.0/24",
+              "dest-node": "Seg_172.31.110.0/24",
               "dest-tp": "regionb-acc01_Port-Channel1"
             }
           },
           {
-            "link-id": "Seg16_172.31.110.0/24,regionb-acc01_Ethernet6,regionb-svr01,Ethernet2",
+            "link-id": "Seg_172.31.110.0/24,regionb-acc01_Ethernet6,regionb-svr01,Ethernet2",
             "source": {
-              "source-node": "Seg16_172.31.110.0/24",
+              "source-node": "Seg_172.31.110.0/24",
               "source-tp": "regionb-acc01_Ethernet6"
             },
             "destination": {
@@ -7147,20 +7147,20 @@
             }
           },
           {
-            "link-id": "regionb-svr01,Ethernet2,Seg16_172.31.110.0/24,regionb-acc01_Ethernet6",
+            "link-id": "regionb-svr01,Ethernet2,Seg_172.31.110.0/24,regionb-acc01_Ethernet6",
             "source": {
               "source-node": "regionb-svr01",
               "source-tp": "Ethernet2"
             },
             "destination": {
-              "dest-node": "Seg16_172.31.110.0/24",
+              "dest-node": "Seg_172.31.110.0/24",
               "dest-tp": "regionb-acc01_Ethernet6"
             }
           },
           {
-            "link-id": "Seg17_172.31.20.0/24,regionb-acc02_Port-Channel2,regionb-ce02,ae2.1020",
+            "link-id": "Seg_172.31.20.0/24,regionb-acc02_Port-Channel2,regionb-ce02,ae2.1020",
             "source": {
-              "source-node": "Seg17_172.31.20.0/24",
+              "source-node": "Seg_172.31.20.0/24",
               "source-tp": "regionb-acc02_Port-Channel2"
             },
             "destination": {
@@ -7169,20 +7169,20 @@
             }
           },
           {
-            "link-id": "regionb-ce02,ae2.1020,Seg17_172.31.20.0/24,regionb-acc02_Port-Channel2",
+            "link-id": "regionb-ce02,ae2.1020,Seg_172.31.20.0/24,regionb-acc02_Port-Channel2",
             "source": {
               "source-node": "regionb-ce02",
               "source-tp": "ae2.1020"
             },
             "destination": {
-              "dest-node": "Seg17_172.31.20.0/24",
+              "dest-node": "Seg_172.31.20.0/24",
               "dest-tp": "regionb-acc02_Port-Channel2"
             }
           },
           {
-            "link-id": "Seg17_172.31.20.0/24,regionb-acc02_Port-Channel1,regionb-ce01,ae2.1020",
+            "link-id": "Seg_172.31.20.0/24,regionb-acc02_Port-Channel1,regionb-ce01,ae2.1020",
             "source": {
-              "source-node": "Seg17_172.31.20.0/24",
+              "source-node": "Seg_172.31.20.0/24",
               "source-tp": "regionb-acc02_Port-Channel1"
             },
             "destination": {
@@ -7191,20 +7191,20 @@
             }
           },
           {
-            "link-id": "regionb-ce01,ae2.1020,Seg17_172.31.20.0/24,regionb-acc02_Port-Channel1",
+            "link-id": "regionb-ce01,ae2.1020,Seg_172.31.20.0/24,regionb-acc02_Port-Channel1",
             "source": {
               "source-node": "regionb-ce01",
               "source-tp": "ae2.1020"
             },
             "destination": {
-              "dest-node": "Seg17_172.31.20.0/24",
+              "dest-node": "Seg_172.31.20.0/24",
               "dest-tp": "regionb-acc02_Port-Channel1"
             }
           },
           {
-            "link-id": "Seg17_172.31.20.0/24,regionb-acc02_Ethernet5,regionb-svr02,Ethernet1",
+            "link-id": "Seg_172.31.20.0/24,regionb-acc02_Ethernet5,regionb-svr02,Ethernet1",
             "source": {
-              "source-node": "Seg17_172.31.20.0/24",
+              "source-node": "Seg_172.31.20.0/24",
               "source-tp": "regionb-acc02_Ethernet5"
             },
             "destination": {
@@ -7213,20 +7213,20 @@
             }
           },
           {
-            "link-id": "regionb-svr02,Ethernet1,Seg17_172.31.20.0/24,regionb-acc02_Ethernet5",
+            "link-id": "regionb-svr02,Ethernet1,Seg_172.31.20.0/24,regionb-acc02_Ethernet5",
             "source": {
               "source-node": "regionb-svr02",
               "source-tp": "Ethernet1"
             },
             "destination": {
-              "dest-node": "Seg17_172.31.20.0/24",
+              "dest-node": "Seg_172.31.20.0/24",
               "dest-tp": "regionb-acc02_Ethernet5"
             }
           },
           {
-            "link-id": "Seg18_172.31.120.0/24,regionb-acc02_Port-Channel2,regionb-ce02_VR1,ae2.1120",
+            "link-id": "Seg_172.31.120.0/24,regionb-acc02_Port-Channel2,regionb-ce02_VR1,ae2.1120",
             "source": {
-              "source-node": "Seg18_172.31.120.0/24",
+              "source-node": "Seg_172.31.120.0/24",
               "source-tp": "regionb-acc02_Port-Channel2"
             },
             "destination": {
@@ -7235,20 +7235,20 @@
             }
           },
           {
-            "link-id": "regionb-ce02_VR1,ae2.1120,Seg18_172.31.120.0/24,regionb-acc02_Port-Channel2",
+            "link-id": "regionb-ce02_VR1,ae2.1120,Seg_172.31.120.0/24,regionb-acc02_Port-Channel2",
             "source": {
               "source-node": "regionb-ce02_VR1",
               "source-tp": "ae2.1120"
             },
             "destination": {
-              "dest-node": "Seg18_172.31.120.0/24",
+              "dest-node": "Seg_172.31.120.0/24",
               "dest-tp": "regionb-acc02_Port-Channel2"
             }
           },
           {
-            "link-id": "Seg18_172.31.120.0/24,regionb-acc02_Port-Channel1,regionb-ce01_VR1,ae2.1120",
+            "link-id": "Seg_172.31.120.0/24,regionb-acc02_Port-Channel1,regionb-ce01_VR1,ae2.1120",
             "source": {
-              "source-node": "Seg18_172.31.120.0/24",
+              "source-node": "Seg_172.31.120.0/24",
               "source-tp": "regionb-acc02_Port-Channel1"
             },
             "destination": {
@@ -7257,20 +7257,20 @@
             }
           },
           {
-            "link-id": "regionb-ce01_VR1,ae2.1120,Seg18_172.31.120.0/24,regionb-acc02_Port-Channel1",
+            "link-id": "regionb-ce01_VR1,ae2.1120,Seg_172.31.120.0/24,regionb-acc02_Port-Channel1",
             "source": {
               "source-node": "regionb-ce01_VR1",
               "source-tp": "ae2.1120"
             },
             "destination": {
-              "dest-node": "Seg18_172.31.120.0/24",
+              "dest-node": "Seg_172.31.120.0/24",
               "dest-tp": "regionb-acc02_Port-Channel1"
             }
           },
           {
-            "link-id": "Seg18_172.31.120.0/24,regionb-acc02_Ethernet6,regionb-svr02,Ethernet2",
+            "link-id": "Seg_172.31.120.0/24,regionb-acc02_Ethernet6,regionb-svr02,Ethernet2",
             "source": {
-              "source-node": "Seg18_172.31.120.0/24",
+              "source-node": "Seg_172.31.120.0/24",
               "source-tp": "regionb-acc02_Ethernet6"
             },
             "destination": {
@@ -7279,20 +7279,20 @@
             }
           },
           {
-            "link-id": "regionb-svr02,Ethernet2,Seg18_172.31.120.0/24,regionb-acc02_Ethernet6",
+            "link-id": "regionb-svr02,Ethernet2,Seg_172.31.120.0/24,regionb-acc02_Ethernet6",
             "source": {
               "source-node": "regionb-svr02",
               "source-tp": "Ethernet2"
             },
             "destination": {
-              "dest-node": "Seg18_172.31.120.0/24",
+              "dest-node": "Seg_172.31.120.0/24",
               "dest-tp": "regionb-acc02_Ethernet6"
             }
           },
           {
-            "link-id": "Seg19_172.17.1.0/30,regionb-pe01_ge-0/0/2.0,regionb-ce01,ge-0/0/0.0",
+            "link-id": "Seg_172.17.1.0/30,regionb-pe01_ge-0/0/2.0,regionb-ce01,ge-0/0/0.0",
             "source": {
-              "source-node": "Seg19_172.17.1.0/30",
+              "source-node": "Seg_172.17.1.0/30",
               "source-tp": "regionb-pe01_ge-0/0/2.0"
             },
             "destination": {
@@ -7301,20 +7301,20 @@
             }
           },
           {
-            "link-id": "regionb-ce01,ge-0/0/0.0,Seg19_172.17.1.0/30,regionb-pe01_ge-0/0/2.0",
+            "link-id": "regionb-ce01,ge-0/0/0.0,Seg_172.17.1.0/30,regionb-pe01_ge-0/0/2.0",
             "source": {
               "source-node": "regionb-ce01",
               "source-tp": "ge-0/0/0.0"
             },
             "destination": {
-              "dest-node": "Seg19_172.17.1.0/30",
+              "dest-node": "Seg_172.17.1.0/30",
               "dest-tp": "regionb-pe01_ge-0/0/2.0"
             }
           },
           {
-            "link-id": "Seg19_172.17.1.0/30,regionb-ce01_ge-0/0/0.0,regionb-pe01,ge-0/0/2.0",
+            "link-id": "Seg_172.17.1.0/30,regionb-ce01_ge-0/0/0.0,regionb-pe01,ge-0/0/2.0",
             "source": {
-              "source-node": "Seg19_172.17.1.0/30",
+              "source-node": "Seg_172.17.1.0/30",
               "source-tp": "regionb-ce01_ge-0/0/0.0"
             },
             "destination": {
@@ -7323,20 +7323,20 @@
             }
           },
           {
-            "link-id": "regionb-pe01,ge-0/0/2.0,Seg19_172.17.1.0/30,regionb-ce01_ge-0/0/0.0",
+            "link-id": "regionb-pe01,ge-0/0/2.0,Seg_172.17.1.0/30,regionb-ce01_ge-0/0/0.0",
             "source": {
               "source-node": "regionb-pe01",
               "source-tp": "ge-0/0/2.0"
             },
             "destination": {
-              "dest-node": "Seg19_172.17.1.0/30",
+              "dest-node": "Seg_172.17.1.0/30",
               "dest-tp": "regionb-ce01_ge-0/0/0.0"
             }
           },
           {
-            "link-id": "Seg20_10.1.0.0/30,regiona-pe01_GigabitEthernet0/0/0/0,regionb-pe01,ge-0/0/0.0",
+            "link-id": "Seg_10.1.0.0/30,regiona-pe01_GigabitEthernet0/0/0/0,regionb-pe01,ge-0/0/0.0",
             "source": {
-              "source-node": "Seg20_10.1.0.0/30",
+              "source-node": "Seg_10.1.0.0/30",
               "source-tp": "regiona-pe01_GigabitEthernet0/0/0/0"
             },
             "destination": {
@@ -7345,20 +7345,20 @@
             }
           },
           {
-            "link-id": "regionb-pe01,ge-0/0/0.0,Seg20_10.1.0.0/30,regiona-pe01_GigabitEthernet0/0/0/0",
+            "link-id": "regionb-pe01,ge-0/0/0.0,Seg_10.1.0.0/30,regiona-pe01_GigabitEthernet0/0/0/0",
             "source": {
               "source-node": "regionb-pe01",
               "source-tp": "ge-0/0/0.0"
             },
             "destination": {
-              "dest-node": "Seg20_10.1.0.0/30",
+              "dest-node": "Seg_10.1.0.0/30",
               "dest-tp": "regiona-pe01_GigabitEthernet0/0/0/0"
             }
           },
           {
-            "link-id": "Seg20_10.1.0.0/30,regionb-pe01_ge-0/0/0.0,regiona-pe01,GigabitEthernet0/0/0/0",
+            "link-id": "Seg_10.1.0.0/30,regionb-pe01_ge-0/0/0.0,regiona-pe01,GigabitEthernet0/0/0/0",
             "source": {
-              "source-node": "Seg20_10.1.0.0/30",
+              "source-node": "Seg_10.1.0.0/30",
               "source-tp": "regionb-pe01_ge-0/0/0.0"
             },
             "destination": {
@@ -7367,20 +7367,20 @@
             }
           },
           {
-            "link-id": "regiona-pe01,GigabitEthernet0/0/0/0,Seg20_10.1.0.0/30,regionb-pe01_ge-0/0/0.0",
+            "link-id": "regiona-pe01,GigabitEthernet0/0/0/0,Seg_10.1.0.0/30,regionb-pe01_ge-0/0/0.0",
             "source": {
               "source-node": "regiona-pe01",
               "source-tp": "GigabitEthernet0/0/0/0"
             },
             "destination": {
-              "dest-node": "Seg20_10.1.0.0/30",
+              "dest-node": "Seg_10.1.0.0/30",
               "dest-tp": "regionb-pe01_ge-0/0/0.0"
             }
           },
           {
-            "link-id": "Seg21_172.16.1.0/30,regiona-ce01_Ethernet1,regiona-pe01,GigabitEthernet0/0/0/2",
+            "link-id": "Seg_172.16.1.0/30,regiona-ce01_Ethernet1,regiona-pe01,GigabitEthernet0/0/0/2",
             "source": {
-              "source-node": "Seg21_172.16.1.0/30",
+              "source-node": "Seg_172.16.1.0/30",
               "source-tp": "regiona-ce01_Ethernet1"
             },
             "destination": {
@@ -7389,20 +7389,20 @@
             }
           },
           {
-            "link-id": "regiona-pe01,GigabitEthernet0/0/0/2,Seg21_172.16.1.0/30,regiona-ce01_Ethernet1",
+            "link-id": "regiona-pe01,GigabitEthernet0/0/0/2,Seg_172.16.1.0/30,regiona-ce01_Ethernet1",
             "source": {
               "source-node": "regiona-pe01",
               "source-tp": "GigabitEthernet0/0/0/2"
             },
             "destination": {
-              "dest-node": "Seg21_172.16.1.0/30",
+              "dest-node": "Seg_172.16.1.0/30",
               "dest-tp": "regiona-ce01_Ethernet1"
             }
           },
           {
-            "link-id": "Seg21_172.16.1.0/30,regiona-pe01_GigabitEthernet0/0/0/2,regiona-ce01,Ethernet1",
+            "link-id": "Seg_172.16.1.0/30,regiona-pe01_GigabitEthernet0/0/0/2,regiona-ce01,Ethernet1",
             "source": {
-              "source-node": "Seg21_172.16.1.0/30",
+              "source-node": "Seg_172.16.1.0/30",
               "source-tp": "regiona-pe01_GigabitEthernet0/0/0/2"
             },
             "destination": {
@@ -7411,13 +7411,13 @@
             }
           },
           {
-            "link-id": "regiona-ce01,Ethernet1,Seg21_172.16.1.0/30,regiona-pe01_GigabitEthernet0/0/0/2",
+            "link-id": "regiona-ce01,Ethernet1,Seg_172.16.1.0/30,regiona-pe01_GigabitEthernet0/0/0/2",
             "source": {
               "source-node": "regiona-ce01",
               "source-tp": "Ethernet1"
             },
             "destination": {
-              "dest-node": "Seg21_172.16.1.0/30",
+              "dest-node": "Seg_172.16.1.0/30",
               "dest-tp": "regiona-pe01_GigabitEthernet0/0/0/2"
             }
           }

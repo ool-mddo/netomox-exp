@@ -1640,7 +1640,7 @@
         },
         "node": [
           {
-            "node-id": "Seg0_192.168.1.0/24",
+            "node-id": "Seg_192.168.1.0/24",
             "ietf-network-topology:termination-point": [
               {
                 "tp-id": "switch1_Vlan100",
@@ -2056,7 +2056,7 @@
             }
           },
           {
-            "node-id": "Seg1_192.168.2.0/24",
+            "node-id": "Seg_192.168.2.0/24",
             "ietf-network-topology:termination-point": [
               {
                 "tp-id": "switch1_GigabitEthernet1/0/5",
@@ -2324,9 +2324,9 @@
         ],
         "ietf-network-topology:link": [
           {
-            "link-id": "Seg0_192.168.1.0/24,switch1_Vlan100,switch1,Vlan100",
+            "link-id": "Seg_192.168.1.0/24,switch1_Vlan100,switch1,Vlan100",
             "source": {
-              "source-node": "Seg0_192.168.1.0/24",
+              "source-node": "Seg_192.168.1.0/24",
               "source-tp": "switch1_Vlan100"
             },
             "destination": {
@@ -2335,20 +2335,20 @@
             }
           },
           {
-            "link-id": "switch1,Vlan100,Seg0_192.168.1.0/24,switch1_Vlan100",
+            "link-id": "switch1,Vlan100,Seg_192.168.1.0/24,switch1_Vlan100",
             "source": {
               "source-node": "switch1",
               "source-tp": "Vlan100"
             },
             "destination": {
-              "dest-node": "Seg0_192.168.1.0/24",
+              "dest-node": "Seg_192.168.1.0/24",
               "dest-tp": "switch1_Vlan100"
             }
           },
           {
-            "link-id": "Seg0_192.168.1.0/24,switch1_GigabitEthernet1/0/1,host11,eth0",
+            "link-id": "Seg_192.168.1.0/24,switch1_GigabitEthernet1/0/1,host11,eth0",
             "source": {
-              "source-node": "Seg0_192.168.1.0/24",
+              "source-node": "Seg_192.168.1.0/24",
               "source-tp": "switch1_GigabitEthernet1/0/1"
             },
             "destination": {
@@ -2357,20 +2357,20 @@
             }
           },
           {
-            "link-id": "host11,eth0,Seg0_192.168.1.0/24,switch1_GigabitEthernet1/0/1",
+            "link-id": "host11,eth0,Seg_192.168.1.0/24,switch1_GigabitEthernet1/0/1",
             "source": {
               "source-node": "host11",
               "source-tp": "eth0"
             },
             "destination": {
-              "dest-node": "Seg0_192.168.1.0/24",
+              "dest-node": "Seg_192.168.1.0/24",
               "dest-tp": "switch1_GigabitEthernet1/0/1"
             }
           },
           {
-            "link-id": "Seg0_192.168.1.0/24,switch1_GigabitEthernet1/0/2,host12,eth0",
+            "link-id": "Seg_192.168.1.0/24,switch1_GigabitEthernet1/0/2,host12,eth0",
             "source": {
-              "source-node": "Seg0_192.168.1.0/24",
+              "source-node": "Seg_192.168.1.0/24",
               "source-tp": "switch1_GigabitEthernet1/0/2"
             },
             "destination": {
@@ -2379,20 +2379,20 @@
             }
           },
           {
-            "link-id": "host12,eth0,Seg0_192.168.1.0/24,switch1_GigabitEthernet1/0/2",
+            "link-id": "host12,eth0,Seg_192.168.1.0/24,switch1_GigabitEthernet1/0/2",
             "source": {
               "source-node": "host12",
               "source-tp": "eth0"
             },
             "destination": {
-              "dest-node": "Seg0_192.168.1.0/24",
+              "dest-node": "Seg_192.168.1.0/24",
               "dest-tp": "switch1_GigabitEthernet1/0/2"
             }
           },
           {
-            "link-id": "Seg0_192.168.1.0/24,switch2_Vlan100,switch2,Vlan100",
+            "link-id": "Seg_192.168.1.0/24,switch2_Vlan100,switch2,Vlan100",
             "source": {
-              "source-node": "Seg0_192.168.1.0/24",
+              "source-node": "Seg_192.168.1.0/24",
               "source-tp": "switch2_Vlan100"
             },
             "destination": {
@@ -2401,20 +2401,20 @@
             }
           },
           {
-            "link-id": "switch2,Vlan100,Seg0_192.168.1.0/24,switch2_Vlan100",
+            "link-id": "switch2,Vlan100,Seg_192.168.1.0/24,switch2_Vlan100",
             "source": {
               "source-node": "switch2",
               "source-tp": "Vlan100"
             },
             "destination": {
-              "dest-node": "Seg0_192.168.1.0/24",
+              "dest-node": "Seg_192.168.1.0/24",
               "dest-tp": "switch2_Vlan100"
             }
           },
           {
-            "link-id": "Seg0_192.168.1.0/24,switch2_GigabitEthernet1/0/3,host13,eth0",
+            "link-id": "Seg_192.168.1.0/24,switch2_GigabitEthernet1/0/3,host13,eth0",
             "source": {
-              "source-node": "Seg0_192.168.1.0/24",
+              "source-node": "Seg_192.168.1.0/24",
               "source-tp": "switch2_GigabitEthernet1/0/3"
             },
             "destination": {
@@ -2423,20 +2423,20 @@
             }
           },
           {
-            "link-id": "host13,eth0,Seg0_192.168.1.0/24,switch2_GigabitEthernet1/0/3",
+            "link-id": "host13,eth0,Seg_192.168.1.0/24,switch2_GigabitEthernet1/0/3",
             "source": {
               "source-node": "host13",
               "source-tp": "eth0"
             },
             "destination": {
-              "dest-node": "Seg0_192.168.1.0/24",
+              "dest-node": "Seg_192.168.1.0/24",
               "dest-tp": "switch2_GigabitEthernet1/0/3"
             }
           },
           {
-            "link-id": "Seg0_192.168.1.0/24,switch2_GigabitEthernet1/0/4,host14,eth0",
+            "link-id": "Seg_192.168.1.0/24,switch2_GigabitEthernet1/0/4,host14,eth0",
             "source": {
-              "source-node": "Seg0_192.168.1.0/24",
+              "source-node": "Seg_192.168.1.0/24",
               "source-tp": "switch2_GigabitEthernet1/0/4"
             },
             "destination": {
@@ -2445,20 +2445,20 @@
             }
           },
           {
-            "link-id": "host14,eth0,Seg0_192.168.1.0/24,switch2_GigabitEthernet1/0/4",
+            "link-id": "host14,eth0,Seg_192.168.1.0/24,switch2_GigabitEthernet1/0/4",
             "source": {
               "source-node": "host14",
               "source-tp": "eth0"
             },
             "destination": {
-              "dest-node": "Seg0_192.168.1.0/24",
+              "dest-node": "Seg_192.168.1.0/24",
               "dest-tp": "switch2_GigabitEthernet1/0/4"
             }
           },
           {
-            "link-id": "Seg1_192.168.2.0/24,switch1_GigabitEthernet1/0/5,host21,eth0",
+            "link-id": "Seg_192.168.2.0/24,switch1_GigabitEthernet1/0/5,host21,eth0",
             "source": {
-              "source-node": "Seg1_192.168.2.0/24",
+              "source-node": "Seg_192.168.2.0/24",
               "source-tp": "switch1_GigabitEthernet1/0/5"
             },
             "destination": {
@@ -2467,20 +2467,20 @@
             }
           },
           {
-            "link-id": "host21,eth0,Seg1_192.168.2.0/24,switch1_GigabitEthernet1/0/5",
+            "link-id": "host21,eth0,Seg_192.168.2.0/24,switch1_GigabitEthernet1/0/5",
             "source": {
               "source-node": "host21",
               "source-tp": "eth0"
             },
             "destination": {
-              "dest-node": "Seg1_192.168.2.0/24",
+              "dest-node": "Seg_192.168.2.0/24",
               "dest-tp": "switch1_GigabitEthernet1/0/5"
             }
           },
           {
-            "link-id": "Seg1_192.168.2.0/24,switch1_GigabitEthernet1/0/6,host22,eth0",
+            "link-id": "Seg_192.168.2.0/24,switch1_GigabitEthernet1/0/6,host22,eth0",
             "source": {
-              "source-node": "Seg1_192.168.2.0/24",
+              "source-node": "Seg_192.168.2.0/24",
               "source-tp": "switch1_GigabitEthernet1/0/6"
             },
             "destination": {
@@ -2489,20 +2489,20 @@
             }
           },
           {
-            "link-id": "host22,eth0,Seg1_192.168.2.0/24,switch1_GigabitEthernet1/0/6",
+            "link-id": "host22,eth0,Seg_192.168.2.0/24,switch1_GigabitEthernet1/0/6",
             "source": {
               "source-node": "host22",
               "source-tp": "eth0"
             },
             "destination": {
-              "dest-node": "Seg1_192.168.2.0/24",
+              "dest-node": "Seg_192.168.2.0/24",
               "dest-tp": "switch1_GigabitEthernet1/0/6"
             }
           },
           {
-            "link-id": "Seg1_192.168.2.0/24,switch2_GigabitEthernet1/0/7,host23,eth0",
+            "link-id": "Seg_192.168.2.0/24,switch2_GigabitEthernet1/0/7,host23,eth0",
             "source": {
-              "source-node": "Seg1_192.168.2.0/24",
+              "source-node": "Seg_192.168.2.0/24",
               "source-tp": "switch2_GigabitEthernet1/0/7"
             },
             "destination": {
@@ -2511,20 +2511,20 @@
             }
           },
           {
-            "link-id": "host23,eth0,Seg1_192.168.2.0/24,switch2_GigabitEthernet1/0/7",
+            "link-id": "host23,eth0,Seg_192.168.2.0/24,switch2_GigabitEthernet1/0/7",
             "source": {
               "source-node": "host23",
               "source-tp": "eth0"
             },
             "destination": {
-              "dest-node": "Seg1_192.168.2.0/24",
+              "dest-node": "Seg_192.168.2.0/24",
               "dest-tp": "switch2_GigabitEthernet1/0/7"
             }
           },
           {
-            "link-id": "Seg1_192.168.2.0/24,switch2_GigabitEthernet1/0/8,host24,eth0",
+            "link-id": "Seg_192.168.2.0/24,switch2_GigabitEthernet1/0/8,host24,eth0",
             "source": {
-              "source-node": "Seg1_192.168.2.0/24",
+              "source-node": "Seg_192.168.2.0/24",
               "source-tp": "switch2_GigabitEthernet1/0/8"
             },
             "destination": {
@@ -2533,13 +2533,13 @@
             }
           },
           {
-            "link-id": "host24,eth0,Seg1_192.168.2.0/24,switch2_GigabitEthernet1/0/8",
+            "link-id": "host24,eth0,Seg_192.168.2.0/24,switch2_GigabitEthernet1/0/8",
             "source": {
               "source-node": "host24",
               "source-tp": "eth0"
             },
             "destination": {
-              "dest-node": "Seg1_192.168.2.0/24",
+              "dest-node": "Seg_192.168.2.0/24",
               "dest-tp": "switch2_GigabitEthernet1/0/8"
             }
           }
