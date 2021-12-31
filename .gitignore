@@ -1,4 +1,6 @@
 .idea/
+configs/*_linkdown
+models/*_linkdown
 
 *.gem
 *.rbc

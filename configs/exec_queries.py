@@ -43,13 +43,11 @@ def edges_to_dataframe(edges):
     return pd.DataFrame(
         {
             "Interface": map(
-                lambda e: "%s[%s]"
-                % (e["node1"]["hostname"].lower(), e["node1"]["interfaceName"]),
+                lambda e: "%s[%s]" % (e["node1"]["hostname"].lower(), e["node1"]["interfaceName"]),
                 edges,
             ),
             "Remote_Interface": map(
-                lambda e: "%s[%s]"
-                % (e["node2"]["hostname"].lower(), e["node2"]["interfaceName"]),
+                lambda e: "%s[%s]" % (e["node2"]["hostname"].lower(), e["node2"]["interfaceName"]),
                 edges,
             ),
         }
@@ -91,15 +89,11 @@ if __name__ == "__main__":
                 ]
             ),
         ),
-        "node_props": lambda: bfq.nodeProperties(
-            nodes=".*", properties=", ".join(["Configuration_Format"])
-        ),
+        "node_props": lambda: bfq.nodeProperties(nodes=".*", properties=", ".join(["Configuration_Format"])),
         "sw_vlan_props": lambda: bfq.switchedVlanProperties(nodes=".*"),
     }
     # other data source
-    other_query_dict = {
-        "edges_layer1": lambda in_dir: convert_l1topology_to_csv(in_dir)
-    }
+    other_query_dict = {"edges_layer1": lambda in_dir: convert_l1topology_to_csv(in_dir)}
 
     parser = argparse.ArgumentParser(description="Batfish query exec")
     parser.add_argument(
@@ -110,36 +104,20 @@ if __name__ == "__main__":
         nargs="*",
         help="Snapshot directory path(s) of configs",
     )
-    parser.add_argument(
-        "--output", "-o", default="./", help="Outpu directory of csv data"
-    )
+    parser.add_argument("--output", "-o", default="./", help="Outpu directory of csv data")
     query_keys = list(other_query_dict.keys()) + list(bf_query_dict.keys())
-    parser.add_argument(
-        "--query", "-q", type=str, choices=query_keys, help="A Query to exec"
-    )
+    parser.add_argument("--query", "-q", type=str, choices=query_keys, help="A Query to exec")
     args = parser.parse_args()
 
     # limiting target query when using --query arg
     if args.query:
-        bf_query_dict = (
-            {args.query: bf_query_dict[args.query]}
-            if args.query in bf_query_dict
-            else {}
-        )
-        other_query_dict = (
-            {args.query: other_query_dict[args.query]}
-            if args.query in other_query_dict
-            else {}
-        )
+        bf_query_dict = {args.query: bf_query_dict[args.query]} if args.query in bf_query_dict else {}
+        other_query_dict = {args.query: other_query_dict[args.query]} if args.query in other_query_dict else {}
 
     dirs = list(map(lambda p: dir_info(p, args.output), args.snapshots))
     for d in dirs:
         makedirs(d["csv_dir"], exist_ok=True)
         # batfish queries
-        bool(bf_query_dict) and exec_bf_query(
-            bf_query_dict, d["config_dir"], d["csv_dir"], d["config_name"]
-        )
+        bool(bf_query_dict) and exec_bf_query(bf_query_dict, d["config_dir"], d["csv_dir"], d["config_name"])
         # other queries
-        bool(other_query_dict) and exec_other_query(
-            other_query_dict, d["config_dir"], d["csv_dir"]
-        )
+        bool(other_query_dict) and exec_other_query(other_query_dict, d["config_dir"], d["csv_dir"])

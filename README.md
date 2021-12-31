@@ -39,9 +39,7 @@ bundle install --path=vendor/bundle
 ### Install python packages
 
 ```shell
-cd configs
-pip install -r requirements.txt
-cd -
+pip install -r configs/requirements.txt
 ```
 
 ## Generate normalized CSV files from configs
@@ -58,9 +56,7 @@ docker-compose up -d
 ### Generate normalized network data from configs (snapshots)
 
 ```shell
-cd model_defs/configs
-./make_csv.sh
-cd -
+./configs/make_csv.sh
 ```
 
 ## Generate topology json from normalized network data
