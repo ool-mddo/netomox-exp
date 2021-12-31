@@ -4,27 +4,27 @@
     "label": "OOL-MDDO PJ Trial 1"
   },
   {
-    "file": "mddo_network.json",
-    "label": "OOL-MDDO PJ Trial Target Network"
-  },
-  {
-    "file": "mddo_trial_l23s3.json",
+    "file": "mddo_l23s3.json",
     "label": "OOL-MDDO PJ Trial(2) L2-L3 sample3"
   },
   {
-    "file": "mddo_trial_l23s3e2.json",
+    "file": "mddo_l23s3e2.json",
     "label": "OOL-MDDO PJ Trial(2) L2-L3 sample3 Error2"
   },
   {
-    "file": "mddo_trial_l2s3.json",
+    "file": "mddo_l2s3.json",
     "label": "OOL-MDDO PJ Trial(2) L2 sample3"
   },
   {
-    "file": "mddo_trial_l2s4.json",
+    "file": "mddo_l2s4.json",
     "label": "OOL-MDDO PJ Trial(2) L2 sample4"
   },
   {
-    "file": "mddo_trial_l2s5.json",
+    "file": "mddo_l2s5.json",
     "label": "OOL-MDDO PJ Trial(2) L2 sample5"
+  },
+  {
+    "file": "mddo_network.json",
+    "label": "OOL-MDDO PJ Trial Target Network"
   }
 ]
