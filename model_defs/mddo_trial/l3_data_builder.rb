@@ -134,6 +134,7 @@ class L3DataBuilder < L3DataChecker
     end
   end
 
+  # pre calculation to decrease amount of calculation
   # @return [Hash<Integer, Array>] segment object_id to prefixes hash
   def setup_segment_to_prefixes_table
     @segments.each { |seg| @segment_prefixes[seg] = collect_segment_prefixes(seg) }
@@ -151,17 +152,16 @@ class L3DataBuilder < L3DataChecker
   def index_of_same_prefix_segment(segment)
     seg_node_suffix = segment_node_suffix(segment)
     # find segments that will be same name segment-node
+    # NOTE: identify its segments with its object-id (see also: `@segment_prefixes`)
     same_prefix_segment_ids = @segments.find_all { |seg| seg_node_suffix == segment_node_suffix(seg) }
                                        .map(&:object_id)
-                                       .sort
+                                       .sort # fix its position in array
     debug_print "* target: #{segment.object_id}, list: #{same_prefix_segment_ids}"
-    if same_prefix_segment_ids.length <= 1
-      # always find `segment` itself (position 0)
-      -1
-    else
-      # position >0
-      same_prefix_segment_ids.index(segment.object_id)
-    end
+    # NOT found other segments owns same node suffix
+    #   always find target `segment` itself (position 0) -> return -1
+    #   unnecessary to use index number for segment node
+    # Found multiple segments owns same node suffix -> return position(index, >0) of the segment in array.
+    same_prefix_segment_ids.length <= 1 ? -1 : same_prefix_segment_ids.index(segment.object_id)
   end
 
   # @param [Array<PLinkEdge>] segment Edge list in same segment
@@ -169,8 +169,9 @@ class L3DataBuilder < L3DataChecker
   def add_l3_seg_node(segment)
     seg_index = index_of_same_prefix_segment(segment)
     seg_suffix = segment_node_suffix(segment)
-    # NOTICE: it needs seg_index to differentiate other-L2-seg but same network-addr segment case.
-    #   (when there are ip address block duplication)
+    # NOTICE: countermeasure of ip address block duplication
+    #   If there are segments which are different but have same network prefix,
+    #   Identify its segments with index number.
     l3_seg_node_name = seg_index.negative? ? "Seg#{seg_suffix}" : "Seg#{seg_index}#{seg_suffix}"
     l3_seg_node = @network.node(l3_seg_node_name)
     l3_seg_node.attribute = { prefixes: @segment_prefixes[segment], node_type: 'segment' }

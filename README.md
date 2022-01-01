@@ -55,8 +55,10 @@ docker-compose up -d
 
 ### Generate normalized network data from configs (snapshots)
 
+several keywords can use to target creating csv (see help: `-h`)
+
 ```shell
-./configs/make_csv.sh
+./configs/make_csv.sh all
 ```
 
 ## Generate topology json from normalized network data
