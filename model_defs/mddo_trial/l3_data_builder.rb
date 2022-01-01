@@ -165,15 +165,20 @@ class L3DataBuilder < L3DataChecker
   end
 
   # @param [Array<PLinkEdge>] segment Edge list in same segment
-  # @return [PNode] Layer3 segment node
-  def add_l3_seg_node(segment)
+  # @return [String] Layer3 segment node name
+  def segment_node_name(segment)
     seg_index = index_of_same_prefix_segment(segment)
     seg_suffix = segment_node_suffix(segment)
+    seg_index.negative? ? "Seg#{seg_suffix}" : "Seg#{seg_suffix}##{seg_index}"
+  end
+
+  # @param [Array<PLinkEdge>] segment Edge list in same segment
+  # @return [PNode] Layer3 segment node
+  def add_l3_seg_node(segment)
     # NOTICE: countermeasure of ip address block duplication
     #   If there are segments which are different but have same network prefix,
     #   Identify its segments with index number.
-    l3_seg_node_name = seg_index.negative? ? "Seg#{seg_suffix}" : "Seg#{seg_index}#{seg_suffix}"
-    l3_seg_node = @network.node(l3_seg_node_name)
+    l3_seg_node = @network.node(segment_node_name(segment))
     l3_seg_node.attribute = { prefixes: @segment_prefixes[segment], node_type: 'segment' }
     l3_seg_node
   end
