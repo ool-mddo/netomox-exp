@@ -39,7 +39,7 @@ MODEL_MAP = [
   {
     source: 'models/pushed_configs_linkdown/mddo_network_(\\d+)',
     file: 'mddo_network_linkdown_$1.json',
-    label: 'OOL-MDDO PJ Experiment Network (Link-down pattern $1',
+    label: 'OOL-MDDO PJ Experiment Network (Link-down pattern $1)',
     diff_src: 'mddo_network.json',
     type: :mddo_trial
   }
@@ -49,7 +49,7 @@ MODEL_MAP = [
 # common functions
 
 def match_dirs(path)
-  Dir.glob(path.gsub(/\(.+\)/, '*'))
+  Dir.glob(path.gsub(/\(.+\)/, '*')).sort
 end
 
 def match_eval(match_str, re_str, target_str)

@@ -48,7 +48,7 @@ python make_linkdown_patterns.py -s "$MDDO_SRC_DIR" -o "$MDDO_LINKDOWN_BASE_DIR"
 
 ## parse snapshots
 MDDO_LINKDOWN_SUB_DIRS=()
-for dir in $(find $MDDO_LINKDOWN_BASE_DIR -maxdepth 1 -type d | sed -e '1d'); do
+for dir in $(find $MDDO_LINKDOWN_BASE_DIR -maxdepth 1 -type d | sed -e '1d' | sort); do
   MDDO_LINKDOWN_SUB_DIRS+=("$dir")
 done
 

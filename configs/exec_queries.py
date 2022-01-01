@@ -114,7 +114,7 @@ if __name__ == "__main__":
         bf_query_dict = {args.query: bf_query_dict[args.query]} if args.query in bf_query_dict else {}
         other_query_dict = {args.query: other_query_dict[args.query]} if args.query in other_query_dict else {}
 
-    dirs = list(map(lambda p: dir_info(p, args.output), args.snapshots))
+    dirs = list(map(lambda p: dir_info(p, args.output), sorted(args.snapshots)))
     for d in dirs:
         makedirs(d["csv_dir"], exist_ok=True)
         # batfish queries
