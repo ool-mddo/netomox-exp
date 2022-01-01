@@ -176,7 +176,7 @@ class L2DataBuilder < L2DataChecker
   end
   # rubocop:enable Metrics/ParameterLists
 
-  # rubocop:disable Metrics/MethodLength
+  # rubocop:disable Metrics/MethodLength, Metrics/AbcSize
 
   # @param [PNode] src_node Link source node
   # @param [PTermPoint] src_tp Link source tp (on src_node)
@@ -197,10 +197,13 @@ class L2DataBuilder < L2DataChecker
                             dst_node, dst_tp, vlan_id, check_result[:dst_tp_prop])
       end
     else
-      warn '# WARNING: L2 trunk/access mode mismatch'
+      # type: :error
+      add_l2_node_tp(src_node, src_tp, 0, check_result[:src_tp_prop])
+      add_l2_node_tp(dst_node, dst_tp, 0, check_result[:dst_tp_prop])
+      warn "Warning: #{check_result[:message]}"
     end
   end
-  # rubocop:enable Metrics/MethodLength
+  # rubocop:enable Metrics/MethodLength, Metrics/AbcSize
 
   # @param [String] lag_tp_name Layer1 LAG (parent) term-point name
   # @param [PTermPoint] member_tp Layer1 LAG member term-point name

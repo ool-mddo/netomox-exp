@@ -20,6 +20,7 @@ class L1DataBuilder < DataBuilderBase
     @network = @networks.network('layer1')
     @network.type = Netomox::NWTYPE_MDDO_L1
     setup_node_tp_link
+    check_disconnected_node
     @networks
   end
 
@@ -57,11 +58,18 @@ class L1DataBuilder < DataBuilderBase
   end
 
   # @param [String] node_name Node name
+  # @return [PNode] added node
+  def add_node(node_name)
+    node = @network.node(node_name)
+    node.attribute = { os_type: @node_props.find_record_by_node(node_name)&.config_format&.downcase }
+    node
+  end
+
+  # @param [String] node_name Node name
   # @param [String] intf_name Interface name
   # @return [void]
   def add_node_tp(node_name, intf_name)
-    node = @network.node(node_name)
-    node.attribute = { os_type: @node_props.find_record_by_node(node_name)&.config_format&.downcase }
+    node = add_node(node_name)
     tp = node.term_point(intf_name)
     tp_rec = @intf_props.find_record_by_node_intf(node_name, intf_name)
     tp.attribute = { description: tp_rec.description } if tp_rec
@@ -81,7 +89,7 @@ class L1DataBuilder < DataBuilderBase
   # make links
   # @return [void]
   def setup_node_tp_link
-    # NOTE:
+    # NOTE: link-centric data construction
     #   - Layer1 edge data is bidirectional link.
     #     A physical link is expressed a pair of reverse-directional link records.
     #   - link-based search : if there is a standalone node (node that don't have layer1 link),
@@ -97,5 +105,16 @@ class L1DataBuilder < DataBuilderBase
 
       add_node_tp_link(l1_link.src.node, l1_link.src.interface, l1_link.dst.node, l1_link.dst.interface)
     end
+  end
+
+  # add layer1 standalone node
+  # @return [void]
+  def check_disconnected_node
+    linked_nodes = @network.nodes.map(&:name)
+    whole_nodes = @node_props.records.map(&:node)
+    # subtract linked_nodes from whole_nodes (result = layer1 standalone nodes)
+    standalone_nodes = whole_nodes - linked_nodes
+    debug_print "diff? #{standalone_nodes}"
+    standalone_nodes.each { |node_name| add_node(node_name) }
   end
 end

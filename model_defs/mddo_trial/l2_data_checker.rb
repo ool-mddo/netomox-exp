@@ -22,18 +22,28 @@ class L2DataChecker < DataBuilderBase
   # @return [Hash] L2 config data for trunk-port
   # @raise [StandardError] if source or destination term-point prop selection is failed
   def port_l2_config_check(src_node, src_tp_prop, dst_node, dst_tp_prop)
-    src_tp_prop = choose_tp_prop(src_node, src_tp_prop)
-    dst_tp_prop = choose_tp_prop(dst_node, dst_tp_prop)
-    if src_tp_prop.nil? || dst_tp_prop.nil?
-      raise StandardError, "Term-point props not found: #{src_tp_prop} or #{dst_tp_prop}"
+    target_src_tp_prop = choose_tp_prop(src_node, src_tp_prop)
+    target_dst_tp_prop = choose_tp_prop(dst_node, dst_tp_prop)
+    if target_src_tp_prop.nil? || target_dst_tp_prop.nil?
+      return {
+        type: :error,
+        src_tp_prop: target_src_tp_prop || src_tp_prop,
+        dst_tp_prop: target_dst_tp_prop || dst_tp_prop,
+        message: "Term-point props not found: #{target_src_tp_prop} or #{target_dst_tp_prop}"
+      }
     end
 
-    if operative_access_port?(src_tp_prop, dst_tp_prop)
-      port_l2_config_access(src_tp_prop, dst_tp_prop)
-    elsif operative_trunk_port?(src_tp_prop, dst_tp_prop)
-      port_l2_config_trunk(src_node, src_tp_prop, dst_node, dst_tp_prop)
+    if operative_access_port?(target_src_tp_prop, target_dst_tp_prop)
+      port_l2_config_access(target_src_tp_prop, target_dst_tp_prop)
+    elsif operative_trunk_port?(target_src_tp_prop, target_dst_tp_prop)
+      port_l2_config_trunk(src_node, target_src_tp_prop, dst_node, target_dst_tp_prop)
     else
-      { type: :error }
+      {
+        type: :error,
+        src_tp_prop: target_src_tp_prop,
+        dst_tp_prop: target_dst_tp_prop,
+        message: 'L2 term-point config mismatch'
+      }
     end
   end
   # rubocop:enable Metrics/MethodLength
