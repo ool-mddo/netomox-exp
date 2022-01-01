@@ -15,6 +15,10 @@ class L3DataBuilder < L3DataChecker
     super(layer2p: layer2p, debug: debug)
     @ip_owners = IPOwnersTable.new(target)
     @intf_props = InterfacePropertiesTable.new(target)
+    # NOTE: use object_id for hash key
+    #   e.g. `@segment_prefixes[seg]` means `@segment_prefixes[seg.object_id]`
+    #   ref. https://www.rubydoc.info/gems/rubocop/RuboCop/Cop/Lint/HashCompareByIdentity
+    @segment_prefixes = {}.compare_by_identity
   end
 
   # @return [PNetworks] Networks contains only layer3 network topology
@@ -22,6 +26,7 @@ class L3DataBuilder < L3DataChecker
     @network = @networks.network('layer3')
     @network.type = Netomox::NWTYPE_MDDO_L3
     explore_l3_segment
+    setup_segment_to_prefixes_table
     add_l3_node_tp_link
     update_node_attribute
     @networks
@@ -68,7 +73,7 @@ class L3DataBuilder < L3DataChecker
 
     # if rec not found, search virtual node (GRT/VRF)
     rec ||= @ip_owners.find_vlan_intf_record_by_node(l2_node.attribute[:name], l2_node.attribute[:vlan_id])
-    debug_print "  l2_edge=#{l2_edge}, rec=#{rec}"
+    # debug_print "  l2_edge=#{l2_edge}, rec=#{rec}"
 
     [rec, l2_node]
   end
@@ -117,10 +122,10 @@ class L3DataBuilder < L3DataChecker
 
   # @param [Array<PLinkEdge>] segment Edge list in same segment
   # @return [Array<Hash>] A list of 'prefix' attribute
-  def segment_prefixes(segment)
+  def collect_segment_prefixes(segment)
     prefixes = segment.map do |l2_edge|
       rec, = ip_rec_by_l2_edge(l2_edge)
-      debug_print "  prefix in Segment: #{l2_edge}] -> #{rec}"
+      # debug_print "  prefix in Segment: #{l2_edge}] -> #{rec}"
       rec && IPAddress::IPv4.new("#{rec.ip}/#{rec.mask}")
     end
     warn '# WARNING: L2 closed segment?'
@@ -129,17 +134,46 @@ class L3DataBuilder < L3DataChecker
     end
   end
 
+  # @return [Hash<Integer, Array>] segment object_id to prefixes hash
+  def setup_segment_to_prefixes_table
+    @segments.each { |seg| @segment_prefixes[seg] = collect_segment_prefixes(seg) }
+  end
+
   # @param [Array<PLinkEdge>] segment Edge list in same segment
-  # @param [Integer] seg_index Index number of the segment
+  # @return [String] Segment node suffix string
+  def segment_node_suffix(segment)
+    prefixes = @segment_prefixes[segment]
+    prefixes.length.positive? ? "_#{prefixes[0][:prefix]}" : ''
+  end
+
+  # @param [Array<PLinkEdge>] segment Edge list in same segment
+  # @return [Integer] -1 if unique prefix segment, >=0 index number of same prefix segment
+  def index_of_same_prefix_segment(segment)
+    seg_node_suffix = segment_node_suffix(segment)
+    # find segments that will be same name segment-node
+    same_prefix_segment_ids = @segments.find_all { |seg| seg_node_suffix == segment_node_suffix(seg) }
+                                       .map(&:object_id)
+                                       .sort
+    debug_print "* target: #{segment.object_id}, list: #{same_prefix_segment_ids}"
+    if same_prefix_segment_ids.length <= 1
+      # always find `segment` itself (position 0)
+      -1
+    else
+      # position >0
+      same_prefix_segment_ids.index(segment.object_id)
+    end
+  end
+
+  # @param [Array<PLinkEdge>] segment Edge list in same segment
   # @return [PNode] Layer3 segment node
-  def add_l3_seg_node(segment, _seg_index)
-    prefixes = segment_prefixes(segment)
-    seg_suffix = prefixes.length.positive? ? (prefixes[0][:prefix]).to_s : ''
+  def add_l3_seg_node(segment)
+    seg_index = index_of_same_prefix_segment(segment)
+    seg_suffix = segment_node_suffix(segment)
     # NOTICE: it needs seg_index to differentiate other-L2-seg but same network-addr segment case.
     #   (when there are ip address block duplication)
-    # l3_seg_node = @network.node("Seg#{seg_index}_#{seg_suffix}")
-    l3_seg_node = @network.node("Seg_#{seg_suffix}")
-    l3_seg_node.attribute = { prefixes: prefixes, node_type: 'segment' }
+    l3_seg_node_name = seg_index.negative? ? "Seg#{seg_suffix}" : "Seg#{seg_index}#{seg_suffix}"
+    l3_seg_node = @network.node(l3_seg_node_name)
+    l3_seg_node.attribute = { prefixes: @segment_prefixes[segment], node_type: 'segment' }
     l3_seg_node
   end
 
@@ -150,8 +184,8 @@ class L3DataBuilder < L3DataChecker
   def add_l3_node_tp_link
     @segments.each_with_index do |segment, i|
       # segment: Array(PLinkEdge)
-      debug_print "* Start L3 topology: Segment #{i}"
-      l3_seg_node = add_l3_seg_node(segment, i)
+      debug_print("# Segment#{i}: suffix = #{segment_node_suffix(segment)}")
+      l3_seg_node = add_l3_seg_node(segment)
       segment.each do |l2_edge|
         l3_seg_node.supports.push([@layer2p.name, l2_edge.node])
         l3_node, l3_tp = add_l3_node_tp(l2_edge)

@@ -155,180 +155,6 @@
 
                   ]
                 }
-              },
-              {
-                "tp-id": "Vlan100#6",
-                "supporting-termination-point": [
-                  {
-                    "network-ref": "layer2",
-                    "node-ref": "switch1_Vlan100",
-                    "tp-ref": "GigabitEthernet1/0/1"
-                  },
-                  {
-                    "network-ref": "layer2",
-                    "node-ref": "switch1_Vlan100",
-                    "tp-ref": "GigabitEthernet1/0/2"
-                  },
-                  {
-                    "network-ref": "layer2",
-                    "node-ref": "switch1_Vlan100",
-                    "tp-ref": "Port-channel1"
-                  }
-                ],
-                "mddo-topology:l3-termination-point-attributes": {
-                  "description": "",
-                  "ip-address": [
-                    "192.168.1.2/24"
-                  ],
-                  "flag": [
-
-                  ]
-                }
-              },
-              {
-                "tp-id": "Vlan100#7",
-                "supporting-termination-point": [
-                  {
-                    "network-ref": "layer2",
-                    "node-ref": "switch1_Vlan100",
-                    "tp-ref": "GigabitEthernet1/0/1"
-                  },
-                  {
-                    "network-ref": "layer2",
-                    "node-ref": "switch1_Vlan100",
-                    "tp-ref": "GigabitEthernet1/0/2"
-                  },
-                  {
-                    "network-ref": "layer2",
-                    "node-ref": "switch1_Vlan100",
-                    "tp-ref": "Port-channel1"
-                  }
-                ],
-                "mddo-topology:l3-termination-point-attributes": {
-                  "description": "",
-                  "ip-address": [
-                    "192.168.1.2/24"
-                  ],
-                  "flag": [
-
-                  ]
-                }
-              },
-              {
-                "tp-id": "Vlan100#8",
-                "supporting-termination-point": [
-                  {
-                    "network-ref": "layer2",
-                    "node-ref": "switch1_Vlan100",
-                    "tp-ref": "GigabitEthernet1/0/1"
-                  },
-                  {
-                    "network-ref": "layer2",
-                    "node-ref": "switch1_Vlan100",
-                    "tp-ref": "GigabitEthernet1/0/2"
-                  },
-                  {
-                    "network-ref": "layer2",
-                    "node-ref": "switch1_Vlan100",
-                    "tp-ref": "Port-channel1"
-                  }
-                ],
-                "mddo-topology:l3-termination-point-attributes": {
-                  "description": "",
-                  "ip-address": [
-                    "192.168.1.2/24"
-                  ],
-                  "flag": [
-
-                  ]
-                }
-              },
-              {
-                "tp-id": "Vlan100#9",
-                "supporting-termination-point": [
-                  {
-                    "network-ref": "layer2",
-                    "node-ref": "switch1_Vlan100",
-                    "tp-ref": "GigabitEthernet1/0/1"
-                  },
-                  {
-                    "network-ref": "layer2",
-                    "node-ref": "switch1_Vlan100",
-                    "tp-ref": "GigabitEthernet1/0/2"
-                  },
-                  {
-                    "network-ref": "layer2",
-                    "node-ref": "switch1_Vlan100",
-                    "tp-ref": "Port-channel1"
-                  }
-                ],
-                "mddo-topology:l3-termination-point-attributes": {
-                  "description": "",
-                  "ip-address": [
-                    "192.168.1.2/24"
-                  ],
-                  "flag": [
-
-                  ]
-                }
-              },
-              {
-                "tp-id": "Vlan100#10",
-                "supporting-termination-point": [
-                  {
-                    "network-ref": "layer2",
-                    "node-ref": "switch1_Vlan100",
-                    "tp-ref": "GigabitEthernet1/0/1"
-                  },
-                  {
-                    "network-ref": "layer2",
-                    "node-ref": "switch1_Vlan100",
-                    "tp-ref": "GigabitEthernet1/0/2"
-                  },
-                  {
-                    "network-ref": "layer2",
-                    "node-ref": "switch1_Vlan100",
-                    "tp-ref": "Port-channel1"
-                  }
-                ],
-                "mddo-topology:l3-termination-point-attributes": {
-                  "description": "",
-                  "ip-address": [
-                    "192.168.1.2/24"
-                  ],
-                  "flag": [
-
-                  ]
-                }
-              },
-              {
-                "tp-id": "Vlan100#11",
-                "supporting-termination-point": [
-                  {
-                    "network-ref": "layer2",
-                    "node-ref": "switch1_Vlan100",
-                    "tp-ref": "GigabitEthernet1/0/1"
-                  },
-                  {
-                    "network-ref": "layer2",
-                    "node-ref": "switch1_Vlan100",
-                    "tp-ref": "GigabitEthernet1/0/2"
-                  },
-                  {
-                    "network-ref": "layer2",
-                    "node-ref": "switch1_Vlan100",
-                    "tp-ref": "Port-channel1"
-                  }
-                ],
-                "mddo-topology:l3-termination-point-attributes": {
-                  "description": "",
-                  "ip-address": [
-                    "192.168.1.2/24"
-                  ],
-                  "flag": [
-
-                  ]
-                }
               }
             ],
             "supporting-node": [
@@ -450,120 +276,6 @@
 
                   ]
                 }
-              },
-              {
-                "tp-id": "eth0#6",
-                "supporting-termination-point": [
-                  {
-                    "network-ref": "layer2",
-                    "node-ref": "host11_eth0",
-                    "tp-ref": "eth0"
-                  }
-                ],
-                "mddo-topology:l3-termination-point-attributes": {
-                  "description": "",
-                  "ip-address": [
-                    "192.168.1.101/24"
-                  ],
-                  "flag": [
-
-                  ]
-                }
-              },
-              {
-                "tp-id": "eth0#7",
-                "supporting-termination-point": [
-                  {
-                    "network-ref": "layer2",
-                    "node-ref": "host11_eth0",
-                    "tp-ref": "eth0"
-                  }
-                ],
-                "mddo-topology:l3-termination-point-attributes": {
-                  "description": "",
-                  "ip-address": [
-                    "192.168.1.101/24"
-                  ],
-                  "flag": [
-
-                  ]
-                }
-              },
-              {
-                "tp-id": "eth0#8",
-                "supporting-termination-point": [
-                  {
-                    "network-ref": "layer2",
-                    "node-ref": "host11_eth0",
-                    "tp-ref": "eth0"
-                  }
-                ],
-                "mddo-topology:l3-termination-point-attributes": {
-                  "description": "",
-                  "ip-address": [
-                    "192.168.1.101/24"
-                  ],
-                  "flag": [
-
-                  ]
-                }
-              },
-              {
-                "tp-id": "eth0#9",
-                "supporting-termination-point": [
-                  {
-                    "network-ref": "layer2",
-                    "node-ref": "host11_eth0",
-                    "tp-ref": "eth0"
-                  }
-                ],
-                "mddo-topology:l3-termination-point-attributes": {
-                  "description": "",
-                  "ip-address": [
-                    "192.168.1.101/24"
-                  ],
-                  "flag": [
-
-                  ]
-                }
-              },
-              {
-                "tp-id": "eth0#10",
-                "supporting-termination-point": [
-                  {
-                    "network-ref": "layer2",
-                    "node-ref": "host11_eth0",
-                    "tp-ref": "eth0"
-                  }
-                ],
-                "mddo-topology:l3-termination-point-attributes": {
-                  "description": "",
-                  "ip-address": [
-                    "192.168.1.101/24"
-                  ],
-                  "flag": [
-
-                  ]
-                }
-              },
-              {
-                "tp-id": "eth0#11",
-                "supporting-termination-point": [
-                  {
-                    "network-ref": "layer2",
-                    "node-ref": "host11_eth0",
-                    "tp-ref": "eth0"
-                  }
-                ],
-                "mddo-topology:l3-termination-point-attributes": {
-                  "description": "",
-                  "ip-address": [
-                    "192.168.1.101/24"
-                  ],
-                  "flag": [
-
-                  ]
-                }
               }
             ],
             "supporting-node": [
@@ -669,120 +381,6 @@
               },
               {
                 "tp-id": "eth0#5",
-                "supporting-termination-point": [
-                  {
-                    "network-ref": "layer2",
-                    "node-ref": "host12_eth0",
-                    "tp-ref": "eth0"
-                  }
-                ],
-                "mddo-topology:l3-termination-point-attributes": {
-                  "description": "",
-                  "ip-address": [
-                    "192.168.1.102/24"
-                  ],
-                  "flag": [
-
-                  ]
-                }
-              },
-              {
-                "tp-id": "eth0#6",
-                "supporting-termination-point": [
-                  {
-                    "network-ref": "layer2",
-                    "node-ref": "host12_eth0",
-                    "tp-ref": "eth0"
-                  }
-                ],
-                "mddo-topology:l3-termination-point-attributes": {
-                  "description": "",
-                  "ip-address": [
-                    "192.168.1.102/24"
-                  ],
-                  "flag": [
-
-                  ]
-                }
-              },
-              {
-                "tp-id": "eth0#7",
-                "supporting-termination-point": [
-                  {
-                    "network-ref": "layer2",
-                    "node-ref": "host12_eth0",
-                    "tp-ref": "eth0"
-                  }
-                ],
-                "mddo-topology:l3-termination-point-attributes": {
-                  "description": "",
-                  "ip-address": [
-                    "192.168.1.102/24"
-                  ],
-                  "flag": [
-
-                  ]
-                }
-              },
-              {
-                "tp-id": "eth0#8",
-                "supporting-termination-point": [
-                  {
-                    "network-ref": "layer2",
-                    "node-ref": "host12_eth0",
-                    "tp-ref": "eth0"
-                  }
-                ],
-                "mddo-topology:l3-termination-point-attributes": {
-                  "description": "",
-                  "ip-address": [
-                    "192.168.1.102/24"
-                  ],
-                  "flag": [
-
-                  ]
-                }
-              },
-              {
-                "tp-id": "eth0#9",
-                "supporting-termination-point": [
-                  {
-                    "network-ref": "layer2",
-                    "node-ref": "host12_eth0",
-                    "tp-ref": "eth0"
-                  }
-                ],
-                "mddo-topology:l3-termination-point-attributes": {
-                  "description": "",
-                  "ip-address": [
-                    "192.168.1.102/24"
-                  ],
-                  "flag": [
-
-                  ]
-                }
-              },
-              {
-                "tp-id": "eth0#10",
-                "supporting-termination-point": [
-                  {
-                    "network-ref": "layer2",
-                    "node-ref": "host12_eth0",
-                    "tp-ref": "eth0"
-                  }
-                ],
-                "mddo-topology:l3-termination-point-attributes": {
-                  "description": "",
-                  "ip-address": [
-                    "192.168.1.102/24"
-                  ],
-                  "flag": [
-
-                  ]
-                }
-              },
-              {
-                "tp-id": "eth0#11",
                 "supporting-termination-point": [
                   {
                     "network-ref": "layer2",
@@ -970,180 +568,6 @@
 
                   ]
                 }
-              },
-              {
-                "tp-id": "Vlan100#6",
-                "supporting-termination-point": [
-                  {
-                    "network-ref": "layer2",
-                    "node-ref": "switch2_Vlan100",
-                    "tp-ref": "Port-channel1"
-                  },
-                  {
-                    "network-ref": "layer2",
-                    "node-ref": "switch2_Vlan100",
-                    "tp-ref": "GigabitEthernet1/0/3"
-                  },
-                  {
-                    "network-ref": "layer2",
-                    "node-ref": "switch2_Vlan100",
-                    "tp-ref": "GigabitEthernet1/0/4"
-                  }
-                ],
-                "mddo-topology:l3-termination-point-attributes": {
-                  "description": "",
-                  "ip-address": [
-                    "192.168.1.3/24"
-                  ],
-                  "flag": [
-
-                  ]
-                }
-              },
-              {
-                "tp-id": "Vlan100#7",
-                "supporting-termination-point": [
-                  {
-                    "network-ref": "layer2",
-                    "node-ref": "switch2_Vlan100",
-                    "tp-ref": "Port-channel1"
-                  },
-                  {
-                    "network-ref": "layer2",
-                    "node-ref": "switch2_Vlan100",
-                    "tp-ref": "GigabitEthernet1/0/3"
-                  },
-                  {
-                    "network-ref": "layer2",
-                    "node-ref": "switch2_Vlan100",
-                    "tp-ref": "GigabitEthernet1/0/4"
-                  }
-                ],
-                "mddo-topology:l3-termination-point-attributes": {
-                  "description": "",
-                  "ip-address": [
-                    "192.168.1.3/24"
-                  ],
-                  "flag": [
-
-                  ]
-                }
-              },
-              {
-                "tp-id": "Vlan100#8",
-                "supporting-termination-point": [
-                  {
-                    "network-ref": "layer2",
-                    "node-ref": "switch2_Vlan100",
-                    "tp-ref": "Port-channel1"
-                  },
-                  {
-                    "network-ref": "layer2",
-                    "node-ref": "switch2_Vlan100",
-                    "tp-ref": "GigabitEthernet1/0/3"
-                  },
-                  {
-                    "network-ref": "layer2",
-                    "node-ref": "switch2_Vlan100",
-                    "tp-ref": "GigabitEthernet1/0/4"
-                  }
-                ],
-                "mddo-topology:l3-termination-point-attributes": {
-                  "description": "",
-                  "ip-address": [
-                    "192.168.1.3/24"
-                  ],
-                  "flag": [
-
-                  ]
-                }
-              },
-              {
-                "tp-id": "Vlan100#9",
-                "supporting-termination-point": [
-                  {
-                    "network-ref": "layer2",
-                    "node-ref": "switch2_Vlan100",
-                    "tp-ref": "Port-channel1"
-                  },
-                  {
-                    "network-ref": "layer2",
-                    "node-ref": "switch2_Vlan100",
-                    "tp-ref": "GigabitEthernet1/0/3"
-                  },
-                  {
-                    "network-ref": "layer2",
-                    "node-ref": "switch2_Vlan100",
-                    "tp-ref": "GigabitEthernet1/0/4"
-                  }
-                ],
-                "mddo-topology:l3-termination-point-attributes": {
-                  "description": "",
-                  "ip-address": [
-                    "192.168.1.3/24"
-                  ],
-                  "flag": [
-
-                  ]
-                }
-              },
-              {
-                "tp-id": "Vlan100#10",
-                "supporting-termination-point": [
-                  {
-                    "network-ref": "layer2",
-                    "node-ref": "switch2_Vlan100",
-                    "tp-ref": "Port-channel1"
-                  },
-                  {
-                    "network-ref": "layer2",
-                    "node-ref": "switch2_Vlan100",
-                    "tp-ref": "GigabitEthernet1/0/3"
-                  },
-                  {
-                    "network-ref": "layer2",
-                    "node-ref": "switch2_Vlan100",
-                    "tp-ref": "GigabitEthernet1/0/4"
-                  }
-                ],
-                "mddo-topology:l3-termination-point-attributes": {
-                  "description": "",
-                  "ip-address": [
-                    "192.168.1.3/24"
-                  ],
-                  "flag": [
-
-                  ]
-                }
-              },
-              {
-                "tp-id": "Vlan100#11",
-                "supporting-termination-point": [
-                  {
-                    "network-ref": "layer2",
-                    "node-ref": "switch2_Vlan100",
-                    "tp-ref": "Port-channel1"
-                  },
-                  {
-                    "network-ref": "layer2",
-                    "node-ref": "switch2_Vlan100",
-                    "tp-ref": "GigabitEthernet1/0/3"
-                  },
-                  {
-                    "network-ref": "layer2",
-                    "node-ref": "switch2_Vlan100",
-                    "tp-ref": "GigabitEthernet1/0/4"
-                  }
-                ],
-                "mddo-topology:l3-termination-point-attributes": {
-                  "description": "",
-                  "ip-address": [
-                    "192.168.1.3/24"
-                  ],
-                  "flag": [
-
-                  ]
-                }
               }
             ],
             "supporting-node": [
@@ -1249,120 +673,6 @@
               },
               {
                 "tp-id": "eth0#5",
-                "supporting-termination-point": [
-                  {
-                    "network-ref": "layer2",
-                    "node-ref": "host13_eth0",
-                    "tp-ref": "eth0"
-                  }
-                ],
-                "mddo-topology:l3-termination-point-attributes": {
-                  "description": "",
-                  "ip-address": [
-                    "192.168.1.103/24"
-                  ],
-                  "flag": [
-
-                  ]
-                }
-              },
-              {
-                "tp-id": "eth0#6",
-                "supporting-termination-point": [
-                  {
-                    "network-ref": "layer2",
-                    "node-ref": "host13_eth0",
-                    "tp-ref": "eth0"
-                  }
-                ],
-                "mddo-topology:l3-termination-point-attributes": {
-                  "description": "",
-                  "ip-address": [
-                    "192.168.1.103/24"
-                  ],
-                  "flag": [
-
-                  ]
-                }
-              },
-              {
-                "tp-id": "eth0#7",
-                "supporting-termination-point": [
-                  {
-                    "network-ref": "layer2",
-                    "node-ref": "host13_eth0",
-                    "tp-ref": "eth0"
-                  }
-                ],
-                "mddo-topology:l3-termination-point-attributes": {
-                  "description": "",
-                  "ip-address": [
-                    "192.168.1.103/24"
-                  ],
-                  "flag": [
-
-                  ]
-                }
-              },
-              {
-                "tp-id": "eth0#8",
-                "supporting-termination-point": [
-                  {
-                    "network-ref": "layer2",
-                    "node-ref": "host13_eth0",
-                    "tp-ref": "eth0"
-                  }
-                ],
-                "mddo-topology:l3-termination-point-attributes": {
-                  "description": "",
-                  "ip-address": [
-                    "192.168.1.103/24"
-                  ],
-                  "flag": [
-
-                  ]
-                }
-              },
-              {
-                "tp-id": "eth0#9",
-                "supporting-termination-point": [
-                  {
-                    "network-ref": "layer2",
-                    "node-ref": "host13_eth0",
-                    "tp-ref": "eth0"
-                  }
-                ],
-                "mddo-topology:l3-termination-point-attributes": {
-                  "description": "",
-                  "ip-address": [
-                    "192.168.1.103/24"
-                  ],
-                  "flag": [
-
-                  ]
-                }
-              },
-              {
-                "tp-id": "eth0#10",
-                "supporting-termination-point": [
-                  {
-                    "network-ref": "layer2",
-                    "node-ref": "host13_eth0",
-                    "tp-ref": "eth0"
-                  }
-                ],
-                "mddo-topology:l3-termination-point-attributes": {
-                  "description": "",
-                  "ip-address": [
-                    "192.168.1.103/24"
-                  ],
-                  "flag": [
-
-                  ]
-                }
-              },
-              {
-                "tp-id": "eth0#11",
                 "supporting-termination-point": [
                   {
                     "network-ref": "layer2",
@@ -1500,120 +810,6 @@
 
                   ]
                 }
-              },
-              {
-                "tp-id": "eth0#6",
-                "supporting-termination-point": [
-                  {
-                    "network-ref": "layer2",
-                    "node-ref": "host14_eth0",
-                    "tp-ref": "eth0"
-                  }
-                ],
-                "mddo-topology:l3-termination-point-attributes": {
-                  "description": "",
-                  "ip-address": [
-                    "192.168.1.104/24"
-                  ],
-                  "flag": [
-
-                  ]
-                }
-              },
-              {
-                "tp-id": "eth0#7",
-                "supporting-termination-point": [
-                  {
-                    "network-ref": "layer2",
-                    "node-ref": "host14_eth0",
-                    "tp-ref": "eth0"
-                  }
-                ],
-                "mddo-topology:l3-termination-point-attributes": {
-                  "description": "",
-                  "ip-address": [
-                    "192.168.1.104/24"
-                  ],
-                  "flag": [
-
-                  ]
-                }
-              },
-              {
-                "tp-id": "eth0#8",
-                "supporting-termination-point": [
-                  {
-                    "network-ref": "layer2",
-                    "node-ref": "host14_eth0",
-                    "tp-ref": "eth0"
-                  }
-                ],
-                "mddo-topology:l3-termination-point-attributes": {
-                  "description": "",
-                  "ip-address": [
-                    "192.168.1.104/24"
-                  ],
-                  "flag": [
-
-                  ]
-                }
-              },
-              {
-                "tp-id": "eth0#9",
-                "supporting-termination-point": [
-                  {
-                    "network-ref": "layer2",
-                    "node-ref": "host14_eth0",
-                    "tp-ref": "eth0"
-                  }
-                ],
-                "mddo-topology:l3-termination-point-attributes": {
-                  "description": "",
-                  "ip-address": [
-                    "192.168.1.104/24"
-                  ],
-                  "flag": [
-
-                  ]
-                }
-              },
-              {
-                "tp-id": "eth0#10",
-                "supporting-termination-point": [
-                  {
-                    "network-ref": "layer2",
-                    "node-ref": "host14_eth0",
-                    "tp-ref": "eth0"
-                  }
-                ],
-                "mddo-topology:l3-termination-point-attributes": {
-                  "description": "",
-                  "ip-address": [
-                    "192.168.1.104/24"
-                  ],
-                  "flag": [
-
-                  ]
-                }
-              },
-              {
-                "tp-id": "eth0#11",
-                "supporting-termination-point": [
-                  {
-                    "network-ref": "layer2",
-                    "node-ref": "host14_eth0",
-                    "tp-ref": "eth0"
-                  }
-                ],
-                "mddo-topology:l3-termination-point-attributes": {
-                  "description": "",
-                  "ip-address": [
-                    "192.168.1.104/24"
-                  ],
-                  "flag": [
-
-                  ]
-                }
               }
             ],
             "supporting-node": [
@@ -1641,35 +837,6 @@
           {
             "node-id": "switch1_user2",
             "ietf-network-topology:termination-point": [
-              {
-                "tp-id": "Vlan200#0",
-                "supporting-termination-point": [
-                  {
-                    "network-ref": "layer2",
-                    "node-ref": "switch1_Vlan200",
-                    "tp-ref": "GigabitEthernet1/0/5"
-                  },
-                  {
-                    "network-ref": "layer2",
-                    "node-ref": "switch1_Vlan200",
-                    "tp-ref": "GigabitEthernet1/0/6"
-                  },
-                  {
-                    "network-ref": "layer2",
-                    "node-ref": "switch1_Vlan200",
-                    "tp-ref": "Port-channel1"
-                  }
-                ],
-                "mddo-topology:l3-termination-point-attributes": {
-                  "description": "",
-                  "ip-address": [
-                    "192.168.1.2/24"
-                  ],
-                  "flag": [
-
-                  ]
-                }
-              },
               {
                 "tp-id": "Vlan200#1",
                 "supporting-termination-point": [
@@ -1814,151 +981,6 @@
 
                   ]
                 }
-              },
-              {
-                "tp-id": "Vlan200#7",
-                "supporting-termination-point": [
-                  {
-                    "network-ref": "layer2",
-                    "node-ref": "switch1_Vlan200",
-                    "tp-ref": "GigabitEthernet1/0/5"
-                  },
-                  {
-                    "network-ref": "layer2",
-                    "node-ref": "switch1_Vlan200",
-                    "tp-ref": "GigabitEthernet1/0/6"
-                  },
-                  {
-                    "network-ref": "layer2",
-                    "node-ref": "switch1_Vlan200",
-                    "tp-ref": "Port-channel1"
-                  }
-                ],
-                "mddo-topology:l3-termination-point-attributes": {
-                  "description": "",
-                  "ip-address": [
-                    "192.168.1.2/24"
-                  ],
-                  "flag": [
-
-                  ]
-                }
-              },
-              {
-                "tp-id": "Vlan200#8",
-                "supporting-termination-point": [
-                  {
-                    "network-ref": "layer2",
-                    "node-ref": "switch1_Vlan200",
-                    "tp-ref": "GigabitEthernet1/0/5"
-                  },
-                  {
-                    "network-ref": "layer2",
-                    "node-ref": "switch1_Vlan200",
-                    "tp-ref": "GigabitEthernet1/0/6"
-                  },
-                  {
-                    "network-ref": "layer2",
-                    "node-ref": "switch1_Vlan200",
-                    "tp-ref": "Port-channel1"
-                  }
-                ],
-                "mddo-topology:l3-termination-point-attributes": {
-                  "description": "",
-                  "ip-address": [
-                    "192.168.1.2/24"
-                  ],
-                  "flag": [
-
-                  ]
-                }
-              },
-              {
-                "tp-id": "Vlan200#9",
-                "supporting-termination-point": [
-                  {
-                    "network-ref": "layer2",
-                    "node-ref": "switch1_Vlan200",
-                    "tp-ref": "GigabitEthernet1/0/5"
-                  },
-                  {
-                    "network-ref": "layer2",
-                    "node-ref": "switch1_Vlan200",
-                    "tp-ref": "GigabitEthernet1/0/6"
-                  },
-                  {
-                    "network-ref": "layer2",
-                    "node-ref": "switch1_Vlan200",
-                    "tp-ref": "Port-channel1"
-                  }
-                ],
-                "mddo-topology:l3-termination-point-attributes": {
-                  "description": "",
-                  "ip-address": [
-                    "192.168.1.2/24"
-                  ],
-                  "flag": [
-
-                  ]
-                }
-              },
-              {
-                "tp-id": "Vlan200#10",
-                "supporting-termination-point": [
-                  {
-                    "network-ref": "layer2",
-                    "node-ref": "switch1_Vlan200",
-                    "tp-ref": "GigabitEthernet1/0/5"
-                  },
-                  {
-                    "network-ref": "layer2",
-                    "node-ref": "switch1_Vlan200",
-                    "tp-ref": "GigabitEthernet1/0/6"
-                  },
-                  {
-                    "network-ref": "layer2",
-                    "node-ref": "switch1_Vlan200",
-                    "tp-ref": "Port-channel1"
-                  }
-                ],
-                "mddo-topology:l3-termination-point-attributes": {
-                  "description": "",
-                  "ip-address": [
-                    "192.168.1.2/24"
-                  ],
-                  "flag": [
-
-                  ]
-                }
-              },
-              {
-                "tp-id": "Vlan200#11",
-                "supporting-termination-point": [
-                  {
-                    "network-ref": "layer2",
-                    "node-ref": "switch1_Vlan200",
-                    "tp-ref": "GigabitEthernet1/0/5"
-                  },
-                  {
-                    "network-ref": "layer2",
-                    "node-ref": "switch1_Vlan200",
-                    "tp-ref": "GigabitEthernet1/0/6"
-                  },
-                  {
-                    "network-ref": "layer2",
-                    "node-ref": "switch1_Vlan200",
-                    "tp-ref": "Port-channel1"
-                  }
-                ],
-                "mddo-topology:l3-termination-point-attributes": {
-                  "description": "",
-                  "ip-address": [
-                    "192.168.1.2/24"
-                  ],
-                  "flag": [
-
-                  ]
-                }
               }
             ],
             "supporting-node": [
@@ -1988,25 +1010,6 @@
             "ietf-network-topology:termination-point": [
               {
                 "tp-id": "eth0#0",
-                "supporting-termination-point": [
-                  {
-                    "network-ref": "layer2",
-                    "node-ref": "host21_eth0",
-                    "tp-ref": "eth0"
-                  }
-                ],
-                "mddo-topology:l3-termination-point-attributes": {
-                  "description": "",
-                  "ip-address": [
-                    "192.168.1.101/24"
-                  ],
-                  "flag": [
-
-                  ]
-                }
-              },
-              {
-                "tp-id": "eth0#1",
                 "supporting-termination-point": [
                   {
                     "network-ref": "layer2",
@@ -2083,101 +1086,6 @@
               },
               {
                 "tp-id": "eth0#5",
-                "supporting-termination-point": [
-                  {
-                    "network-ref": "layer2",
-                    "node-ref": "host21_eth0",
-                    "tp-ref": "eth0"
-                  }
-                ],
-                "mddo-topology:l3-termination-point-attributes": {
-                  "description": "",
-                  "ip-address": [
-                    "192.168.1.101/24"
-                  ],
-                  "flag": [
-
-                  ]
-                }
-              },
-              {
-                "tp-id": "eth0#6",
-                "supporting-termination-point": [
-                  {
-                    "network-ref": "layer2",
-                    "node-ref": "host21_eth0",
-                    "tp-ref": "eth0"
-                  }
-                ],
-                "mddo-topology:l3-termination-point-attributes": {
-                  "description": "",
-                  "ip-address": [
-                    "192.168.1.101/24"
-                  ],
-                  "flag": [
-
-                  ]
-                }
-              },
-              {
-                "tp-id": "eth0#8",
-                "supporting-termination-point": [
-                  {
-                    "network-ref": "layer2",
-                    "node-ref": "host21_eth0",
-                    "tp-ref": "eth0"
-                  }
-                ],
-                "mddo-topology:l3-termination-point-attributes": {
-                  "description": "",
-                  "ip-address": [
-                    "192.168.1.101/24"
-                  ],
-                  "flag": [
-
-                  ]
-                }
-              },
-              {
-                "tp-id": "eth0#9",
-                "supporting-termination-point": [
-                  {
-                    "network-ref": "layer2",
-                    "node-ref": "host21_eth0",
-                    "tp-ref": "eth0"
-                  }
-                ],
-                "mddo-topology:l3-termination-point-attributes": {
-                  "description": "",
-                  "ip-address": [
-                    "192.168.1.101/24"
-                  ],
-                  "flag": [
-
-                  ]
-                }
-              },
-              {
-                "tp-id": "eth0#10",
-                "supporting-termination-point": [
-                  {
-                    "network-ref": "layer2",
-                    "node-ref": "host21_eth0",
-                    "tp-ref": "eth0"
-                  }
-                ],
-                "mddo-topology:l3-termination-point-attributes": {
-                  "description": "",
-                  "ip-address": [
-                    "192.168.1.101/24"
-                  ],
-                  "flag": [
-
-                  ]
-                }
-              },
-              {
-                "tp-id": "eth0#11",
                 "supporting-termination-point": [
                   {
                     "network-ref": "layer2",
@@ -2260,25 +1168,6 @@
                 }
               },
               {
-                "tp-id": "eth0#2",
-                "supporting-termination-point": [
-                  {
-                    "network-ref": "layer2",
-                    "node-ref": "host22_eth0",
-                    "tp-ref": "eth0"
-                  }
-                ],
-                "mddo-topology:l3-termination-point-attributes": {
-                  "description": "",
-                  "ip-address": [
-                    "192.168.1.102/24"
-                  ],
-                  "flag": [
-
-                  ]
-                }
-              },
-              {
                 "tp-id": "eth0#3",
                 "supporting-termination-point": [
                   {
@@ -2318,101 +1207,6 @@
               },
               {
                 "tp-id": "eth0#5",
-                "supporting-termination-point": [
-                  {
-                    "network-ref": "layer2",
-                    "node-ref": "host22_eth0",
-                    "tp-ref": "eth0"
-                  }
-                ],
-                "mddo-topology:l3-termination-point-attributes": {
-                  "description": "",
-                  "ip-address": [
-                    "192.168.1.102/24"
-                  ],
-                  "flag": [
-
-                  ]
-                }
-              },
-              {
-                "tp-id": "eth0#6",
-                "supporting-termination-point": [
-                  {
-                    "network-ref": "layer2",
-                    "node-ref": "host22_eth0",
-                    "tp-ref": "eth0"
-                  }
-                ],
-                "mddo-topology:l3-termination-point-attributes": {
-                  "description": "",
-                  "ip-address": [
-                    "192.168.1.102/24"
-                  ],
-                  "flag": [
-
-                  ]
-                }
-              },
-              {
-                "tp-id": "eth0#7",
-                "supporting-termination-point": [
-                  {
-                    "network-ref": "layer2",
-                    "node-ref": "host22_eth0",
-                    "tp-ref": "eth0"
-                  }
-                ],
-                "mddo-topology:l3-termination-point-attributes": {
-                  "description": "",
-                  "ip-address": [
-                    "192.168.1.102/24"
-                  ],
-                  "flag": [
-
-                  ]
-                }
-              },
-              {
-                "tp-id": "eth0#9",
-                "supporting-termination-point": [
-                  {
-                    "network-ref": "layer2",
-                    "node-ref": "host22_eth0",
-                    "tp-ref": "eth0"
-                  }
-                ],
-                "mddo-topology:l3-termination-point-attributes": {
-                  "description": "",
-                  "ip-address": [
-                    "192.168.1.102/24"
-                  ],
-                  "flag": [
-
-                  ]
-                }
-              },
-              {
-                "tp-id": "eth0#10",
-                "supporting-termination-point": [
-                  {
-                    "network-ref": "layer2",
-                    "node-ref": "host22_eth0",
-                    "tp-ref": "eth0"
-                  }
-                ],
-                "mddo-topology:l3-termination-point-attributes": {
-                  "description": "",
-                  "ip-address": [
-                    "192.168.1.102/24"
-                  ],
-                  "flag": [
-
-                  ]
-                }
-              },
-              {
-                "tp-id": "eth0#11",
                 "supporting-termination-point": [
                   {
                     "network-ref": "layer2",
@@ -2544,35 +1338,6 @@
                 }
               },
               {
-                "tp-id": "Vlan200#3",
-                "supporting-termination-point": [
-                  {
-                    "network-ref": "layer2",
-                    "node-ref": "switch2_Vlan200",
-                    "tp-ref": "Port-channel1"
-                  },
-                  {
-                    "network-ref": "layer2",
-                    "node-ref": "switch2_Vlan200",
-                    "tp-ref": "GigabitEthernet1/0/7"
-                  },
-                  {
-                    "network-ref": "layer2",
-                    "node-ref": "switch2_Vlan200",
-                    "tp-ref": "GigabitEthernet1/0/8"
-                  }
-                ],
-                "mddo-topology:l3-termination-point-attributes": {
-                  "description": "",
-                  "ip-address": [
-                    "192.168.1.3/24"
-                  ],
-                  "flag": [
-
-                  ]
-                }
-              },
-              {
                 "tp-id": "Vlan200#4",
                 "supporting-termination-point": [
                   {
@@ -2603,151 +1368,6 @@
               },
               {
                 "tp-id": "Vlan200#5",
-                "supporting-termination-point": [
-                  {
-                    "network-ref": "layer2",
-                    "node-ref": "switch2_Vlan200",
-                    "tp-ref": "Port-channel1"
-                  },
-                  {
-                    "network-ref": "layer2",
-                    "node-ref": "switch2_Vlan200",
-                    "tp-ref": "GigabitEthernet1/0/7"
-                  },
-                  {
-                    "network-ref": "layer2",
-                    "node-ref": "switch2_Vlan200",
-                    "tp-ref": "GigabitEthernet1/0/8"
-                  }
-                ],
-                "mddo-topology:l3-termination-point-attributes": {
-                  "description": "",
-                  "ip-address": [
-                    "192.168.1.3/24"
-                  ],
-                  "flag": [
-
-                  ]
-                }
-              },
-              {
-                "tp-id": "Vlan200#6",
-                "supporting-termination-point": [
-                  {
-                    "network-ref": "layer2",
-                    "node-ref": "switch2_Vlan200",
-                    "tp-ref": "Port-channel1"
-                  },
-                  {
-                    "network-ref": "layer2",
-                    "node-ref": "switch2_Vlan200",
-                    "tp-ref": "GigabitEthernet1/0/7"
-                  },
-                  {
-                    "network-ref": "layer2",
-                    "node-ref": "switch2_Vlan200",
-                    "tp-ref": "GigabitEthernet1/0/8"
-                  }
-                ],
-                "mddo-topology:l3-termination-point-attributes": {
-                  "description": "",
-                  "ip-address": [
-                    "192.168.1.3/24"
-                  ],
-                  "flag": [
-
-                  ]
-                }
-              },
-              {
-                "tp-id": "Vlan200#7",
-                "supporting-termination-point": [
-                  {
-                    "network-ref": "layer2",
-                    "node-ref": "switch2_Vlan200",
-                    "tp-ref": "Port-channel1"
-                  },
-                  {
-                    "network-ref": "layer2",
-                    "node-ref": "switch2_Vlan200",
-                    "tp-ref": "GigabitEthernet1/0/7"
-                  },
-                  {
-                    "network-ref": "layer2",
-                    "node-ref": "switch2_Vlan200",
-                    "tp-ref": "GigabitEthernet1/0/8"
-                  }
-                ],
-                "mddo-topology:l3-termination-point-attributes": {
-                  "description": "",
-                  "ip-address": [
-                    "192.168.1.3/24"
-                  ],
-                  "flag": [
-
-                  ]
-                }
-              },
-              {
-                "tp-id": "Vlan200#8",
-                "supporting-termination-point": [
-                  {
-                    "network-ref": "layer2",
-                    "node-ref": "switch2_Vlan200",
-                    "tp-ref": "Port-channel1"
-                  },
-                  {
-                    "network-ref": "layer2",
-                    "node-ref": "switch2_Vlan200",
-                    "tp-ref": "GigabitEthernet1/0/7"
-                  },
-                  {
-                    "network-ref": "layer2",
-                    "node-ref": "switch2_Vlan200",
-                    "tp-ref": "GigabitEthernet1/0/8"
-                  }
-                ],
-                "mddo-topology:l3-termination-point-attributes": {
-                  "description": "",
-                  "ip-address": [
-                    "192.168.1.3/24"
-                  ],
-                  "flag": [
-
-                  ]
-                }
-              },
-              {
-                "tp-id": "Vlan200#10",
-                "supporting-termination-point": [
-                  {
-                    "network-ref": "layer2",
-                    "node-ref": "switch2_Vlan200",
-                    "tp-ref": "Port-channel1"
-                  },
-                  {
-                    "network-ref": "layer2",
-                    "node-ref": "switch2_Vlan200",
-                    "tp-ref": "GigabitEthernet1/0/7"
-                  },
-                  {
-                    "network-ref": "layer2",
-                    "node-ref": "switch2_Vlan200",
-                    "tp-ref": "GigabitEthernet1/0/8"
-                  }
-                ],
-                "mddo-topology:l3-termination-point-attributes": {
-                  "description": "",
-                  "ip-address": [
-                    "192.168.1.3/24"
-                  ],
-                  "flag": [
-
-                  ]
-                }
-              },
-              {
-                "tp-id": "Vlan200#11",
                 "supporting-termination-point": [
                   {
                     "network-ref": "layer2",
@@ -2878,121 +1498,7 @@
                 }
               },
               {
-                "tp-id": "eth0#4",
-                "supporting-termination-point": [
-                  {
-                    "network-ref": "layer2",
-                    "node-ref": "host23_eth0",
-                    "tp-ref": "eth0"
-                  }
-                ],
-                "mddo-topology:l3-termination-point-attributes": {
-                  "description": "",
-                  "ip-address": [
-                    "192.168.1.103/24"
-                  ],
-                  "flag": [
-
-                  ]
-                }
-              },
-              {
                 "tp-id": "eth0#5",
-                "supporting-termination-point": [
-                  {
-                    "network-ref": "layer2",
-                    "node-ref": "host23_eth0",
-                    "tp-ref": "eth0"
-                  }
-                ],
-                "mddo-topology:l3-termination-point-attributes": {
-                  "description": "",
-                  "ip-address": [
-                    "192.168.1.103/24"
-                  ],
-                  "flag": [
-
-                  ]
-                }
-              },
-              {
-                "tp-id": "eth0#6",
-                "supporting-termination-point": [
-                  {
-                    "network-ref": "layer2",
-                    "node-ref": "host23_eth0",
-                    "tp-ref": "eth0"
-                  }
-                ],
-                "mddo-topology:l3-termination-point-attributes": {
-                  "description": "",
-                  "ip-address": [
-                    "192.168.1.103/24"
-                  ],
-                  "flag": [
-
-                  ]
-                }
-              },
-              {
-                "tp-id": "eth0#7",
-                "supporting-termination-point": [
-                  {
-                    "network-ref": "layer2",
-                    "node-ref": "host23_eth0",
-                    "tp-ref": "eth0"
-                  }
-                ],
-                "mddo-topology:l3-termination-point-attributes": {
-                  "description": "",
-                  "ip-address": [
-                    "192.168.1.103/24"
-                  ],
-                  "flag": [
-
-                  ]
-                }
-              },
-              {
-                "tp-id": "eth0#8",
-                "supporting-termination-point": [
-                  {
-                    "network-ref": "layer2",
-                    "node-ref": "host23_eth0",
-                    "tp-ref": "eth0"
-                  }
-                ],
-                "mddo-topology:l3-termination-point-attributes": {
-                  "description": "",
-                  "ip-address": [
-                    "192.168.1.103/24"
-                  ],
-                  "flag": [
-
-                  ]
-                }
-              },
-              {
-                "tp-id": "eth0#9",
-                "supporting-termination-point": [
-                  {
-                    "network-ref": "layer2",
-                    "node-ref": "host23_eth0",
-                    "tp-ref": "eth0"
-                  }
-                ],
-                "mddo-topology:l3-termination-point-attributes": {
-                  "description": "",
-                  "ip-address": [
-                    "192.168.1.103/24"
-                  ],
-                  "flag": [
-
-                  ]
-                }
-              },
-              {
-                "tp-id": "eth0#11",
                 "supporting-termination-point": [
                   {
                     "network-ref": "layer2",
@@ -3130,120 +1636,6 @@
 
                   ]
                 }
-              },
-              {
-                "tp-id": "eth0#5",
-                "supporting-termination-point": [
-                  {
-                    "network-ref": "layer2",
-                    "node-ref": "host24_eth0",
-                    "tp-ref": "eth0"
-                  }
-                ],
-                "mddo-topology:l3-termination-point-attributes": {
-                  "description": "",
-                  "ip-address": [
-                    "192.168.1.104/24"
-                  ],
-                  "flag": [
-
-                  ]
-                }
-              },
-              {
-                "tp-id": "eth0#6",
-                "supporting-termination-point": [
-                  {
-                    "network-ref": "layer2",
-                    "node-ref": "host24_eth0",
-                    "tp-ref": "eth0"
-                  }
-                ],
-                "mddo-topology:l3-termination-point-attributes": {
-                  "description": "",
-                  "ip-address": [
-                    "192.168.1.104/24"
-                  ],
-                  "flag": [
-
-                  ]
-                }
-              },
-              {
-                "tp-id": "eth0#7",
-                "supporting-termination-point": [
-                  {
-                    "network-ref": "layer2",
-                    "node-ref": "host24_eth0",
-                    "tp-ref": "eth0"
-                  }
-                ],
-                "mddo-topology:l3-termination-point-attributes": {
-                  "description": "",
-                  "ip-address": [
-                    "192.168.1.104/24"
-                  ],
-                  "flag": [
-
-                  ]
-                }
-              },
-              {
-                "tp-id": "eth0#8",
-                "supporting-termination-point": [
-                  {
-                    "network-ref": "layer2",
-                    "node-ref": "host24_eth0",
-                    "tp-ref": "eth0"
-                  }
-                ],
-                "mddo-topology:l3-termination-point-attributes": {
-                  "description": "",
-                  "ip-address": [
-                    "192.168.1.104/24"
-                  ],
-                  "flag": [
-
-                  ]
-                }
-              },
-              {
-                "tp-id": "eth0#9",
-                "supporting-termination-point": [
-                  {
-                    "network-ref": "layer2",
-                    "node-ref": "host24_eth0",
-                    "tp-ref": "eth0"
-                  }
-                ],
-                "mddo-topology:l3-termination-point-attributes": {
-                  "description": "",
-                  "ip-address": [
-                    "192.168.1.104/24"
-                  ],
-                  "flag": [
-
-                  ]
-                }
-              },
-              {
-                "tp-id": "eth0#10",
-                "supporting-termination-point": [
-                  {
-                    "network-ref": "layer2",
-                    "node-ref": "host24_eth0",
-                    "tp-ref": "eth0"
-                  }
-                ],
-                "mddo-topology:l3-termination-point-attributes": {
-                  "description": "",
-                  "ip-address": [
-                    "192.168.1.104/24"
-                  ],
-                  "flag": [
-
-                  ]
-                }
               }
             ],
             "supporting-node": [
@@ -3326,72 +1718,6 @@
             }
           },
           {
-            "link-id": "switch1,Vlan100#6,switch1_user2,Vlan200#0",
-            "source": {
-              "source-node": "switch1",
-              "source-tp": "Vlan100#6"
-            },
-            "destination": {
-              "dest-node": "switch1_user2",
-              "dest-tp": "Vlan200#0"
-            }
-          },
-          {
-            "link-id": "switch1,Vlan100#7,host21,eth0#0",
-            "source": {
-              "source-node": "switch1",
-              "source-tp": "Vlan100#7"
-            },
-            "destination": {
-              "dest-node": "host21",
-              "dest-tp": "eth0#0"
-            }
-          },
-          {
-            "link-id": "switch1,Vlan100#8,host22,eth0#0",
-            "source": {
-              "source-node": "switch1",
-              "source-tp": "Vlan100#8"
-            },
-            "destination": {
-              "dest-node": "host22",
-              "dest-tp": "eth0#0"
-            }
-          },
-          {
-            "link-id": "switch1,Vlan100#9,switch2_user2,Vlan200#0",
-            "source": {
-              "source-node": "switch1",
-              "source-tp": "Vlan100#9"
-            },
-            "destination": {
-              "dest-node": "switch2_user2",
-              "dest-tp": "Vlan200#0"
-            }
-          },
-          {
-            "link-id": "switch1,Vlan100#10,host23,eth0#0",
-            "source": {
-              "source-node": "switch1",
-              "source-tp": "Vlan100#10"
-            },
-            "destination": {
-              "dest-node": "host23",
-              "dest-tp": "eth0#0"
-            }
-          },
-          {
-            "link-id": "switch1,Vlan100#11,host24,eth0#0",
-            "source": {
-              "source-node": "switch1",
-              "source-tp": "Vlan100#11"
-            },
-            "destination": {
-              "dest-node": "host24",
-              "dest-tp": "eth0#0"
-            }
-          },
-          {
             "link-id": "host11,eth0#0,switch1,Vlan100#1",
             "source": {
               "source-node": "host11",
@@ -3443,72 +1769,6 @@
             },
             "destination": {
               "dest-node": "host14",
-              "dest-tp": "eth0#1"
-            }
-          },
-          {
-            "link-id": "host11,eth0#6,switch1_user2,Vlan200#1",
-            "source": {
-              "source-node": "host11",
-              "source-tp": "eth0#6"
-            },
-            "destination": {
-              "dest-node": "switch1_user2",
-              "dest-tp": "Vlan200#1"
-            }
-          },
-          {
-            "link-id": "host11,eth0#7,host21,eth0#1",
-            "source": {
-              "source-node": "host11",
-              "source-tp": "eth0#7"
-            },
-            "destination": {
-              "dest-node": "host21",
-              "dest-tp": "eth0#1"
-            }
-          },
-          {
-            "link-id": "host11,eth0#8,host22,eth0#1",
-            "source": {
-              "source-node": "host11",
-              "source-tp": "eth0#8"
-            },
-            "destination": {
-              "dest-node": "host22",
-              "dest-tp": "eth0#1"
-            }
-          },
-          {
-            "link-id": "host11,eth0#9,switch2_user2,Vlan200#1",
-            "source": {
-              "source-node": "host11",
-              "source-tp": "eth0#9"
-            },
-            "destination": {
-              "dest-node": "switch2_user2",
-              "dest-tp": "Vlan200#1"
-            }
-          },
-          {
-            "link-id": "host11,eth0#10,host23,eth0#1",
-            "source": {
-              "source-node": "host11",
-              "source-tp": "eth0#10"
-            },
-            "destination": {
-              "dest-node": "host23",
-              "dest-tp": "eth0#1"
-            }
-          },
-          {
-            "link-id": "host11,eth0#11,host24,eth0#1",
-            "source": {
-              "source-node": "host11",
-              "source-tp": "eth0#11"
-            },
-            "destination": {
-              "dest-node": "host24",
               "dest-tp": "eth0#1"
             }
           },
@@ -3568,72 +1828,6 @@
             }
           },
           {
-            "link-id": "host12,eth0#6,switch1_user2,Vlan200#2",
-            "source": {
-              "source-node": "host12",
-              "source-tp": "eth0#6"
-            },
-            "destination": {
-              "dest-node": "switch1_user2",
-              "dest-tp": "Vlan200#2"
-            }
-          },
-          {
-            "link-id": "host12,eth0#7,host21,eth0#2",
-            "source": {
-              "source-node": "host12",
-              "source-tp": "eth0#7"
-            },
-            "destination": {
-              "dest-node": "host21",
-              "dest-tp": "eth0#2"
-            }
-          },
-          {
-            "link-id": "host12,eth0#8,host22,eth0#2",
-            "source": {
-              "source-node": "host12",
-              "source-tp": "eth0#8"
-            },
-            "destination": {
-              "dest-node": "host22",
-              "dest-tp": "eth0#2"
-            }
-          },
-          {
-            "link-id": "host12,eth0#9,switch2_user2,Vlan200#2",
-            "source": {
-              "source-node": "host12",
-              "source-tp": "eth0#9"
-            },
-            "destination": {
-              "dest-node": "switch2_user2",
-              "dest-tp": "Vlan200#2"
-            }
-          },
-          {
-            "link-id": "host12,eth0#10,host23,eth0#2",
-            "source": {
-              "source-node": "host12",
-              "source-tp": "eth0#10"
-            },
-            "destination": {
-              "dest-node": "host23",
-              "dest-tp": "eth0#2"
-            }
-          },
-          {
-            "link-id": "host12,eth0#11,host24,eth0#2",
-            "source": {
-              "source-node": "host12",
-              "source-tp": "eth0#11"
-            },
-            "destination": {
-              "dest-node": "host24",
-              "dest-tp": "eth0#2"
-            }
-          },
-          {
             "link-id": "switch2,Vlan100#0,switch1,Vlan100#3",
             "source": {
               "source-node": "switch2",
@@ -3685,72 +1879,6 @@
             },
             "destination": {
               "dest-node": "host14",
-              "dest-tp": "eth0#3"
-            }
-          },
-          {
-            "link-id": "switch2,Vlan100#6,switch1_user2,Vlan200#3",
-            "source": {
-              "source-node": "switch2",
-              "source-tp": "Vlan100#6"
-            },
-            "destination": {
-              "dest-node": "switch1_user2",
-              "dest-tp": "Vlan200#3"
-            }
-          },
-          {
-            "link-id": "switch2,Vlan100#7,host21,eth0#3",
-            "source": {
-              "source-node": "switch2",
-              "source-tp": "Vlan100#7"
-            },
-            "destination": {
-              "dest-node": "host21",
-              "dest-tp": "eth0#3"
-            }
-          },
-          {
-            "link-id": "switch2,Vlan100#8,host22,eth0#3",
-            "source": {
-              "source-node": "switch2",
-              "source-tp": "Vlan100#8"
-            },
-            "destination": {
-              "dest-node": "host22",
-              "dest-tp": "eth0#3"
-            }
-          },
-          {
-            "link-id": "switch2,Vlan100#9,switch2_user2,Vlan200#3",
-            "source": {
-              "source-node": "switch2",
-              "source-tp": "Vlan100#9"
-            },
-            "destination": {
-              "dest-node": "switch2_user2",
-              "dest-tp": "Vlan200#3"
-            }
-          },
-          {
-            "link-id": "switch2,Vlan100#10,host23,eth0#3",
-            "source": {
-              "source-node": "switch2",
-              "source-tp": "Vlan100#10"
-            },
-            "destination": {
-              "dest-node": "host23",
-              "dest-tp": "eth0#3"
-            }
-          },
-          {
-            "link-id": "switch2,Vlan100#11,host24,eth0#3",
-            "source": {
-              "source-node": "switch2",
-              "source-tp": "Vlan100#11"
-            },
-            "destination": {
-              "dest-node": "host24",
               "dest-tp": "eth0#3"
             }
           },
@@ -3810,72 +1938,6 @@
             }
           },
           {
-            "link-id": "host13,eth0#6,switch1_user2,Vlan200#4",
-            "source": {
-              "source-node": "host13",
-              "source-tp": "eth0#6"
-            },
-            "destination": {
-              "dest-node": "switch1_user2",
-              "dest-tp": "Vlan200#4"
-            }
-          },
-          {
-            "link-id": "host13,eth0#7,host21,eth0#4",
-            "source": {
-              "source-node": "host13",
-              "source-tp": "eth0#7"
-            },
-            "destination": {
-              "dest-node": "host21",
-              "dest-tp": "eth0#4"
-            }
-          },
-          {
-            "link-id": "host13,eth0#8,host22,eth0#4",
-            "source": {
-              "source-node": "host13",
-              "source-tp": "eth0#8"
-            },
-            "destination": {
-              "dest-node": "host22",
-              "dest-tp": "eth0#4"
-            }
-          },
-          {
-            "link-id": "host13,eth0#9,switch2_user2,Vlan200#4",
-            "source": {
-              "source-node": "host13",
-              "source-tp": "eth0#9"
-            },
-            "destination": {
-              "dest-node": "switch2_user2",
-              "dest-tp": "Vlan200#4"
-            }
-          },
-          {
-            "link-id": "host13,eth0#10,host23,eth0#4",
-            "source": {
-              "source-node": "host13",
-              "source-tp": "eth0#10"
-            },
-            "destination": {
-              "dest-node": "host23",
-              "dest-tp": "eth0#4"
-            }
-          },
-          {
-            "link-id": "host13,eth0#11,host24,eth0#4",
-            "source": {
-              "source-node": "host13",
-              "source-tp": "eth0#11"
-            },
-            "destination": {
-              "dest-node": "host24",
-              "dest-tp": "eth0#4"
-            }
-          },
-          {
             "link-id": "host14,eth0#0,switch1,Vlan100#5",
             "source": {
               "source-node": "host14",
@@ -3931,10 +1993,285 @@
             }
           },
           {
-            "link-id": "host14,eth0#6,switch1_user2,Vlan200#5",
+            "link-id": "switch1_user2,Vlan200#1,host21,eth0#0",
             "source": {
-              "source-node": "host14",
-              "source-tp": "eth0#6"
+              "source-node": "switch1_user2",
+              "source-tp": "Vlan200#1"
+            },
+            "destination": {
+              "dest-node": "host21",
+              "dest-tp": "eth0#0"
+            }
+          },
+          {
+            "link-id": "switch1_user2,Vlan200#2,host22,eth0#0",
+            "source": {
+              "source-node": "switch1_user2",
+              "source-tp": "Vlan200#2"
+            },
+            "destination": {
+              "dest-node": "host22",
+              "dest-tp": "eth0#0"
+            }
+          },
+          {
+            "link-id": "switch1_user2,Vlan200#3,switch2_user2,Vlan200#0",
+            "source": {
+              "source-node": "switch1_user2",
+              "source-tp": "Vlan200#3"
+            },
+            "destination": {
+              "dest-node": "switch2_user2",
+              "dest-tp": "Vlan200#0"
+            }
+          },
+          {
+            "link-id": "switch1_user2,Vlan200#4,host23,eth0#0",
+            "source": {
+              "source-node": "switch1_user2",
+              "source-tp": "Vlan200#4"
+            },
+            "destination": {
+              "dest-node": "host23",
+              "dest-tp": "eth0#0"
+            }
+          },
+          {
+            "link-id": "switch1_user2,Vlan200#5,host24,eth0#0",
+            "source": {
+              "source-node": "switch1_user2",
+              "source-tp": "Vlan200#5"
+            },
+            "destination": {
+              "dest-node": "host24",
+              "dest-tp": "eth0#0"
+            }
+          },
+          {
+            "link-id": "host21,eth0#0,switch1_user2,Vlan200#1",
+            "source": {
+              "source-node": "host21",
+              "source-tp": "eth0#0"
+            },
+            "destination": {
+              "dest-node": "switch1_user2",
+              "dest-tp": "Vlan200#1"
+            }
+          },
+          {
+            "link-id": "host21,eth0#2,host22,eth0#1",
+            "source": {
+              "source-node": "host21",
+              "source-tp": "eth0#2"
+            },
+            "destination": {
+              "dest-node": "host22",
+              "dest-tp": "eth0#1"
+            }
+          },
+          {
+            "link-id": "host21,eth0#3,switch2_user2,Vlan200#1",
+            "source": {
+              "source-node": "host21",
+              "source-tp": "eth0#3"
+            },
+            "destination": {
+              "dest-node": "switch2_user2",
+              "dest-tp": "Vlan200#1"
+            }
+          },
+          {
+            "link-id": "host21,eth0#4,host23,eth0#1",
+            "source": {
+              "source-node": "host21",
+              "source-tp": "eth0#4"
+            },
+            "destination": {
+              "dest-node": "host23",
+              "dest-tp": "eth0#1"
+            }
+          },
+          {
+            "link-id": "host21,eth0#5,host24,eth0#1",
+            "source": {
+              "source-node": "host21",
+              "source-tp": "eth0#5"
+            },
+            "destination": {
+              "dest-node": "host24",
+              "dest-tp": "eth0#1"
+            }
+          },
+          {
+            "link-id": "host22,eth0#0,switch1_user2,Vlan200#2",
+            "source": {
+              "source-node": "host22",
+              "source-tp": "eth0#0"
+            },
+            "destination": {
+              "dest-node": "switch1_user2",
+              "dest-tp": "Vlan200#2"
+            }
+          },
+          {
+            "link-id": "host22,eth0#1,host21,eth0#2",
+            "source": {
+              "source-node": "host22",
+              "source-tp": "eth0#1"
+            },
+            "destination": {
+              "dest-node": "host21",
+              "dest-tp": "eth0#2"
+            }
+          },
+          {
+            "link-id": "host22,eth0#3,switch2_user2,Vlan200#2",
+            "source": {
+              "source-node": "host22",
+              "source-tp": "eth0#3"
+            },
+            "destination": {
+              "dest-node": "switch2_user2",
+              "dest-tp": "Vlan200#2"
+            }
+          },
+          {
+            "link-id": "host22,eth0#4,host23,eth0#2",
+            "source": {
+              "source-node": "host22",
+              "source-tp": "eth0#4"
+            },
+            "destination": {
+              "dest-node": "host23",
+              "dest-tp": "eth0#2"
+            }
+          },
+          {
+            "link-id": "host22,eth0#5,host24,eth0#2",
+            "source": {
+              "source-node": "host22",
+              "source-tp": "eth0#5"
+            },
+            "destination": {
+              "dest-node": "host24",
+              "dest-tp": "eth0#2"
+            }
+          },
+          {
+            "link-id": "switch2_user2,Vlan200#0,switch1_user2,Vlan200#3",
+            "source": {
+              "source-node": "switch2_user2",
+              "source-tp": "Vlan200#0"
+            },
+            "destination": {
+              "dest-node": "switch1_user2",
+              "dest-tp": "Vlan200#3"
+            }
+          },
+          {
+            "link-id": "switch2_user2,Vlan200#1,host21,eth0#3",
+            "source": {
+              "source-node": "switch2_user2",
+              "source-tp": "Vlan200#1"
+            },
+            "destination": {
+              "dest-node": "host21",
+              "dest-tp": "eth0#3"
+            }
+          },
+          {
+            "link-id": "switch2_user2,Vlan200#2,host22,eth0#3",
+            "source": {
+              "source-node": "switch2_user2",
+              "source-tp": "Vlan200#2"
+            },
+            "destination": {
+              "dest-node": "host22",
+              "dest-tp": "eth0#3"
+            }
+          },
+          {
+            "link-id": "switch2_user2,Vlan200#4,host23,eth0#3",
+            "source": {
+              "source-node": "switch2_user2",
+              "source-tp": "Vlan200#4"
+            },
+            "destination": {
+              "dest-node": "host23",
+              "dest-tp": "eth0#3"
+            }
+          },
+          {
+            "link-id": "switch2_user2,Vlan200#5,host24,eth0#3",
+            "source": {
+              "source-node": "switch2_user2",
+              "source-tp": "Vlan200#5"
+            },
+            "destination": {
+              "dest-node": "host24",
+              "dest-tp": "eth0#3"
+            }
+          },
+          {
+            "link-id": "host23,eth0#0,switch1_user2,Vlan200#4",
+            "source": {
+              "source-node": "host23",
+              "source-tp": "eth0#0"
+            },
+            "destination": {
+              "dest-node": "switch1_user2",
+              "dest-tp": "Vlan200#4"
+            }
+          },
+          {
+            "link-id": "host23,eth0#1,host21,eth0#4",
+            "source": {
+              "source-node": "host23",
+              "source-tp": "eth0#1"
+            },
+            "destination": {
+              "dest-node": "host21",
+              "dest-tp": "eth0#4"
+            }
+          },
+          {
+            "link-id": "host23,eth0#2,host22,eth0#4",
+            "source": {
+              "source-node": "host23",
+              "source-tp": "eth0#2"
+            },
+            "destination": {
+              "dest-node": "host22",
+              "dest-tp": "eth0#4"
+            }
+          },
+          {
+            "link-id": "host23,eth0#3,switch2_user2,Vlan200#4",
+            "source": {
+              "source-node": "host23",
+              "source-tp": "eth0#3"
+            },
+            "destination": {
+              "dest-node": "switch2_user2",
+              "dest-tp": "Vlan200#4"
+            }
+          },
+          {
+            "link-id": "host23,eth0#5,host24,eth0#4",
+            "source": {
+              "source-node": "host23",
+              "source-tp": "eth0#5"
+            },
+            "destination": {
+              "dest-node": "host24",
+              "dest-tp": "eth0#4"
+            }
+          },
+          {
+            "link-id": "host24,eth0#0,switch1_user2,Vlan200#5",
+            "source": {
+              "source-node": "host24",
+              "source-tp": "eth0#0"
             },
             "destination": {
               "dest-node": "switch1_user2",
@@ -3942,10 +2279,10 @@
             }
           },
           {
-            "link-id": "host14,eth0#7,host21,eth0#5",
+            "link-id": "host24,eth0#1,host21,eth0#5",
             "source": {
-              "source-node": "host14",
-              "source-tp": "eth0#7"
+              "source-node": "host24",
+              "source-tp": "eth0#1"
             },
             "destination": {
               "dest-node": "host21",
@@ -3953,10 +2290,10 @@
             }
           },
           {
-            "link-id": "host14,eth0#8,host22,eth0#5",
+            "link-id": "host24,eth0#2,host22,eth0#5",
             "source": {
-              "source-node": "host14",
-              "source-tp": "eth0#8"
+              "source-node": "host24",
+              "source-tp": "eth0#2"
             },
             "destination": {
               "dest-node": "host22",
@@ -3964,10 +2301,10 @@
             }
           },
           {
-            "link-id": "host14,eth0#9,switch2_user2,Vlan200#5",
+            "link-id": "host24,eth0#3,switch2_user2,Vlan200#5",
             "source": {
-              "source-node": "host14",
-              "source-tp": "eth0#9"
+              "source-node": "host24",
+              "source-tp": "eth0#3"
             },
             "destination": {
               "dest-node": "switch2_user2",
@@ -3975,751 +2312,14 @@
             }
           },
           {
-            "link-id": "host14,eth0#10,host23,eth0#5",
+            "link-id": "host24,eth0#4,host23,eth0#5",
             "source": {
-              "source-node": "host14",
-              "source-tp": "eth0#10"
+              "source-node": "host24",
+              "source-tp": "eth0#4"
             },
             "destination": {
               "dest-node": "host23",
               "dest-tp": "eth0#5"
-            }
-          },
-          {
-            "link-id": "host14,eth0#11,host24,eth0#5",
-            "source": {
-              "source-node": "host14",
-              "source-tp": "eth0#11"
-            },
-            "destination": {
-              "dest-node": "host24",
-              "dest-tp": "eth0#5"
-            }
-          },
-          {
-            "link-id": "switch1_user2,Vlan200#0,switch1,Vlan100#6",
-            "source": {
-              "source-node": "switch1_user2",
-              "source-tp": "Vlan200#0"
-            },
-            "destination": {
-              "dest-node": "switch1",
-              "dest-tp": "Vlan100#6"
-            }
-          },
-          {
-            "link-id": "switch1_user2,Vlan200#1,host11,eth0#6",
-            "source": {
-              "source-node": "switch1_user2",
-              "source-tp": "Vlan200#1"
-            },
-            "destination": {
-              "dest-node": "host11",
-              "dest-tp": "eth0#6"
-            }
-          },
-          {
-            "link-id": "switch1_user2,Vlan200#2,host12,eth0#6",
-            "source": {
-              "source-node": "switch1_user2",
-              "source-tp": "Vlan200#2"
-            },
-            "destination": {
-              "dest-node": "host12",
-              "dest-tp": "eth0#6"
-            }
-          },
-          {
-            "link-id": "switch1_user2,Vlan200#3,switch2,Vlan100#6",
-            "source": {
-              "source-node": "switch1_user2",
-              "source-tp": "Vlan200#3"
-            },
-            "destination": {
-              "dest-node": "switch2",
-              "dest-tp": "Vlan100#6"
-            }
-          },
-          {
-            "link-id": "switch1_user2,Vlan200#4,host13,eth0#6",
-            "source": {
-              "source-node": "switch1_user2",
-              "source-tp": "Vlan200#4"
-            },
-            "destination": {
-              "dest-node": "host13",
-              "dest-tp": "eth0#6"
-            }
-          },
-          {
-            "link-id": "switch1_user2,Vlan200#5,host14,eth0#6",
-            "source": {
-              "source-node": "switch1_user2",
-              "source-tp": "Vlan200#5"
-            },
-            "destination": {
-              "dest-node": "host14",
-              "dest-tp": "eth0#6"
-            }
-          },
-          {
-            "link-id": "switch1_user2,Vlan200#7,host21,eth0#6",
-            "source": {
-              "source-node": "switch1_user2",
-              "source-tp": "Vlan200#7"
-            },
-            "destination": {
-              "dest-node": "host21",
-              "dest-tp": "eth0#6"
-            }
-          },
-          {
-            "link-id": "switch1_user2,Vlan200#8,host22,eth0#6",
-            "source": {
-              "source-node": "switch1_user2",
-              "source-tp": "Vlan200#8"
-            },
-            "destination": {
-              "dest-node": "host22",
-              "dest-tp": "eth0#6"
-            }
-          },
-          {
-            "link-id": "switch1_user2,Vlan200#9,switch2_user2,Vlan200#6",
-            "source": {
-              "source-node": "switch1_user2",
-              "source-tp": "Vlan200#9"
-            },
-            "destination": {
-              "dest-node": "switch2_user2",
-              "dest-tp": "Vlan200#6"
-            }
-          },
-          {
-            "link-id": "switch1_user2,Vlan200#10,host23,eth0#6",
-            "source": {
-              "source-node": "switch1_user2",
-              "source-tp": "Vlan200#10"
-            },
-            "destination": {
-              "dest-node": "host23",
-              "dest-tp": "eth0#6"
-            }
-          },
-          {
-            "link-id": "switch1_user2,Vlan200#11,host24,eth0#6",
-            "source": {
-              "source-node": "switch1_user2",
-              "source-tp": "Vlan200#11"
-            },
-            "destination": {
-              "dest-node": "host24",
-              "dest-tp": "eth0#6"
-            }
-          },
-          {
-            "link-id": "host21,eth0#0,switch1,Vlan100#7",
-            "source": {
-              "source-node": "host21",
-              "source-tp": "eth0#0"
-            },
-            "destination": {
-              "dest-node": "switch1",
-              "dest-tp": "Vlan100#7"
-            }
-          },
-          {
-            "link-id": "host21,eth0#1,host11,eth0#7",
-            "source": {
-              "source-node": "host21",
-              "source-tp": "eth0#1"
-            },
-            "destination": {
-              "dest-node": "host11",
-              "dest-tp": "eth0#7"
-            }
-          },
-          {
-            "link-id": "host21,eth0#2,host12,eth0#7",
-            "source": {
-              "source-node": "host21",
-              "source-tp": "eth0#2"
-            },
-            "destination": {
-              "dest-node": "host12",
-              "dest-tp": "eth0#7"
-            }
-          },
-          {
-            "link-id": "host21,eth0#3,switch2,Vlan100#7",
-            "source": {
-              "source-node": "host21",
-              "source-tp": "eth0#3"
-            },
-            "destination": {
-              "dest-node": "switch2",
-              "dest-tp": "Vlan100#7"
-            }
-          },
-          {
-            "link-id": "host21,eth0#4,host13,eth0#7",
-            "source": {
-              "source-node": "host21",
-              "source-tp": "eth0#4"
-            },
-            "destination": {
-              "dest-node": "host13",
-              "dest-tp": "eth0#7"
-            }
-          },
-          {
-            "link-id": "host21,eth0#5,host14,eth0#7",
-            "source": {
-              "source-node": "host21",
-              "source-tp": "eth0#5"
-            },
-            "destination": {
-              "dest-node": "host14",
-              "dest-tp": "eth0#7"
-            }
-          },
-          {
-            "link-id": "host21,eth0#6,switch1_user2,Vlan200#7",
-            "source": {
-              "source-node": "host21",
-              "source-tp": "eth0#6"
-            },
-            "destination": {
-              "dest-node": "switch1_user2",
-              "dest-tp": "Vlan200#7"
-            }
-          },
-          {
-            "link-id": "host21,eth0#8,host22,eth0#7",
-            "source": {
-              "source-node": "host21",
-              "source-tp": "eth0#8"
-            },
-            "destination": {
-              "dest-node": "host22",
-              "dest-tp": "eth0#7"
-            }
-          },
-          {
-            "link-id": "host21,eth0#9,switch2_user2,Vlan200#7",
-            "source": {
-              "source-node": "host21",
-              "source-tp": "eth0#9"
-            },
-            "destination": {
-              "dest-node": "switch2_user2",
-              "dest-tp": "Vlan200#7"
-            }
-          },
-          {
-            "link-id": "host21,eth0#10,host23,eth0#7",
-            "source": {
-              "source-node": "host21",
-              "source-tp": "eth0#10"
-            },
-            "destination": {
-              "dest-node": "host23",
-              "dest-tp": "eth0#7"
-            }
-          },
-          {
-            "link-id": "host21,eth0#11,host24,eth0#7",
-            "source": {
-              "source-node": "host21",
-              "source-tp": "eth0#11"
-            },
-            "destination": {
-              "dest-node": "host24",
-              "dest-tp": "eth0#7"
-            }
-          },
-          {
-            "link-id": "host22,eth0#0,switch1,Vlan100#8",
-            "source": {
-              "source-node": "host22",
-              "source-tp": "eth0#0"
-            },
-            "destination": {
-              "dest-node": "switch1",
-              "dest-tp": "Vlan100#8"
-            }
-          },
-          {
-            "link-id": "host22,eth0#1,host11,eth0#8",
-            "source": {
-              "source-node": "host22",
-              "source-tp": "eth0#1"
-            },
-            "destination": {
-              "dest-node": "host11",
-              "dest-tp": "eth0#8"
-            }
-          },
-          {
-            "link-id": "host22,eth0#2,host12,eth0#8",
-            "source": {
-              "source-node": "host22",
-              "source-tp": "eth0#2"
-            },
-            "destination": {
-              "dest-node": "host12",
-              "dest-tp": "eth0#8"
-            }
-          },
-          {
-            "link-id": "host22,eth0#3,switch2,Vlan100#8",
-            "source": {
-              "source-node": "host22",
-              "source-tp": "eth0#3"
-            },
-            "destination": {
-              "dest-node": "switch2",
-              "dest-tp": "Vlan100#8"
-            }
-          },
-          {
-            "link-id": "host22,eth0#4,host13,eth0#8",
-            "source": {
-              "source-node": "host22",
-              "source-tp": "eth0#4"
-            },
-            "destination": {
-              "dest-node": "host13",
-              "dest-tp": "eth0#8"
-            }
-          },
-          {
-            "link-id": "host22,eth0#5,host14,eth0#8",
-            "source": {
-              "source-node": "host22",
-              "source-tp": "eth0#5"
-            },
-            "destination": {
-              "dest-node": "host14",
-              "dest-tp": "eth0#8"
-            }
-          },
-          {
-            "link-id": "host22,eth0#6,switch1_user2,Vlan200#8",
-            "source": {
-              "source-node": "host22",
-              "source-tp": "eth0#6"
-            },
-            "destination": {
-              "dest-node": "switch1_user2",
-              "dest-tp": "Vlan200#8"
-            }
-          },
-          {
-            "link-id": "host22,eth0#7,host21,eth0#8",
-            "source": {
-              "source-node": "host22",
-              "source-tp": "eth0#7"
-            },
-            "destination": {
-              "dest-node": "host21",
-              "dest-tp": "eth0#8"
-            }
-          },
-          {
-            "link-id": "host22,eth0#9,switch2_user2,Vlan200#8",
-            "source": {
-              "source-node": "host22",
-              "source-tp": "eth0#9"
-            },
-            "destination": {
-              "dest-node": "switch2_user2",
-              "dest-tp": "Vlan200#8"
-            }
-          },
-          {
-            "link-id": "host22,eth0#10,host23,eth0#8",
-            "source": {
-              "source-node": "host22",
-              "source-tp": "eth0#10"
-            },
-            "destination": {
-              "dest-node": "host23",
-              "dest-tp": "eth0#8"
-            }
-          },
-          {
-            "link-id": "host22,eth0#11,host24,eth0#8",
-            "source": {
-              "source-node": "host22",
-              "source-tp": "eth0#11"
-            },
-            "destination": {
-              "dest-node": "host24",
-              "dest-tp": "eth0#8"
-            }
-          },
-          {
-            "link-id": "switch2_user2,Vlan200#0,switch1,Vlan100#9",
-            "source": {
-              "source-node": "switch2_user2",
-              "source-tp": "Vlan200#0"
-            },
-            "destination": {
-              "dest-node": "switch1",
-              "dest-tp": "Vlan100#9"
-            }
-          },
-          {
-            "link-id": "switch2_user2,Vlan200#1,host11,eth0#9",
-            "source": {
-              "source-node": "switch2_user2",
-              "source-tp": "Vlan200#1"
-            },
-            "destination": {
-              "dest-node": "host11",
-              "dest-tp": "eth0#9"
-            }
-          },
-          {
-            "link-id": "switch2_user2,Vlan200#2,host12,eth0#9",
-            "source": {
-              "source-node": "switch2_user2",
-              "source-tp": "Vlan200#2"
-            },
-            "destination": {
-              "dest-node": "host12",
-              "dest-tp": "eth0#9"
-            }
-          },
-          {
-            "link-id": "switch2_user2,Vlan200#3,switch2,Vlan100#9",
-            "source": {
-              "source-node": "switch2_user2",
-              "source-tp": "Vlan200#3"
-            },
-            "destination": {
-              "dest-node": "switch2",
-              "dest-tp": "Vlan100#9"
-            }
-          },
-          {
-            "link-id": "switch2_user2,Vlan200#4,host13,eth0#9",
-            "source": {
-              "source-node": "switch2_user2",
-              "source-tp": "Vlan200#4"
-            },
-            "destination": {
-              "dest-node": "host13",
-              "dest-tp": "eth0#9"
-            }
-          },
-          {
-            "link-id": "switch2_user2,Vlan200#5,host14,eth0#9",
-            "source": {
-              "source-node": "switch2_user2",
-              "source-tp": "Vlan200#5"
-            },
-            "destination": {
-              "dest-node": "host14",
-              "dest-tp": "eth0#9"
-            }
-          },
-          {
-            "link-id": "switch2_user2,Vlan200#6,switch1_user2,Vlan200#9",
-            "source": {
-              "source-node": "switch2_user2",
-              "source-tp": "Vlan200#6"
-            },
-            "destination": {
-              "dest-node": "switch1_user2",
-              "dest-tp": "Vlan200#9"
-            }
-          },
-          {
-            "link-id": "switch2_user2,Vlan200#7,host21,eth0#9",
-            "source": {
-              "source-node": "switch2_user2",
-              "source-tp": "Vlan200#7"
-            },
-            "destination": {
-              "dest-node": "host21",
-              "dest-tp": "eth0#9"
-            }
-          },
-          {
-            "link-id": "switch2_user2,Vlan200#8,host22,eth0#9",
-            "source": {
-              "source-node": "switch2_user2",
-              "source-tp": "Vlan200#8"
-            },
-            "destination": {
-              "dest-node": "host22",
-              "dest-tp": "eth0#9"
-            }
-          },
-          {
-            "link-id": "switch2_user2,Vlan200#10,host23,eth0#9",
-            "source": {
-              "source-node": "switch2_user2",
-              "source-tp": "Vlan200#10"
-            },
-            "destination": {
-              "dest-node": "host23",
-              "dest-tp": "eth0#9"
-            }
-          },
-          {
-            "link-id": "switch2_user2,Vlan200#11,host24,eth0#9",
-            "source": {
-              "source-node": "switch2_user2",
-              "source-tp": "Vlan200#11"
-            },
-            "destination": {
-              "dest-node": "host24",
-              "dest-tp": "eth0#9"
-            }
-          },
-          {
-            "link-id": "host23,eth0#0,switch1,Vlan100#10",
-            "source": {
-              "source-node": "host23",
-              "source-tp": "eth0#0"
-            },
-            "destination": {
-              "dest-node": "switch1",
-              "dest-tp": "Vlan100#10"
-            }
-          },
-          {
-            "link-id": "host23,eth0#1,host11,eth0#10",
-            "source": {
-              "source-node": "host23",
-              "source-tp": "eth0#1"
-            },
-            "destination": {
-              "dest-node": "host11",
-              "dest-tp": "eth0#10"
-            }
-          },
-          {
-            "link-id": "host23,eth0#2,host12,eth0#10",
-            "source": {
-              "source-node": "host23",
-              "source-tp": "eth0#2"
-            },
-            "destination": {
-              "dest-node": "host12",
-              "dest-tp": "eth0#10"
-            }
-          },
-          {
-            "link-id": "host23,eth0#3,switch2,Vlan100#10",
-            "source": {
-              "source-node": "host23",
-              "source-tp": "eth0#3"
-            },
-            "destination": {
-              "dest-node": "switch2",
-              "dest-tp": "Vlan100#10"
-            }
-          },
-          {
-            "link-id": "host23,eth0#4,host13,eth0#10",
-            "source": {
-              "source-node": "host23",
-              "source-tp": "eth0#4"
-            },
-            "destination": {
-              "dest-node": "host13",
-              "dest-tp": "eth0#10"
-            }
-          },
-          {
-            "link-id": "host23,eth0#5,host14,eth0#10",
-            "source": {
-              "source-node": "host23",
-              "source-tp": "eth0#5"
-            },
-            "destination": {
-              "dest-node": "host14",
-              "dest-tp": "eth0#10"
-            }
-          },
-          {
-            "link-id": "host23,eth0#6,switch1_user2,Vlan200#10",
-            "source": {
-              "source-node": "host23",
-              "source-tp": "eth0#6"
-            },
-            "destination": {
-              "dest-node": "switch1_user2",
-              "dest-tp": "Vlan200#10"
-            }
-          },
-          {
-            "link-id": "host23,eth0#7,host21,eth0#10",
-            "source": {
-              "source-node": "host23",
-              "source-tp": "eth0#7"
-            },
-            "destination": {
-              "dest-node": "host21",
-              "dest-tp": "eth0#10"
-            }
-          },
-          {
-            "link-id": "host23,eth0#8,host22,eth0#10",
-            "source": {
-              "source-node": "host23",
-              "source-tp": "eth0#8"
-            },
-            "destination": {
-              "dest-node": "host22",
-              "dest-tp": "eth0#10"
-            }
-          },
-          {
-            "link-id": "host23,eth0#9,switch2_user2,Vlan200#10",
-            "source": {
-              "source-node": "host23",
-              "source-tp": "eth0#9"
-            },
-            "destination": {
-              "dest-node": "switch2_user2",
-              "dest-tp": "Vlan200#10"
-            }
-          },
-          {
-            "link-id": "host23,eth0#11,host24,eth0#10",
-            "source": {
-              "source-node": "host23",
-              "source-tp": "eth0#11"
-            },
-            "destination": {
-              "dest-node": "host24",
-              "dest-tp": "eth0#10"
-            }
-          },
-          {
-            "link-id": "host24,eth0#0,switch1,Vlan100#11",
-            "source": {
-              "source-node": "host24",
-              "source-tp": "eth0#0"
-            },
-            "destination": {
-              "dest-node": "switch1",
-              "dest-tp": "Vlan100#11"
-            }
-          },
-          {
-            "link-id": "host24,eth0#1,host11,eth0#11",
-            "source": {
-              "source-node": "host24",
-              "source-tp": "eth0#1"
-            },
-            "destination": {
-              "dest-node": "host11",
-              "dest-tp": "eth0#11"
-            }
-          },
-          {
-            "link-id": "host24,eth0#2,host12,eth0#11",
-            "source": {
-              "source-node": "host24",
-              "source-tp": "eth0#2"
-            },
-            "destination": {
-              "dest-node": "host12",
-              "dest-tp": "eth0#11"
-            }
-          },
-          {
-            "link-id": "host24,eth0#3,switch2,Vlan100#11",
-            "source": {
-              "source-node": "host24",
-              "source-tp": "eth0#3"
-            },
-            "destination": {
-              "dest-node": "switch2",
-              "dest-tp": "Vlan100#11"
-            }
-          },
-          {
-            "link-id": "host24,eth0#4,host13,eth0#11",
-            "source": {
-              "source-node": "host24",
-              "source-tp": "eth0#4"
-            },
-            "destination": {
-              "dest-node": "host13",
-              "dest-tp": "eth0#11"
-            }
-          },
-          {
-            "link-id": "host24,eth0#5,host14,eth0#11",
-            "source": {
-              "source-node": "host24",
-              "source-tp": "eth0#5"
-            },
-            "destination": {
-              "dest-node": "host14",
-              "dest-tp": "eth0#11"
-            }
-          },
-          {
-            "link-id": "host24,eth0#6,switch1_user2,Vlan200#11",
-            "source": {
-              "source-node": "host24",
-              "source-tp": "eth0#6"
-            },
-            "destination": {
-              "dest-node": "switch1_user2",
-              "dest-tp": "Vlan200#11"
-            }
-          },
-          {
-            "link-id": "host24,eth0#7,host21,eth0#11",
-            "source": {
-              "source-node": "host24",
-              "source-tp": "eth0#7"
-            },
-            "destination": {
-              "dest-node": "host21",
-              "dest-tp": "eth0#11"
-            }
-          },
-          {
-            "link-id": "host24,eth0#8,host22,eth0#11",
-            "source": {
-              "source-node": "host24",
-              "source-tp": "eth0#8"
-            },
-            "destination": {
-              "dest-node": "host22",
-              "dest-tp": "eth0#11"
-            }
-          },
-          {
-            "link-id": "host24,eth0#9,switch2_user2,Vlan200#11",
-            "source": {
-              "source-node": "host24",
-              "source-tp": "eth0#9"
-            },
-            "destination": {
-              "dest-node": "switch2_user2",
-              "dest-tp": "Vlan200#11"
-            }
-          },
-          {
-            "link-id": "host24,eth0#10,host23,eth0#11",
-            "source": {
-              "source-node": "host24",
-              "source-tp": "eth0#10"
-            },
-            "destination": {
-              "dest-node": "host23",
-              "dest-tp": "eth0#11"
             }
           }
         ]
@@ -4732,7 +2332,7 @@
         },
         "node": [
           {
-            "node-id": "Seg_192.168.1.0/24",
+            "node-id": "Seg0_192.168.1.0/24",
             "ietf-network-topology:termination-point": [
               {
                 "tp-id": "switch1_Vlan100",
@@ -4813,86 +2413,6 @@
                     "tp-ref": "GigabitEthernet1/0/4"
                   }
                 ]
-              },
-              {
-                "tp-id": "switch1_user2_Vlan200",
-                "supporting-termination-point": [
-                  {
-                    "network-ref": "layer2",
-                    "node-ref": "host21_eth0",
-                    "tp-ref": "eth0"
-                  },
-                  {
-                    "network-ref": "layer2",
-                    "node-ref": "host22_eth0",
-                    "tp-ref": "eth0"
-                  },
-                  {
-                    "network-ref": "layer2",
-                    "node-ref": "switch2_Vlan200",
-                    "tp-ref": "Port-channel1"
-                  }
-                ]
-              },
-              {
-                "tp-id": "switch1_GigabitEthernet1/0/5",
-                "supporting-termination-point": [
-                  {
-                    "network-ref": "layer2",
-                    "node-ref": "switch1_Vlan200",
-                    "tp-ref": "GigabitEthernet1/0/5"
-                  }
-                ]
-              },
-              {
-                "tp-id": "switch1_GigabitEthernet1/0/6",
-                "supporting-termination-point": [
-                  {
-                    "network-ref": "layer2",
-                    "node-ref": "switch1_Vlan200",
-                    "tp-ref": "GigabitEthernet1/0/6"
-                  }
-                ]
-              },
-              {
-                "tp-id": "switch2_user2_Vlan200",
-                "supporting-termination-point": [
-                  {
-                    "network-ref": "layer2",
-                    "node-ref": "switch1_Vlan200",
-                    "tp-ref": "Port-channel1"
-                  },
-                  {
-                    "network-ref": "layer2",
-                    "node-ref": "host23_eth0",
-                    "tp-ref": "eth0"
-                  },
-                  {
-                    "network-ref": "layer2",
-                    "node-ref": "host24_eth0",
-                    "tp-ref": "eth0"
-                  }
-                ]
-              },
-              {
-                "tp-id": "switch2_GigabitEthernet1/0/7",
-                "supporting-termination-point": [
-                  {
-                    "network-ref": "layer2",
-                    "node-ref": "switch2_Vlan200",
-                    "tp-ref": "GigabitEthernet1/0/7"
-                  }
-                ]
-              },
-              {
-                "tp-id": "switch2_GigabitEthernet1/0/8",
-                "supporting-termination-point": [
-                  {
-                    "network-ref": "layer2",
-                    "node-ref": "switch2_Vlan200",
-                    "tp-ref": "GigabitEthernet1/0/8"
-                  }
-                ]
               }
             ],
             "supporting-node": [
@@ -4919,30 +2439,6 @@
               {
                 "network-ref": "layer2",
                 "node-ref": "host14_eth0"
-              },
-              {
-                "network-ref": "layer2",
-                "node-ref": "switch1_Vlan200"
-              },
-              {
-                "network-ref": "layer2",
-                "node-ref": "host21_eth0"
-              },
-              {
-                "network-ref": "layer2",
-                "node-ref": "host22_eth0"
-              },
-              {
-                "network-ref": "layer2",
-                "node-ref": "switch2_Vlan200"
-              },
-              {
-                "network-ref": "layer2",
-                "node-ref": "host23_eth0"
-              },
-              {
-                "network-ref": "layer2",
-                "node-ref": "host24_eth0"
               }
             ],
             "mddo-topology:l3-node-attributes": {
@@ -5252,6 +2748,132 @@
             }
           },
           {
+            "node-id": "Seg1_192.168.1.0/24",
+            "ietf-network-topology:termination-point": [
+              {
+                "tp-id": "switch1_user2_Vlan200",
+                "supporting-termination-point": [
+                  {
+                    "network-ref": "layer2",
+                    "node-ref": "host21_eth0",
+                    "tp-ref": "eth0"
+                  },
+                  {
+                    "network-ref": "layer2",
+                    "node-ref": "host22_eth0",
+                    "tp-ref": "eth0"
+                  },
+                  {
+                    "network-ref": "layer2",
+                    "node-ref": "switch2_Vlan200",
+                    "tp-ref": "Port-channel1"
+                  }
+                ]
+              },
+              {
+                "tp-id": "switch1_GigabitEthernet1/0/5",
+                "supporting-termination-point": [
+                  {
+                    "network-ref": "layer2",
+                    "node-ref": "switch1_Vlan200",
+                    "tp-ref": "GigabitEthernet1/0/5"
+                  }
+                ]
+              },
+              {
+                "tp-id": "switch1_GigabitEthernet1/0/6",
+                "supporting-termination-point": [
+                  {
+                    "network-ref": "layer2",
+                    "node-ref": "switch1_Vlan200",
+                    "tp-ref": "GigabitEthernet1/0/6"
+                  }
+                ]
+              },
+              {
+                "tp-id": "switch2_user2_Vlan200",
+                "supporting-termination-point": [
+                  {
+                    "network-ref": "layer2",
+                    "node-ref": "switch1_Vlan200",
+                    "tp-ref": "Port-channel1"
+                  },
+                  {
+                    "network-ref": "layer2",
+                    "node-ref": "host23_eth0",
+                    "tp-ref": "eth0"
+                  },
+                  {
+                    "network-ref": "layer2",
+                    "node-ref": "host24_eth0",
+                    "tp-ref": "eth0"
+                  }
+                ]
+              },
+              {
+                "tp-id": "switch2_GigabitEthernet1/0/7",
+                "supporting-termination-point": [
+                  {
+                    "network-ref": "layer2",
+                    "node-ref": "switch2_Vlan200",
+                    "tp-ref": "GigabitEthernet1/0/7"
+                  }
+                ]
+              },
+              {
+                "tp-id": "switch2_GigabitEthernet1/0/8",
+                "supporting-termination-point": [
+                  {
+                    "network-ref": "layer2",
+                    "node-ref": "switch2_Vlan200",
+                    "tp-ref": "GigabitEthernet1/0/8"
+                  }
+                ]
+              }
+            ],
+            "supporting-node": [
+              {
+                "network-ref": "layer2",
+                "node-ref": "switch1_Vlan200"
+              },
+              {
+                "network-ref": "layer2",
+                "node-ref": "host21_eth0"
+              },
+              {
+                "network-ref": "layer2",
+                "node-ref": "host22_eth0"
+              },
+              {
+                "network-ref": "layer2",
+                "node-ref": "switch2_Vlan200"
+              },
+              {
+                "network-ref": "layer2",
+                "node-ref": "host23_eth0"
+              },
+              {
+                "network-ref": "layer2",
+                "node-ref": "host24_eth0"
+              }
+            ],
+            "mddo-topology:l3-node-attributes": {
+              "node-type": "segment",
+              "prefix": [
+                {
+                  "prefix": "192.168.1.0/24",
+                  "metric": 0,
+                  "flag": [
+
+                  ]
+                }
+              ],
+              "flag": [
+
+              ]
+            }
+          },
+          {
             "node-id": "switch1_user2",
             "ietf-network-topology:termination-point": [
               {
@@ -5544,9 +3166,9 @@
         ],
         "ietf-network-topology:link": [
           {
-            "link-id": "Seg_192.168.1.0/24,switch1_Vlan100,switch1,Vlan100",
+            "link-id": "Seg0_192.168.1.0/24,switch1_Vlan100,switch1,Vlan100",
             "source": {
-              "source-node": "Seg_192.168.1.0/24",
+              "source-node": "Seg0_192.168.1.0/24",
               "source-tp": "switch1_Vlan100"
             },
             "destination": {
@@ -5555,20 +3177,20 @@
             }
           },
           {
-            "link-id": "switch1,Vlan100,Seg_192.168.1.0/24,switch1_Vlan100",
+            "link-id": "switch1,Vlan100,Seg0_192.168.1.0/24,switch1_Vlan100",
             "source": {
               "source-node": "switch1",
               "source-tp": "Vlan100"
             },
             "destination": {
-              "dest-node": "Seg_192.168.1.0/24",
+              "dest-node": "Seg0_192.168.1.0/24",
               "dest-tp": "switch1_Vlan100"
             }
           },
           {
-            "link-id": "Seg_192.168.1.0/24,switch1_GigabitEthernet1/0/1,host11,eth0",
+            "link-id": "Seg0_192.168.1.0/24,switch1_GigabitEthernet1/0/1,host11,eth0",
             "source": {
-              "source-node": "Seg_192.168.1.0/24",
+              "source-node": "Seg0_192.168.1.0/24",
               "source-tp": "switch1_GigabitEthernet1/0/1"
             },
             "destination": {
@@ -5577,20 +3199,20 @@
             }
           },
           {
-            "link-id": "host11,eth0,Seg_192.168.1.0/24,switch1_GigabitEthernet1/0/1",
+            "link-id": "host11,eth0,Seg0_192.168.1.0/24,switch1_GigabitEthernet1/0/1",
             "source": {
               "source-node": "host11",
               "source-tp": "eth0"
             },
             "destination": {
-              "dest-node": "Seg_192.168.1.0/24",
+              "dest-node": "Seg0_192.168.1.0/24",
               "dest-tp": "switch1_GigabitEthernet1/0/1"
             }
           },
           {
-            "link-id": "Seg_192.168.1.0/24,switch1_GigabitEthernet1/0/2,host12,eth0",
+            "link-id": "Seg0_192.168.1.0/24,switch1_GigabitEthernet1/0/2,host12,eth0",
             "source": {
-              "source-node": "Seg_192.168.1.0/24",
+              "source-node": "Seg0_192.168.1.0/24",
               "source-tp": "switch1_GigabitEthernet1/0/2"
             },
             "destination": {
@@ -5599,20 +3221,20 @@
             }
           },
           {
-            "link-id": "host12,eth0,Seg_192.168.1.0/24,switch1_GigabitEthernet1/0/2",
+            "link-id": "host12,eth0,Seg0_192.168.1.0/24,switch1_GigabitEthernet1/0/2",
             "source": {
               "source-node": "host12",
               "source-tp": "eth0"
             },
             "destination": {
-              "dest-node": "Seg_192.168.1.0/24",
+              "dest-node": "Seg0_192.168.1.0/24",
               "dest-tp": "switch1_GigabitEthernet1/0/2"
             }
           },
           {
-            "link-id": "Seg_192.168.1.0/24,switch2_Vlan100,switch2,Vlan100",
+            "link-id": "Seg0_192.168.1.0/24,switch2_Vlan100,switch2,Vlan100",
             "source": {
-              "source-node": "Seg_192.168.1.0/24",
+              "source-node": "Seg0_192.168.1.0/24",
               "source-tp": "switch2_Vlan100"
             },
             "destination": {
@@ -5621,20 +3243,20 @@
             }
           },
           {
-            "link-id": "switch2,Vlan100,Seg_192.168.1.0/24,switch2_Vlan100",
+            "link-id": "switch2,Vlan100,Seg0_192.168.1.0/24,switch2_Vlan100",
             "source": {
               "source-node": "switch2",
               "source-tp": "Vlan100"
             },
             "destination": {
-              "dest-node": "Seg_192.168.1.0/24",
+              "dest-node": "Seg0_192.168.1.0/24",
               "dest-tp": "switch2_Vlan100"
             }
           },
           {
-            "link-id": "Seg_192.168.1.0/24,switch2_GigabitEthernet1/0/3,host13,eth0",
+            "link-id": "Seg0_192.168.1.0/24,switch2_GigabitEthernet1/0/3,host13,eth0",
             "source": {
-              "source-node": "Seg_192.168.1.0/24",
+              "source-node": "Seg0_192.168.1.0/24",
               "source-tp": "switch2_GigabitEthernet1/0/3"
             },
             "destination": {
@@ -5643,20 +3265,20 @@
             }
           },
           {
-            "link-id": "host13,eth0,Seg_192.168.1.0/24,switch2_GigabitEthernet1/0/3",
+            "link-id": "host13,eth0,Seg0_192.168.1.0/24,switch2_GigabitEthernet1/0/3",
             "source": {
               "source-node": "host13",
               "source-tp": "eth0"
             },
             "destination": {
-              "dest-node": "Seg_192.168.1.0/24",
+              "dest-node": "Seg0_192.168.1.0/24",
               "dest-tp": "switch2_GigabitEthernet1/0/3"
             }
           },
           {
-            "link-id": "Seg_192.168.1.0/24,switch2_GigabitEthernet1/0/4,host14,eth0",
+            "link-id": "Seg0_192.168.1.0/24,switch2_GigabitEthernet1/0/4,host14,eth0",
             "source": {
-              "source-node": "Seg_192.168.1.0/24",
+              "source-node": "Seg0_192.168.1.0/24",
               "source-tp": "switch2_GigabitEthernet1/0/4"
             },
             "destination": {
@@ -5665,20 +3287,20 @@
             }
           },
           {
-            "link-id": "host14,eth0,Seg_192.168.1.0/24,switch2_GigabitEthernet1/0/4",
+            "link-id": "host14,eth0,Seg0_192.168.1.0/24,switch2_GigabitEthernet1/0/4",
             "source": {
               "source-node": "host14",
               "source-tp": "eth0"
             },
             "destination": {
-              "dest-node": "Seg_192.168.1.0/24",
+              "dest-node": "Seg0_192.168.1.0/24",
               "dest-tp": "switch2_GigabitEthernet1/0/4"
             }
           },
           {
-            "link-id": "Seg_192.168.1.0/24,switch1_user2_Vlan200,switch1_user2,Vlan200",
+            "link-id": "Seg1_192.168.1.0/24,switch1_user2_Vlan200,switch1_user2,Vlan200",
             "source": {
-              "source-node": "Seg_192.168.1.0/24",
+              "source-node": "Seg1_192.168.1.0/24",
               "source-tp": "switch1_user2_Vlan200"
             },
             "destination": {
@@ -5687,20 +3309,20 @@
             }
           },
           {
-            "link-id": "switch1_user2,Vlan200,Seg_192.168.1.0/24,switch1_user2_Vlan200",
+            "link-id": "switch1_user2,Vlan200,Seg1_192.168.1.0/24,switch1_user2_Vlan200",
             "source": {
               "source-node": "switch1_user2",
               "source-tp": "Vlan200"
             },
             "destination": {
-              "dest-node": "Seg_192.168.1.0/24",
+              "dest-node": "Seg1_192.168.1.0/24",
               "dest-tp": "switch1_user2_Vlan200"
             }
           },
           {
-            "link-id": "Seg_192.168.1.0/24,switch1_GigabitEthernet1/0/5,host21,eth0",
+            "link-id": "Seg1_192.168.1.0/24,switch1_GigabitEthernet1/0/5,host21,eth0",
             "source": {
-              "source-node": "Seg_192.168.1.0/24",
+              "source-node": "Seg1_192.168.1.0/24",
               "source-tp": "switch1_GigabitEthernet1/0/5"
             },
             "destination": {
@@ -5709,20 +3331,20 @@
             }
           },
           {
-            "link-id": "host21,eth0,Seg_192.168.1.0/24,switch1_GigabitEthernet1/0/5",
+            "link-id": "host21,eth0,Seg1_192.168.1.0/24,switch1_GigabitEthernet1/0/5",
             "source": {
               "source-node": "host21",
               "source-tp": "eth0"
             },
             "destination": {
-              "dest-node": "Seg_192.168.1.0/24",
+              "dest-node": "Seg1_192.168.1.0/24",
               "dest-tp": "switch1_GigabitEthernet1/0/5"
             }
           },
           {
-            "link-id": "Seg_192.168.1.0/24,switch1_GigabitEthernet1/0/6,host22,eth0",
+            "link-id": "Seg1_192.168.1.0/24,switch1_GigabitEthernet1/0/6,host22,eth0",
             "source": {
-              "source-node": "Seg_192.168.1.0/24",
+              "source-node": "Seg1_192.168.1.0/24",
               "source-tp": "switch1_GigabitEthernet1/0/6"
             },
             "destination": {
@@ -5731,20 +3353,20 @@
             }
           },
           {
-            "link-id": "host22,eth0,Seg_192.168.1.0/24,switch1_GigabitEthernet1/0/6",
+            "link-id": "host22,eth0,Seg1_192.168.1.0/24,switch1_GigabitEthernet1/0/6",
             "source": {
               "source-node": "host22",
               "source-tp": "eth0"
             },
             "destination": {
-              "dest-node": "Seg_192.168.1.0/24",
+              "dest-node": "Seg1_192.168.1.0/24",
               "dest-tp": "switch1_GigabitEthernet1/0/6"
             }
           },
           {
-            "link-id": "Seg_192.168.1.0/24,switch2_user2_Vlan200,switch2_user2,Vlan200",
+            "link-id": "Seg1_192.168.1.0/24,switch2_user2_Vlan200,switch2_user2,Vlan200",
             "source": {
-              "source-node": "Seg_192.168.1.0/24",
+              "source-node": "Seg1_192.168.1.0/24",
               "source-tp": "switch2_user2_Vlan200"
             },
             "destination": {
@@ -5753,20 +3375,20 @@
             }
           },
           {
-            "link-id": "switch2_user2,Vlan200,Seg_192.168.1.0/24,switch2_user2_Vlan200",
+            "link-id": "switch2_user2,Vlan200,Seg1_192.168.1.0/24,switch2_user2_Vlan200",
             "source": {
               "source-node": "switch2_user2",
               "source-tp": "Vlan200"
             },
             "destination": {
-              "dest-node": "Seg_192.168.1.0/24",
+              "dest-node": "Seg1_192.168.1.0/24",
               "dest-tp": "switch2_user2_Vlan200"
             }
           },
           {
-            "link-id": "Seg_192.168.1.0/24,switch2_GigabitEthernet1/0/7,host23,eth0",
+            "link-id": "Seg1_192.168.1.0/24,switch2_GigabitEthernet1/0/7,host23,eth0",
             "source": {
-              "source-node": "Seg_192.168.1.0/24",
+              "source-node": "Seg1_192.168.1.0/24",
               "source-tp": "switch2_GigabitEthernet1/0/7"
             },
             "destination": {
@@ -5775,20 +3397,20 @@
             }
           },
           {
-            "link-id": "host23,eth0,Seg_192.168.1.0/24,switch2_GigabitEthernet1/0/7",
+            "link-id": "host23,eth0,Seg1_192.168.1.0/24,switch2_GigabitEthernet1/0/7",
             "source": {
               "source-node": "host23",
               "source-tp": "eth0"
             },
             "destination": {
-              "dest-node": "Seg_192.168.1.0/24",
+              "dest-node": "Seg1_192.168.1.0/24",
               "dest-tp": "switch2_GigabitEthernet1/0/7"
             }
           },
           {
-            "link-id": "Seg_192.168.1.0/24,switch2_GigabitEthernet1/0/8,host24,eth0",
+            "link-id": "Seg1_192.168.1.0/24,switch2_GigabitEthernet1/0/8,host24,eth0",
             "source": {
-              "source-node": "Seg_192.168.1.0/24",
+              "source-node": "Seg1_192.168.1.0/24",
               "source-tp": "switch2_GigabitEthernet1/0/8"
             },
             "destination": {
@@ -5797,13 +3419,13 @@
             }
           },
           {
-            "link-id": "host24,eth0,Seg_192.168.1.0/24,switch2_GigabitEthernet1/0/8",
+            "link-id": "host24,eth0,Seg1_192.168.1.0/24,switch2_GigabitEthernet1/0/8",
             "source": {
               "source-node": "host24",
               "source-tp": "eth0"
             },
             "destination": {
-              "dest-node": "Seg_192.168.1.0/24",
+              "dest-node": "Seg1_192.168.1.0/24",
               "dest-tp": "switch2_GigabitEthernet1/0/8"
             }
           }

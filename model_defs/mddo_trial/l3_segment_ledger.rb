@@ -13,7 +13,11 @@ class L3SegmentLedger
   #   @see Array#each_with_index
   # @!to_s
   #   @see Array#to_s
-  def_delegators :@segments, :push, :each, :each_with_index, :to_s
+  # @!find_all
+  #   @see Array#to_s
+  # @!map
+  #   @see Array#to_s
+  def_delegators :@segments, :push, :each, :each_with_index, :to_s, :find_all, :map
 
   def initialize
     @segments = [] # Array(Array(PLinkEdge))

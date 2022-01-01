@@ -47,6 +47,7 @@ class L2DataBuilder < L2DataChecker
     if unit_props.length == 1
       unit_props[0]
     elsif unit_props.length > 1
+      # NOTE: it seems layer3-sub-interface
       junos_trunk_port_as_subif(phy_prop, unit_props)
     else
       raise StandardError("Interface unit not found : #{phy_prop}")

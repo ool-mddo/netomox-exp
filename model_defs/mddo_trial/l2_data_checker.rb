@@ -20,7 +20,6 @@ class L2DataChecker < DataBuilderBase
   # @param [PNode] dst_node Destination layer1 node
   # @param [InterfacePropertiesTableRecord] dst_tp_prop Term-point properties of destination
   # @return [Hash] L2 config data for trunk-port
-  # @raise [StandardError] if source or destination term-point prop selection is failed
   def port_l2_config_check(src_node, src_tp_prop, dst_node, dst_tp_prop)
     target_src_tp_prop = choose_tp_prop(src_node, src_tp_prop)
     target_dst_tp_prop = choose_tp_prop(dst_node, dst_tp_prop)
