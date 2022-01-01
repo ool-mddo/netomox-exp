@@ -67,7 +67,7 @@ task default: %i[netoviz_model_dir netoviz_index netoviz_models netoviz_layouts 
 
 desc 'pre-task'
 task :netoviz_model_dir do
-  sh 'configs/make_csv.sh'
+  sh 'configs/make_csv.sh all'
   sh "mkdir -p #{NETOVIZ_MODEL_DIR}"
 end
 
