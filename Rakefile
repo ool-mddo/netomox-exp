@@ -82,7 +82,7 @@ task :netoviz_index do
         snapshot_info_path = Pathname.new(match_dir).join('snapshot_info.json')
         if File.exist?(snapshot_info_path.to_s)
           snapshot_info = JSON.parse(File.read(snapshot_info_path.to_s))
-          label_str += ": #{snapshot_info["description"]}"
+          label_str += ": #{snapshot_info['description']}"
         end
         {
           'file' => match_eval(match_dir, mm[:source], mm[:file]),
