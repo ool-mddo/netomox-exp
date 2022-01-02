@@ -33,33 +33,36 @@ class DisconnectedNetworkChecker < Thor
     puts YAML.dump(print_data.reject { |d| d[:score] < options[:min_score] })
   end
 
-  # rubocop:disable Metrics/MethodLength
   # @param [Hash] compared_result
   # @return [Hash]
   def construct_print_datum(compared_result)
     score = score_from(compared_result)
-    print_datum = {
+    print_datum1 = {
       target_file: compared_result[:target],
       score: score
     }
-    compared_result[:compare].each_key do |network|
-      r_nw = compared_result[:compare][network]
-      print_datum[network] = {
-        subsets_diff_count: r_nw[:subsets_diff_count],
-        elements_diff_count: r_nw[:elements_diff].length,
-        elements_diff: r_nw[:elements_diff]
-      }
+    print_datum2 = compared_result[:compare].each_key.to_h do |network|
+      [network, print_datum_for_network(compared_result[:compare][network])] # to hash [key, value]
     end
-    print_datum
+    print_datum1.merge(print_datum2)
   end
-  # rubocop:enable Metrics/MethodLength
+
+  # @param [Hash] nw_result a network part of compared_result
+  # @return [Hash]
+  def print_datum_for_network(nw_result)
+    {
+      subsets_count_diff: nw_result[:subsets_count_diff],
+      elements_diff_count: nw_result[:elements_diff].length,
+      elements_diff: nw_result[:elements_diff]
+    }
+  end
 
   # @param [Hash] compared_result
   # @return [Integer] total score
   def score_from(compared_result)
     compared_result[:compare].keys.inject(0) do |sum, network|
-      r_nw = compared_result[:compare][network]
-      sum + (r_nw[:subsets_diff_count] * 10) + r_nw[:elements_diff].length
+      nw_result = compared_result[:compare][network]
+      sum + (nw_result[:subsets_count_diff] * 10) + nw_result[:elements_diff].length
     end
   end
 

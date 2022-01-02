@@ -23,37 +23,38 @@ module Netomox
 
     # Network class to find disconnected sub-graph
     class DisconnectedVerifiableNetwork < Network
-      # rubocop:disable Metrics/MethodLength, Metrics/AbcSize
+      # rubocop:disable Metrics/MethodLength
 
-      # Connected sub-graph(s)
-      #   sub-graph = connected node and term-point paths list (set)
-      #   return several sub-graphs when the network have disconnected networks (sub-graphs).
-      # @return [Array<NetworkSubset>] List of connected node/term-point paths
+      # Explore connected network elements (subsets)
+      #   subset = connected node and term-point paths list (set)
+      #   return several subsets when the network have disconnected networks.
+      # @return [NetworkSet] Network-set (set of network-subsets, in a network(layer))
       def find_all_subsets
         remove_deleted_state_elements!
-        # Array<NetworkSubset>, NOTE: it may be NetworkSet
-        subsets = []
+        network_set = NetworkSet.new(@name)
         @nodes.each do |node|
-          network_subset = NetworkSubset.new
-          network_subset.push(node.path) # origin node
+          network_subset = NetworkSubset.new(node.path) # origin node
 
           # it assumes that a standalone node is a single subset.
           if node.termination_points.length.zero?
-            subsets.push(network_subset)
+            network_set.push(network_subset)
             next
           end
 
           # if the node has link(s), search connected element recursively
           node.termination_points.each do |tp|
-            next if subsets.find { |sub_graph| sub_graph.include?(tp.path) }
+            # explore origin selection:
+            # if exists a subset includes the (source) term-point,
+            # it should have already been explored.
+            next if network_set.find_subset_includes(tp.path)
 
             find_connected_nodes_recursively(node, tp, network_subset)
-            subsets.push(network_subset.uniq!)
+            network_set.push(network_subset.uniq!)
           end
         end
-        subsets
+        network_set
       end
-      # rubocop:enable Metrics/MethodLength, Metrics/AbcSize
+      # rubocop:enable Metrics/MethodLength
 
       private
 
