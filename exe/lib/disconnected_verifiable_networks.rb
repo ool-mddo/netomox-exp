@@ -1,19 +1,16 @@
 # frozen_string_literal: true
 
 require 'netomox'
+require 'forwardable'
+require_relative './network_sets'
 
 module Netomox
   module Topology
     # Networks with DisconnectedVerifiableNetwork
     class DisconnectedVerifiableNetworks < Networks
-      # @return [Array<Hash>] Found disconnected sub-graphs
-      def find_all_disconnected_sub_graphs
-        @networks.map do |nw|
-          {
-            network: nw.name,
-            sub_graphs: nw.find_sub_graphs
-          }
-        end
+      # @return [NetworkSets] Found network sets
+      def find_all_network_sets
+        NetworkSets.new(@networks)
       end
 
       private
@@ -26,39 +23,43 @@ module Netomox
 
     # Network class to find disconnected sub-graph
     class DisconnectedVerifiableNetwork < Network
-      # rubocop:disable Metrics/MethodLength
+      # rubocop:disable Metrics/MethodLength, Metrics/AbcSize
 
-      # @return [Array<Array<String>>] List of connected term-point paths (as sub-graph)
-      def find_sub_graphs
-        delete_objects_own_deleted_state
-        sub_graphs = [] # Array<Array<String>> : list of connected-sub-graph
+      # Connected sub-graph(s)
+      #   sub-graph = connected node and term-point paths list (set)
+      #   return several sub-graphs when the network have disconnected networks (sub-graphs).
+      # @return [Array<NetworkSubset>] List of connected node/term-point paths
+      def find_all_subsets
+        remove_deleted_state_elements!
+        # Array<NetworkSubset>, NOTE: it may be NetworkSet
+        subsets = []
         @nodes.each do |node|
-          connected_elements = [node.name] # origin node
+          network_subset = NetworkSubset.new
+          network_subset.push(node.path) # origin node
 
-          # it assumes that a standalone node is a segment.
+          # it assumes that a standalone node is a single subset.
           if node.termination_points.length.zero?
-            sub_graphs.push(connected_elements)
+            subsets.push(network_subset)
             next
           end
 
           # if the node has link(s), search connected element recursively
           node.termination_points.each do |tp|
-            next if sub_graphs.find { |sub_graph| sub_graph.include?(tp.path) }
+            next if subsets.find { |sub_graph| sub_graph.include?(tp.path) }
 
-            find_connected_nodes_recursively(node, tp, connected_elements)
-            sub_graphs.push(connected_elements.uniq)
+            find_connected_nodes_recursively(node, tp, network_subset)
+            subsets.push(network_subset.uniq!)
           end
         end
-        sub_graphs
+        subsets
       end
-      # rubocop:enable Metrics/MethodLength
+      # rubocop:enable Metrics/MethodLength, Metrics/AbcSize
 
       private
 
-      # Delete node/tp, link which has "deleted" diff_state
-      #   Note: destructive method
+      # Remove node/tp, link which has "deleted" diff_state
       # @return [void]
-      def delete_objects_own_deleted_state
+      def remove_deleted_state_elements!
         @nodes.delete_if { |node| node.diff_state.detect == :deleted }
         @nodes.each do |node|
           node.termination_points.delete_if { |tp| tp.diff_state.detect == :deleted }
@@ -68,21 +69,21 @@ module Netomox
 
       # @param [Node] node (Source) Node
       # @param [TermPoint] term_point (Source) Term-point
-      # @param [Array<String>] connected_elements Connected node and term-point paths (as sub-graph)
+      # @param [NetworkSubset] nw_subset Connected node and term-point paths (as sub-graph)
       # @return [void]
-      def find_connected_nodes_recursively(node, term_point, connected_elements)
-        connected_elements.push(term_point.path)
+      def find_connected_nodes_recursively(node, term_point, nw_subset)
+        nw_subset.push(term_point.path)
         link = find_link_by_source(node.name, term_point.name)
         return unless link
 
         dst_node = find_node_by_name(link.destination.node_ref)
         return unless dst_node
 
-        connected_elements.push(node.name) # pushed multiple
+        nw_subset.push(node.path) # push node multiple times: need `uniq`
         dst_node.termination_points.each do |dst_tp|
-          next if connected_elements.include?(dst_tp.path) # loop avoidance
+          next if nw_subset.include?(dst_tp.path) # loop avoidance
 
-          find_connected_nodes_recursively(dst_node, dst_tp, connected_elements)
+          find_connected_nodes_recursively(dst_node, dst_tp, nw_subset)
         end
       end
     end
