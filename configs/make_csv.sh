@@ -12,7 +12,7 @@ function usage() {
   echo "  TARGETS"
   echo "    - bftest  : Batfish l2/l3 test pattern"
   echo "    - mddo    : MDDO network"
-  echo "    - mddo-ld : MDDO network (single link-down pattern)"
+  echo "    - mddo_ld : MDDO network (single link-down pattern)"
   echo "    - all"
 }
 
@@ -79,11 +79,14 @@ if "$USE_MDDO_LD"; then
   MDDO_LINKDOWN_BASE_DIR="pushed_configs_linkdown"
 
   ## generate link-down patterns (snapshots)
-  echo "# Linkdown snapshots dir : $MDDO_LINKDOWN_BASE_DIR"
+  echo "# Source snapshots dir : $MDDO_SRC_DIR"
+  echo "# Destination snapshots dir : $MDDO_LINKDOWN_BASE_DIR"
+
+  # clean output directory to put linkdown snapshots
   if [ -d "$MDDO_LINKDOWN_BASE_DIR" ]; then
     rm -rf "${MDDO_LINKDOWN_BASE_DIR:?}"
   fi
-  python make_linkdown_patterns.py -s "$MDDO_SRC_DIR" -o "$MDDO_LINKDOWN_BASE_DIR"
+  python make_linkdown_snapshots.py -s "$MDDO_SRC_DIR" -o "$MDDO_LINKDOWN_BASE_DIR"
 
   ## parse snapshots
   MDDO_LINKDOWN_SUB_DIRS=()
@@ -92,8 +95,15 @@ if "$USE_MDDO_LD"; then
   done
 
   echo "# Config dir : $MDDO_LINKDOWN_BASE_DIR"
+
+  ## clean output directory to put normalized csv data from each snapshots
   if [ -d "${MODELS_DIR}/${MDDO_LINKDOWN_BASE_DIR}" ]; then
     rm -rf "${MODELS_DIR:?}/${MDDO_LINKDOWN_BASE_DIR:?}"
   fi
   python exec_queries.py -s "${MDDO_LINKDOWN_SUB_DIRS[@]}" -o "$MODELS_DIR"
+
+  ## copy snapshot info
+  for subdir in "${MDDO_LINKDOWN_SUB_DIRS[@]}"; do
+    cp "$subdir/snapshot_info.json" "$MODELS_DIR/$subdir"
+  done
 fi

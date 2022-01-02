@@ -5,13 +5,16 @@ import json
 import sys
 
 
+def revers_edge(edge):
+    return {"node1": edge["node2"], "node2": edge["node1"]}
+
+
 def is_same_edge(edge1, edge2):
-    return (
-        edge1["node1"] == edge2["node1"]
-        and edge1["node2"] == edge2["node2"]
-        or edge1["node1"] == edge2["node2"]
-        and edge1["node2"] == edge2["node1"]
-    )
+    # NOTE: simple dictionary comparison
+    # probably, the comparison condition are too strict.
+    # Be careful if you have mixed interface expression (long/short name, upper/lower case)
+    # It might be better to use "DeepDiff" (ignore-case compare etc)
+    return edge1 == edge2 or revers_edge(edge1) == edge2
 
 
 def read_l1_topology_data(dir_path):
@@ -26,9 +29,28 @@ def read_l1_topology_data(dir_path):
             sys.exit(1)
 
 
-def write_l1_topology_data(snapshot_dir_path, data):
+def write_l1_topology_data(snapshot_dir_path, edges):
     with open(path.join(snapshot_dir_path, "layer1_topology.json"), "w") as file:
-        json.dump(data, file, indent=2)
+        json.dump({"edges": edges}, file, indent=2)
+
+
+def write_snapshot_metadata(src_dir_path, dst_dir_path, index, edge):
+    metadata = {
+        "index": index,
+        "target_links": [edge, revers_edge(edge)],
+        "original_snapshot_path": src_dir_path,
+        "snapshot_path": dst_dir_path,
+        "description": "No.%02d: down %s[%s] <=> %s[%s] in layer1"
+        % (
+            index,
+            edge["node1"]["hostname"],
+            edge["node1"]["interfaceName"],
+            edge["node2"]["hostname"],
+            edge["node2"]["interfaceName"],
+        ),
+    }
+    with open(path.join(dst_dir_path, "snapshot_info.json"), "w") as file:
+        json.dump(metadata, file, indent=2)
 
 
 def deduplicate_edges(edges):
@@ -49,7 +71,7 @@ def make_output_configs(src_snapshot_configs_dir_path, dst_snapshot_dir_path, co
         src_file = path.join(src_snapshot_configs_dir_path, config_file)
         dst_file = path.join(dst_snapshot_configs_dir_path, config_file)
         if path.exists(dst_file):
-            print('Warning: dst file: %s already exists' % dst_file, file=sys.stderr)
+            print("Warning: dst file: %s already exists" % dst_file, file=sys.stderr)
         else:
             link(src_file, dst_file)  # hard link
 
@@ -93,9 +115,12 @@ if __name__ == "__main__":
 
     # make outputs
     makedirs(output_snapshot_base_dir_path, exist_ok=True)
-    for index, edge in enumerate(uniq_edges):
+    for i, edge in enumerate(uniq_edges):
+        # index number start 1
+        index = i + 1
+
         # output directory defs
-        output_snapshot_dir_name = "%s_%02d" % (input_snapshot_dir_name, index + 1)
+        output_snapshot_dir_name = "%s_%02d" % (input_snapshot_dir_name, index)
         output_snapshot_dir_path = path.join(output_snapshot_base_dir_path, output_snapshot_dir_name)
         makedirs(output_snapshot_dir_path, exist_ok=True)
 
@@ -105,5 +130,6 @@ if __name__ == "__main__":
         # remove a link as "down link"
         edges_without_target = list(filter(lambda e: not is_same_edge(e, edge), l1_topology_data["edges"]))
         # write data to layer1_topology.json in output snapshot directory
-        output_data = {"edges": edges_without_target}
-        write_l1_topology_data(output_snapshot_dir_path, output_data)
+        write_l1_topology_data(output_snapshot_dir_path, edges_without_target)
+        # write metadata
+        write_snapshot_metadata(input_snapshot_dir_path, output_snapshot_dir_path, index, edge)

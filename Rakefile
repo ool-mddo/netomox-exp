@@ -39,7 +39,7 @@ MODEL_MAP = [
   {
     source: 'models/pushed_configs_linkdown/mddo_network_(\\d+)',
     file: 'mddo_network_linkdown_$1.json',
-    label: 'OOL-MDDO PJ Experiment Network (Link-down pattern $1)',
+    label: 'OOL-MDDO PJ Experiment Network',
     diff_src: 'mddo_network.json',
     type: :mddo_trial
   }
@@ -78,9 +78,15 @@ task :netoviz_index do
       { 'file' => mm[:file], 'label' => mm[:label] }
     when :mddo_trial
       match_dirs(mm[:source]).map do |match_dir|
+        label_str = match_eval(match_dir, mm[:source], mm[:label])
+        snapshot_info_path = Pathname.new(match_dir).join('snapshot_info.json')
+        if File.exist?(snapshot_info_path.to_s)
+          snapshot_info = JSON.parse(File.read(snapshot_info_path.to_s))
+          label_str += ": #{snapshot_info["description"]}"
+        end
         {
           'file' => match_eval(match_dir, mm[:source], mm[:file]),
-          'label' => match_eval(match_dir, mm[:source], mm[:label])
+          'label' => label_str
         }
       end
     else
