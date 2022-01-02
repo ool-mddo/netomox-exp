@@ -67,6 +67,41 @@ several keywords can use to target creating csv (see help: `-h`)
 bundle exec rake
 ```
 
+## Tools
+
+### Check L1 interface description
+
+Check existence of interface description and it format is correct.
+
+```shell
+bundle exec exe/check_l1_intf_description.rb -i <topology file>
+```
+
+### Make L1 interface description
+
+Make L1 interface description from topology file (layer1 topology).
+It print description data as CSV (to stdio)
+
+```shell
+bundle exec exe/make_l1_intf_description.rb  -i <topology file>
+```
+
+### Check disconnected network
+
+For topology file with layer1 link-down snapshot.
+Check disconnected network and compare origin topology.
+
+```shell
+bundle exec exe/check_disconnected_network.rb compare -m 20 <before topology file> <after topology file(s)>
+```
+
+- before: topology file from original snapshot (without link-down)
+- after: topology file(s) with link-down snapshot(s)
+  - it can specify multiple files with wildcard, e.g. `... compare orig.json target*.json`
+
+`-m` option is minimum score to print result. (optional)
+
+
 ## Development
 
 ### Generate YARD documents

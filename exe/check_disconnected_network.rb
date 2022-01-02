@@ -1,115 +1,77 @@
 #!/usr/bin/env ruby
 # frozen_string_literal: true
 
-require 'optparse'
-require 'netomox'
 require 'json'
+require 'thor'
+require_relative './disconnected_verifiable_networks'
 
-module Netomox
-  module Topology
-    # Networks with DisconnectedVerifiableNetwork
-    class DisconnectedVerifiableNetworks < Networks
-      # @return [Array<Hash>] Found disconnected sub-graphs
-      def find_all_disconnected_sub_graphs
-        @networks.map do |nw|
-          {
-            network: nw.name,
-            sub_graphs: nw.find_sub_graphs
-          }
-        end
-      end
+class DisconnectedNetworkChecker < Thor
+  package_name "disconnected_network_checker"
 
-      private
-
-      # @overload
-      def create_network(data)
-        DisconnectedVerifiableNetwork.new(data)
-      end
+  desc 'compare BEFORE AFTER', 'compare model data before linkdown'
+  method_option :min_score, aliases: :m, default: 0, type: :numeric, desc: 'Minimum score to print'
+  def compare(orig_file, *target_files)
+    origin_disconn_result = disconnected_check(orig_file)
+    compared_results = target_files.sort.map do |target_file|
+      target_disconn_result = disconnected_check(target_file)
+      {
+        origin: orig_file,
+        target: target_file,
+        compare: subtract_results(origin_disconn_result, target_disconn_result)
+      }
     end
 
-    # Network class to find disconnected sub-graph
-    class DisconnectedVerifiableNetwork < Network
-      # rubocop:disable Metrics/MethodLength
-
-      # @return [Array<Array<String>>] List of connected term-point paths (as sub-graph)
-      def find_sub_graphs
-        delete_objects_own_deleted_state
-        sub_graphs = [] # Array<Array<String>> : list of connected-sub-graph
-        @nodes.each do |node|
-          connected_elements = [node.name] # origin node
-
-          # it assumes that a standalone node is a segment.
-          if node.termination_points.length.zero?
-            sub_graphs.push(connected_elements)
-            next
-          end
-
-          # if the node has link(s), search connected element recursively
-          node.termination_points.each do |tp|
-            next if sub_graphs.find { |sub_graph| sub_graph.include?(tp.path) }
-
-            find_connected_nodes_recursively(node, tp, connected_elements)
-            sub_graphs.push(connected_elements)
-          end
-        end
-        sub_graphs
+    puts "# compare results"
+    compared_results.each do |compared_result|
+      puts "- #{compared_result[:target]}"
+      score = compared_result[:compare].keys.inject(0) do |sum, network|
+        r_nw = compared_result[:compare][network]
+        sum + r_nw[:sub_graph_diff] * 10 + r_nw[:element_diff].length
       end
-      # rubocop:enable Metrics/MethodLength
-
-      private
-
-      # Delete node/tp, link which has "deleted" diff_state
-      #   Note: destructive method
-      # @return [void]
-      def delete_objects_own_deleted_state
-        @nodes.delete_if { |node| node.diff_state.detect == :deleted }
-        @nodes.each do |node|
-          node.termination_points.delete_if { |tp| tp.diff_state.detect == :deleted }
-        end
-        @links.delete_if { |link| link.diff_state.detect == :deleted }
-      end
-
-      # @param [Node] node (Source) Node
-      # @param [TermPoint] term_point (Source) Term-point
-      # @param [Array<String>] connected_elements Connected node and term-point paths (as sub-graph)
-      # @return [void]
-      def find_connected_nodes_recursively(node, term_point, connected_elements)
-        connected_elements.push(term_point.path)
-        link = find_link_by_source(node.name, term_point.name)
-        return unless link
-
-        dst_node = find_node_by_name(link.destination.node_ref)
-        return unless dst_node
-
-        connected_elements.push(node.name)
-        dst_node.termination_points.each do |dst_tp|
-          next if connected_elements.include?(dst_tp.path) # loop avoidance
-
-          find_connected_nodes_recursively(dst_node, dst_tp, connected_elements)
-        end
+      next if score < options[:min_score]
+      puts "  - score: #{score}"
+      compared_result[:compare].keys.each do |network|
+        r_nw = compared_result[:compare][network]
+        puts "  - #{network.to_s}"
+        puts "    - diff: #{r_nw[:sub_graph_diff]}"
+        puts "    - changed_count: #{r_nw[:element_diff].length}"
+        puts "    - changed: #{r_nw[:element_diff]}"
       end
     end
+  end
+
+  private
+
+  def find_by_network(result, network_name)
+    result.find { |r| r[:network] == network_name }
+  end
+
+  def subtract_elements(orig_elms, target_elms)
+    orig_elms = orig_elms.inject([]) { |union, subgraph| union | subgraph }
+    target_elms = target_elms.inject([]) { |union, subgraph| union | subgraph }
+    # elements only in original
+    orig_elms - target_elms
+  end
+
+  def subtract_results(orig_result, target_result)
+    compare_data = {}
+    orig_result.map { |r| r[:network] }.sort.each do |nw_name|
+      orig_layer = find_by_network(orig_result, nw_name)
+      target_layer = find_by_network(target_result, nw_name)
+      compare_data[nw_name.intern] = {
+        sub_graph_diff: orig_layer[:sub_graphs].length - target_layer[:sub_graphs].length,
+        element_diff: subtract_elements(orig_layer[:sub_graphs], target_layer[:sub_graphs])
+      }
+    end
+    compare_data
+  end
+
+  def disconnected_check(file_path)
+    raw_topology_data = JSON.parse(File.read(file_path))
+    nws = Netomox::Topology::DisconnectedVerifiableNetworks.new(raw_topology_data)
+    nws.find_all_disconnected_sub_graphs
   end
 end
 
 ## main
-
-opts = ARGV.getopts('i:', 'input:')
-input_file = opts['i'] || opts['input']
-unless input_file
-  warn 'Input file is not specified'
-  exit 1
-end
-
-raw_topology_data = JSON.parse(File.read(input_file))
-nws = Netomox::Topology::DisconnectedVerifiableNetworks.new(raw_topology_data)
-sub_graphs = nws.find_all_disconnected_sub_graphs
-puts JSON.pretty_generate(sub_graphs)
-
-sub_graphs.each do |sg|
-  if sg[:sub_graphs].size > 1
-    warn "Network #{sg[:network]} has #{sg[:sub_graphs].size} disconnected sub-graphs"
-  else
-    warn "Network #{sg[:network]} is connected"
-  end
-end
+DisconnectedNetworkChecker.start(ARGV)

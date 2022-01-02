@@ -62,6 +62,7 @@ DEPENDENCIES
   ipaddress (~> 0.8.3)
   netomox!
   rubocop (>= 0.80)
+  thor (~> 1.0.1)
   yard (>= 0.9.20)
 
 BUNDLED WITH
