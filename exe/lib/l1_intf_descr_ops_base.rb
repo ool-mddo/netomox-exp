@@ -7,7 +7,11 @@ require 'netomox'
 class L1InterfaceDescriptionOpsBase
   # @param [String] target_file Topology file path to find layer1 network
   def initialize(target_file)
-    @l1_nw = read_layer1_network(target_file) # NOTE: nil if 'layer1' network not found
+    @l1_nw = read_layer1_network(target_file)
+    return if @l1_nw
+
+    warn "Error: 'layer1' network not found in #{target_file}"
+    exit 1
   end
 
   private

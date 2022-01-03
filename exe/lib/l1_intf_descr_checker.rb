@@ -8,8 +8,6 @@ class L1InterfaceDescriptionChecker < L1InterfaceDescriptionOpsBase
   # @return [Array<Hash>] Level-filtered description check results
   def check(level)
     @level = level
-    return [descr_check_result(:error, nil, nil, 'layer1 network not found')] unless @l1_nw
-
     descr_check_data.filter { |datum| level_match(datum[:type]) }
   end
 
