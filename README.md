@@ -77,7 +77,7 @@ Check existence of interface description and it format is correct.
 - `-l`, `--level` : filter output items by its type (level: info/warning/error, default: info)
 
 ```text
-bundle exec ruby exe/l1_intf_descr_ops.rb check [options] <topology-file>
+bundle exec ruby exe/mddo_toolbox.rb check_l1_descr [options] <topology-file>
 ```
 
 Make layer1 interface description from its topology.
@@ -86,7 +86,7 @@ Make layer1 interface description from its topology.
   default (without this option) : output STDOUT
 
 ```text
-bundle exec ruby exe/l1_intf_descr_ops.rb make [options] <topology-file>
+bundle exec ruby exe/mddo_toolbox.rb make_l1_descr [options] <topology-file>
 ```
 
 ### Check disconnected network
@@ -101,7 +101,7 @@ Check disconnected network and compare origin topology.
 - `-f`, `--format` : specify output format (json/yaml, default: yaml)
 
 ```text
-bundle exec ruby exe/disconnected_network.rb compare [options] <before-topology-file> <after-topology-file(s)>
+bundle exec ruby exe/mddo_toolbox.rb compare_subseets [options] <before-topology-file> <after-topology-file(s)>
 ```
 
 ## Development
