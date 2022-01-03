@@ -4,7 +4,7 @@ set -euo pipefail
 # origin is the directory which owns this script
 cd "$(dirname "$0")"
 
-# output directory (to put csv files, results of parsing snapshots)
+# output directory (to put csv_mapper files, results of parsing snapshots)
 MODELS_DIR="../models"
 
 function usage() {
@@ -96,7 +96,7 @@ if "$USE_MDDO_LD"; then
 
   echo "# Config dir : $MDDO_LINKDOWN_BASE_DIR"
 
-  ## clean output directory to put normalized csv data from each snapshots
+  ## clean output directory to put normalized csv_mapper data from each snapshots
   if [ -d "${MODELS_DIR}/${MDDO_LINKDOWN_BASE_DIR}" ]; then
     rm -rf "${MODELS_DIR:?}/${MDDO_LINKDOWN_BASE_DIR:?}"
   fi

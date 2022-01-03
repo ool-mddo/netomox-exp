@@ -7,9 +7,21 @@ require_relative './disconnected_verifiable_networks'
 
 # handle subtract (diff) information of NetworkSets
 class NetworkSetsDiff
+  # @!attribute [r] orig_file
+  #   @return [String]
+  # @!attribute [r] orig_sets
+  #   @return [NetworkSet]
+  # @!attribute [r] target_file
+  #   @return [String]
+  # @!attribute [r] target_sets
+  #   @return [NetworkSet]
+  # @!attribute [r] compared
+  #   @return [Hash]
   attr_reader :orig_file, :orig_sets, :target_file, :target_sets, :compared
 
   extend Forwardable
+  # @!method []
+  #   @see Hash#[]
   def_delegators :@compared, :[]
 
   # @param [String] orig_file Original topology file path
@@ -27,6 +39,7 @@ class NetworkSetsDiff
   # @return [Hash]
   def to_data
     print_datum1 = {
+      original_file: @orig_file,
       target_file: @target_file,
       score: calculate_score
     }

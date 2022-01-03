@@ -1,3 +1,4 @@
+
 # netomox-exp
 
 A trial of network model construction. (original: https://github.com/corestate55/netomox-examples)
@@ -41,6 +42,16 @@ bundle install --path=vendor/bundle
 ```shell
 pip install -r configs/requirements.txt
 ```
+
+### Install docker/docker-compose
+
+For ubuntu linux
+
+```shell
+apt install docker.io docker-compose
+```
+
+Optional: Add `docker` group to your group to allow use docker without sudo.
 
 ## Generate normalized CSV files from configs
 

@@ -34,7 +34,7 @@ end
 # Network set: network subsets in a network (layer)
 class NetworkSet
   # @!attribute [r] network_name
-  #   @return [Netomox::Topology::Network]
+  #   @return [String]
   # @!attribute [r] subsets
   #   @return [Array<NetworkSubset>]
   attr_reader :network_name, :subsets
@@ -89,15 +89,11 @@ class NetworkSets
     @sets.find { |set| set.network_name == name }
   end
 
-  # @return [Array<String>] Network name list
-  def network_names
-    @sets.map(&:network_name).sort
-  end
-
   # @param [NetworkSets] other
   # @return [Hash]
+  # @raise [StandardError]
   def -(other)
-    network_names.to_h do |nw_name|
+    @sets.map(&:network_name).to_h do |nw_name|
       orig_set = network(nw_name)
       target_set = other.network(nw_name)
       raise StandardError, 'network name not found in NetworkSet' if orig_set.nil? || target_set.nil?

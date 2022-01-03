@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 require 'optparse'
-require_relative 'mddo_trial/networks'
+require_relative 'topology_builder/networks'
 
 opts = ARGV.getopts('i:', 'debug:')
 
@@ -13,8 +13,8 @@ end
 target_data_dir = opts['i']
 
 if opts['debug']
-  puts generate_json(target_data_dir, layer: opts['debug'], debug: true)
+  puts TopologyBuilder.generate_json(target_data_dir, layer: opts['debug'], debug: true)
   exit 0
 end
 
-puts generate_json(target_data_dir)
+puts TopologyBuilder.generate_json(target_data_dir)

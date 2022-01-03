@@ -5,7 +5,7 @@ require_relative './l1_intf_descr_ops_base'
 
 # Layer1 interface description maker
 class L1InterfaceDescriptionMaker < L1InterfaceDescriptionOpsBase
-  # @param [String] output_file File path to output layer1 description data (csv)
+  # @param [String] output_file File path to output layer1 description data (csv_mapper)
   #   if it is empty, output $stdout data.
   # @return [void]
   def make(output_file)

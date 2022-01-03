@@ -15,7 +15,7 @@ module Netomox
 
       private
 
-      # @overload create_network
+      # override
       def create_network(data)
         DisconnectedVerifiableNetwork.new(data)
       end
@@ -80,7 +80,7 @@ module Netomox
         dst_node = find_node_by_name(link.destination.node_ref)
         return unless dst_node
 
-        nw_subset.push(node.path) # push node multiple times: need `uniq`
+        nw_subset.push(node.path) # node is pushed multiple times: need `uniq`
         dst_node.termination_points.each do |dst_tp|
           next if nw_subset.include?(dst_tp.path) # loop avoidance
 
