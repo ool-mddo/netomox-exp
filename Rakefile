@@ -155,9 +155,7 @@ begin
   require 'yard/rake/yardoc_task'
   YARD::Rake::YardocTask.new do |task|
     task.files = FileList[
-      './model_defs/mddo_trial/**/*.rb',
-      './model_defs/bf_common/**/*.rb',
-      './model_defs/mddo_trial*.rb',
+      './model_defs/topology_builder/**/*.rb',
       './exe/**/*.rb'
     ]
   end

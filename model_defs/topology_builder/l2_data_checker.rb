@@ -84,9 +84,9 @@ module TopologyBuilder
     # @return [Array<Integer>] A list of vlan-id (common-set of each port/node)
     def operative_trunk_vlans(src_node, src_tp_prop, dst_node, dst_tp_prop)
       debug_print "  src #{src_node.name}[#{src_tp_prop.interface}]: " \
-                "operative_vlans: #{src_tp_prop.allowed_vlans}, #{sw_vlans(src_node, src_tp_prop)}"
+                  "operative_vlans: #{src_tp_prop.allowed_vlans}, #{sw_vlans(src_node, src_tp_prop)}"
       debug_print "  dst #{dst_node.name}[#{dst_tp_prop.interface}]: " \
-                "operative_vlans: #{dst_tp_prop.allowed_vlans}, #{sw_vlans(dst_node, dst_tp_prop)}"
+                  "operative_vlans: #{dst_tp_prop.allowed_vlans}, #{sw_vlans(dst_node, dst_tp_prop)}"
       src_tp_prop.allowed_vlans & # allowed-vlans on port
         sw_vlans(src_node, src_tp_prop) & # vlans on device
         dst_tp_prop.allowed_vlans & # allowed-vlans on port

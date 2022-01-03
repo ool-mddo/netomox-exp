@@ -3,14 +3,16 @@
 require 'netomox'
 require 'forwardable'
 require_relative './network_sets'
+require_relative './network_set'
+require_relative './network_subsets'
 
 module Netomox
   module Topology
     # Networks with DisconnectedVerifiableNetwork
     class DisconnectedVerifiableNetworks < Networks
-      # @return [NetworkSets] Found network sets
+      # @return [TopologyOperator::NetworkSets] Found network sets
       def find_all_network_sets
-        NetworkSets.new(@networks)
+        TopologyOperator::NetworkSets.new(@networks)
       end
 
       private
@@ -28,12 +30,12 @@ module Netomox
       # Explore connected network elements (subsets)
       #   subset = connected node and term-point paths list (set)
       #   return several subsets when the network have disconnected networks.
-      # @return [NetworkSet] Network-set (set of network-subsets, in a network(layer))
+      # @return [TopologyOperator::NetworkSet] Network-set (set of network-subsets, in a network(layer))
       def find_all_subsets
         remove_deleted_state_elements!
-        network_set = NetworkSet.new(@name)
+        network_set = TopologyOperator::NetworkSet.new(@name)
         @nodes.each do |node|
-          network_subset = NetworkSubset.new(node.path) # origin node
+          network_subset = TopologyOperator::NetworkSubset.new(node.path) # origin node
 
           # it assumes that a standalone node is a single subset.
           if node.termination_points.length.zero?
