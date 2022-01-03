@@ -11,11 +11,11 @@ class L3SegmentLedger
   #   @see Array#each
   # @!method each_with_index
   #   @see Array#each_with_index
-  # @!to_s
+  # @!method to_s
   #   @see Array#to_s
-  # @!find_all
+  # @!method find_all
   #   @see Array#to_s
-  # @!map
+  # @!method map
   #   @see Array#to_s
   def_delegators :@segments, :push, :each, :each_with_index, :to_s, :find_all, :map
 

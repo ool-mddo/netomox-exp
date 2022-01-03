@@ -10,8 +10,9 @@ require_relative './lib/disconnected_verifiable_networks'
 class DisconnectedNetworkChecker < Thor
   package_name 'disconnected_network_checker'
 
-  desc 'compare BEFORE AFTER', 'compare model data before linkdown'
+  desc 'compare [options] BEFORE_TOPOLOGY AFTER_TOPOLOGY', 'Compare topology data before linkdown'
   method_option :min_score, aliases: :m, default: 0, type: :numeric, desc: 'Minimum score to print'
+  method_option :format, aliases: :f, default: 'yaml', type: :string, enum: %w[yaml json], desc: 'Output format'
   # @param [String] orig_file Original topology file path
   # @param [Array<String>] target_files Target topology file path
   def compare(orig_file, *target_files)
@@ -30,7 +31,8 @@ class DisconnectedNetworkChecker < Thor
     print_data = compared_results.map do |compared_result|
       construct_print_datum(compared_result)
     end
-    puts YAML.dump(print_data.reject { |d| d[:score] < options[:min_score] })
+    filtered_print_data = print_data.reject { |d| d[:score] < options[:min_score] }
+    puts options[:format] == 'yaml' ? YAML.dump(filtered_print_data) : JSON.pretty_generate(filtered_print_data)
   end
 
   # @param [Hash] compared_result
@@ -88,5 +90,5 @@ class DisconnectedNetworkChecker < Thor
   end
 end
 
-## main
+# start CLI tool
 DisconnectedNetworkChecker.start(ARGV)

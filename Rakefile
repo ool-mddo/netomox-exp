@@ -156,7 +156,8 @@ begin
     task.files = FileList[
       './model_defs/mddo_trial/**/*.rb',
       './model_defs/bf_common/**/*.rb',
-      './model_defs/mddo_trial*.rb'
+      './model_defs/mddo_trial*.rb',
+      './exe/**/*.rb'
     ]
   end
 rescue LoadError

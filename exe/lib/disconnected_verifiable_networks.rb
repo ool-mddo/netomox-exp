@@ -15,7 +15,7 @@ module Netomox
 
       private
 
-      # @overload
+      # @overload create_network
       def create_network(data)
         DisconnectedVerifiableNetwork.new(data)
       end

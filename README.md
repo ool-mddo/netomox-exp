@@ -69,21 +69,24 @@ bundle exec rake
 
 ## Tools
 
-### Check L1 interface description
+### Check/Make L1 interface description
 
 Check existence of interface description and it format is correct.
 
-```shell
-bundle exec exe/check_l1_intf_description.rb -i <topology file>
+- `-f`, `--format` : specify output format (json/yaml, default: yaml)
+- `-l`, `--level` : filter output items by its type (level: info/warning/error, default: info)
+
+```text
+bundle exec ruby exe/l1_intf_descr_ops.rb check [options] <topology-file>
 ```
 
-### Make L1 interface description
+Make layer1 interface description from its topology.
 
-Make L1 interface description from topology file (layer1 topology).
-It print description data as CSV (to stdio)
+- `-o`, `--output` : specify output file to save generated descriptions (CSV),
+  default (without this option) : output STDOUT
 
-```shell
-bundle exec exe/make_l1_intf_description.rb  -i <topology file>
+```text
+bundle exec ruby exe/l1_intf_descr_ops.rb make [options] <topology-file>
 ```
 
 ### Check disconnected network
@@ -91,16 +94,15 @@ bundle exec exe/make_l1_intf_description.rb  -i <topology file>
 For topology file with layer1 link-down snapshot.
 Check disconnected network and compare origin topology.
 
-```shell
-bundle exec exe/check_disconnected_network.rb compare -m 20 <before topology file> <after topology file(s)>
-```
-
 - before: topology file from original snapshot (without link-down)
 - after: topology file(s) with link-down snapshot(s)
   - it can specify multiple files with wildcard, e.g. `... compare orig.json target*.json`
+- `-m`, `--min-score`: minimum score to filter result
+- `-f`, `--format` : specify output format (json/yaml, default: yaml)
 
-`-m` option is minimum score to print result. (optional)
-
+```text
+bundle exec ruby exe/disconnected_network.rb compare [options] <before-topology-file> <after-topology-file(s)>
+```
 
 ## Development
 
