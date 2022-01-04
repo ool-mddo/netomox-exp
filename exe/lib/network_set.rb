@@ -38,6 +38,11 @@ module TopologyOperator
     # @param [NetworkSet] other
     # @return [Array<String>]
     def -(other)
+      # NOTE: For now, the target is a pattern of "link-down".
+      #   The original set contains all links, and the target should have fewer components than that.
+      #   The result of subtraction does not contains elements which only in the target (increased elements).
+      #   e.g. [1,2,3,4,5] - [3,4,5,6,7] # => [1, 2]
+      # @see NetworkSets#subtract_result
       union_subsets - other.union_subsets
     end
   end

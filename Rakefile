@@ -48,8 +48,13 @@ MODEL_MAP = [
 ##################
 # common functions
 
+def convert_match_to_wildcard(path)
+  # replace regexp group `(.*)` and group-matched value `$1` to wildcard `*`
+  path.gsub(/(?:\(.+\)|\$\d)/, '*')
+end
+
 def match_dirs(path)
-  Dir.glob(path.gsub(/\(.+\)/, '*')).sort
+  Dir.glob(convert_match_to_wildcard(path)).sort
 end
 
 def match_eval(match_str, re_str, target_str)
@@ -105,6 +110,8 @@ task :netoviz_models do
     when :standalone
       sh "bundle exec ruby #{mm[:script]} > #{NETOVIZ_MODEL_DIR}/#{mm[:file]}"
     when :mddo_trial
+      # clean past output
+      sh "rm -f #{NETOVIZ_MODEL_DIR}/#{convert_match_to_wildcard(mm[:file])}"
       match_dirs(mm[:source]).each do |match_dir|
         file = match_eval(match_dir, mm[:source], mm[:file])
         sh "bundle exec ruby model_defs/mddo_trial.rb -i #{match_dir} > #{NETOVIZ_MODEL_DIR}/#{file}"
