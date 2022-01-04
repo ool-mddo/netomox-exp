@@ -4,40 +4,43 @@ require 'rake'
 require 'rake/clean'
 require 'json'
 
-NETOVIZ_MODEL_DIR = 'netoviz_model'
+CONFIGS_DIR = 'configs'
+MODEL_DEFS_DIR = 'model_defs'
+MODELS_DIR = 'models'
+NETOVIZ_DIR = 'netoviz_model'
 MODEL_MAP = [
   {
-    script: 'model_defs/mddo.rb',
+    script: "#{MODEL_DEFS_DIR}/mddo.rb",
     file: 'mddo.json',
     label: 'OOL-MDDO PJ Trial (1)',
     type: :standalone
   },
   {
-    source: 'models/batfish-test-topology/l2/sample(\\d+)',
+    source: "#{MODELS_DIR}/batfish-test-topology/l2/sample(\\d+)",
     file: 'mddo_l2s$1.json',
     label: 'OOL-MDDO PJ Trial(2) L2 sample$1',
     type: :mddo_trial
   },
   {
-    source: 'models/batfish-test-topology/l2l3/sample3',
+    source: "#{MODELS_DIR}/batfish-test-topology/l2l3/sample3",
     label: 'OOL-MDDO PJ Trial(2) L2-L3 sample3',
     file: 'mddo_l23s3.json',
     type: :mddo_trial
   },
   {
-    source: 'models/batfish-test-topology/l2l3/sample3err2',
+    source: "#{MODELS_DIR}/batfish-test-topology/l2l3/sample3err2",
     file: 'mddo_l23s3e2.json',
     label: 'OOL-MDDO PJ Trial(2) L2-L3 sample3 Error2',
     type: :mddo_trial
   },
   {
-    source: 'models/pushed_configs/mddo_network',
+    source: "#{MODELS_DIR}/pushed_configs/mddo_network",
     label: 'OOL-MDDO PJ Experiment Network',
     file: 'mddo_network.json',
     type: :mddo_trial
   },
   {
-    source: 'models/pushed_configs_linkdown/mddo_network_(\\d+)',
+    source: "#{MODELS_DIR}/pushed_configs_linkdown/mddo_network_(\\d+)",
     file: 'mddo_network_linkdown_$1.json',
     label: 'OOL-MDDO PJ Experiment Network',
     diff_src: 'mddo_network.json',
@@ -73,8 +76,9 @@ task default: %i[netoviz_model_dir netoviz_index netoviz_models netoviz_layouts 
 desc 'pre-task'
 task :netoviz_model_dir do
   sh 'docker-compose up -d'
-  sh 'configs/make_csv.sh all'
-  sh "mkdir -p #{NETOVIZ_MODEL_DIR}"
+  # NOTE: `make_csv.sh` has directory definitions inside, independent of this script.
+  sh "#{CONFIGS_DIR}/make_csv.sh all"
+  sh "mkdir -p #{NETOVIZ_DIR}"
 end
 
 task :netoviz_index do
@@ -100,7 +104,7 @@ task :netoviz_index do
       exit 1
     end
   end
-  File.write("#{NETOVIZ_MODEL_DIR}/_index.json", JSON.pretty_generate(index_data.flatten))
+  File.write("#{NETOVIZ_DIR}/_index.json", JSON.pretty_generate(index_data.flatten))
 end
 
 task :netoviz_models do
@@ -108,13 +112,13 @@ task :netoviz_models do
     puts "# model map = #{mm}"
     case mm[:type]
     when :standalone
-      sh "bundle exec ruby #{mm[:script]} > #{NETOVIZ_MODEL_DIR}/#{mm[:file]}"
+      sh "bundle exec ruby #{mm[:script]} > #{NETOVIZ_DIR}/#{mm[:file]}"
     when :mddo_trial
       # clean past output
-      sh "rm -f #{NETOVIZ_MODEL_DIR}/#{convert_match_to_wildcard(mm[:file])}"
+      sh "rm -f #{NETOVIZ_DIR}/#{convert_match_to_wildcard(mm[:file])}"
       match_dirs(mm[:source]).each do |match_dir|
         file = match_eval(match_dir, mm[:source], mm[:file])
-        sh "bundle exec ruby model_defs/mddo_trial.rb -i #{match_dir} > #{NETOVIZ_MODEL_DIR}/#{file}"
+        sh "bundle exec ruby #{MODEL_DEFS_DIR}/mddo_trial.rb -i #{match_dir} > #{NETOVIZ_DIR}/#{file}"
       end
     else
       warn "Error: Unknown model-map type: #{mm[:type]}"
@@ -124,7 +128,7 @@ task :netoviz_models do
 end
 
 task :netoviz_layouts do
-  sh "cp model_defs/layout/*.json #{NETOVIZ_MODEL_DIR}"
+  sh "cp #{MODEL_DEFS_DIR}/layout/*.json #{NETOVIZ_DIR}"
 end
 
 task :diff do
@@ -132,9 +136,9 @@ task :diff do
     case mm[:type]
     when :mddo_trial
       match_dirs(mm[:source]).each do |match_dir|
-        src_file = "#{NETOVIZ_MODEL_DIR}/#{mm[:diff_src]}"
+        src_file = "#{NETOVIZ_DIR}/#{mm[:diff_src]}"
         file = match_eval(match_dir, mm[:source], mm[:file])
-        dst_file = "#{NETOVIZ_MODEL_DIR}/#{file}"
+        dst_file = "#{NETOVIZ_DIR}/#{file}"
         dst_file_tmp = "#{dst_file}.tmp"
         sh "bundle exec netomox diff -o #{dst_file_tmp} #{src_file} #{dst_file}"
         sh "mv #{dst_file_tmp} #{dst_file}" # overwrite
@@ -172,5 +176,5 @@ rescue LoadError
   end
 end
 
-CLOBBER.include("#{NETOVIZ_MODEL_DIR}/*_linkdown*.json")
+CLOBBER.include("#{NETOVIZ_DIR}/*_linkdown*.json")
 CLEAN.include('**/*~')
