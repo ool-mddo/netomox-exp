@@ -4,6 +4,9 @@ set -euo pipefail
 # origin is the directory which owns this script
 cd "$(dirname "$0")"
 
+# check batfish hostname
+echo "# Batfish service = ${BATFISH_HOST:=localhost}"
+
 # output directory (to put csv_mapper files, results of parsing snapshots)
 MODELS_DIR="../models"
 
@@ -60,7 +63,7 @@ if "$USE_BF_TEST"; then
   )
 
   echo "# Config dir: $BF_TEST_BASE_DIR"
-  python exec_queries.py -s "${BF_TEST_SUB_DIRS[@]}" -o "$MODELS_DIR"
+  python exec_queries.py -b "$BATFISH_HOST" -n "$BF_TEST_BASE_DIR" -s "${BF_TEST_SUB_DIRS[@]}" -o "$MODELS_DIR"
 fi
 
 # MDDO network
@@ -70,13 +73,13 @@ MDDO_SUB_DIRS=(
 )
 if "$USE_MDDO"; then
   echo "# Config dir : $MDDO_BASE_DIR"
-  python exec_queries.py -s "${MDDO_SUB_DIRS[@]}" -o "$MODELS_DIR"
+  python exec_queries.py -b "$BATFISH_HOST" -n "$MDDO_BASE_DIR" -s "${MDDO_SUB_DIRS[@]}" -o "$MODELS_DIR"
 fi
 
 # MDDO network (with single link down patterns)
 if "$USE_MDDO_LD"; then
   MDDO_SRC_DIR=${MDDO_SUB_DIRS[0]}
-  MDDO_LINKDOWN_BASE_DIR="pushed_configs_linkdown"
+  MDDO_LINKDOWN_BASE_DIR="$(basename MDDO_SRC_DIR)_linkdown"
 
   ## generate link-down patterns (snapshots)
   echo "# Source snapshots dir : $MDDO_SRC_DIR"
@@ -90,7 +93,7 @@ if "$USE_MDDO_LD"; then
 
   ## parse snapshots
   MDDO_LINKDOWN_SUB_DIRS=()
-  for dir in $(find $MDDO_LINKDOWN_BASE_DIR -maxdepth 1 -type d | sed -e '1d' | sort); do
+  for dir in $(find "$MDDO_LINKDOWN_BASE_DIR" -maxdepth 1 -type d | sed -e '1d' | sort); do
     MDDO_LINKDOWN_SUB_DIRS+=("$dir")
   done
 
@@ -100,7 +103,7 @@ if "$USE_MDDO_LD"; then
   if [ -d "${MODELS_DIR}/${MDDO_LINKDOWN_BASE_DIR}" ]; then
     rm -rf "${MODELS_DIR:?}/${MDDO_LINKDOWN_BASE_DIR:?}"
   fi
-  python exec_queries.py -s "${MDDO_LINKDOWN_SUB_DIRS[@]}" -o "$MODELS_DIR"
+  python exec_queries.py -s "$BATFISH_HOST" -n "$MDDO_LINKDOWN_BASE_DIR" -s "${MDDO_LINKDOWN_SUB_DIRS[@]}" -o "$MODELS_DIR"
 
   ## copy snapshot info
   for subdir in "${MDDO_LINKDOWN_SUB_DIRS[@]}"; do
