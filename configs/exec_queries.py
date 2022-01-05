@@ -1,6 +1,5 @@
-from pybatfish.client.commands import *
+from pybatfish.client.session import Session
 from pybatfish.question.question import load_questions
-from pybatfish.question import bfq
 from os import path, makedirs
 import argparse
 import json
@@ -12,24 +11,25 @@ def save_df_as_csv(dataframe, csv_dir, csv_file_name):
         outfile.write(dataframe.to_csv())
 
 
-def exec_bf_query(bf_query_dict, snapshot_dir, csv_dir, snapshot_name):
+def exec_bf_query(bf_session, query_dict, snapshot_dir, csv_dir, snapshot_name):
     # load question
     load_questions()
     # init snapshot
-    bf_init_snapshot(snapshot_dir, name=snapshot_name)
+    bf_session.init_snapshot(snapshot_dir, name=snapshot_name, overwrite=True)
     # exec query
-    for query in bf_query_dict:
+    for query in query_dict:
         print("# Exec Batfish Query = %s" % query)
-        save_df_as_csv(bf_query_dict[query]().answer().frame(), csv_dir, query + ".csv")
+        save_df_as_csv(query_dict[query](bf_session).answer().frame(), csv_dir, query + ".csv")
 
 
-def exec_other_query(other_query_dict, snapshot_dir, csv_dir):
-    for query in other_query_dict:
+def exec_other_query(query_dict, snapshot_dir, csv_dir):
+    for query in query_dict:
         print("# Exec Other Query = %s" % query)
-        save_df_as_csv(other_query_dict[query](snapshot_dir), csv_dir, query + ".csv")
+        save_df_as_csv(query_dict[query](snapshot_dir), csv_dir, query + ".csv")
 
 
 def dir_info(snapshot_dir, output_dir):
+    # snapshot name cannot contain '/'
     config_name = snapshot_dir.replace("/", "_")
     return {
         "config_name": config_name,  # used as snapshot name
@@ -69,10 +69,10 @@ if __name__ == "__main__":
 
     # for batfish
     bf_query_dict = {
-        "ip_owners": lambda: bfq.ipOwners(),
+        "ip_owners": lambda bf: bf.q.ipOwners(),
         # 'edges_layer1': lambda: bfq.edges(edgeType='layer1'),
         # 'edges_layer3': lambda: bfq.edges(edgeType='layer3'),
-        "interface_props": lambda: bfq.interfaceProperties(
+        "interface_props": lambda bf: bf.q.interfaceProperties(
             nodes=".*",
             properties=", ".join(
                 [
@@ -89,13 +89,18 @@ if __name__ == "__main__":
                 ]
             ),
         ),
-        "node_props": lambda: bfq.nodeProperties(nodes=".*", properties=", ".join(["Configuration_Format"])),
-        "sw_vlan_props": lambda: bfq.switchedVlanProperties(nodes=".*"),
+        "node_props": lambda bf: bf.q.nodeProperties(nodes=".*", properties=", ".join(["Configuration_Format"])),
+        "sw_vlan_props": lambda bf: bf.q.switchedVlanProperties(nodes=".*"),
     }
     # other data source
     other_query_dict = {"edges_layer1": lambda in_dir: convert_l1topology_to_csv(in_dir)}
 
+    # parse command line arguments
     parser = argparse.ArgumentParser(description="Batfish query exec")
+    parser.add_argument("--batfish", "-b", type=str, default="localhost", help="batfish address")
+    parser.add_argument(
+        "--network", "-n", required=True, type=str, default="default_network", help="Network name of snapshots"
+    )
     parser.add_argument(
         "--snapshots",
         "-s",
@@ -114,10 +119,15 @@ if __name__ == "__main__":
         bf_query_dict = {args.query: bf_query_dict[args.query]} if args.query in bf_query_dict else {}
         other_query_dict = {args.query: other_query_dict[args.query]} if args.query in other_query_dict else {}
 
+    # batfish session definition
+    bf = Session(host=args.batfish)
+    bf.set_network(args.network)
     dirs = list(map(lambda p: dir_info(p, args.output), sorted(args.snapshots)))
+
+    # exec query
     for d in dirs:
         makedirs(d["csv_dir"], exist_ok=True)
         # batfish queries
-        bool(bf_query_dict) and exec_bf_query(bf_query_dict, d["config_dir"], d["csv_dir"], d["config_name"])
+        bool(bf_query_dict) and exec_bf_query(bf, bf_query_dict, d["config_dir"], d["csv_dir"], d["config_name"])
         # other queries
         bool(other_query_dict) and exec_other_query(other_query_dict, d["config_dir"], d["csv_dir"])
