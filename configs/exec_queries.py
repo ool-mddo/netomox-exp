@@ -13,7 +13,7 @@ def save_df_as_csv(dataframe, csv_dir, csv_file_name):
 
 def exec_bf_query(bf_session, query_dict, snapshot_dir, csv_dir, snapshot_name):
     # load question
-    load_questions()
+    load_questions( session=bf_session)
     # init snapshot
     bf_session.init_snapshot(snapshot_dir, name=snapshot_name, overwrite=True)
     # exec query
