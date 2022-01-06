@@ -5,8 +5,7 @@ set -euo pipefail
 cd "$(dirname "$0")"
 
 # check batfish hostname
-echo "# Batfish service = ${BATFISH_HOST:=192.168.23.32}"
-#echo "# Batfish service = ${BATFISH_HOST:=localhost}"
+echo "# Batfish service = ${BATFISH_HOST:=localhost}"
 
 # output directory (to put csv_mapper files, results of parsing snapshots)
 MODELS_DIR="../models"
