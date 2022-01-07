@@ -45,6 +45,13 @@ module TopologyOperator
       print_data(data)
     end
 
+    desc 'get_subsets [options] TOPOLOGY', 'Get subsets for each network in the topology'
+    method_option :format, aliases: :f, default: 'yaml', type: :string, enum: %w[yaml json], desc: 'Output format'
+    def get_subsets(file)
+      nws = TopologyOperator.read_topology_data(file)
+      print_data(nws.find_all_network_sets.to_array)
+    end
+
     private
 
     # @param [Object] data Data to print

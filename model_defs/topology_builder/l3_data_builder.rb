@@ -45,9 +45,12 @@ module TopologyBuilder
     # @param [PNode] l2_node A layer2 node
     # @return [PNode] Added layer3 node
     def add_l3_node(rec, l2_node)
-      l3_node = @network.node(l3_node_name(rec))
+      node_name = l3_node_name(rec)
+      l3_node = @network.node(node_name)
       l3_node.supports.push([@layer2p.name, l2_node.name])
-      l3_node.attribute = { node_type: 'node' }
+      l3_node.attribute = {
+        node_type: node_name =~ /.*svr\d+/i ? 'endpoint' : 'node'
+      }
       l3_node
     end
 

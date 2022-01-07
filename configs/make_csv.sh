@@ -17,11 +17,13 @@ function usage() {
   echo "    - mddo    : MDDO network"
   echo "    - mddo_ld : MDDO network (single link-down pattern)"
   echo "    - all"
+  echo " --clean      : clean auto-generated outputs for link-down checking"
 }
 
 USE_BF_TEST=false
 USE_MDDO=false
 USE_MDDO_LD=false
+CLEAN=false
 
 if [ $# -eq 0 ]; then
   usage
@@ -44,12 +46,21 @@ for target in "$@"; do
       USE_MDDO=true
       USE_MDDO_LD=true
       ;;
+    "--clean")
+      CLEAN=true
+      ;;
     *)
       usage
       exit 1
       ;;
   esac
 done
+
+if "$CLEAN"; then
+  USE_BF_TEST=false
+  USE_MDDO=false
+  USE_MDDO_LD=false
+fi
 
 # batfish-test-topology: for L2/L3 simple test pattern
 if "$USE_BF_TEST"; then
@@ -77,16 +88,20 @@ if "$USE_MDDO"; then
 fi
 
 # MDDO network (with single link down patterns)
-if "$USE_MDDO_LD"; then
-  MDDO_SRC_DIR=${MDDO_SUB_DIRS[0]}
-  MDDO_LINKDOWN_BASE_DIR="$(basename MDDO_SRC_DIR)_linkdown"
+MDDO_SRC_DIR=${MDDO_SUB_DIRS[0]}
+# output (1) for linkdown pattern snapshots
+MDDO_LINKDOWN_BASE_DIR=$(dirname "$MDDO_SRC_DIR")_linkdown
+# output (2) parsed csv for snapshots
+MDDO_LINKDOWN_MODELS_BASE_DIR=${MODELS_DIR}/${MDDO_LINKDOWN_BASE_DIR}
 
+if "$USE_MDDO_LD"; then
   ## generate link-down patterns (snapshots)
   echo "# Source snapshots dir : $MDDO_SRC_DIR"
   echo "# Destination snapshots dir : $MDDO_LINKDOWN_BASE_DIR"
 
   # clean output directory to put linkdown snapshots
   if [ -d "$MDDO_LINKDOWN_BASE_DIR" ]; then
+    echo "# Clean destination snapshots dir ${MDDO_LINKDOWN_BASE_DIR}"
     rm -rf "${MDDO_LINKDOWN_BASE_DIR:?}"
   fi
   python make_linkdown_snapshots.py -s "$MDDO_SRC_DIR" -o "$MDDO_LINKDOWN_BASE_DIR"
@@ -96,12 +111,13 @@ if "$USE_MDDO_LD"; then
   for dir in $(find "$MDDO_LINKDOWN_BASE_DIR" -maxdepth 1 -type d | sed -e '1d' | sort); do
     MDDO_LINKDOWN_SUB_DIRS+=("$dir")
   done
-
+  echo "# subdirs: " "${MDDO_LINKDOWN_SUB_DIRS[@]}"
   echo "# Config dir : $MDDO_LINKDOWN_BASE_DIR"
 
   ## clean output directory to put normalized csv_mapper data from each snapshots
   if [ -d "${MODELS_DIR}/${MDDO_LINKDOWN_BASE_DIR}" ]; then
-    rm -rf "${MODELS_DIR:?}/${MDDO_LINKDOWN_BASE_DIR:?}"
+    echo "# Clean models output dir: $MDDO_LINKDOWN_MODELS_BASE_DIR"
+    rm -rf "${MDDO_LINKDOWN_MODELS_BASE_DIR:?}"
   fi
   python exec_queries.py -s "$BATFISH_HOST" -n "$MDDO_LINKDOWN_BASE_DIR" -s "${MDDO_LINKDOWN_SUB_DIRS[@]}" -o "$MODELS_DIR"
 
@@ -109,4 +125,9 @@ if "$USE_MDDO_LD"; then
   for subdir in "${MDDO_LINKDOWN_SUB_DIRS[@]}"; do
     cp "$subdir/snapshot_info.json" "$MODELS_DIR/$subdir"
   done
+fi
+
+if "$CLEAN"; then
+  rm -rf "${MDDO_LINKDOWN_BASE_DIR:?}"
+  rm -rf "${MDDO_LINKDOWN_MODELS_BASE_DIR:?}"
 fi

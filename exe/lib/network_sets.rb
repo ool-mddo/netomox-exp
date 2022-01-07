@@ -35,6 +35,18 @@ module TopologyOperator
       end
     end
 
+    # @return [Array<Hash>]
+    def to_array
+      @sets.map do |set|
+        subsets = set.to_array
+        {
+          network: set.network_name,
+          subsets_count: subsets.length,
+          subsets: subsets
+        }
+      end
+    end
+
     private
 
     # @param [NetworkSet] orig_set

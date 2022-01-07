@@ -25,7 +25,7 @@ module Netomox
 
     # Network class to find disconnected sub-graph
     class DisconnectedVerifiableNetwork < Network
-      # rubocop:disable Metrics/MethodLength
+      # rubocop:disable Metrics/MethodLength, Metrics/AbcSize
 
       # Explore connected network elements (subsets)
       #   subset = connected node and term-point paths list (set)
@@ -34,11 +34,15 @@ module Netomox
       def find_all_subsets
         remove_deleted_state_elements!
         network_set = TopologyOperator::NetworkSet.new(@name)
-        @nodes.each do |node|
-          network_subset = TopologyOperator::NetworkSubset.new(node.path) # origin node
 
+        # select entry point for recursive-network-search
+        @nodes.each do |node|
+          network_subset = TopologyOperator::NetworkSubset.new
+
+          # if the node doesn't have any interface,
           # it assumes that a standalone node is a single subset.
           if node.termination_points.length.zero?
+            network_subset.push(node.path)
             network_set.push(network_subset)
             next
           end
@@ -56,7 +60,7 @@ module Netomox
         end
         network_set
       end
-      # rubocop:enable Metrics/MethodLength
+      # rubocop:enable Metrics/MethodLength, Metrics/AbcSize
 
       private
 
@@ -70,25 +74,38 @@ module Netomox
         @links.delete_if { |link| link.diff_state.detect == :deleted }
       end
 
-      # @param [Node] node (Source) Node
-      # @param [TermPoint] term_point (Source) Term-point
+      # rubocop:disable Metrics/MethodLength, Metrics/AbcSize, Metrics/CyclomaticComplexity
+
+      # @param [Node] src_node (Source) Node
+      # @param [TermPoint] src_tp (Source) Term-point
       # @param [NetworkSubset] nw_subset Connected node and term-point paths (as sub-graph)
       # @return [void]
-      def find_connected_nodes_recursively(node, term_point, nw_subset)
-        nw_subset.push(term_point.path)
-        link = find_link_by_source(node.name, term_point.name)
+      def find_connected_nodes_recursively(src_node, src_tp, nw_subset)
+        nw_subset.push(src_node.path)
+        nw_subset.push(src_tp.path)
+        link = find_link_by_source(src_node.name, src_tp.name)
         return unless link
 
         dst_node = find_node_by_name(link.destination.node_ref)
         return unless dst_node
 
-        nw_subset.push(node.path) # node is pushed multiple times: need `uniq`
-        dst_node.termination_points.each do |dst_tp|
-          next if nw_subset.include?(dst_tp.path) # loop avoidance
+        dst_tp = dst_node.find_tp_by_name(link.destination.tp_ref)
+        return unless dst_tp
 
-          find_connected_nodes_recursively(dst_node, dst_tp, nw_subset)
+        nw_subset.push(dst_node.path) # node is pushed multiple times: need `uniq`
+        nw_subset.push(dst_tp.path)
+
+        # stop recursive search if  destination node is endpoint node
+        return if @name =~ /layer3/i && dst_node.attribute.node_type == 'endpoint'
+
+        # select term-point and search recursively setting the destination node/tp as source
+        dst_node.termination_points.each do |next_src_tp|
+          next if nw_subset.include?(next_src_tp.path) # loop avoidance
+
+          find_connected_nodes_recursively(dst_node, next_src_tp, nw_subset)
         end
       end
+      # rubocop:enable Metrics/MethodLength, Metrics/AbcSize, Metrics/CyclomaticComplexity
     end
   end
 end

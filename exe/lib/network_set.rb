@@ -21,7 +21,7 @@ module TopologyOperator
     # @param [String] network_name Network name
     def initialize(network_name)
       @network_name = network_name
-      @subsets = []
+      @subsets = [] # list of network subset
     end
 
     # @param [String] element_path Path of node/term-point to search
@@ -33,6 +33,11 @@ module TopologyOperator
     # @return [Array<String>] Union all subset elements
     def union_subsets
       @subsets.inject([]) { |union, subset| union | subset.elements }
+    end
+
+    # @return [Array] Array of subset-elements
+    def to_array
+      @subsets.map(&:elements)
     end
 
     # @param [NetworkSet] other
