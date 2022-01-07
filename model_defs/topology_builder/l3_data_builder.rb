@@ -212,7 +212,7 @@ module TopologyBuilder
 
     # @return [Array<PNode>] Found nodes
     def find_all_node_type_nodes
-      @network.nodes.filter { |n| n.attribute[:node_type] == 'node' }
+      @network.nodes.filter { |n| %w[node endpoint].include?(n.attribute[:node_type]) }
     end
 
     # @param [PNode] l3_node Layer3 node

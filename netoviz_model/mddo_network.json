@@ -545,7 +545,20 @@
             "mddo-topology:l3-node-attributes": {
               "node-type": "endpoint",
               "prefix": [
-
+                {
+                  "prefix": "172.30.10.0/24",
+                  "metric": 0,
+                  "flag": [
+                    "directly-connected"
+                  ]
+                },
+                {
+                  "prefix": "172.30.110.0/24",
+                  "metric": 0,
+                  "flag": [
+                    "directly-connected"
+                  ]
+                }
               ],
               "flag": [
 
@@ -683,7 +696,20 @@
             "mddo-topology:l3-node-attributes": {
               "node-type": "endpoint",
               "prefix": [
-
+                {
+                  "prefix": "172.30.10.0/24",
+                  "metric": 0,
+                  "flag": [
+                    "directly-connected"
+                  ]
+                },
+                {
+                  "prefix": "172.30.110.0/24",
+                  "metric": 0,
+                  "flag": [
+                    "directly-connected"
+                  ]
+                }
               ],
               "flag": [
 
@@ -1955,7 +1981,20 @@
             "mddo-topology:l3-node-attributes": {
               "node-type": "endpoint",
               "prefix": [
-
+                {
+                  "prefix": "172.31.10.0/24",
+                  "metric": 0,
+                  "flag": [
+                    "directly-connected"
+                  ]
+                },
+                {
+                  "prefix": "172.31.110.0/24",
+                  "metric": 0,
+                  "flag": [
+                    "directly-connected"
+                  ]
+                }
               ],
               "flag": [
 
@@ -2281,7 +2320,20 @@
             "mddo-topology:l3-node-attributes": {
               "node-type": "endpoint",
               "prefix": [
-
+                {
+                  "prefix": "172.31.20.0/24",
+                  "metric": 0,
+                  "flag": [
+                    "directly-connected"
+                  ]
+                },
+                {
+                  "prefix": "172.31.120.0/24",
+                  "metric": 0,
+                  "flag": [
+                    "directly-connected"
+                  ]
+                }
               ],
               "flag": [
 
@@ -3646,7 +3698,20 @@
             "mddo-topology:l3-node-attributes": {
               "node-type": "endpoint",
               "prefix": [
-
+                {
+                  "prefix": "172.30.10.0/24",
+                  "metric": 0,
+                  "flag": [
+                    "directly-connected"
+                  ]
+                },
+                {
+                  "prefix": "172.30.110.0/24",
+                  "metric": 0,
+                  "flag": [
+                    "directly-connected"
+                  ]
+                }
               ],
               "flag": [
 
@@ -3708,7 +3773,20 @@
             "mddo-topology:l3-node-attributes": {
               "node-type": "endpoint",
               "prefix": [
-
+                {
+                  "prefix": "172.30.10.0/24",
+                  "metric": 0,
+                  "flag": [
+                    "directly-connected"
+                  ]
+                },
+                {
+                  "prefix": "172.30.110.0/24",
+                  "metric": 0,
+                  "flag": [
+                    "directly-connected"
+                  ]
+                }
               ],
               "flag": [
 
@@ -5598,7 +5676,20 @@
             "mddo-topology:l3-node-attributes": {
               "node-type": "endpoint",
               "prefix": [
-
+                {
+                  "prefix": "172.31.10.0/24",
+                  "metric": 0,
+                  "flag": [
+                    "directly-connected"
+                  ]
+                },
+                {
+                  "prefix": "172.31.110.0/24",
+                  "metric": 0,
+                  "flag": [
+                    "directly-connected"
+                  ]
+                }
               ],
               "flag": [
 
@@ -5946,7 +6037,20 @@
             "mddo-topology:l3-node-attributes": {
               "node-type": "endpoint",
               "prefix": [
-
+                {
+                  "prefix": "172.31.20.0/24",
+                  "metric": 0,
+                  "flag": [
+                    "directly-connected"
+                  ]
+                },
+                {
+                  "prefix": "172.31.120.0/24",
+                  "metric": 0,
+                  "flag": [
+                    "directly-connected"
+                  ]
+                }
               ],
               "flag": [
 
