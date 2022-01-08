@@ -2,13 +2,26 @@ from pybatfish.client.session import Session
 from pybatfish.question.question import load_questions
 from os import path, makedirs
 import argparse
+import glob
 import json
 import pandas as pd
+import re
+import shutil
 
 
 def save_df_as_csv(dataframe, csv_dir, csv_file_name):
     with open(path.join(csv_dir, csv_file_name), "w") as outfile:
         outfile.write(dataframe.to_csv())
+
+
+def copy_snapshot_info(snapshot_dir, csv_dir):
+    snapshot_info_name = "snapshot_info.json"
+    snapshot_info_path = path.join(snapshot_dir, snapshot_info_name)
+    if not path.exists(snapshot_info_path):
+        return
+
+    print("# Found %s, copy it to %s" % (snapshot_info_path, csv_dir))
+    shutil.copyfile(snapshot_info_path, path.join(csv_dir, snapshot_info_name))
 
 
 def exec_bf_query(bf_session, query_dict, snapshot_dir, csv_dir, snapshot_name):
@@ -28,13 +41,24 @@ def exec_other_query(query_dict, snapshot_dir, csv_dir):
         save_df_as_csv(query_dict[query](snapshot_dir), csv_dir, query + ".csv")
 
 
-def dir_info(snapshot_dir, output_dir):
-    # snapshot name cannot contain '/'
-    config_name = snapshot_dir.replace("/", "_")
+def find_all_l1topology_files(input_dir):
+    return sorted(glob.glob("%s/**/layer1_topology.json" % input_dir, recursive=True))
+
+
+def dir_info(input_snapshot_base_dir, input_snapshot_dir, output_dir):
+    input_snapshot_base_name = path.basename(input_snapshot_base_dir)
+    if re.match(".*/$", input_snapshot_base_dir):
+        input_snapshot_base_name = path.basename(path.dirname(input_snapshot_base_dir))
+
+    # pick path string follows input_snapshot_base_name
+    m = re.search("%s/(.*)" % input_snapshot_base_name, input_snapshot_dir)
+    input_snapshot_name = m.group(1)
+
     return {
-        "config_name": config_name,  # used as snapshot name
-        "config_dir": path.expanduser(snapshot_dir),  # input dir
-        "csv_dir": path.expanduser(path.join(output_dir, snapshot_dir)),  # output dir
+        # used as snapshot name: snapshot name cannot contain '/'
+        "config_name": input_snapshot_name.replace("/", "__"),
+        "config_dir": path.expanduser(input_snapshot_dir),  # input dir
+        "csv_dir": path.expanduser(path.join(output_dir, input_snapshot_name)),  # output dir
     }
 
 
@@ -101,17 +125,11 @@ if __name__ == "__main__":
     parser.add_argument(
         "--network", "-n", required=True, type=str, default="default_network", help="Network name of snapshots"
     )
-    parser.add_argument(
-        "--snapshots",
-        "-s",
-        required=True,
-        type=str,
-        nargs="*",
-        help="Snapshot directory path(s) of configs",
-    )
-    parser.add_argument("--output", "-o", default="./", help="Outpu directory of csv data")
+    parser.add_argument("--input_snapshot_base", "-i", required=True, type=str, help="Input snapshot base directory")
+    parser.add_argument("--output_csv_base", "-o", default="./", help="Output directory of csv data")
     query_keys = list(other_query_dict.keys()) + list(bf_query_dict.keys())
     parser.add_argument("--query", "-q", type=str, choices=query_keys, help="A Query to exec")
+    parser.add_argument("--debug", action='store_true', default=False, help="Debug")
     args = parser.parse_args()
 
     # limiting target query when using --query arg
@@ -122,12 +140,25 @@ if __name__ == "__main__":
     # batfish session definition
     bf = Session(host=args.batfish)
     bf.set_network(args.network)
-    dirs = list(map(lambda p: dir_info(p, args.output), sorted(args.snapshots)))
+    dirs = list(
+        map(
+            lambda l1tf: dir_info(args.input_snapshot_base, path.dirname(l1tf), args.output_csv_base),
+            find_all_l1topology_files(args.input_snapshot_base),
+        )
+    )
 
     # exec query
     for d in dirs:
+        print("# - network name: %s" % d["config_name"])
+        print("#   input snapshot dir: %s" % d["config_dir"])
+        print("#   output csv dir: %s" % d["csv_dir"])
+        if args.debug:
+            continue
+
         makedirs(d["csv_dir"], exist_ok=True)
         # batfish queries
         bool(bf_query_dict) and exec_bf_query(bf, bf_query_dict, d["config_dir"], d["csv_dir"], d["config_name"])
         # other queries
         bool(other_query_dict) and exec_other_query(other_query_dict, d["config_dir"], d["csv_dir"])
+        # copy snapshot info if exists
+        copy_snapshot_info(d["config_dir"], d["csv_dir"])

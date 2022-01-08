@@ -79,18 +79,18 @@ def make_output_configs(src_snapshot_configs_dir_path, dst_snapshot_dir_path, co
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Duplicate snapshots with single physical-linkdown")
     parser.add_argument(
-        "--snapshot",
-        "-s",
+        "--input_snapshot_base",
+        "-i",
         required=True,
         type=str,
-        help="Origin snapshot directory path of configs",
+        help="Input snapshot base directory",
     )
     parser.add_argument(
-        "--output",
+        "--output_snapshot_base",
         "-o",
         required=True,
         type=str,
-        help="Base directory name of output snapshots",
+        help="Output snapshot(s) base directory",
     )
     args = parser.parse_args()
 
@@ -99,10 +99,28 @@ if __name__ == "__main__":
     #   + snapshot_dir/
     #     + configs/ (fixed, refer as "snapshot_configs_dir")
     #     - layer1_topology.json (fixed name)
-    input_snapshot_dir_path = path.expanduser(args.snapshot)
-    input_snapshot_dir_name = path.basename(args.snapshot)
-    input_snapshot_configs_dir_path = path.join(input_snapshot_dir_path, "configs")
-    output_snapshot_base_dir_path = path.expanduser(args.output)
+
+    l1_topology_files = glob.glob(
+        "%s/**/layer1_topology.json" % path.expanduser(args.input_snapshot_base), recursive=True
+    )
+    if len(l1_topology_files) != 1:
+        print(
+            "# Error: layer1_topology.json not found or found multiple in snapshot directory %s"
+            % args.input_snapshot_base,
+            file=sys.stderr,
+        )
+        sys.exit(1)
+
+    input_snapshot_dir_path = path.dirname(l1_topology_files[0])
+    input_snapshot_dir_name = path.basename(input_snapshot_dir_path)
+    input_snapshot_configs_dir_path = path.join(path.dirname(l1_topology_files[0]), "configs")
+    output_snapshot_base_dir_path = path.expanduser(args.output_snapshot_base)
+    print("# input")
+    print("# + snapshot base dir: %s" % args.input_snapshot_base)
+    print("#   + snapshot dir: %s (%s)" % (input_snapshot_configs_dir_path, input_snapshot_dir_name))
+    print("#     + snapshot config dir:  %s" % input_snapshot_configs_dir_path)
+    print("# output")
+    print("# + snapshot base dir:  %s" % output_snapshot_base_dir_path)
 
     # read layer1 topology data
     l1_topology_data = read_l1_topology_data(input_snapshot_dir_path)
