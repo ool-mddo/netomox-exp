@@ -45,7 +45,15 @@ task :pre_task do
   sh "mkdir -p #{MODELS_DIR}"
 end
 
+def model_info_list(*types)
+  list = MODEL_INFO
+  list = MODEL_INFO.find_all { |mi| mi[:name] == ENV['MODEL_NAME'] } if ENV['MODEL_NAME']
+  list = list.find_all { |mi| types.include?(mi[:type]) } unless types.empty?
+  list
+end
+
 def src_model_info(model_info)
+  # NOTICE: Use unfiltered MODEL_INFO to find src_config_name
   MODEL_INFO.find { |m| m[:name] == model_info[:src_config_name] }
 end
 
@@ -56,10 +64,10 @@ end
 def snapshot_path(src_base, src, dst_base, dst)
   src_dir = File.join(src_base, src)
   dst_dir = File.join(dst_base, dst)
-  puts "# src dir = #{src_dir}"
-  puts "# dst dir = #{dst_dir}"
+  warn "# src dir = #{src_dir}"
+  warn "# dst dir = #{dst_dir}"
   if Dir.exist?(dst_dir)
-    puts "# clean dst dir: #{dst_dir}"
+    warn "# clean dst dir: #{dst_dir}"
     sh "rm -rf #{dst_dir}"
   end
   [src_dir, dst_dir]
@@ -67,7 +75,7 @@ end
 
 desc 'Generate linkdown snapshots'
 task :linkdown_snapshots do
-  MODEL_INFO.find_all { |m| m[:type] == :mddo_trial_linkdown }.each do |mi|
+  model_info_list(:mddo_trial_linkdown).each do |mi|
     src_dir, dst_dir = snapshot_path(CONFIGS_DIR, src_config_name(mi), CONFIGS_DIR, mi[:name])
     sh "python #{CONFIGS_DIR}/make_linkdown_snapshots.py -i #{src_dir} -o #{dst_dir}"
   end
@@ -75,7 +83,7 @@ end
 
 desc 'Generate model data (csv) from snapshots'
 task :snapshot_to_model do
-  MODEL_INFO.find_all { |m| %i[mddo_trial mddo_trial_linkdown].include?(m[:type]) }.each do |mi|
+  model_info_list(:mddo_trial, :mddo_trial_linkdown).each do |mi|
     src_dir, dst_dir = snapshot_path(CONFIGS_DIR, mi[:name], MODELS_DIR, mi[:name])
     sh "python #{CONFIGS_DIR}/exec_queries.py -b #{BATFISH_HOST} -n #{mi[:name]} -i #{src_dir} -o #{dst_dir}"
   end
@@ -84,7 +92,7 @@ end
 desc 'Clean linkdown snapshots and model data (csv)'
 task :clean_snapshots do
   # clean linkdown snapshots and models
-  MODEL_INFO.find_all { |m| m[:type] == :mddo_trial_linkdown }.each do |mi|
+  model_info_list(:mddo_trial_linkdown).each do |mi|
     snapshot_path(CONFIGS_DIR, src_config_name(mi), CONFIGS_DIR, mi[:name])
     snapshot_path(CONFIGS_DIR, mi[:name], MODELS_DIR, mi[:name])
   end
@@ -123,6 +131,7 @@ end
 
 desc 'Generate netoviz index file'
 task :netoviz_index do
+  # Use unfiltered MODEL_INFO (make full-size index always)
   index_data = MODEL_INFO.map do |mi|
     case mi[:type]
     when :standalone
@@ -143,7 +152,7 @@ task :netoviz_models do
   # clean
   sh "rm -f #{NETOVIZ_DIR}/*linkdown*.json"
 
-  MODEL_INFO.each do |mi|
+  model_info_list.each do |mi|
     case mi[:type]
     when :standalone
       sh "bundle exec ruby #{mi[:script]} > #{NETOVIZ_DIR}/#{mi[:file]}"
@@ -167,7 +176,7 @@ end
 
 desc 'Generate diff data of linkdown snapshots and overwrite'
 task :netomox_diff do
-  MODEL_INFO.find_all { |m| m[:type] == :mddo_trial_linkdown }.each do |dst_mi|
+  model_info_list(:mddo_trial_linkdown).each do |dst_mi|
     # clean
     sh "rm -f #{NETOVIZ_DIR}/*.diff"
 
@@ -181,8 +190,8 @@ task :netomox_diff do
     model_dir_files(dst_mi, dst_dir).map do |file|
       dst_file = File.join(NETOVIZ_DIR, topology_file_name(dst_mi[:name], file, dst_dir))
       dst_file_tmp = "#{dst_file}.diff"
-      puts "# src file: #{src_file}"
-      puts "# dst file: #{dst_file}"
+      warn "# src file: #{src_file}"
+      warn "# dst file: #{dst_file}"
       sh "bundle exec netomox diff -o #{dst_file_tmp} #{src_file} #{dst_file}"
       sh "mv #{dst_file_tmp} #{dst_file}" # overwrite
     end

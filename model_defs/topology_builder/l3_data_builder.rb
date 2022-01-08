@@ -148,7 +148,14 @@ module TopologyBuilder
     # @return [String] Segment node suffix string
     def segment_node_suffix(segment)
       prefixes = @segment_prefixes[segment]
-      prefixes.length.positive? ? "_#{prefixes[0][:prefix]}" : ''
+      if prefixes.length == 1
+        "_#{prefixes[0][:prefix]}"
+      elsif prefixes.length > 1
+        # segment contains multiple ip prefixes
+        "_#{prefixes[0][:prefix]}+"
+      else
+        ''
+      end
     end
 
     # @param [Array<PLinkEdge>] segment Edge list in same segment

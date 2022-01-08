@@ -1,4 +1,5 @@
 
+
 # netomox-exp
 
 A trial of network model construction. (original: https://github.com/corestate55/netomox-examples)
@@ -55,9 +56,11 @@ Optional: Add `docker` group to your group to allow use docker without sudo.
 
 ## Generate topology json from normalized network data
 
-```shell
-bundle exec rake
+```text
+bundle exec rake [MODEL_NAME=<target model name>]
 ```
+
+You can specify target snapshot base with `MODEL_NAME` environment value.
 
 See details of task sequence `default` task in `Rakefile`.
 
