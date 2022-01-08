@@ -37,6 +37,7 @@ module TopologyOperator
     method_option :format, aliases: :f, default: 'yaml', type: :string, enum: %w[yaml json], desc: 'Output format'
     # @param [String] orig_file Original topology file path
     # @param [Array<String>] target_files Target topology file path
+    # @return [void]
     def compare_subsets(orig_file, *target_files)
       network_sets_diffs = target_files.sort.map do |target_file|
         NetworkSetsDiff.new(orig_file, target_file)
@@ -47,6 +48,8 @@ module TopologyOperator
 
     desc 'get_subsets [options] TOPOLOGY', 'Get subsets for each network in the topology'
     method_option :format, aliases: :f, default: 'yaml', type: :string, enum: %w[yaml json], desc: 'Output format'
+    # @param [String] file Topology file path
+    # @return [void]
     def get_subsets(file)
       nws = TopologyOperator.read_topology_data(file)
       print_data(nws.find_all_network_sets.to_array)

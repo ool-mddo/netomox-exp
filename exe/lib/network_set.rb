@@ -40,6 +40,7 @@ module TopologyOperator
       @subsets.map(&:elements)
     end
 
+    # @return [NetworkSet] self
     def reject_empty_set!
       @subsets.reject!(&:empty?)
       self
