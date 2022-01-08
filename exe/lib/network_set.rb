@@ -16,7 +16,7 @@ module TopologyOperator
     #   @see Array#to_s
     # @!method length
     #   @see Array#length
-    def_delegators :subsets, :push, :to_s, :length
+    def_delegators :@subsets, :push, :to_s, :length
 
     # @param [String] network_name Network name
     def initialize(network_name)
@@ -38,6 +38,11 @@ module TopologyOperator
     # @return [Array] Array of subset-elements
     def to_array
       @subsets.map(&:elements)
+    end
+
+    def reject_empty_set!
+      @subsets.reject!(&:empty?)
+      self
     end
 
     # @param [NetworkSet] other

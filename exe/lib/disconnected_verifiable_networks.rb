@@ -37,17 +37,15 @@ module Netomox
 
         # select entry point for recursive-network-search
         @nodes.each do |node|
-          network_subset = TopologyOperator::NetworkSubset.new
-
           # if the node doesn't have any interface,
           # it assumes that a standalone node is a single subset.
           if node.termination_points.length.zero?
-            network_subset.push(node.path)
-            network_set.push(network_subset)
+            network_set.push(TopologyOperator::NetworkSubset.new(node.path))
             next
           end
 
           # if the node has link(s), search connected element recursively
+          network_subset = TopologyOperator::NetworkSubset.new
           node.termination_points.each do |tp|
             # explore origin selection:
             # if exists a subset includes the (source) term-point,
@@ -55,10 +53,10 @@ module Netomox
             next if network_set.find_subset_includes(tp.path)
 
             find_connected_nodes_recursively(node, tp, network_subset)
-            network_set.push(network_subset.uniq!)
           end
+          network_set.push(network_subset.uniq!)
         end
-        network_set
+        network_set.reject_empty_set!
       end
       # rubocop:enable Metrics/MethodLength, Metrics/AbcSize
 
