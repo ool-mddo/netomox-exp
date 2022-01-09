@@ -1128,3 +1128,2481 @@ Starting netomox-exp_netomox_1 ...
 netomox-exp_netoviz_1 is up-to-date
 batfish is up-to-date
 Starting netomox-exp_netomox_1 ... done
+The Docker Engine you're using is running in swarm mode.
+
+Compose does not use swarm mode to deploy services to multiple nodes in a swarm. All containers will be scheduled on the current node.
+
+To deploy your application across the swarm, use `docker stack deploy`.
+
+Starting netomox-exp_netomox_1 ... 
+netomox-exp_netoviz_1 is up-to-date
+batfish is up-to-date
+Starting netomox-exp_netomox_1 ... done
+The Docker Engine you're using is running in swarm mode.
+
+Compose does not use swarm mode to deploy services to multiple nodes in a swarm. All containers will be scheduled on the current node.
+
+To deploy your application across the swarm, use `docker stack deploy`.
+
+batfish is up-to-date
+Starting netomox-exp_netomox_1 ... 
+netomox-exp_netoviz_1 is up-to-date
+Starting netomox-exp_netomox_1 ... done
+The Docker Engine you're using is running in swarm mode.
+
+Compose does not use swarm mode to deploy services to multiple nodes in a swarm. All containers will be scheduled on the current node.
+
+To deploy your application across the swarm, use `docker stack deploy`.
+
+netomox-exp_netoviz_1 is up-to-date
+batfish is up-to-date
+Starting netomox-exp_netomox_1 ... 
+Starting netomox-exp_netomox_1 ... done
+The Docker Engine you're using is running in swarm mode.
+
+Compose does not use swarm mode to deploy services to multiple nodes in a swarm. All containers will be scheduled on the current node.
+
+To deploy your application across the swarm, use `docker stack deploy`.
+
+netomox-exp_netoviz_1 is up-to-date
+batfish is up-to-date
+Recreating netomox-exp_netomox_1 ... 
+Recreating netomox-exp_netomox_1 ... done
+The Docker Engine you're using is running in swarm mode.
+
+Compose does not use swarm mode to deploy services to multiple nodes in a swarm. All containers will be scheduled on the current node.
+
+To deploy your application across the swarm, use `docker stack deploy`.
+
+netomox-exp_netoviz_1 is up-to-date
+batfish is up-to-date
+Starting netomox-exp_netomox_1 ... 
+Starting netomox-exp_netomox_1 ... done
+The Docker Engine you're using is running in swarm mode.
+
+Compose does not use swarm mode to deploy services to multiple nodes in a swarm. All containers will be scheduled on the current node.
+
+To deploy your application across the swarm, use `docker stack deploy`.
+
+batfish is up-to-date
+netomox-exp_netoviz_1 is up-to-date
+Recreating netomox-exp_netomox_1 ... 
+Recreating netomox-exp_netomox_1 ... error
+
+ERROR: for netomox-exp_netomox_1  Cannot start service netomox: OCI runtime create failed: container_linux.go:380: starting container process caused: exec: "./configs/make_csv.sh all": stat ./configs/make_csv.sh all: no such file or directory: unknown
+
+ERROR: for netomox  Cannot start service netomox: OCI runtime create failed: container_linux.go:380: starting container process caused: exec: "./configs/make_csv.sh all": stat ./configs/make_csv.sh all: no such file or directory: unknown
+Encountered errors while bringing up the project.
+The Docker Engine you're using is running in swarm mode.
+
+Compose does not use swarm mode to deploy services to multiple nodes in a swarm. All containers will be scheduled on the current node.
+
+To deploy your application across the swarm, use `docker stack deploy`.
+
+Removing netomox-exp_netomox_1
+batfish is up-to-date
+Recreating d7969ef6f830_netomox-exp_netomox_1 ... 
+netomox-exp_netoviz_1 is up-to-date
+Recreating d7969ef6f830_netomox-exp_netomox_1 ... done
+The Docker Engine you're using is running in swarm mode.
+
+Compose does not use swarm mode to deploy services to multiple nodes in a swarm. All containers will be scheduled on the current node.
+
+To deploy your application across the swarm, use `docker stack deploy`.
+
+Starting netomox-exp_netomox_1 ... 
+netomox-exp_netoviz_1 is up-to-date
+batfish is up-to-date
+Starting netomox-exp_netomox_1 ... done
+The BATFISH_HOST variable is not set. Defaulting to a blank string.
+The Docker Engine you're using is running in swarm mode.
+
+Compose does not use swarm mode to deploy services to multiple nodes in a swarm. All containers will be scheduled on the current node.
+
+To deploy your application across the swarm, use `docker stack deploy`.
+
+netomox-exp_netoviz_1 is up-to-date
+Recreating netomox-exp_netomox_1 ... 
+batfish is up-to-date
+Recreating netomox-exp_netomox_1 ... done
+The BATFISH_HOST variable is not set. Defaulting to a blank string.
+The Docker Engine you're using is running in swarm mode.
+
+Compose does not use swarm mode to deploy services to multiple nodes in a swarm. All containers will be scheduled on the current node.
+
+To deploy your application across the swarm, use `docker stack deploy`.
+
+netomox-exp_netoviz_1 is up-to-date
+Recreating netomox-exp_netomox_1 ... 
+batfish is up-to-date
+Recreating netomox-exp_netomox_1 ... done
+The BATFISH_HOST variable is not set. Defaulting to a blank string.
+The Docker Engine you're using is running in swarm mode.
+
+Compose does not use swarm mode to deploy services to multiple nodes in a swarm. All containers will be scheduled on the current node.
+
+To deploy your application across the swarm, use `docker stack deploy`.
+
+batfish is up-to-date
+netomox-exp_netoviz_1 is up-to-date
+Starting netomox-exp_netomox_1 ... 
+Starting netomox-exp_netomox_1 ... done
+The BATFISH_HOST variable is not set. Defaulting to a blank string.
+The Docker Engine you're using is running in swarm mode.
+
+Compose does not use swarm mode to deploy services to multiple nodes in a swarm. All containers will be scheduled on the current node.
+
+To deploy your application across the swarm, use `docker stack deploy`.
+
+batfish is up-to-date
+Starting netomox-exp_netomox_1 ... 
+netomox-exp_netoviz_1 is up-to-date
+Starting netomox-exp_netomox_1 ... done
+The Docker Engine you're using is running in swarm mode.
+
+Compose does not use swarm mode to deploy services to multiple nodes in a swarm. All containers will be scheduled on the current node.
+
+To deploy your application across the swarm, use `docker stack deploy`.
+
+netomox-exp_netoviz_1 is up-to-date
+batfish is up-to-date
+Recreating netomox-exp_netomox_1 ... 
+Recreating netomox-exp_netomox_1 ... done
+The Docker Engine you're using is running in swarm mode.
+
+Compose does not use swarm mode to deploy services to multiple nodes in a swarm. All containers will be scheduled on the current node.
+
+To deploy your application across the swarm, use `docker stack deploy`.
+
+Building netomox
+Sending build context to Docker daemon  14.62MB
+Step 1/7 : FROM ruby:3.1.0
+3.1.0: Pulling from library/ruby
+0e29546d541c: Pulling fs layer
+9b829c73b52b: Pulling fs layer
+cb5b7ae36172: Pulling fs layer
+6494e4811622: Pulling fs layer
+6f9f74896dfa: Pulling fs layer
+8692434624fe: Pulling fs layer
+6ad69143aab7: Pulling fs layer
+c59daecac6b3: Pulling fs layer
+6f9f74896dfa: Waiting
+8692434624fe: Waiting
+6ad69143aab7: Waiting
+c59daecac6b3: Waiting
+9b829c73b52b: Verifying Checksum
+9b829c73b52b: Download complete
+cb5b7ae36172: Verifying Checksum
+cb5b7ae36172: Download complete
+0e29546d541c: Verifying Checksum
+0e29546d541c: Download complete
+8692434624fe: Verifying Checksum
+8692434624fe: Download complete
+0e29546d541c: Pull complete
+9b829c73b52b: Pull complete
+cb5b7ae36172: Pull complete
+6494e4811622: Verifying Checksum
+6494e4811622: Download complete
+c59daecac6b3: Verifying Checksum
+c59daecac6b3: Download complete
+6494e4811622: Pull complete
+6ad69143aab7: Verifying Checksum
+6ad69143aab7: Download complete
+6f9f74896dfa: Download complete
+6f9f74896dfa: Pull complete
+8692434624fe: Pull complete
+6ad69143aab7: Pull complete
+c59daecac6b3: Pull complete
+Digest: sha256:e806e97b4a00c6b00f8baf36331f8798ab2d60b7d49f43a79577f7e7e3ab2623
+Status: Downloaded newer image for ruby:3.1.0
+ ---> f36ec0de68cd
+Step 2/7 : RUN mkdir /myapp
+ ---> Running in 7db4ba36861b
+Removing intermediate container 7db4ba36861b
+ ---> cf5a529b46c7
+Step 3/7 : WORKDIR /myapp
+ ---> Running in ee4688459ec0
+Removing intermediate container ee4688459ec0
+ ---> 06a62f659624
+Step 4/7 : COPY . /myapp
+ ---> bc0a209a6859
+Step 5/7 : RUN apt-get update && apt-get install -y  python3-pip
+ ---> Running in 861a26d3bf98
+Get:1 http://security.debian.org/debian-security bullseye-security InRelease [44.1 kB]
+Get:2 http://security.debian.org/debian-security bullseye-security/main amd64 Packages [102 kB]
+Get:3 http://deb.debian.org/debian bullseye InRelease [116 kB]
+Get:4 http://deb.debian.org/debian bullseye-updates InRelease [39.4 kB]
+Get:5 http://deb.debian.org/debian bullseye/main amd64 Packages [8183 kB]
+Get:6 http://deb.debian.org/debian bullseye-updates/main amd64 Packages [2592 B]
+Fetched 8487 kB in 3s (2746 kB/s)
+Reading package lists...
+Reading package lists...
+Building dependency tree...
+Reading state information...
+The following additional packages will be installed:
+  build-essential javascript-common libjs-jquery libjs-sphinxdoc
+  libjs-underscore libpython3-dev libpython3.9 libpython3.9-dev python-pip-whl
+  python3-dev python3-pkg-resources python3-setuptools python3-wheel
+  python3.9-dev
+Suggested packages:
+  apache2 | lighttpd | httpd python-setuptools-doc
+The following NEW packages will be installed:
+  build-essential javascript-common libjs-jquery libjs-sphinxdoc
+  libjs-underscore libpython3-dev libpython3.9 libpython3.9-dev python-pip-whl
+  python3-dev python3-pip python3-pkg-resources python3-setuptools
+  python3-wheel python3.9-dev
+0 upgraded, 15 newly installed, 0 to remove and 0 not upgraded.
+Need to get 9702 kB of archives.
+After this operation, 34.0 MB of additional disk space will be used.
+Get:1 http://deb.debian.org/debian bullseye/main amd64 build-essential amd64 12.9 [7704 B]
+Get:2 http://deb.debian.org/debian bullseye/main amd64 javascript-common all 11+nmu1 [6260 B]
+Get:3 http://deb.debian.org/debian bullseye/main amd64 libjs-jquery all 3.5.1+dfsg+~3.5.5-7 [315 kB]
+Get:4 http://deb.debian.org/debian bullseye/main amd64 libjs-underscore all 1.9.1~dfsg-3 [100 kB]
+Get:5 http://deb.debian.org/debian bullseye/main amd64 libjs-sphinxdoc all 3.4.3-2 [127 kB]
+Get:6 http://deb.debian.org/debian bullseye/main amd64 libpython3.9 amd64 3.9.2-1 [1691 kB]
+Get:7 http://deb.debian.org/debian bullseye/main amd64 libpython3.9-dev amd64 3.9.2-1 [4028 kB]
+Get:8 http://deb.debian.org/debian bullseye/main amd64 libpython3-dev amd64 3.9.2-3 [21.7 kB]
+Get:9 http://deb.debian.org/debian bullseye/main amd64 python-pip-whl all 20.3.4-4 [1948 kB]
+Get:10 http://deb.debian.org/debian bullseye/main amd64 python3.9-dev amd64 3.9.2-1 [515 kB]
+Get:11 http://deb.debian.org/debian bullseye/main amd64 python3-dev amd64 3.9.2-3 [24.8 kB]
+Get:12 http://deb.debian.org/debian bullseye/main amd64 python3-pkg-resources all 52.0.0-4 [190 kB]
+Get:13 http://deb.debian.org/debian bullseye/main amd64 python3-setuptools all 52.0.0-4 [366 kB]
+Get:14 http://deb.debian.org/debian bullseye/main amd64 python3-wheel all 0.34.2-1 [24.0 kB]
+Get:15 http://deb.debian.org/debian bullseye/main amd64 python3-pip all 20.3.4-4 [337 kB]
+[91mdebconf: delaying package configuration, since apt-utils is not installed
+[0mFetched 9702 kB in 2s (6434 kB/s)
+Selecting previously unselected package build-essential.
+(Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 22741 files and directories currently installed.)
+Preparing to unpack .../00-build-essential_12.9_amd64.deb ...
+Unpacking build-essential (12.9) ...
+Selecting previously unselected package javascript-common.
+Preparing to unpack .../01-javascript-common_11+nmu1_all.deb ...
+Unpacking javascript-common (11+nmu1) ...
+Selecting previously unselected package libjs-jquery.
+Preparing to unpack .../02-libjs-jquery_3.5.1+dfsg+~3.5.5-7_all.deb ...
+Unpacking libjs-jquery (3.5.1+dfsg+~3.5.5-7) ...
+Selecting previously unselected package libjs-underscore.
+Preparing to unpack .../03-libjs-underscore_1.9.1~dfsg-3_all.deb ...
+Unpacking libjs-underscore (1.9.1~dfsg-3) ...
+Selecting previously unselected package libjs-sphinxdoc.
+Preparing to unpack .../04-libjs-sphinxdoc_3.4.3-2_all.deb ...
+Unpacking libjs-sphinxdoc (3.4.3-2) ...
+Selecting previously unselected package libpython3.9:amd64.
+Preparing to unpack .../05-libpython3.9_3.9.2-1_amd64.deb ...
+Unpacking libpython3.9:amd64 (3.9.2-1) ...
+Selecting previously unselected package libpython3.9-dev:amd64.
+Preparing to unpack .../06-libpython3.9-dev_3.9.2-1_amd64.deb ...
+Unpacking libpython3.9-dev:amd64 (3.9.2-1) ...
+Selecting previously unselected package libpython3-dev:amd64.
+Preparing to unpack .../07-libpython3-dev_3.9.2-3_amd64.deb ...
+Unpacking libpython3-dev:amd64 (3.9.2-3) ...
+Selecting previously unselected package python-pip-whl.
+Preparing to unpack .../08-python-pip-whl_20.3.4-4_all.deb ...
+Unpacking python-pip-whl (20.3.4-4) ...
+Selecting previously unselected package python3.9-dev.
+Preparing to unpack .../09-python3.9-dev_3.9.2-1_amd64.deb ...
+Unpacking python3.9-dev (3.9.2-1) ...
+Selecting previously unselected package python3-dev.
+Preparing to unpack .../10-python3-dev_3.9.2-3_amd64.deb ...
+Unpacking python3-dev (3.9.2-3) ...
+Selecting previously unselected package python3-pkg-resources.
+Preparing to unpack .../11-python3-pkg-resources_52.0.0-4_all.deb ...
+Unpacking python3-pkg-resources (52.0.0-4) ...
+Selecting previously unselected package python3-setuptools.
+Preparing to unpack .../12-python3-setuptools_52.0.0-4_all.deb ...
+Unpacking python3-setuptools (52.0.0-4) ...
+Selecting previously unselected package python3-wheel.
+Preparing to unpack .../13-python3-wheel_0.34.2-1_all.deb ...
+Unpacking python3-wheel (0.34.2-1) ...
+Selecting previously unselected package python3-pip.
+Preparing to unpack .../14-python3-pip_20.3.4-4_all.deb ...
+Unpacking python3-pip (20.3.4-4) ...
+Setting up python3-pkg-resources (52.0.0-4) ...
+Setting up javascript-common (11+nmu1) ...
+Setting up python3-setuptools (52.0.0-4) ...
+Setting up python3-wheel (0.34.2-1) ...
+Setting up libpython3.9:amd64 (3.9.2-1) ...
+Setting up build-essential (12.9) ...
+Setting up python-pip-whl (20.3.4-4) ...
+Setting up libjs-jquery (3.5.1+dfsg+~3.5.5-7) ...
+Setting up libjs-underscore (1.9.1~dfsg-3) ...
+Setting up libpython3.9-dev:amd64 (3.9.2-1) ...
+Setting up python3-pip (20.3.4-4) ...
+Setting up libjs-sphinxdoc (3.4.3-2) ...
+Setting up python3.9-dev (3.9.2-1) ...
+Setting up libpython3-dev:amd64 (3.9.2-3) ...
+Setting up python3-dev (3.9.2-3) ...
+Processing triggers for libc-bin (2.31-13+deb11u2) ...
+Removing intermediate container 861a26d3bf98
+ ---> 2b7fa5178f2f
+Step 6/7 : RUN pip3 install -r configs/requirements.txt
+ ---> Running in e550e888b58f
+Collecting pybatfish>=0.36.0
+  Downloading pybatfish-2021.11.4.1095-py2.py3-none-any.whl (128 kB)
+Collecting pandas>=1.1.5
+  Downloading pandas-1.3.5-cp39-cp39-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (11.5 MB)
+Collecting black>=21.7b0
+  Downloading black-21.12b0-py3-none-any.whl (156 kB)
+Collecting platformdirs>=2
+  Downloading platformdirs-2.4.1-py3-none-any.whl (14 kB)
+Collecting tomli<2.0.0,>=0.2.6
+  Downloading tomli-1.2.3-py3-none-any.whl (12 kB)
+Collecting typing-extensions>=3.10.0.0
+  Downloading typing_extensions-4.0.1-py3-none-any.whl (22 kB)
+Collecting mypy-extensions>=0.4.3
+  Downloading mypy_extensions-0.4.3-py2.py3-none-any.whl (4.5 kB)
+Collecting click>=7.1.2
+  Downloading click-8.0.3-py3-none-any.whl (97 kB)
+Collecting pathspec<1,>=0.9.0
+  Downloading pathspec-0.9.0-py2.py3-none-any.whl (31 kB)
+Collecting python-dateutil>=2.7.3
+  Downloading python_dateutil-2.8.2-py2.py3-none-any.whl (247 kB)
+Collecting pytz>=2017.3
+  Downloading pytz-2021.3-py2.py3-none-any.whl (503 kB)
+Collecting numpy>=1.17.3
+  Downloading numpy-1.22.0-cp39-cp39-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (16.8 MB)
+Collecting deprecated
+  Downloading Deprecated-1.2.13-py2.py3-none-any.whl (9.6 kB)
+Collecting requests-toolbelt
+  Downloading requests_toolbelt-0.9.1-py2.py3-none-any.whl (54 kB)
+Collecting netconan>=0.12.0
+  Downloading netconan-0.12.3-py2.py3-none-any.whl (50 kB)
+Collecting PyYAML
+  Downloading PyYAML-6.0-cp39-cp39-manylinux_2_5_x86_64.manylinux1_x86_64.manylinux_2_12_x86_64.manylinux2010_x86_64.whl (661 kB)
+Collecting attrs>=18.1.0
+  Downloading attrs-21.4.0-py2.py3-none-any.whl (60 kB)
+Collecting pandas>=1.1.5
+  Downloading pandas-1.1.5-cp39-cp39-manylinux1_x86_64.whl (9.3 MB)
+Collecting simplejson
+  Downloading simplejson-3.17.6-cp39-cp39-manylinux_2_5_x86_64.manylinux1_x86_64.manylinux_2_12_x86_64.manylinux2010_x86_64.whl (136 kB)
+Collecting requests
+  Downloading requests-2.27.1-py2.py3-none-any.whl (63 kB)
+Collecting deepdiff
+  Downloading deepdiff-5.7.0-py3-none-any.whl (68 kB)
+Collecting configargparse<1.0.0
+  Downloading ConfigArgParse-0.15.2.tar.gz (27 kB)
+Collecting passlib<2.0.0
+  Downloading passlib-1.7.4-py2.py3-none-any.whl (525 kB)
+Collecting six<2.0.0
+  Downloading six-1.16.0-py2.py3-none-any.whl (11 kB)
+Collecting bidict<1.0.0
+  Downloading bidict-0.21.4-py3-none-any.whl (36 kB)
+Collecting ordered-set==4.0.2
+  Downloading ordered-set-4.0.2.tar.gz (10 kB)
+Collecting wrapt<2,>=1.10
+  Downloading wrapt-1.13.3-cp39-cp39-manylinux_2_5_x86_64.manylinux1_x86_64.manylinux_2_12_x86_64.manylinux2010_x86_64.whl (81 kB)
+Collecting charset-normalizer~=2.0.0
+  Downloading charset_normalizer-2.0.10-py3-none-any.whl (39 kB)
+Collecting idna<4,>=2.5
+  Downloading idna-3.3-py3-none-any.whl (61 kB)
+Collecting urllib3<1.27,>=1.21.1
+  Downloading urllib3-1.26.8-py2.py3-none-any.whl (138 kB)
+Collecting certifi>=2017.4.17
+  Downloading certifi-2021.10.8-py2.py3-none-any.whl (149 kB)
+Building wheels for collected packages: configargparse, ordered-set
+  Building wheel for configargparse (setup.py): started
+  Building wheel for configargparse (setup.py): finished with status 'done'
+  Created wheel for configargparse: filename=ConfigArgParse-0.15.2-py3-none-any.whl size=17835 sha256=816cfbf98aea201d6ec422998797411733a87a5713d772655f813a4c1a35d2fe
+  Stored in directory: /root/.cache/pip/wheels/2f/c7/25/0885345f7c93561c4addf27f7ba3921bea1408fa97ff93581f
+  Building wheel for ordered-set (setup.py): started
+  Building wheel for ordered-set (setup.py): finished with status 'done'
+  Created wheel for ordered-set: filename=ordered_set-4.0.2-py2.py3-none-any.whl size=8209 sha256=510336474171f8bf1bdef6905fe250d260cd2adc1294c5d8b09c1fc7a0562c9e
+  Stored in directory: /root/.cache/pip/wheels/c0/a1/09/0c736ab4beb6a48ae2f5f2529b2ad3770c8e6cc32d01d75a2c
+Successfully built configargparse ordered-set
+Installing collected packages: urllib3, six, idna, charset-normalizer, certifi, wrapt, requests, pytz, python-dateutil, passlib, ordered-set, numpy, configargparse, bidict, typing-extensions, tomli, simplejson, requests-toolbelt, PyYAML, platformdirs, pathspec, pandas, netconan, mypy-extensions, deprecated, deepdiff, click, attrs, pybatfish, black
+Successfully installed PyYAML-6.0 attrs-21.4.0 bidict-0.21.4 black-21.12b0 certifi-2021.10.8 charset-normalizer-2.0.10 click-8.0.3 configargparse-0.15.2 deepdiff-5.7.0 deprecated-1.2.13 idna-3.3 mypy-extensions-0.4.3 netconan-0.12.3 numpy-1.22.0 ordered-set-4.0.2 pandas-1.1.5 passlib-1.7.4 pathspec-0.9.0 platformdirs-2.4.1 pybatfish-2021.11.4.1095 python-dateutil-2.8.2 pytz-2021.3 requests-2.27.1 requests-toolbelt-0.9.1 simplejson-3.17.6 six-1.16.0 tomli-1.2.3 typing-extensions-4.0.1 urllib3-1.26.8 wrapt-1.13.3
+Removing intermediate container e550e888b58f
+ ---> 4dd7d6084d22
+Step 7/7 : RUN bundle install --path=vendor/bundle
+ ---> Running in a17e33f76084
+[91m[DEPRECATED] The `--path` flag is deprecated because it relies on being remembered across bundler invocations, which bundler will no longer do in future versions. Instead please use `bundle config set --local path 'vendor/bundle'`, and stop using this flag
+[0mBundler 2.3.3 is running, but your lockfile was generated with 2.1.4. Installing Bundler 2.1.4 and restarting using that version.
+[91mCalling `DidYouMean::SPELL_CHECKERS.merge!(error_name => spell_checker)' has been deprecated. Please call `DidYouMean.correct_error(error_name, spell_checker)' instead.
+[0mFetching gem metadata from https://rubygems.org/..........
+Fetching https://github.com/corestate55/netomox
+Fetching rake 13.0.6
+Installing rake 13.0.6
+Fetching ast 2.4.2
+Installing ast 2.4.2
+Using bundler 2.1.4
+Fetching excon 0.89.0
+Installing excon 0.89.0
+Fetching hashie 5.0.0
+Installing hashie 5.0.0
+Fetching highline 2.0.3
+Installing highline 2.0.3
+Fetching ipaddress 0.8.3
+Installing ipaddress 0.8.3
+Using json 2.6.1
+Fetching multi_json 1.15.0
+Installing multi_json 1.15.0
+Fetching os 1.1.4
+Installing os 1.1.4
+Fetching rubyzip 2.3.2
+Installing rubyzip 2.3.2
+Fetching neography 1.8.0
+Installing neography 1.8.0
+Fetching termcolor 1.2.2
+Installing termcolor 1.2.2
+Fetching thor 1.0.1
+Installing thor 1.0.1
+Using netomox 0.1.0 from https://github.com/corestate55/netomox (at develop@45f0269)
+Fetching parallel 1.21.0
+Installing parallel 1.21.0
+Fetching parser 3.0.3.2
+Installing parser 3.0.3.2
+Fetching rainbow 3.0.0
+Installing rainbow 3.0.0
+Fetching regexp_parser 2.2.0
+Installing regexp_parser 2.2.0
+Fetching rexml 3.2.5
+Installing rexml 3.2.5
+Fetching rubocop-ast 1.15.1
+Installing rubocop-ast 1.15.1
+Fetching ruby-progressbar 1.11.0
+Installing ruby-progressbar 1.11.0
+Fetching unicode-display_width 2.1.0
+Installing unicode-display_width 2.1.0
+Fetching rubocop 1.24.1
+Installing rubocop 1.24.1
+Fetching webrick 1.7.0
+Installing webrick 1.7.0
+Fetching yard 0.9.27
+Installing yard 0.9.27
+Bundle complete! 6 Gemfile dependencies, 26 gems now installed.
+Bundled gems are installed into `./vendor/bundle`
+Post-install message from rubyzip:
+RubyZip 3.0 is coming!
+**********************
+
+The public API of some Rubyzip classes has been modernized to use named
+parameters for optional arguments. Please check your usage of the
+following classes:
+  * `Zip::File`
+  * `Zip::Entry`
+  * `Zip::InputStream`
+  * `Zip::OutputStream`
+
+Please ensure that your Gemfiles and .gemspecs are suitably restrictive
+to avoid an unexpected breakage when 3.0 is released (e.g. ~> 2.3.0).
+See https://github.com/rubyzip/rubyzip for details. The Changelog also
+lists other enhancements and bugfixes that have been implemented since
+version 2.3.0.
+Removing intermediate container a17e33f76084
+ ---> e73162b43324
+Successfully built e73162b43324
+Successfully tagged netomox-exp_netomox:latest
+netomox-exp_netoviz_1 is up-to-date
+Recreating netomox-exp_netomox_1 ... 
+batfish is up-to-date
+Recreating netomox-exp_netomox_1 ... done
+The Docker Engine you're using is running in swarm mode.
+
+Compose does not use swarm mode to deploy services to multiple nodes in a swarm. All containers will be scheduled on the current node.
+
+To deploy your application across the swarm, use `docker stack deploy`.
+
+Building netomox
+Sending build context to Docker daemon  14.64MB
+Step 1/8 : FROM ruby:3.1.0
+ ---> f36ec0de68cd
+Step 2/8 : RUN mkdir /myapp
+ ---> Using cache
+ ---> cf5a529b46c7
+Step 3/8 : WORKDIR /myapp
+ ---> Using cache
+ ---> 06a62f659624
+Step 4/8 : COPY . /myapp
+ ---> 1d4e9ad689a4
+Step 5/8 : RUN apt-get update && apt-get install -y  python3-pip
+ ---> Running in 246e05252e9c
+Get:1 http://security.debian.org/debian-security bullseye-security InRelease [44.1 kB]
+Get:2 http://deb.debian.org/debian bullseye InRelease [116 kB]
+Get:3 http://deb.debian.org/debian bullseye-updates InRelease [39.4 kB]
+Get:4 http://security.debian.org/debian-security bullseye-security/main amd64 Packages [102 kB]
+Get:5 http://deb.debian.org/debian bullseye/main amd64 Packages [8183 kB]
+Get:6 http://deb.debian.org/debian bullseye-updates/main amd64 Packages [2592 B]
+Fetched 8487 kB in 3s (3172 kB/s)
+Reading package lists...
+Reading package lists...
+Building dependency tree...
+Reading state information...
+The following additional packages will be installed:
+  build-essential javascript-common libjs-jquery libjs-sphinxdoc
+  libjs-underscore libpython3-dev libpython3.9 libpython3.9-dev python-pip-whl
+  python3-dev python3-pkg-resources python3-setuptools python3-wheel
+  python3.9-dev
+Suggested packages:
+  apache2 | lighttpd | httpd python-setuptools-doc
+The following NEW packages will be installed:
+  build-essential javascript-common libjs-jquery libjs-sphinxdoc
+  libjs-underscore libpython3-dev libpython3.9 libpython3.9-dev python-pip-whl
+  python3-dev python3-pip python3-pkg-resources python3-setuptools
+  python3-wheel python3.9-dev
+0 upgraded, 15 newly installed, 0 to remove and 0 not upgraded.
+Need to get 9702 kB of archives.
+After this operation, 34.0 MB of additional disk space will be used.
+Get:1 http://deb.debian.org/debian bullseye/main amd64 build-essential amd64 12.9 [7704 B]
+Get:2 http://deb.debian.org/debian bullseye/main amd64 javascript-common all 11+nmu1 [6260 B]
+Get:3 http://deb.debian.org/debian bullseye/main amd64 libjs-jquery all 3.5.1+dfsg+~3.5.5-7 [315 kB]
+Get:4 http://deb.debian.org/debian bullseye/main amd64 libjs-underscore all 1.9.1~dfsg-3 [100 kB]
+Get:5 http://deb.debian.org/debian bullseye/main amd64 libjs-sphinxdoc all 3.4.3-2 [127 kB]
+Get:6 http://deb.debian.org/debian bullseye/main amd64 libpython3.9 amd64 3.9.2-1 [1691 kB]
+Get:7 http://deb.debian.org/debian bullseye/main amd64 libpython3.9-dev amd64 3.9.2-1 [4028 kB]
+Get:8 http://deb.debian.org/debian bullseye/main amd64 libpython3-dev amd64 3.9.2-3 [21.7 kB]
+Get:9 http://deb.debian.org/debian bullseye/main amd64 python-pip-whl all 20.3.4-4 [1948 kB]
+Get:10 http://deb.debian.org/debian bullseye/main amd64 python3.9-dev amd64 3.9.2-1 [515 kB]
+Get:11 http://deb.debian.org/debian bullseye/main amd64 python3-dev amd64 3.9.2-3 [24.8 kB]
+Get:12 http://deb.debian.org/debian bullseye/main amd64 python3-pkg-resources all 52.0.0-4 [190 kB]
+Get:13 http://deb.debian.org/debian bullseye/main amd64 python3-setuptools all 52.0.0-4 [366 kB]
+Get:14 http://deb.debian.org/debian bullseye/main amd64 python3-wheel all 0.34.2-1 [24.0 kB]
+Get:15 http://deb.debian.org/debian bullseye/main amd64 python3-pip all 20.3.4-4 [337 kB]
+[91mdebconf: delaying package configuration, since apt-utils is not installed
+[0mFetched 9702 kB in 2s (5998 kB/s)
+Selecting previously unselected package build-essential.
+(Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 22741 files and directories currently installed.)
+Preparing to unpack .../00-build-essential_12.9_amd64.deb ...
+Unpacking build-essential (12.9) ...
+Selecting previously unselected package javascript-common.
+Preparing to unpack .../01-javascript-common_11+nmu1_all.deb ...
+Unpacking javascript-common (11+nmu1) ...
+Selecting previously unselected package libjs-jquery.
+Preparing to unpack .../02-libjs-jquery_3.5.1+dfsg+~3.5.5-7_all.deb ...
+Unpacking libjs-jquery (3.5.1+dfsg+~3.5.5-7) ...
+Selecting previously unselected package libjs-underscore.
+Preparing to unpack .../03-libjs-underscore_1.9.1~dfsg-3_all.deb ...
+Unpacking libjs-underscore (1.9.1~dfsg-3) ...
+Selecting previously unselected package libjs-sphinxdoc.
+Preparing to unpack .../04-libjs-sphinxdoc_3.4.3-2_all.deb ...
+Unpacking libjs-sphinxdoc (3.4.3-2) ...
+Selecting previously unselected package libpython3.9:amd64.
+Preparing to unpack .../05-libpython3.9_3.9.2-1_amd64.deb ...
+Unpacking libpython3.9:amd64 (3.9.2-1) ...
+Selecting previously unselected package libpython3.9-dev:amd64.
+Preparing to unpack .../06-libpython3.9-dev_3.9.2-1_amd64.deb ...
+Unpacking libpython3.9-dev:amd64 (3.9.2-1) ...
+Selecting previously unselected package libpython3-dev:amd64.
+Preparing to unpack .../07-libpython3-dev_3.9.2-3_amd64.deb ...
+Unpacking libpython3-dev:amd64 (3.9.2-3) ...
+Selecting previously unselected package python-pip-whl.
+Preparing to unpack .../08-python-pip-whl_20.3.4-4_all.deb ...
+Unpacking python-pip-whl (20.3.4-4) ...
+Selecting previously unselected package python3.9-dev.
+Preparing to unpack .../09-python3.9-dev_3.9.2-1_amd64.deb ...
+Unpacking python3.9-dev (3.9.2-1) ...
+Selecting previously unselected package python3-dev.
+Preparing to unpack .../10-python3-dev_3.9.2-3_amd64.deb ...
+Unpacking python3-dev (3.9.2-3) ...
+Selecting previously unselected package python3-pkg-resources.
+Preparing to unpack .../11-python3-pkg-resources_52.0.0-4_all.deb ...
+Unpacking python3-pkg-resources (52.0.0-4) ...
+Selecting previously unselected package python3-setuptools.
+Preparing to unpack .../12-python3-setuptools_52.0.0-4_all.deb ...
+Unpacking python3-setuptools (52.0.0-4) ...
+Selecting previously unselected package python3-wheel.
+Preparing to unpack .../13-python3-wheel_0.34.2-1_all.deb ...
+Unpacking python3-wheel (0.34.2-1) ...
+Selecting previously unselected package python3-pip.
+Preparing to unpack .../14-python3-pip_20.3.4-4_all.deb ...
+Unpacking python3-pip (20.3.4-4) ...
+Setting up python3-pkg-resources (52.0.0-4) ...
+Setting up javascript-common (11+nmu1) ...
+Setting up python3-setuptools (52.0.0-4) ...
+Setting up python3-wheel (0.34.2-1) ...
+Setting up libpython3.9:amd64 (3.9.2-1) ...
+Setting up build-essential (12.9) ...
+Setting up python-pip-whl (20.3.4-4) ...
+Setting up libjs-jquery (3.5.1+dfsg+~3.5.5-7) ...
+Setting up libjs-underscore (1.9.1~dfsg-3) ...
+Setting up libpython3.9-dev:amd64 (3.9.2-1) ...
+Setting up python3-pip (20.3.4-4) ...
+Setting up libjs-sphinxdoc (3.4.3-2) ...
+Setting up python3.9-dev (3.9.2-1) ...
+Setting up libpython3-dev:amd64 (3.9.2-3) ...
+Setting up python3-dev (3.9.2-3) ...
+Processing triggers for libc-bin (2.31-13+deb11u2) ...
+Removing intermediate container 246e05252e9c
+ ---> 4757dd4215f6
+Step 6/8 : RUN pip3 install -r configs/requirements.txt
+ ---> Running in 7240248f120c
+Collecting pybatfish>=0.36.0
+  Downloading pybatfish-2021.11.4.1095-py2.py3-none-any.whl (128 kB)
+Collecting pandas>=1.1.5
+  Downloading pandas-1.3.5-cp39-cp39-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (11.5 MB)
+Collecting black>=21.7b0
+  Downloading black-21.12b0-py3-none-any.whl (156 kB)
+Collecting pathspec<1,>=0.9.0
+  Downloading pathspec-0.9.0-py2.py3-none-any.whl (31 kB)
+Collecting click>=7.1.2
+  Downloading click-8.0.3-py3-none-any.whl (97 kB)
+Collecting mypy-extensions>=0.4.3
+  Downloading mypy_extensions-0.4.3-py2.py3-none-any.whl (4.5 kB)
+Collecting platformdirs>=2
+  Downloading platformdirs-2.4.1-py3-none-any.whl (14 kB)
+Collecting tomli<2.0.0,>=0.2.6
+  Downloading tomli-1.2.3-py3-none-any.whl (12 kB)
+Collecting typing-extensions>=3.10.0.0
+  Downloading typing_extensions-4.0.1-py3-none-any.whl (22 kB)
+Collecting python-dateutil>=2.7.3
+  Downloading python_dateutil-2.8.2-py2.py3-none-any.whl (247 kB)
+Collecting numpy>=1.17.3
+  Downloading numpy-1.22.0-cp39-cp39-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (16.8 MB)
+Collecting pytz>=2017.3
+  Downloading pytz-2021.3-py2.py3-none-any.whl (503 kB)
+Collecting requests-toolbelt
+  Downloading requests_toolbelt-0.9.1-py2.py3-none-any.whl (54 kB)
+Collecting deepdiff
+  Downloading deepdiff-5.7.0-py3-none-any.whl (68 kB)
+Collecting pandas>=1.1.5
+  Downloading pandas-1.1.5-cp39-cp39-manylinux1_x86_64.whl (9.3 MB)
+Collecting PyYAML
+  Downloading PyYAML-6.0-cp39-cp39-manylinux_2_5_x86_64.manylinux1_x86_64.manylinux_2_12_x86_64.manylinux2010_x86_64.whl (661 kB)
+Collecting deprecated
+  Downloading Deprecated-1.2.13-py2.py3-none-any.whl (9.6 kB)
+Collecting netconan>=0.12.0
+  Downloading netconan-0.12.3-py2.py3-none-any.whl (50 kB)
+Collecting requests
+  Downloading requests-2.27.1-py2.py3-none-any.whl (63 kB)
+Collecting attrs>=18.1.0
+  Downloading attrs-21.4.0-py2.py3-none-any.whl (60 kB)
+Collecting simplejson
+  Downloading simplejson-3.17.6-cp39-cp39-manylinux_2_5_x86_64.manylinux1_x86_64.manylinux_2_12_x86_64.manylinux2010_x86_64.whl (136 kB)
+Collecting passlib<2.0.0
+  Downloading passlib-1.7.4-py2.py3-none-any.whl (525 kB)
+Collecting bidict<1.0.0
+  Downloading bidict-0.21.4-py3-none-any.whl (36 kB)
+Collecting six<2.0.0
+  Downloading six-1.16.0-py2.py3-none-any.whl (11 kB)
+Collecting configargparse<1.0.0
+  Downloading ConfigArgParse-0.15.2.tar.gz (27 kB)
+Collecting ordered-set==4.0.2
+  Downloading ordered-set-4.0.2.tar.gz (10 kB)
+Collecting wrapt<2,>=1.10
+  Downloading wrapt-1.13.3-cp39-cp39-manylinux_2_5_x86_64.manylinux1_x86_64.manylinux_2_12_x86_64.manylinux2010_x86_64.whl (81 kB)
+Collecting urllib3<1.27,>=1.21.1
+  Downloading urllib3-1.26.8-py2.py3-none-any.whl (138 kB)
+Collecting idna<4,>=2.5
+  Downloading idna-3.3-py3-none-any.whl (61 kB)
+Collecting charset-normalizer~=2.0.0
+  Downloading charset_normalizer-2.0.10-py3-none-any.whl (39 kB)
+Collecting certifi>=2017.4.17
+  Downloading certifi-2021.10.8-py2.py3-none-any.whl (149 kB)
+Building wheels for collected packages: configargparse, ordered-set
+  Building wheel for configargparse (setup.py): started
+  Building wheel for configargparse (setup.py): finished with status 'done'
+  Created wheel for configargparse: filename=ConfigArgParse-0.15.2-py3-none-any.whl size=17835 sha256=aad59d2077b230a0de0d85e3f27467292064274c2761494a34f35cf27b5dab47
+  Stored in directory: /root/.cache/pip/wheels/2f/c7/25/0885345f7c93561c4addf27f7ba3921bea1408fa97ff93581f
+  Building wheel for ordered-set (setup.py): started
+  Building wheel for ordered-set (setup.py): finished with status 'done'
+  Created wheel for ordered-set: filename=ordered_set-4.0.2-py2.py3-none-any.whl size=8209 sha256=2593dd704738199e3e8c81e72f3ef0cbe63ddc98b89cf3480842c0acca4ffba7
+  Stored in directory: /root/.cache/pip/wheels/c0/a1/09/0c736ab4beb6a48ae2f5f2529b2ad3770c8e6cc32d01d75a2c
+Successfully built configargparse ordered-set
+Installing collected packages: urllib3, six, idna, charset-normalizer, certifi, wrapt, requests, pytz, python-dateutil, passlib, ordered-set, numpy, configargparse, bidict, typing-extensions, tomli, simplejson, requests-toolbelt, PyYAML, platformdirs, pathspec, pandas, netconan, mypy-extensions, deprecated, deepdiff, click, attrs, pybatfish, black
+Successfully installed PyYAML-6.0 attrs-21.4.0 bidict-0.21.4 black-21.12b0 certifi-2021.10.8 charset-normalizer-2.0.10 click-8.0.3 configargparse-0.15.2 deepdiff-5.7.0 deprecated-1.2.13 idna-3.3 mypy-extensions-0.4.3 netconan-0.12.3 numpy-1.22.0 ordered-set-4.0.2 pandas-1.1.5 passlib-1.7.4 pathspec-0.9.0 platformdirs-2.4.1 pybatfish-2021.11.4.1095 python-dateutil-2.8.2 pytz-2021.3 requests-2.27.1 requests-toolbelt-0.9.1 simplejson-3.17.6 six-1.16.0 tomli-1.2.3 typing-extensions-4.0.1 urllib3-1.26.8 wrapt-1.13.3
+Removing intermediate container 7240248f120c
+ ---> be2b72d93d83
+Step 7/8 : RUN gem  install bundler
+ ---> Running in 3168bd53007e
+Successfully installed bundler-2.3.4
+1 gem installed
+Removing intermediate container 3168bd53007e
+ ---> b53ed7ed2b50
+Step 8/8 : RUN bundle install --path=vendor/bundle
+ ---> Running in d8095cc6afdc
+[91m[DEPRECATED] The `--path` flag is deprecated because it relies on being remembered across bundler invocations, which bundler will no longer do in future versions. Instead please use `bundle config set --local path 'vendor/bundle'`, and stop using this flag
+[0mFetching gem metadata from https://rubygems.org/.
+Bundler 2.3.4 is running, but your lockfile was generated with 2.1.4. Installing Bundler 2.1.4 and restarting using that version.
+Fetching bundler 2.1.4
+Installing bundler 2.1.4
+[91mCalling `DidYouMean::SPELL_CHECKERS.merge!(error_name => spell_checker)' has been deprecated. Please call `DidYouMean.correct_error(error_name, spell_checker)' instead.
+[0mFetching gem metadata from https://rubygems.org/..........
+Fetching https://github.com/corestate55/netomox
+Fetching rake 13.0.6
+Installing rake 13.0.6
+Fetching ast 2.4.2
+Installing ast 2.4.2
+Using bundler 2.1.4
+Fetching excon 0.89.0
+Installing excon 0.89.0
+Fetching hashie 5.0.0
+Installing hashie 5.0.0
+Fetching highline 2.0.3
+Installing highline 2.0.3
+Fetching ipaddress 0.8.3
+Installing ipaddress 0.8.3
+Using json 2.6.1
+Fetching multi_json 1.15.0
+Installing multi_json 1.15.0
+Fetching os 1.1.4
+Installing os 1.1.4
+Fetching rubyzip 2.3.2
+Installing rubyzip 2.3.2
+Fetching neography 1.8.0
+Installing neography 1.8.0
+Fetching termcolor 1.2.2
+Installing termcolor 1.2.2
+Fetching thor 1.0.1
+Installing thor 1.0.1
+Using netomox 0.1.0 from https://github.com/corestate55/netomox (at develop@45f0269)
+Fetching parallel 1.21.0
+Installing parallel 1.21.0
+Fetching parser 3.0.3.2
+Installing parser 3.0.3.2
+Fetching rainbow 3.0.0
+Installing rainbow 3.0.0
+Fetching regexp_parser 2.2.0
+Installing regexp_parser 2.2.0
+Fetching rexml 3.2.5
+Installing rexml 3.2.5
+Fetching rubocop-ast 1.15.1
+Installing rubocop-ast 1.15.1
+Fetching ruby-progressbar 1.11.0
+Installing ruby-progressbar 1.11.0
+Fetching unicode-display_width 2.1.0
+Installing unicode-display_width 2.1.0
+Fetching rubocop 1.24.1
+Installing rubocop 1.24.1
+Fetching webrick 1.7.0
+Installing webrick 1.7.0
+Fetching yard 0.9.27
+Installing yard 0.9.27
+Bundle complete! 6 Gemfile dependencies, 26 gems now installed.
+Bundled gems are installed into `./vendor/bundle`
+Post-install message from rubyzip:
+RubyZip 3.0 is coming!
+**********************
+
+The public API of some Rubyzip classes has been modernized to use named
+parameters for optional arguments. Please check your usage of the
+following classes:
+  * `Zip::File`
+  * `Zip::Entry`
+  * `Zip::InputStream`
+  * `Zip::OutputStream`
+
+Please ensure that your Gemfiles and .gemspecs are suitably restrictive
+to avoid an unexpected breakage when 3.0 is released (e.g. ~> 2.3.0).
+See https://github.com/rubyzip/rubyzip for details. The Changelog also
+lists other enhancements and bugfixes that have been implemented since
+version 2.3.0.
+Removing intermediate container d8095cc6afdc
+ ---> 4e24ba5cec5f
+Successfully built 4e24ba5cec5f
+Successfully tagged netomox-exp_netomox:latest
+netomox-exp_netoviz_1 is up-to-date
+batfish is up-to-date
+Recreating netomox-exp_netomox_1 ... 
+Recreating netomox-exp_netomox_1 ... done
+The Docker Engine you're using is running in swarm mode.
+
+Compose does not use swarm mode to deploy services to multiple nodes in a swarm. All containers will be scheduled on the current node.
+
+To deploy your application across the swarm, use `docker stack deploy`.
+
+netomox-exp_netoviz_1 is up-to-date
+batfish is up-to-date
+Recreating netomox-exp_netomox_1 ... 
+Recreating netomox-exp_netomox_1 ... done
+The Docker Engine you're using is running in swarm mode.
+
+Compose does not use swarm mode to deploy services to multiple nodes in a swarm. All containers will be scheduled on the current node.
+
+To deploy your application across the swarm, use `docker stack deploy`.
+
+batfish is up-to-date
+netomox-exp_netoviz_1 is up-to-date
+Recreating netomox-exp_netomox_1 ... 
+Recreating netomox-exp_netomox_1 ... done
+The Docker Engine you're using is running in swarm mode.
+
+Compose does not use swarm mode to deploy services to multiple nodes in a swarm. All containers will be scheduled on the current node.
+
+To deploy your application across the swarm, use `docker stack deploy`.
+
+Recreating netomox-exp_netomox_1 ... 
+netomox-exp_netoviz_1 is up-to-date
+batfish is up-to-date
+Recreating netomox-exp_netomox_1 ... done
+The Docker Engine you're using is running in swarm mode.
+
+Compose does not use swarm mode to deploy services to multiple nodes in a swarm. All containers will be scheduled on the current node.
+
+To deploy your application across the swarm, use `docker stack deploy`.
+
+batfish is up-to-date
+netomox-exp_netoviz_1 is up-to-date
+Recreating netomox-exp_netomox_1 ... 
+Recreating netomox-exp_netomox_1 ... done
+The Docker Engine you're using is running in swarm mode.
+
+Compose does not use swarm mode to deploy services to multiple nodes in a swarm. All containers will be scheduled on the current node.
+
+To deploy your application across the swarm, use `docker stack deploy`.
+
+netomox-exp_netoviz_1 is up-to-date
+batfish is up-to-date
+Recreating netomox-exp_netomox_1 ... 
+Recreating netomox-exp_netomox_1 ... done
+The Docker Engine you're using is running in swarm mode.
+
+Compose does not use swarm mode to deploy services to multiple nodes in a swarm. All containers will be scheduled on the current node.
+
+To deploy your application across the swarm, use `docker stack deploy`.
+
+batfish is up-to-date
+netomox-exp_netoviz_1 is up-to-date
+Recreating netomox-exp_netomox_1 ... 
+Recreating netomox-exp_netomox_1 ... done
+The Docker Engine you're using is running in swarm mode.
+
+Compose does not use swarm mode to deploy services to multiple nodes in a swarm. All containers will be scheduled on the current node.
+
+To deploy your application across the swarm, use `docker stack deploy`.
+
+Building netomox
+Sending build context to Docker daemon  14.66MB
+Step 1/9 : FROM ruby:3.1.0
+ ---> f36ec0de68cd
+Step 2/9 : RUN mkdir /myapp
+ ---> Using cache
+ ---> cf5a529b46c7
+Step 3/9 : WORKDIR /myapp
+ ---> Using cache
+ ---> 06a62f659624
+Step 4/9 : COPY . /myapp
+ ---> 24791dd43402
+Step 5/9 : RUN apt-get update && apt-get install -y  python3-pip
+ ---> Running in 23d7da7d4e52
+Get:1 http://security.debian.org/debian-security bullseye-security InRelease [44.1 kB]
+Get:2 http://deb.debian.org/debian bullseye InRelease [116 kB]
+Get:3 http://deb.debian.org/debian bullseye-updates InRelease [39.4 kB]
+Get:4 http://security.debian.org/debian-security bullseye-security/main amd64 Packages [102 kB]
+Get:5 http://deb.debian.org/debian bullseye/main amd64 Packages [8183 kB]
+Get:6 http://deb.debian.org/debian bullseye-updates/main amd64 Packages [2592 B]
+Fetched 8487 kB in 3s (3181 kB/s)
+Reading package lists...
+Reading package lists...
+Building dependency tree...
+Reading state information...
+The following additional packages will be installed:
+  build-essential javascript-common libjs-jquery libjs-sphinxdoc
+  libjs-underscore libpython3-dev libpython3.9 libpython3.9-dev python-pip-whl
+  python3-dev python3-pkg-resources python3-setuptools python3-wheel
+  python3.9-dev
+Suggested packages:
+  apache2 | lighttpd | httpd python-setuptools-doc
+The following NEW packages will be installed:
+  build-essential javascript-common libjs-jquery libjs-sphinxdoc
+  libjs-underscore libpython3-dev libpython3.9 libpython3.9-dev python-pip-whl
+  python3-dev python3-pip python3-pkg-resources python3-setuptools
+  python3-wheel python3.9-dev
+0 upgraded, 15 newly installed, 0 to remove and 0 not upgraded.
+Need to get 9702 kB of archives.
+After this operation, 34.0 MB of additional disk space will be used.
+Get:1 http://deb.debian.org/debian bullseye/main amd64 build-essential amd64 12.9 [7704 B]
+Get:2 http://deb.debian.org/debian bullseye/main amd64 javascript-common all 11+nmu1 [6260 B]
+Get:3 http://deb.debian.org/debian bullseye/main amd64 libjs-jquery all 3.5.1+dfsg+~3.5.5-7 [315 kB]
+Get:4 http://deb.debian.org/debian bullseye/main amd64 libjs-underscore all 1.9.1~dfsg-3 [100 kB]
+Get:5 http://deb.debian.org/debian bullseye/main amd64 libjs-sphinxdoc all 3.4.3-2 [127 kB]
+Get:6 http://deb.debian.org/debian bullseye/main amd64 libpython3.9 amd64 3.9.2-1 [1691 kB]
+Get:7 http://deb.debian.org/debian bullseye/main amd64 libpython3.9-dev amd64 3.9.2-1 [4028 kB]
+Get:8 http://deb.debian.org/debian bullseye/main amd64 libpython3-dev amd64 3.9.2-3 [21.7 kB]
+Get:9 http://deb.debian.org/debian bullseye/main amd64 python-pip-whl all 20.3.4-4 [1948 kB]
+Get:10 http://deb.debian.org/debian bullseye/main amd64 python3.9-dev amd64 3.9.2-1 [515 kB]
+Get:11 http://deb.debian.org/debian bullseye/main amd64 python3-dev amd64 3.9.2-3 [24.8 kB]
+Get:12 http://deb.debian.org/debian bullseye/main amd64 python3-pkg-resources all 52.0.0-4 [190 kB]
+Get:13 http://deb.debian.org/debian bullseye/main amd64 python3-setuptools all 52.0.0-4 [366 kB]
+Get:14 http://deb.debian.org/debian bullseye/main amd64 python3-wheel all 0.34.2-1 [24.0 kB]
+Get:15 http://deb.debian.org/debian bullseye/main amd64 python3-pip all 20.3.4-4 [337 kB]
+[91mdebconf: delaying package configuration, since apt-utils is not installed
+[0mFetched 9702 kB in 2s (5957 kB/s)
+Selecting previously unselected package build-essential.
+(Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 22741 files and directories currently installed.)
+Preparing to unpack .../00-build-essential_12.9_amd64.deb ...
+Unpacking build-essential (12.9) ...
+Selecting previously unselected package javascript-common.
+Preparing to unpack .../01-javascript-common_11+nmu1_all.deb ...
+Unpacking javascript-common (11+nmu1) ...
+Selecting previously unselected package libjs-jquery.
+Preparing to unpack .../02-libjs-jquery_3.5.1+dfsg+~3.5.5-7_all.deb ...
+Unpacking libjs-jquery (3.5.1+dfsg+~3.5.5-7) ...
+Selecting previously unselected package libjs-underscore.
+Preparing to unpack .../03-libjs-underscore_1.9.1~dfsg-3_all.deb ...
+Unpacking libjs-underscore (1.9.1~dfsg-3) ...
+Selecting previously unselected package libjs-sphinxdoc.
+Preparing to unpack .../04-libjs-sphinxdoc_3.4.3-2_all.deb ...
+Unpacking libjs-sphinxdoc (3.4.3-2) ...
+Selecting previously unselected package libpython3.9:amd64.
+Preparing to unpack .../05-libpython3.9_3.9.2-1_amd64.deb ...
+Unpacking libpython3.9:amd64 (3.9.2-1) ...
+Selecting previously unselected package libpython3.9-dev:amd64.
+Preparing to unpack .../06-libpython3.9-dev_3.9.2-1_amd64.deb ...
+Unpacking libpython3.9-dev:amd64 (3.9.2-1) ...
+Selecting previously unselected package libpython3-dev:amd64.
+Preparing to unpack .../07-libpython3-dev_3.9.2-3_amd64.deb ...
+Unpacking libpython3-dev:amd64 (3.9.2-3) ...
+Selecting previously unselected package python-pip-whl.
+Preparing to unpack .../08-python-pip-whl_20.3.4-4_all.deb ...
+Unpacking python-pip-whl (20.3.4-4) ...
+Selecting previously unselected package python3.9-dev.
+Preparing to unpack .../09-python3.9-dev_3.9.2-1_amd64.deb ...
+Unpacking python3.9-dev (3.9.2-1) ...
+Selecting previously unselected package python3-dev.
+Preparing to unpack .../10-python3-dev_3.9.2-3_amd64.deb ...
+Unpacking python3-dev (3.9.2-3) ...
+Selecting previously unselected package python3-pkg-resources.
+Preparing to unpack .../11-python3-pkg-resources_52.0.0-4_all.deb ...
+Unpacking python3-pkg-resources (52.0.0-4) ...
+Selecting previously unselected package python3-setuptools.
+Preparing to unpack .../12-python3-setuptools_52.0.0-4_all.deb ...
+Unpacking python3-setuptools (52.0.0-4) ...
+Selecting previously unselected package python3-wheel.
+Preparing to unpack .../13-python3-wheel_0.34.2-1_all.deb ...
+Unpacking python3-wheel (0.34.2-1) ...
+Selecting previously unselected package python3-pip.
+Preparing to unpack .../14-python3-pip_20.3.4-4_all.deb ...
+Unpacking python3-pip (20.3.4-4) ...
+Setting up python3-pkg-resources (52.0.0-4) ...
+Setting up javascript-common (11+nmu1) ...
+Setting up python3-setuptools (52.0.0-4) ...
+Setting up python3-wheel (0.34.2-1) ...
+Setting up libpython3.9:amd64 (3.9.2-1) ...
+Setting up build-essential (12.9) ...
+Setting up python-pip-whl (20.3.4-4) ...
+Setting up libjs-jquery (3.5.1+dfsg+~3.5.5-7) ...
+Setting up libjs-underscore (1.9.1~dfsg-3) ...
+Setting up libpython3.9-dev:amd64 (3.9.2-1) ...
+Setting up python3-pip (20.3.4-4) ...
+Setting up libjs-sphinxdoc (3.4.3-2) ...
+Setting up python3.9-dev (3.9.2-1) ...
+Setting up libpython3-dev:amd64 (3.9.2-3) ...
+Setting up python3-dev (3.9.2-3) ...
+Processing triggers for libc-bin (2.31-13+deb11u2) ...
+Removing intermediate container 23d7da7d4e52
+ ---> 4c05e4f35cca
+Step 6/9 : RUN pip3 install -r configs/requirements.txt
+ ---> Running in 63507823207a
+Collecting pybatfish>=0.36.0
+  Downloading pybatfish-2021.11.4.1095-py2.py3-none-any.whl (128 kB)
+Collecting pandas>=1.1.5
+  Downloading pandas-1.3.5-cp39-cp39-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (11.5 MB)
+Collecting black>=21.7b0
+  Downloading black-21.12b0-py3-none-any.whl (156 kB)
+Collecting pathspec<1,>=0.9.0
+  Downloading pathspec-0.9.0-py2.py3-none-any.whl (31 kB)
+Collecting click>=7.1.2
+  Downloading click-8.0.3-py3-none-any.whl (97 kB)
+Collecting mypy-extensions>=0.4.3
+  Downloading mypy_extensions-0.4.3-py2.py3-none-any.whl (4.5 kB)
+Collecting platformdirs>=2
+  Downloading platformdirs-2.4.1-py3-none-any.whl (14 kB)
+Collecting typing-extensions>=3.10.0.0
+  Downloading typing_extensions-4.0.1-py3-none-any.whl (22 kB)
+Collecting tomli<2.0.0,>=0.2.6
+  Downloading tomli-1.2.3-py3-none-any.whl (12 kB)
+Collecting numpy>=1.17.3
+  Downloading numpy-1.22.0-cp39-cp39-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (16.8 MB)
+Collecting pytz>=2017.3
+  Downloading pytz-2021.3-py2.py3-none-any.whl (503 kB)
+Collecting python-dateutil>=2.7.3
+  Downloading python_dateutil-2.8.2-py2.py3-none-any.whl (247 kB)
+Collecting PyYAML
+  Downloading PyYAML-6.0-cp39-cp39-manylinux_2_5_x86_64.manylinux1_x86_64.manylinux_2_12_x86_64.manylinux2010_x86_64.whl (661 kB)
+Collecting pandas>=1.1.5
+  Downloading pandas-1.1.5-cp39-cp39-manylinux1_x86_64.whl (9.3 MB)
+Collecting simplejson
+  Downloading simplejson-3.17.6-cp39-cp39-manylinux_2_5_x86_64.manylinux1_x86_64.manylinux_2_12_x86_64.manylinux2010_x86_64.whl (136 kB)
+Collecting attrs>=18.1.0
+  Downloading attrs-21.4.0-py2.py3-none-any.whl (60 kB)
+Collecting requests
+  Downloading requests-2.27.1-py2.py3-none-any.whl (63 kB)
+Collecting deepdiff
+  Downloading deepdiff-5.7.0-py3-none-any.whl (68 kB)
+Collecting requests-toolbelt
+  Downloading requests_toolbelt-0.9.1-py2.py3-none-any.whl (54 kB)
+Collecting netconan>=0.12.0
+  Downloading netconan-0.12.3-py2.py3-none-any.whl (50 kB)
+Collecting deprecated
+  Downloading Deprecated-1.2.13-py2.py3-none-any.whl (9.6 kB)
+Collecting configargparse<1.0.0
+  Downloading ConfigArgParse-0.15.2.tar.gz (27 kB)
+Collecting bidict<1.0.0
+  Downloading bidict-0.21.4-py3-none-any.whl (36 kB)
+Collecting six<2.0.0
+  Downloading six-1.16.0-py2.py3-none-any.whl (11 kB)
+Collecting passlib<2.0.0
+  Downloading passlib-1.7.4-py2.py3-none-any.whl (525 kB)
+Collecting ordered-set==4.0.2
+  Downloading ordered-set-4.0.2.tar.gz (10 kB)
+Collecting wrapt<2,>=1.10
+  Downloading wrapt-1.13.3-cp39-cp39-manylinux_2_5_x86_64.manylinux1_x86_64.manylinux_2_12_x86_64.manylinux2010_x86_64.whl (81 kB)
+Collecting urllib3<1.27,>=1.21.1
+  Downloading urllib3-1.26.8-py2.py3-none-any.whl (138 kB)
+Collecting certifi>=2017.4.17
+  Downloading certifi-2021.10.8-py2.py3-none-any.whl (149 kB)
+Collecting charset-normalizer~=2.0.0
+  Downloading charset_normalizer-2.0.10-py3-none-any.whl (39 kB)
+Collecting idna<4,>=2.5
+  Downloading idna-3.3-py3-none-any.whl (61 kB)
+Building wheels for collected packages: configargparse, ordered-set
+  Building wheel for configargparse (setup.py): started
+  Building wheel for configargparse (setup.py): finished with status 'done'
+  Created wheel for configargparse: filename=ConfigArgParse-0.15.2-py3-none-any.whl size=17835 sha256=eb00bc95a4993d181273574194684408fef430eac8637ffeec9684cf5dff958b
+  Stored in directory: /root/.cache/pip/wheels/2f/c7/25/0885345f7c93561c4addf27f7ba3921bea1408fa97ff93581f
+  Building wheel for ordered-set (setup.py): started
+  Building wheel for ordered-set (setup.py): finished with status 'done'
+  Created wheel for ordered-set: filename=ordered_set-4.0.2-py2.py3-none-any.whl size=8209 sha256=c90ca98e797832beae9ae3f1cf99fe6d4106d147d2835d8d991e5d1915b78e54
+  Stored in directory: /root/.cache/pip/wheels/c0/a1/09/0c736ab4beb6a48ae2f5f2529b2ad3770c8e6cc32d01d75a2c
+Successfully built configargparse ordered-set
+Installing collected packages: urllib3, six, idna, charset-normalizer, certifi, wrapt, requests, pytz, python-dateutil, passlib, ordered-set, numpy, configargparse, bidict, typing-extensions, tomli, simplejson, requests-toolbelt, PyYAML, platformdirs, pathspec, pandas, netconan, mypy-extensions, deprecated, deepdiff, click, attrs, pybatfish, black
+Successfully installed PyYAML-6.0 attrs-21.4.0 bidict-0.21.4 black-21.12b0 certifi-2021.10.8 charset-normalizer-2.0.10 click-8.0.3 configargparse-0.15.2 deepdiff-5.7.0 deprecated-1.2.13 idna-3.3 mypy-extensions-0.4.3 netconan-0.12.3 numpy-1.22.0 ordered-set-4.0.2 pandas-1.1.5 passlib-1.7.4 pathspec-0.9.0 platformdirs-2.4.1 pybatfish-2021.11.4.1095 python-dateutil-2.8.2 pytz-2021.3 requests-2.27.1 requests-toolbelt-0.9.1 simplejson-3.17.6 six-1.16.0 tomli-1.2.3 typing-extensions-4.0.1 urllib3-1.26.8 wrapt-1.13.3
+Removing intermediate container 63507823207a
+ ---> 93fae7dc3c01
+Step 7/9 : RUN gem update --system
+ ---> Running in 877b4b00889d
+Updating rubygems-update
+Successfully installed rubygems-update-3.3.4
+Installing RubyGems 3.3.4
+  Successfully built RubyGem
+  Name: bundler
+  Version: 2.3.4
+  File: bundler-2.3.4.gem
+Bundler 2.3.4 installed
+RubyGems 3.3.4 installed
+Regenerating binstubs
+Regenerating plugins
+
+# 3.3.4 / 2021-12-29
+
+## Enhancements:
+
+* Don't redownload `rubygems-update` package if already there. Pull
+  request #5230 by deivid-rodriguez
+* Installs bundler 2.3.4 as a default gem.
+
+## Bug fixes:
+
+* Fix `gem update --system` crashing when latest version not supported.
+  Pull request #5191 by deivid-rodriguez
+
+## Performance:
+
+* Make SpecificationPolicy autoload constant. Pull request #5222 by pocke
+
+
+------------------------------------------------------------------------------
+
+RubyGems installed the following executables:
+	/usr/local/bin/gem
+	/usr/local/bin/bundle
+	/usr/local/bin/bundler
+
+RubyGems system software updated
+Removing intermediate container 877b4b00889d
+ ---> 344c80f5cff2
+Step 8/9 : RUN gem  install bundler
+ ---> Running in 498e94973f04
+Successfully installed bundler-2.3.4
+1 gem installed
+Removing intermediate container 498e94973f04
+ ---> 34990c4d6a05
+Step 9/9 : RUN bundle install --path=vendor/bundle
+ ---> Running in 7e53585ee13a
+[91m[DEPRECATED] The `--path` flag is deprecated because it relies on being remembered across bundler invocations, which bundler will no longer do in future versions. Instead please use `bundle config set --local path 'vendor/bundle'`, and stop using this flag
+[0mFetching gem metadata from https://rubygems.org/.
+Bundler 2.3.4 is running, but your lockfile was generated with 2.1.4. Installing Bundler 2.1.4 and restarting using that version.
+Fetching bundler 2.1.4
+Installing bundler 2.1.4
+[91mCalling `DidYouMean::SPELL_CHECKERS.merge!(error_name => spell_checker)' has been deprecated. Please call `DidYouMean.correct_error(error_name, spell_checker)' instead.
+[0mFetching gem metadata from https://rubygems.org/..........
+Fetching https://github.com/corestate55/netomox
+Fetching rake 13.0.6
+Installing rake 13.0.6
+Fetching ast 2.4.2
+Installing ast 2.4.2
+Using bundler 2.1.4
+Fetching excon 0.89.0
+Installing excon 0.89.0
+Fetching hashie 5.0.0
+Installing hashie 5.0.0
+Fetching highline 2.0.3
+Installing highline 2.0.3
+Fetching ipaddress 0.8.3
+Installing ipaddress 0.8.3
+Using json 2.6.1
+Fetching multi_json 1.15.0
+Installing multi_json 1.15.0
+Fetching os 1.1.4
+Installing os 1.1.4
+Fetching rubyzip 2.3.2
+Installing rubyzip 2.3.2
+Fetching neography 1.8.0
+Installing neography 1.8.0
+Fetching termcolor 1.2.2
+Installing termcolor 1.2.2
+Fetching thor 1.0.1
+Installing thor 1.0.1
+Using netomox 0.1.0 from https://github.com/corestate55/netomox (at develop@45f0269)
+Fetching parallel 1.21.0
+Installing parallel 1.21.0
+Fetching parser 3.0.3.2
+Installing parser 3.0.3.2
+Fetching rainbow 3.0.0
+Installing rainbow 3.0.0
+Fetching regexp_parser 2.2.0
+Installing regexp_parser 2.2.0
+Fetching rexml 3.2.5
+Installing rexml 3.2.5
+Fetching rubocop-ast 1.15.1
+Installing rubocop-ast 1.15.1
+Fetching ruby-progressbar 1.11.0
+Installing ruby-progressbar 1.11.0
+Fetching unicode-display_width 2.1.0
+Installing unicode-display_width 2.1.0
+Fetching rubocop 1.24.1
+Installing rubocop 1.24.1
+Fetching webrick 1.7.0
+Installing webrick 1.7.0
+Fetching yard 0.9.27
+Installing yard 0.9.27
+Bundle complete! 6 Gemfile dependencies, 26 gems now installed.
+Bundled gems are installed into `./vendor/bundle`
+Post-install message from rubyzip:
+RubyZip 3.0 is coming!
+**********************
+
+The public API of some Rubyzip classes has been modernized to use named
+parameters for optional arguments. Please check your usage of the
+following classes:
+  * `Zip::File`
+  * `Zip::Entry`
+  * `Zip::InputStream`
+  * `Zip::OutputStream`
+
+Please ensure that your Gemfiles and .gemspecs are suitably restrictive
+to avoid an unexpected breakage when 3.0 is released (e.g. ~> 2.3.0).
+See https://github.com/rubyzip/rubyzip for details. The Changelog also
+lists other enhancements and bugfixes that have been implemented since
+version 2.3.0.
+Removing intermediate container 7e53585ee13a
+ ---> c925239c00ce
+Successfully built c925239c00ce
+Successfully tagged netomox-exp_netomox:latest
+netomox-exp_netoviz_1 is up-to-date
+batfish is up-to-date
+Recreating netomox-exp_netomox_1 ... 
+Recreating netomox-exp_netomox_1 ... done
+The Docker Engine you're using is running in swarm mode.
+
+Compose does not use swarm mode to deploy services to multiple nodes in a swarm. All containers will be scheduled on the current node.
+
+To deploy your application across the swarm, use `docker stack deploy`.
+
+Building netomox
+Sending build context to Docker daemon  14.68MB
+Step 1/8 : FROM ruby:3.1.0
+ ---> f36ec0de68cd
+Step 2/8 : RUN mkdir /myapp
+ ---> Using cache
+ ---> cf5a529b46c7
+Step 3/8 : WORKDIR /myapp
+ ---> Using cache
+ ---> 06a62f659624
+Step 4/8 : COPY . /myapp
+ ---> 9c2060538e70
+Step 5/8 : RUN apt-get update && apt-get install -y  python3-pip
+ ---> Running in a6fd5e3b84b8
+Get:1 http://security.debian.org/debian-security bullseye-security InRelease [44.1 kB]
+Get:2 http://security.debian.org/debian-security bullseye-security/main amd64 Packages [102 kB]
+Get:3 http://deb.debian.org/debian bullseye InRelease [116 kB]
+Get:4 http://deb.debian.org/debian bullseye-updates InRelease [39.4 kB]
+Get:5 http://deb.debian.org/debian bullseye/main amd64 Packages [8183 kB]
+Get:6 http://deb.debian.org/debian bullseye-updates/main amd64 Packages [2592 B]
+Fetched 8487 kB in 3s (2867 kB/s)
+Reading package lists...
+Reading package lists...
+Building dependency tree...
+Reading state information...
+The following additional packages will be installed:
+  build-essential javascript-common libjs-jquery libjs-sphinxdoc
+  libjs-underscore libpython3-dev libpython3.9 libpython3.9-dev python-pip-whl
+  python3-dev python3-pkg-resources python3-setuptools python3-wheel
+  python3.9-dev
+Suggested packages:
+  apache2 | lighttpd | httpd python-setuptools-doc
+The following NEW packages will be installed:
+  build-essential javascript-common libjs-jquery libjs-sphinxdoc
+  libjs-underscore libpython3-dev libpython3.9 libpython3.9-dev python-pip-whl
+  python3-dev python3-pip python3-pkg-resources python3-setuptools
+  python3-wheel python3.9-dev
+0 upgraded, 15 newly installed, 0 to remove and 0 not upgraded.
+Need to get 9702 kB of archives.
+After this operation, 34.0 MB of additional disk space will be used.
+Get:1 http://deb.debian.org/debian bullseye/main amd64 build-essential amd64 12.9 [7704 B]
+Get:2 http://deb.debian.org/debian bullseye/main amd64 javascript-common all 11+nmu1 [6260 B]
+Get:3 http://deb.debian.org/debian bullseye/main amd64 libjs-jquery all 3.5.1+dfsg+~3.5.5-7 [315 kB]
+Get:4 http://deb.debian.org/debian bullseye/main amd64 libjs-underscore all 1.9.1~dfsg-3 [100 kB]
+Get:5 http://deb.debian.org/debian bullseye/main amd64 libjs-sphinxdoc all 3.4.3-2 [127 kB]
+Get:6 http://deb.debian.org/debian bullseye/main amd64 libpython3.9 amd64 3.9.2-1 [1691 kB]
+Get:7 http://deb.debian.org/debian bullseye/main amd64 libpython3.9-dev amd64 3.9.2-1 [4028 kB]
+Get:8 http://deb.debian.org/debian bullseye/main amd64 libpython3-dev amd64 3.9.2-3 [21.7 kB]
+Get:9 http://deb.debian.org/debian bullseye/main amd64 python-pip-whl all 20.3.4-4 [1948 kB]
+Get:10 http://deb.debian.org/debian bullseye/main amd64 python3.9-dev amd64 3.9.2-1 [515 kB]
+Get:11 http://deb.debian.org/debian bullseye/main amd64 python3-dev amd64 3.9.2-3 [24.8 kB]
+Get:12 http://deb.debian.org/debian bullseye/main amd64 python3-pkg-resources all 52.0.0-4 [190 kB]
+Get:13 http://deb.debian.org/debian bullseye/main amd64 python3-setuptools all 52.0.0-4 [366 kB]
+Get:14 http://deb.debian.org/debian bullseye/main amd64 python3-wheel all 0.34.2-1 [24.0 kB]
+Get:15 http://deb.debian.org/debian bullseye/main amd64 python3-pip all 20.3.4-4 [337 kB]
+[91mdebconf: delaying package configuration, since apt-utils is not installed
+[0mFetched 9702 kB in 2s (6203 kB/s)
+Selecting previously unselected package build-essential.
+(Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 22741 files and directories currently installed.)
+Preparing to unpack .../00-build-essential_12.9_amd64.deb ...
+Unpacking build-essential (12.9) ...
+Selecting previously unselected package javascript-common.
+Preparing to unpack .../01-javascript-common_11+nmu1_all.deb ...
+Unpacking javascript-common (11+nmu1) ...
+Selecting previously unselected package libjs-jquery.
+Preparing to unpack .../02-libjs-jquery_3.5.1+dfsg+~3.5.5-7_all.deb ...
+Unpacking libjs-jquery (3.5.1+dfsg+~3.5.5-7) ...
+Selecting previously unselected package libjs-underscore.
+Preparing to unpack .../03-libjs-underscore_1.9.1~dfsg-3_all.deb ...
+Unpacking libjs-underscore (1.9.1~dfsg-3) ...
+Selecting previously unselected package libjs-sphinxdoc.
+Preparing to unpack .../04-libjs-sphinxdoc_3.4.3-2_all.deb ...
+Unpacking libjs-sphinxdoc (3.4.3-2) ...
+Selecting previously unselected package libpython3.9:amd64.
+Preparing to unpack .../05-libpython3.9_3.9.2-1_amd64.deb ...
+Unpacking libpython3.9:amd64 (3.9.2-1) ...
+Selecting previously unselected package libpython3.9-dev:amd64.
+Preparing to unpack .../06-libpython3.9-dev_3.9.2-1_amd64.deb ...
+Unpacking libpython3.9-dev:amd64 (3.9.2-1) ...
+Selecting previously unselected package libpython3-dev:amd64.
+Preparing to unpack .../07-libpython3-dev_3.9.2-3_amd64.deb ...
+Unpacking libpython3-dev:amd64 (3.9.2-3) ...
+Selecting previously unselected package python-pip-whl.
+Preparing to unpack .../08-python-pip-whl_20.3.4-4_all.deb ...
+Unpacking python-pip-whl (20.3.4-4) ...
+Selecting previously unselected package python3.9-dev.
+Preparing to unpack .../09-python3.9-dev_3.9.2-1_amd64.deb ...
+Unpacking python3.9-dev (3.9.2-1) ...
+Selecting previously unselected package python3-dev.
+Preparing to unpack .../10-python3-dev_3.9.2-3_amd64.deb ...
+Unpacking python3-dev (3.9.2-3) ...
+Selecting previously unselected package python3-pkg-resources.
+Preparing to unpack .../11-python3-pkg-resources_52.0.0-4_all.deb ...
+Unpacking python3-pkg-resources (52.0.0-4) ...
+Selecting previously unselected package python3-setuptools.
+Preparing to unpack .../12-python3-setuptools_52.0.0-4_all.deb ...
+Unpacking python3-setuptools (52.0.0-4) ...
+Selecting previously unselected package python3-wheel.
+Preparing to unpack .../13-python3-wheel_0.34.2-1_all.deb ...
+Unpacking python3-wheel (0.34.2-1) ...
+Selecting previously unselected package python3-pip.
+Preparing to unpack .../14-python3-pip_20.3.4-4_all.deb ...
+Unpacking python3-pip (20.3.4-4) ...
+Setting up python3-pkg-resources (52.0.0-4) ...
+Setting up javascript-common (11+nmu1) ...
+Setting up python3-setuptools (52.0.0-4) ...
+Setting up python3-wheel (0.34.2-1) ...
+Setting up libpython3.9:amd64 (3.9.2-1) ...
+Setting up build-essential (12.9) ...
+Setting up python-pip-whl (20.3.4-4) ...
+Setting up libjs-jquery (3.5.1+dfsg+~3.5.5-7) ...
+Setting up libjs-underscore (1.9.1~dfsg-3) ...
+Setting up libpython3.9-dev:amd64 (3.9.2-1) ...
+Setting up python3-pip (20.3.4-4) ...
+Setting up libjs-sphinxdoc (3.4.3-2) ...
+Setting up python3.9-dev (3.9.2-1) ...
+Setting up libpython3-dev:amd64 (3.9.2-3) ...
+Setting up python3-dev (3.9.2-3) ...
+Processing triggers for libc-bin (2.31-13+deb11u2) ...
+Removing intermediate container a6fd5e3b84b8
+ ---> 70982fdbdd92
+Step 6/8 : RUN pip3 install -r configs/requirements.txt
+ ---> Running in 273b3c3dab01
+Collecting pybatfish>=0.36.0
+  Downloading pybatfish-2021.11.4.1095-py2.py3-none-any.whl (128 kB)
+Collecting pandas>=1.1.5
+  Downloading pandas-1.3.5-cp39-cp39-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (11.5 MB)
+Collecting black>=21.7b0
+  Downloading black-21.12b0-py3-none-any.whl (156 kB)
+Collecting platformdirs>=2
+  Downloading platformdirs-2.4.1-py3-none-any.whl (14 kB)
+Collecting typing-extensions>=3.10.0.0
+  Downloading typing_extensions-4.0.1-py3-none-any.whl (22 kB)
+Collecting click>=7.1.2
+  Downloading click-8.0.3-py3-none-any.whl (97 kB)
+Collecting tomli<2.0.0,>=0.2.6
+  Downloading tomli-1.2.3-py3-none-any.whl (12 kB)
+Collecting pathspec<1,>=0.9.0
+  Downloading pathspec-0.9.0-py2.py3-none-any.whl (31 kB)
+Collecting mypy-extensions>=0.4.3
+  Downloading mypy_extensions-0.4.3-py2.py3-none-any.whl (4.5 kB)
+Collecting python-dateutil>=2.7.3
+  Downloading python_dateutil-2.8.2-py2.py3-none-any.whl (247 kB)
+Collecting numpy>=1.17.3
+  Downloading numpy-1.22.0-cp39-cp39-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (16.8 MB)
+Collecting pytz>=2017.3
+  Downloading pytz-2021.3-py2.py3-none-any.whl (503 kB)
+Collecting attrs>=18.1.0
+  Downloading attrs-21.4.0-py2.py3-none-any.whl (60 kB)
+Collecting netconan>=0.12.0
+  Downloading netconan-0.12.3-py2.py3-none-any.whl (50 kB)
+Collecting deprecated
+  Downloading Deprecated-1.2.13-py2.py3-none-any.whl (9.6 kB)
+Collecting requests
+  Downloading requests-2.27.1-py2.py3-none-any.whl (63 kB)
+Collecting deepdiff
+  Downloading deepdiff-5.7.0-py3-none-any.whl (68 kB)
+Collecting simplejson
+  Downloading simplejson-3.17.6-cp39-cp39-manylinux_2_5_x86_64.manylinux1_x86_64.manylinux_2_12_x86_64.manylinux2010_x86_64.whl (136 kB)
+Collecting pandas>=1.1.5
+  Downloading pandas-1.1.5-cp39-cp39-manylinux1_x86_64.whl (9.3 MB)
+Collecting requests-toolbelt
+  Downloading requests_toolbelt-0.9.1-py2.py3-none-any.whl (54 kB)
+Collecting PyYAML
+  Downloading PyYAML-6.0-cp39-cp39-manylinux_2_5_x86_64.manylinux1_x86_64.manylinux_2_12_x86_64.manylinux2010_x86_64.whl (661 kB)
+Collecting configargparse<1.0.0
+  Downloading ConfigArgParse-0.15.2.tar.gz (27 kB)
+Collecting bidict<1.0.0
+  Downloading bidict-0.21.4-py3-none-any.whl (36 kB)
+Collecting passlib<2.0.0
+  Downloading passlib-1.7.4-py2.py3-none-any.whl (525 kB)
+Collecting six<2.0.0
+  Downloading six-1.16.0-py2.py3-none-any.whl (11 kB)
+Collecting ordered-set==4.0.2
+  Downloading ordered-set-4.0.2.tar.gz (10 kB)
+Collecting wrapt<2,>=1.10
+  Downloading wrapt-1.13.3-cp39-cp39-manylinux_2_5_x86_64.manylinux1_x86_64.manylinux_2_12_x86_64.manylinux2010_x86_64.whl (81 kB)
+Collecting charset-normalizer~=2.0.0
+  Downloading charset_normalizer-2.0.10-py3-none-any.whl (39 kB)
+Collecting certifi>=2017.4.17
+  Downloading certifi-2021.10.8-py2.py3-none-any.whl (149 kB)
+Collecting idna<4,>=2.5
+  Downloading idna-3.3-py3-none-any.whl (61 kB)
+Collecting urllib3<1.27,>=1.21.1
+  Downloading urllib3-1.26.8-py2.py3-none-any.whl (138 kB)
+Building wheels for collected packages: configargparse, ordered-set
+  Building wheel for configargparse (setup.py): started
+  Building wheel for configargparse (setup.py): finished with status 'done'
+  Created wheel for configargparse: filename=ConfigArgParse-0.15.2-py3-none-any.whl size=17835 sha256=346b3235b5e946a2de1c893ba265876148222b5fd5f753346c5ece7879ebf434
+  Stored in directory: /root/.cache/pip/wheels/2f/c7/25/0885345f7c93561c4addf27f7ba3921bea1408fa97ff93581f
+  Building wheel for ordered-set (setup.py): started
+  Building wheel for ordered-set (setup.py): finished with status 'done'
+  Created wheel for ordered-set: filename=ordered_set-4.0.2-py2.py3-none-any.whl size=8209 sha256=4f7fe001543ac5081802a02289cc39b6b3f809b15f8aeb27c84e85a076269c3b
+  Stored in directory: /root/.cache/pip/wheels/c0/a1/09/0c736ab4beb6a48ae2f5f2529b2ad3770c8e6cc32d01d75a2c
+Successfully built configargparse ordered-set
+Installing collected packages: urllib3, six, idna, charset-normalizer, certifi, wrapt, requests, pytz, python-dateutil, passlib, ordered-set, numpy, configargparse, bidict, typing-extensions, tomli, simplejson, requests-toolbelt, PyYAML, platformdirs, pathspec, pandas, netconan, mypy-extensions, deprecated, deepdiff, click, attrs, pybatfish, black
+Successfully installed PyYAML-6.0 attrs-21.4.0 bidict-0.21.4 black-21.12b0 certifi-2021.10.8 charset-normalizer-2.0.10 click-8.0.3 configargparse-0.15.2 deepdiff-5.7.0 deprecated-1.2.13 idna-3.3 mypy-extensions-0.4.3 netconan-0.12.3 numpy-1.22.0 ordered-set-4.0.2 pandas-1.1.5 passlib-1.7.4 pathspec-0.9.0 platformdirs-2.4.1 pybatfish-2021.11.4.1095 python-dateutil-2.8.2 pytz-2021.3 requests-2.27.1 requests-toolbelt-0.9.1 simplejson-3.17.6 six-1.16.0 tomli-1.2.3 typing-extensions-4.0.1 urllib3-1.26.8 wrapt-1.13.3
+Removing intermediate container 273b3c3dab01
+ ---> a854119ddeaf
+Step 7/8 : RUN gem  install bundler
+ ---> Running in da58ec13ed9b
+Successfully installed bundler-2.3.4
+1 gem installed
+Removing intermediate container da58ec13ed9b
+ ---> 57eb80cd3ef7
+Step 8/8 : RUN bundle install
+ ---> Running in 946b907e2722
+Fetching gem metadata from https://rubygems.org/.
+Bundler 2.3.4 is running, but your lockfile was generated with 2.1.4. Installing Bundler 2.1.4 and restarting using that version.
+Fetching bundler 2.1.4
+Installing bundler 2.1.4
+[91mCalling `DidYouMean::SPELL_CHECKERS.merge!(error_name => spell_checker)' has been deprecated. Please call `DidYouMean.correct_error(error_name, spell_checker)' instead.
+[0mFetching gem metadata from https://rubygems.org/..........
+Fetching https://github.com/corestate55/netomox
+Using rake 13.0.6
+Fetching ast 2.4.2
+Installing ast 2.4.2
+Using bundler 2.1.4
+Fetching excon 0.89.0
+Installing excon 0.89.0
+Fetching hashie 5.0.0
+Installing hashie 5.0.0
+Fetching highline 2.0.3
+Installing highline 2.0.3
+Fetching ipaddress 0.8.3
+Installing ipaddress 0.8.3
+Using json 2.6.1
+Fetching multi_json 1.15.0
+Installing multi_json 1.15.0
+Fetching os 1.1.4
+Installing os 1.1.4
+Fetching rubyzip 2.3.2
+Installing rubyzip 2.3.2
+Fetching neography 1.8.0
+Installing neography 1.8.0
+Fetching termcolor 1.2.2
+Installing termcolor 1.2.2
+Fetching thor 1.0.1
+Installing thor 1.0.1
+Using netomox 0.1.0 from https://github.com/corestate55/netomox (at develop@45f0269)
+Fetching parallel 1.21.0
+Installing parallel 1.21.0
+Fetching parser 3.0.3.2
+Installing parser 3.0.3.2
+Fetching rainbow 3.0.0
+Installing rainbow 3.0.0
+Fetching regexp_parser 2.2.0
+Installing regexp_parser 2.2.0
+Using rexml 3.2.5
+Fetching rubocop-ast 1.15.1
+Installing rubocop-ast 1.15.1
+Fetching ruby-progressbar 1.11.0
+Installing ruby-progressbar 1.11.0
+Fetching unicode-display_width 2.1.0
+Installing unicode-display_width 2.1.0
+Fetching rubocop 1.24.1
+Installing rubocop 1.24.1
+Fetching webrick 1.7.0
+Installing webrick 1.7.0
+Fetching yard 0.9.27
+Installing yard 0.9.27
+Bundle complete! 6 Gemfile dependencies, 26 gems now installed.
+Use `bundle info [gemname]` to see where a bundled gem is installed.
+Post-install message from rubyzip:
+RubyZip 3.0 is coming!
+**********************
+
+The public API of some Rubyzip classes has been modernized to use named
+parameters for optional arguments. Please check your usage of the
+following classes:
+  * `Zip::File`
+  * `Zip::Entry`
+  * `Zip::InputStream`
+  * `Zip::OutputStream`
+
+Please ensure that your Gemfiles and .gemspecs are suitably restrictive
+to avoid an unexpected breakage when 3.0 is released (e.g. ~> 2.3.0).
+See https://github.com/rubyzip/rubyzip for details. The Changelog also
+lists other enhancements and bugfixes that have been implemented since
+version 2.3.0.
+Removing intermediate container 946b907e2722
+ ---> 76d5cfca2c38
+Successfully built 76d5cfca2c38
+Successfully tagged netomox-exp_netomox:latest
+Recreating netomox-exp_netomox_1 ... 
+netomox-exp_netoviz_1 is up-to-date
+batfish is up-to-date
+Recreating netomox-exp_netomox_1 ... done
+netoviz uses an image, skipping
+batfish uses an image, skipping
+Building netomox
+Sending build context to Docker daemon  14.69MB
+Step 1/8 : FROM ruby:3.1.0
+ ---> f36ec0de68cd
+Step 2/8 : RUN mkdir /myapp
+ ---> Using cache
+ ---> cf5a529b46c7
+Step 3/8 : WORKDIR /myapp
+ ---> Using cache
+ ---> 06a62f659624
+Step 4/8 : COPY . /myapp
+ ---> 544eca2ac8c3
+Step 5/8 : RUN apt-get update && apt-get install -y  python3-pip
+ ---> Running in 94ac2bd59b4d
+Get:1 http://deb.debian.org/debian bullseye InRelease [116 kB]
+Get:2 http://security.debian.org/debian-security bullseye-security InRelease [44.1 kB]
+Get:3 http://deb.debian.org/debian bullseye-updates InRelease [39.4 kB]
+Get:4 http://security.debian.org/debian-security bullseye-security/main amd64 Packages [102 kB]
+Get:5 http://deb.debian.org/debian bullseye/main amd64 Packages [8183 kB]
+Get:6 http://deb.debian.org/debian bullseye-updates/main amd64 Packages [2592 B]
+Fetched 8487 kB in 3s (3138 kB/s)
+Reading package lists...
+Reading package lists...
+Building dependency tree...
+Reading state information...
+The following additional packages will be installed:
+  build-essential javascript-common libjs-jquery libjs-sphinxdoc
+  libjs-underscore libpython3-dev libpython3.9 libpython3.9-dev python-pip-whl
+  python3-dev python3-pkg-resources python3-setuptools python3-wheel
+  python3.9-dev
+Suggested packages:
+  apache2 | lighttpd | httpd python-setuptools-doc
+The following NEW packages will be installed:
+  build-essential javascript-common libjs-jquery libjs-sphinxdoc
+  libjs-underscore libpython3-dev libpython3.9 libpython3.9-dev python-pip-whl
+  python3-dev python3-pip python3-pkg-resources python3-setuptools
+  python3-wheel python3.9-dev
+0 upgraded, 15 newly installed, 0 to remove and 0 not upgraded.
+Need to get 9702 kB of archives.
+After this operation, 34.0 MB of additional disk space will be used.
+Get:1 http://deb.debian.org/debian bullseye/main amd64 build-essential amd64 12.9 [7704 B]
+Get:2 http://deb.debian.org/debian bullseye/main amd64 javascript-common all 11+nmu1 [6260 B]
+Get:3 http://deb.debian.org/debian bullseye/main amd64 libjs-jquery all 3.5.1+dfsg+~3.5.5-7 [315 kB]
+Get:4 http://deb.debian.org/debian bullseye/main amd64 libjs-underscore all 1.9.1~dfsg-3 [100 kB]
+Get:5 http://deb.debian.org/debian bullseye/main amd64 libjs-sphinxdoc all 3.4.3-2 [127 kB]
+Get:6 http://deb.debian.org/debian bullseye/main amd64 libpython3.9 amd64 3.9.2-1 [1691 kB]
+Get:7 http://deb.debian.org/debian bullseye/main amd64 libpython3.9-dev amd64 3.9.2-1 [4028 kB]
+Get:8 http://deb.debian.org/debian bullseye/main amd64 libpython3-dev amd64 3.9.2-3 [21.7 kB]
+Get:9 http://deb.debian.org/debian bullseye/main amd64 python-pip-whl all 20.3.4-4 [1948 kB]
+Get:10 http://deb.debian.org/debian bullseye/main amd64 python3.9-dev amd64 3.9.2-1 [515 kB]
+Get:11 http://deb.debian.org/debian bullseye/main amd64 python3-dev amd64 3.9.2-3 [24.8 kB]
+Get:12 http://deb.debian.org/debian bullseye/main amd64 python3-pkg-resources all 52.0.0-4 [190 kB]
+Get:13 http://deb.debian.org/debian bullseye/main amd64 python3-setuptools all 52.0.0-4 [366 kB]
+Get:14 http://deb.debian.org/debian bullseye/main amd64 python3-wheel all 0.34.2-1 [24.0 kB]
+Get:15 http://deb.debian.org/debian bullseye/main amd64 python3-pip all 20.3.4-4 [337 kB]
+[91mdebconf: delaying package configuration, since apt-utils is not installed
+[0mFetched 9702 kB in 1s (6543 kB/s)
+Selecting previously unselected package build-essential.
+(Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 22741 files and directories currently installed.)
+Preparing to unpack .../00-build-essential_12.9_amd64.deb ...
+Unpacking build-essential (12.9) ...
+Selecting previously unselected package javascript-common.
+Preparing to unpack .../01-javascript-common_11+nmu1_all.deb ...
+Unpacking javascript-common (11+nmu1) ...
+Selecting previously unselected package libjs-jquery.
+Preparing to unpack .../02-libjs-jquery_3.5.1+dfsg+~3.5.5-7_all.deb ...
+Unpacking libjs-jquery (3.5.1+dfsg+~3.5.5-7) ...
+Selecting previously unselected package libjs-underscore.
+Preparing to unpack .../03-libjs-underscore_1.9.1~dfsg-3_all.deb ...
+Unpacking libjs-underscore (1.9.1~dfsg-3) ...
+Selecting previously unselected package libjs-sphinxdoc.
+Preparing to unpack .../04-libjs-sphinxdoc_3.4.3-2_all.deb ...
+Unpacking libjs-sphinxdoc (3.4.3-2) ...
+Selecting previously unselected package libpython3.9:amd64.
+Preparing to unpack .../05-libpython3.9_3.9.2-1_amd64.deb ...
+Unpacking libpython3.9:amd64 (3.9.2-1) ...
+Selecting previously unselected package libpython3.9-dev:amd64.
+Preparing to unpack .../06-libpython3.9-dev_3.9.2-1_amd64.deb ...
+Unpacking libpython3.9-dev:amd64 (3.9.2-1) ...
+Selecting previously unselected package libpython3-dev:amd64.
+Preparing to unpack .../07-libpython3-dev_3.9.2-3_amd64.deb ...
+Unpacking libpython3-dev:amd64 (3.9.2-3) ...
+Selecting previously unselected package python-pip-whl.
+Preparing to unpack .../08-python-pip-whl_20.3.4-4_all.deb ...
+Unpacking python-pip-whl (20.3.4-4) ...
+Selecting previously unselected package python3.9-dev.
+Preparing to unpack .../09-python3.9-dev_3.9.2-1_amd64.deb ...
+Unpacking python3.9-dev (3.9.2-1) ...
+Selecting previously unselected package python3-dev.
+Preparing to unpack .../10-python3-dev_3.9.2-3_amd64.deb ...
+Unpacking python3-dev (3.9.2-3) ...
+Selecting previously unselected package python3-pkg-resources.
+Preparing to unpack .../11-python3-pkg-resources_52.0.0-4_all.deb ...
+Unpacking python3-pkg-resources (52.0.0-4) ...
+Selecting previously unselected package python3-setuptools.
+Preparing to unpack .../12-python3-setuptools_52.0.0-4_all.deb ...
+Unpacking python3-setuptools (52.0.0-4) ...
+Selecting previously unselected package python3-wheel.
+Preparing to unpack .../13-python3-wheel_0.34.2-1_all.deb ...
+Unpacking python3-wheel (0.34.2-1) ...
+Selecting previously unselected package python3-pip.
+Preparing to unpack .../14-python3-pip_20.3.4-4_all.deb ...
+Unpacking python3-pip (20.3.4-4) ...
+Setting up python3-pkg-resources (52.0.0-4) ...
+Setting up javascript-common (11+nmu1) ...
+Setting up python3-setuptools (52.0.0-4) ...
+Setting up python3-wheel (0.34.2-1) ...
+Setting up libpython3.9:amd64 (3.9.2-1) ...
+Setting up build-essential (12.9) ...
+Setting up python-pip-whl (20.3.4-4) ...
+Setting up libjs-jquery (3.5.1+dfsg+~3.5.5-7) ...
+Setting up libjs-underscore (1.9.1~dfsg-3) ...
+Setting up libpython3.9-dev:amd64 (3.9.2-1) ...
+Setting up python3-pip (20.3.4-4) ...
+Setting up libjs-sphinxdoc (3.4.3-2) ...
+Setting up python3.9-dev (3.9.2-1) ...
+Setting up libpython3-dev:amd64 (3.9.2-3) ...
+Setting up python3-dev (3.9.2-3) ...
+Processing triggers for libc-bin (2.31-13+deb11u2) ...
+Removing intermediate container 94ac2bd59b4d
+ ---> e9d1075a7d74
+Step 6/8 : RUN pip3 install -r configs/requirements.txt
+ ---> Running in 88e8f8dbf5a4
+Collecting pybatfish>=0.36.0
+  Downloading pybatfish-2021.11.4.1095-py2.py3-none-any.whl (128 kB)
+Collecting pandas>=1.1.5
+  Downloading pandas-1.3.5-cp39-cp39-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (11.5 MB)
+Collecting black>=21.7b0
+  Downloading black-21.12b0-py3-none-any.whl (156 kB)
+Collecting tomli<2.0.0,>=0.2.6
+  Downloading tomli-1.2.3-py3-none-any.whl (12 kB)
+Collecting click>=7.1.2
+  Downloading click-8.0.3-py3-none-any.whl (97 kB)
+Collecting pathspec<1,>=0.9.0
+  Downloading pathspec-0.9.0-py2.py3-none-any.whl (31 kB)
+Collecting platformdirs>=2
+  Downloading platformdirs-2.4.1-py3-none-any.whl (14 kB)
+Collecting mypy-extensions>=0.4.3
+  Downloading mypy_extensions-0.4.3-py2.py3-none-any.whl (4.5 kB)
+Collecting typing-extensions>=3.10.0.0
+  Downloading typing_extensions-4.0.1-py3-none-any.whl (22 kB)
+Collecting python-dateutil>=2.7.3
+  Downloading python_dateutil-2.8.2-py2.py3-none-any.whl (247 kB)
+Collecting numpy>=1.17.3
+  Downloading numpy-1.22.0-cp39-cp39-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (16.8 MB)
+Collecting pytz>=2017.3
+  Downloading pytz-2021.3-py2.py3-none-any.whl (503 kB)
+Collecting simplejson
+  Downloading simplejson-3.17.6-cp39-cp39-manylinux_2_5_x86_64.manylinux1_x86_64.manylinux_2_12_x86_64.manylinux2010_x86_64.whl (136 kB)
+Collecting PyYAML
+  Downloading PyYAML-6.0-cp39-cp39-manylinux_2_5_x86_64.manylinux1_x86_64.manylinux_2_12_x86_64.manylinux2010_x86_64.whl (661 kB)
+Collecting netconan>=0.12.0
+  Downloading netconan-0.12.3-py2.py3-none-any.whl (50 kB)
+Collecting deprecated
+  Downloading Deprecated-1.2.13-py2.py3-none-any.whl (9.6 kB)
+Collecting pandas>=1.1.5
+  Downloading pandas-1.1.5-cp39-cp39-manylinux1_x86_64.whl (9.3 MB)
+Collecting requests-toolbelt
+  Downloading requests_toolbelt-0.9.1-py2.py3-none-any.whl (54 kB)
+Collecting requests
+  Downloading requests-2.27.1-py2.py3-none-any.whl (63 kB)
+Collecting attrs>=18.1.0
+  Downloading attrs-21.4.0-py2.py3-none-any.whl (60 kB)
+Collecting deepdiff
+  Downloading deepdiff-5.7.0-py3-none-any.whl (68 kB)
+Collecting six<2.0.0
+  Downloading six-1.16.0-py2.py3-none-any.whl (11 kB)
+Collecting configargparse<1.0.0
+  Downloading ConfigArgParse-0.15.2.tar.gz (27 kB)
+Collecting bidict<1.0.0
+  Downloading bidict-0.21.4-py3-none-any.whl (36 kB)
+Collecting passlib<2.0.0
+  Downloading passlib-1.7.4-py2.py3-none-any.whl (525 kB)
+Collecting ordered-set==4.0.2
+  Downloading ordered-set-4.0.2.tar.gz (10 kB)
+Collecting wrapt<2,>=1.10
+  Downloading wrapt-1.13.3-cp39-cp39-manylinux_2_5_x86_64.manylinux1_x86_64.manylinux_2_12_x86_64.manylinux2010_x86_64.whl (81 kB)
+Collecting certifi>=2017.4.17
+  Downloading certifi-2021.10.8-py2.py3-none-any.whl (149 kB)
+Collecting charset-normalizer~=2.0.0
+  Downloading charset_normalizer-2.0.10-py3-none-any.whl (39 kB)
+Collecting urllib3<1.27,>=1.21.1
+  Downloading urllib3-1.26.8-py2.py3-none-any.whl (138 kB)
+Collecting idna<4,>=2.5
+  Downloading idna-3.3-py3-none-any.whl (61 kB)
+Building wheels for collected packages: configargparse, ordered-set
+  Building wheel for configargparse (setup.py): started
+  Building wheel for configargparse (setup.py): finished with status 'done'
+  Created wheel for configargparse: filename=ConfigArgParse-0.15.2-py3-none-any.whl size=17835 sha256=7ef47fbff770349e6dbbc6711d3342b2c98cf3a60579a91264ddeaae43957b00
+  Stored in directory: /root/.cache/pip/wheels/2f/c7/25/0885345f7c93561c4addf27f7ba3921bea1408fa97ff93581f
+  Building wheel for ordered-set (setup.py): started
+  Building wheel for ordered-set (setup.py): finished with status 'done'
+  Created wheel for ordered-set: filename=ordered_set-4.0.2-py2.py3-none-any.whl size=8209 sha256=8f3243fc4b8ab2aeb8d7a216ebd731343486bc417cf26fc9e2c8a8b8c92e0267
+  Stored in directory: /root/.cache/pip/wheels/c0/a1/09/0c736ab4beb6a48ae2f5f2529b2ad3770c8e6cc32d01d75a2c
+Successfully built configargparse ordered-set
+Installing collected packages: urllib3, six, idna, charset-normalizer, certifi, wrapt, requests, pytz, python-dateutil, passlib, ordered-set, numpy, configargparse, bidict, typing-extensions, tomli, simplejson, requests-toolbelt, PyYAML, platformdirs, pathspec, pandas, netconan, mypy-extensions, deprecated, deepdiff, click, attrs, pybatfish, black
+Successfully installed PyYAML-6.0 attrs-21.4.0 bidict-0.21.4 black-21.12b0 certifi-2021.10.8 charset-normalizer-2.0.10 click-8.0.3 configargparse-0.15.2 deepdiff-5.7.0 deprecated-1.2.13 idna-3.3 mypy-extensions-0.4.3 netconan-0.12.3 numpy-1.22.0 ordered-set-4.0.2 pandas-1.1.5 passlib-1.7.4 pathspec-0.9.0 platformdirs-2.4.1 pybatfish-2021.11.4.1095 python-dateutil-2.8.2 pytz-2021.3 requests-2.27.1 requests-toolbelt-0.9.1 simplejson-3.17.6 six-1.16.0 tomli-1.2.3 typing-extensions-4.0.1 urllib3-1.26.8 wrapt-1.13.3
+Removing intermediate container 88e8f8dbf5a4
+ ---> 9adc5e391498
+Step 7/8 : RUN gem  install bundler
+ ---> Running in 1191836ebccc
+Successfully installed bundler-2.3.4
+1 gem installed
+Removing intermediate container 1191836ebccc
+ ---> 5bab3a2a73a1
+Step 8/8 : RUN bundle install
+ ---> Running in a629cb28ffca
+Fetching gem metadata from https://rubygems.org/.
+Bundler 2.3.4 is running, but your lockfile was generated with 2.1.4. Installing Bundler 2.1.4 and restarting using that version.
+Fetching bundler 2.1.4
+Installing bundler 2.1.4
+[91mCalling `DidYouMean::SPELL_CHECKERS.merge!(error_name => spell_checker)' has been deprecated. Please call `DidYouMean.correct_error(error_name, spell_checker)' instead.
+[0mFetching gem metadata from https://rubygems.org/..........
+Fetching https://github.com/corestate55/netomox
+Using rake 13.0.6
+Fetching ast 2.4.2
+Installing ast 2.4.2
+Using bundler 2.1.4
+Fetching excon 0.89.0
+Installing excon 0.89.0
+Fetching hashie 5.0.0
+Installing hashie 5.0.0
+Fetching highline 2.0.3
+Installing highline 2.0.3
+Fetching ipaddress 0.8.3
+Installing ipaddress 0.8.3
+Using json 2.6.1
+Fetching multi_json 1.15.0
+Installing multi_json 1.15.0
+Fetching os 1.1.4
+Installing os 1.1.4
+Fetching rubyzip 2.3.2
+Installing rubyzip 2.3.2
+Fetching neography 1.8.0
+Installing neography 1.8.0
+Fetching termcolor 1.2.2
+Installing termcolor 1.2.2
+Fetching thor 1.0.1
+Installing thor 1.0.1
+Using netomox 0.1.0 from https://github.com/corestate55/netomox (at develop@45f0269)
+Fetching parallel 1.21.0
+Installing parallel 1.21.0
+Fetching parser 3.0.3.2
+Installing parser 3.0.3.2
+Fetching rainbow 3.0.0
+Installing rainbow 3.0.0
+Fetching regexp_parser 2.2.0
+Installing regexp_parser 2.2.0
+Using rexml 3.2.5
+Fetching rubocop-ast 1.15.1
+Installing rubocop-ast 1.15.1
+Fetching ruby-progressbar 1.11.0
+Installing ruby-progressbar 1.11.0
+Fetching unicode-display_width 2.1.0
+Installing unicode-display_width 2.1.0
+Fetching rubocop 1.24.1
+Installing rubocop 1.24.1
+Fetching webrick 1.7.0
+Installing webrick 1.7.0
+Fetching yard 0.9.27
+Installing yard 0.9.27
+Bundle complete! 6 Gemfile dependencies, 26 gems now installed.
+Use `bundle info [gemname]` to see where a bundled gem is installed.
+Post-install message from rubyzip:
+RubyZip 3.0 is coming!
+**********************
+
+The public API of some Rubyzip classes has been modernized to use named
+parameters for optional arguments. Please check your usage of the
+following classes:
+  * `Zip::File`
+  * `Zip::Entry`
+  * `Zip::InputStream`
+  * `Zip::OutputStream`
+
+Please ensure that your Gemfiles and .gemspecs are suitably restrictive
+to avoid an unexpected breakage when 3.0 is released (e.g. ~> 2.3.0).
+See https://github.com/rubyzip/rubyzip for details. The Changelog also
+lists other enhancements and bugfixes that have been implemented since
+version 2.3.0.
+Removing intermediate container a629cb28ffca
+ ---> 80f031deb9e8
+Successfully built 80f031deb9e8
+Successfully tagged netomox-exp_netomox:latest
+The Docker Engine you're using is running in swarm mode.
+
+Compose does not use swarm mode to deploy services to multiple nodes in a swarm. All containers will be scheduled on the current node.
+
+To deploy your application across the swarm, use `docker stack deploy`.
+
+Building netomox
+Sending build context to Docker daemon  14.71MB
+Step 1/8 : FROM ruby:3.1.0
+ ---> f36ec0de68cd
+Step 2/8 : RUN mkdir /myapp
+ ---> Using cache
+ ---> cf5a529b46c7
+Step 3/8 : WORKDIR /myapp
+ ---> Using cache
+ ---> 06a62f659624
+Step 4/8 : COPY . /myapp
+ ---> 898eba72dc44
+Step 5/8 : RUN apt-get update && apt-get install -y  python3-pip
+ ---> Running in d76a0ad1eea8
+Get:1 http://security.debian.org/debian-security bullseye-security InRelease [44.1 kB]
+Get:2 http://deb.debian.org/debian bullseye InRelease [116 kB]
+Get:3 http://deb.debian.org/debian bullseye-updates InRelease [39.4 kB]
+Get:4 http://security.debian.org/debian-security bullseye-security/main amd64 Packages [102 kB]
+Get:5 http://deb.debian.org/debian bullseye/main amd64 Packages [8183 kB]
+Get:6 http://deb.debian.org/debian bullseye-updates/main amd64 Packages [2592 B]
+Fetched 8487 kB in 3s (3179 kB/s)
+Reading package lists...
+Reading package lists...
+Building dependency tree...
+Reading state information...
+The following additional packages will be installed:
+  build-essential javascript-common libjs-jquery libjs-sphinxdoc
+  libjs-underscore libpython3-dev libpython3.9 libpython3.9-dev python-pip-whl
+  python3-dev python3-pkg-resources python3-setuptools python3-wheel
+  python3.9-dev
+Suggested packages:
+  apache2 | lighttpd | httpd python-setuptools-doc
+The following NEW packages will be installed:
+  build-essential javascript-common libjs-jquery libjs-sphinxdoc
+  libjs-underscore libpython3-dev libpython3.9 libpython3.9-dev python-pip-whl
+  python3-dev python3-pip python3-pkg-resources python3-setuptools
+  python3-wheel python3.9-dev
+0 upgraded, 15 newly installed, 0 to remove and 0 not upgraded.
+Need to get 9702 kB of archives.
+After this operation, 34.0 MB of additional disk space will be used.
+Get:1 http://deb.debian.org/debian bullseye/main amd64 build-essential amd64 12.9 [7704 B]
+Get:2 http://deb.debian.org/debian bullseye/main amd64 javascript-common all 11+nmu1 [6260 B]
+Get:3 http://deb.debian.org/debian bullseye/main amd64 libjs-jquery all 3.5.1+dfsg+~3.5.5-7 [315 kB]
+Get:4 http://deb.debian.org/debian bullseye/main amd64 libjs-underscore all 1.9.1~dfsg-3 [100 kB]
+Get:5 http://deb.debian.org/debian bullseye/main amd64 libjs-sphinxdoc all 3.4.3-2 [127 kB]
+Get:6 http://deb.debian.org/debian bullseye/main amd64 libpython3.9 amd64 3.9.2-1 [1691 kB]
+Get:7 http://deb.debian.org/debian bullseye/main amd64 libpython3.9-dev amd64 3.9.2-1 [4028 kB]
+Get:8 http://deb.debian.org/debian bullseye/main amd64 libpython3-dev amd64 3.9.2-3 [21.7 kB]
+Get:9 http://deb.debian.org/debian bullseye/main amd64 python-pip-whl all 20.3.4-4 [1948 kB]
+Get:10 http://deb.debian.org/debian bullseye/main amd64 python3.9-dev amd64 3.9.2-1 [515 kB]
+Get:11 http://deb.debian.org/debian bullseye/main amd64 python3-dev amd64 3.9.2-3 [24.8 kB]
+Get:12 http://deb.debian.org/debian bullseye/main amd64 python3-pkg-resources all 52.0.0-4 [190 kB]
+Get:13 http://deb.debian.org/debian bullseye/main amd64 python3-setuptools all 52.0.0-4 [366 kB]
+Get:14 http://deb.debian.org/debian bullseye/main amd64 python3-wheel all 0.34.2-1 [24.0 kB]
+Get:15 http://deb.debian.org/debian bullseye/main amd64 python3-pip all 20.3.4-4 [337 kB]
+[91mdebconf: delaying package configuration, since apt-utils is not installed
+[0mFetched 9702 kB in 1s (6876 kB/s)
+Selecting previously unselected package build-essential.
+(Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 22741 files and directories currently installed.)
+Preparing to unpack .../00-build-essential_12.9_amd64.deb ...
+Unpacking build-essential (12.9) ...
+Selecting previously unselected package javascript-common.
+Preparing to unpack .../01-javascript-common_11+nmu1_all.deb ...
+Unpacking javascript-common (11+nmu1) ...
+Selecting previously unselected package libjs-jquery.
+Preparing to unpack .../02-libjs-jquery_3.5.1+dfsg+~3.5.5-7_all.deb ...
+Unpacking libjs-jquery (3.5.1+dfsg+~3.5.5-7) ...
+Selecting previously unselected package libjs-underscore.
+Preparing to unpack .../03-libjs-underscore_1.9.1~dfsg-3_all.deb ...
+Unpacking libjs-underscore (1.9.1~dfsg-3) ...
+Selecting previously unselected package libjs-sphinxdoc.
+Preparing to unpack .../04-libjs-sphinxdoc_3.4.3-2_all.deb ...
+Unpacking libjs-sphinxdoc (3.4.3-2) ...
+Selecting previously unselected package libpython3.9:amd64.
+Preparing to unpack .../05-libpython3.9_3.9.2-1_amd64.deb ...
+Unpacking libpython3.9:amd64 (3.9.2-1) ...
+Selecting previously unselected package libpython3.9-dev:amd64.
+Preparing to unpack .../06-libpython3.9-dev_3.9.2-1_amd64.deb ...
+Unpacking libpython3.9-dev:amd64 (3.9.2-1) ...
+Selecting previously unselected package libpython3-dev:amd64.
+Preparing to unpack .../07-libpython3-dev_3.9.2-3_amd64.deb ...
+Unpacking libpython3-dev:amd64 (3.9.2-3) ...
+Selecting previously unselected package python-pip-whl.
+Preparing to unpack .../08-python-pip-whl_20.3.4-4_all.deb ...
+Unpacking python-pip-whl (20.3.4-4) ...
+Selecting previously unselected package python3.9-dev.
+Preparing to unpack .../09-python3.9-dev_3.9.2-1_amd64.deb ...
+Unpacking python3.9-dev (3.9.2-1) ...
+Selecting previously unselected package python3-dev.
+Preparing to unpack .../10-python3-dev_3.9.2-3_amd64.deb ...
+Unpacking python3-dev (3.9.2-3) ...
+Selecting previously unselected package python3-pkg-resources.
+Preparing to unpack .../11-python3-pkg-resources_52.0.0-4_all.deb ...
+Unpacking python3-pkg-resources (52.0.0-4) ...
+Selecting previously unselected package python3-setuptools.
+Preparing to unpack .../12-python3-setuptools_52.0.0-4_all.deb ...
+Unpacking python3-setuptools (52.0.0-4) ...
+Selecting previously unselected package python3-wheel.
+Preparing to unpack .../13-python3-wheel_0.34.2-1_all.deb ...
+Unpacking python3-wheel (0.34.2-1) ...
+Selecting previously unselected package python3-pip.
+Preparing to unpack .../14-python3-pip_20.3.4-4_all.deb ...
+Unpacking python3-pip (20.3.4-4) ...
+Setting up python3-pkg-resources (52.0.0-4) ...
+Setting up javascript-common (11+nmu1) ...
+Setting up python3-setuptools (52.0.0-4) ...
+Setting up python3-wheel (0.34.2-1) ...
+Setting up libpython3.9:amd64 (3.9.2-1) ...
+Setting up build-essential (12.9) ...
+Setting up python-pip-whl (20.3.4-4) ...
+Setting up libjs-jquery (3.5.1+dfsg+~3.5.5-7) ...
+Setting up libjs-underscore (1.9.1~dfsg-3) ...
+Setting up libpython3.9-dev:amd64 (3.9.2-1) ...
+Setting up python3-pip (20.3.4-4) ...
+Setting up libjs-sphinxdoc (3.4.3-2) ...
+Setting up python3.9-dev (3.9.2-1) ...
+Setting up libpython3-dev:amd64 (3.9.2-3) ...
+Setting up python3-dev (3.9.2-3) ...
+Processing triggers for libc-bin (2.31-13+deb11u2) ...
+Removing intermediate container d76a0ad1eea8
+ ---> 41d3a4e93b5a
+Step 6/8 : RUN pip3 install -r configs/requirements.txt
+ ---> Running in c034eace24c6
+Collecting pybatfish>=0.36.0
+  Downloading pybatfish-2021.11.4.1095-py2.py3-none-any.whl (128 kB)
+Collecting pandas>=1.1.5
+  Downloading pandas-1.3.5-cp39-cp39-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (11.5 MB)
+Collecting black>=21.7b0
+  Downloading black-21.12b0-py3-none-any.whl (156 kB)
+Collecting tomli<2.0.0,>=0.2.6
+  Downloading tomli-1.2.3-py3-none-any.whl (12 kB)
+Collecting mypy-extensions>=0.4.3
+  Downloading mypy_extensions-0.4.3-py2.py3-none-any.whl (4.5 kB)
+Collecting typing-extensions>=3.10.0.0
+  Downloading typing_extensions-4.0.1-py3-none-any.whl (22 kB)
+Collecting platformdirs>=2
+  Downloading platformdirs-2.4.1-py3-none-any.whl (14 kB)
+Collecting pathspec<1,>=0.9.0
+  Downloading pathspec-0.9.0-py2.py3-none-any.whl (31 kB)
+Collecting click>=7.1.2
+  Downloading click-8.0.3-py3-none-any.whl (97 kB)
+Collecting python-dateutil>=2.7.3
+  Downloading python_dateutil-2.8.2-py2.py3-none-any.whl (247 kB)
+Collecting numpy>=1.17.3
+  Downloading numpy-1.22.0-cp39-cp39-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (16.8 MB)
+Collecting pytz>=2017.3
+  Downloading pytz-2021.3-py2.py3-none-any.whl (503 kB)
+Collecting simplejson
+  Downloading simplejson-3.17.6-cp39-cp39-manylinux_2_5_x86_64.manylinux1_x86_64.manylinux_2_12_x86_64.manylinux2010_x86_64.whl (136 kB)
+Collecting PyYAML
+  Downloading PyYAML-6.0-cp39-cp39-manylinux_2_5_x86_64.manylinux1_x86_64.manylinux_2_12_x86_64.manylinux2010_x86_64.whl (661 kB)
+Collecting requests-toolbelt
+  Downloading requests_toolbelt-0.9.1-py2.py3-none-any.whl (54 kB)
+Collecting deepdiff
+  Downloading deepdiff-5.7.0-py3-none-any.whl (68 kB)
+Collecting pandas>=1.1.5
+  Downloading pandas-1.1.5-cp39-cp39-manylinux1_x86_64.whl (9.3 MB)
+Collecting deprecated
+  Downloading Deprecated-1.2.13-py2.py3-none-any.whl (9.6 kB)
+Collecting attrs>=18.1.0
+  Downloading attrs-21.4.0-py2.py3-none-any.whl (60 kB)
+Collecting netconan>=0.12.0
+  Downloading netconan-0.12.3-py2.py3-none-any.whl (50 kB)
+Collecting requests
+  Downloading requests-2.27.1-py2.py3-none-any.whl (63 kB)
+Collecting configargparse<1.0.0
+  Downloading ConfigArgParse-0.15.2.tar.gz (27 kB)
+Collecting six<2.0.0
+  Downloading six-1.16.0-py2.py3-none-any.whl (11 kB)
+Collecting bidict<1.0.0
+  Downloading bidict-0.21.4-py3-none-any.whl (36 kB)
+Collecting passlib<2.0.0
+  Downloading passlib-1.7.4-py2.py3-none-any.whl (525 kB)
+Collecting ordered-set==4.0.2
+  Downloading ordered-set-4.0.2.tar.gz (10 kB)
+Collecting wrapt<2,>=1.10
+  Downloading wrapt-1.13.3-cp39-cp39-manylinux_2_5_x86_64.manylinux1_x86_64.manylinux_2_12_x86_64.manylinux2010_x86_64.whl (81 kB)
+Collecting idna<4,>=2.5
+  Downloading idna-3.3-py3-none-any.whl (61 kB)
+Collecting certifi>=2017.4.17
+  Downloading certifi-2021.10.8-py2.py3-none-any.whl (149 kB)
+Collecting charset-normalizer~=2.0.0
+  Downloading charset_normalizer-2.0.10-py3-none-any.whl (39 kB)
+Collecting urllib3<1.27,>=1.21.1
+  Downloading urllib3-1.26.8-py2.py3-none-any.whl (138 kB)
+Building wheels for collected packages: configargparse, ordered-set
+  Building wheel for configargparse (setup.py): started
+  Building wheel for configargparse (setup.py): finished with status 'done'
+  Created wheel for configargparse: filename=ConfigArgParse-0.15.2-py3-none-any.whl size=17835 sha256=59deb2526cbdb757998c69c45477aec616dc9cf2a643f0eeae9226822338ee28
+  Stored in directory: /root/.cache/pip/wheels/2f/c7/25/0885345f7c93561c4addf27f7ba3921bea1408fa97ff93581f
+  Building wheel for ordered-set (setup.py): started
+  Building wheel for ordered-set (setup.py): finished with status 'done'
+  Created wheel for ordered-set: filename=ordered_set-4.0.2-py2.py3-none-any.whl size=8209 sha256=5e43038368f58f15fcee24fb34a7e55b6390aaa0678a3dd15f621014fb801e05
+  Stored in directory: /root/.cache/pip/wheels/c0/a1/09/0c736ab4beb6a48ae2f5f2529b2ad3770c8e6cc32d01d75a2c
+Successfully built configargparse ordered-set
+Installing collected packages: urllib3, six, idna, charset-normalizer, certifi, wrapt, requests, pytz, python-dateutil, passlib, ordered-set, numpy, configargparse, bidict, typing-extensions, tomli, simplejson, requests-toolbelt, PyYAML, platformdirs, pathspec, pandas, netconan, mypy-extensions, deprecated, deepdiff, click, attrs, pybatfish, black
+Successfully installed PyYAML-6.0 attrs-21.4.0 bidict-0.21.4 black-21.12b0 certifi-2021.10.8 charset-normalizer-2.0.10 click-8.0.3 configargparse-0.15.2 deepdiff-5.7.0 deprecated-1.2.13 idna-3.3 mypy-extensions-0.4.3 netconan-0.12.3 numpy-1.22.0 ordered-set-4.0.2 pandas-1.1.5 passlib-1.7.4 pathspec-0.9.0 platformdirs-2.4.1 pybatfish-2021.11.4.1095 python-dateutil-2.8.2 pytz-2021.3 requests-2.27.1 requests-toolbelt-0.9.1 simplejson-3.17.6 six-1.16.0 tomli-1.2.3 typing-extensions-4.0.1 urllib3-1.26.8 wrapt-1.13.3
+Removing intermediate container c034eace24c6
+ ---> efa56fb44d80
+Step 7/8 : RUN gem  install bundler
+ ---> Running in baab5b4c75f9
+Successfully installed bundler-2.3.4
+1 gem installed
+Removing intermediate container baab5b4c75f9
+ ---> b1590871eed5
+Step 8/8 : RUN bundle install
+ ---> Running in d4faa983db3d
+Fetching https://github.com/corestate55/netomox
+Fetching gem metadata from https://rubygems.org/..........
+Resolving dependencies...
+Using rake 13.0.6
+Using bundler 2.3.4
+Using json 2.6.1
+Fetching ast 2.4.2
+Fetching excon 0.89.0
+Fetching hashie 5.0.0
+Fetching highline 2.0.3
+Fetching ipaddress 0.8.3
+Fetching multi_json 1.15.0
+Fetching os 1.1.4
+Fetching rubyzip 2.3.2
+Fetching thor 1.0.1
+Fetching parallel 1.21.0
+Fetching rainbow 3.0.0
+Fetching regexp_parser 2.2.0
+Using rexml 3.2.5
+Fetching ruby-progressbar 1.11.0
+Fetching unicode-display_width 2.1.0
+Fetching webrick 1.7.0
+Installing ast 2.4.2
+Installing rainbow 3.0.0
+Installing os 1.1.4
+Installing unicode-display_width 2.1.0
+Installing parallel 1.21.0
+Installing ruby-progressbar 1.11.0
+Installing multi_json 1.15.0
+Installing ipaddress 0.8.3
+Installing rubyzip 2.3.2
+Installing webrick 1.7.0
+Installing thor 1.0.1
+Installing regexp_parser 2.2.0
+Installing excon 0.89.0
+Installing hashie 5.0.0
+Fetching parser 3.1.0.0
+Installing highline 2.0.3
+Fetching yard 0.9.27
+Fetching neography 1.8.0
+Fetching termcolor 1.2.2
+Installing parser 3.1.0.0
+Installing termcolor 1.2.2
+Fetching rubocop-ast 1.15.1
+Installing neography 1.8.0
+Using netomox 0.1.0 from https://github.com/corestate55/netomox (at develop@45f0269)
+Installing yard 0.9.27
+Installing rubocop-ast 1.15.1
+Fetching rubocop 1.24.1
+Installing rubocop 1.24.1
+Bundle complete! 6 Gemfile dependencies, 26 gems now installed.
+Use `bundle info [gemname]` to see where a bundled gem is installed.
+Post-install message from rubyzip:
+RubyZip 3.0 is coming!
+**********************
+
+The public API of some Rubyzip classes has been modernized to use named
+parameters for optional arguments. Please check your usage of the
+following classes:
+  * `Zip::File`
+  * `Zip::Entry`
+  * `Zip::InputStream`
+  * `Zip::OutputStream`
+
+Please ensure that your Gemfiles and .gemspecs are suitably restrictive
+to avoid an unexpected breakage when 3.0 is released (e.g. ~> 2.3.0).
+See https://github.com/rubyzip/rubyzip for details. The Changelog also
+lists other enhancements and bugfixes that have been implemented since
+version 2.3.0.
+Removing intermediate container d4faa983db3d
+ ---> cd086481966a
+Successfully built cd086481966a
+Successfully tagged netomox-exp_netomox:latest
+netomox-exp_netoviz_1 is up-to-date
+Recreating netomox-exp_netomox_1 ... 
+batfish is up-to-date
+Recreating netomox-exp_netomox_1 ... done
+The Docker Engine you're using is running in swarm mode.
+
+Compose does not use swarm mode to deploy services to multiple nodes in a swarm. All containers will be scheduled on the current node.
+
+To deploy your application across the swarm, use `docker stack deploy`.
+
+Building netomox
+Sending build context to Docker daemon  14.72MB
+Step 1/7 : FROM ruby:3.1.0
+ ---> f36ec0de68cd
+Step 2/7 : RUN mkdir /myapp
+ ---> Using cache
+ ---> cf5a529b46c7
+Step 3/7 : WORKDIR /myapp
+ ---> Using cache
+ ---> 06a62f659624
+Step 4/7 : COPY . /myapp
+ ---> 1ee0eb0dbb11
+Step 5/7 : RUN apt-get update && apt-get install -y  python3-pip
+ ---> Running in 8f11463a80ec
+Get:1 http://security.debian.org/debian-security bullseye-security InRelease [44.1 kB]
+Get:2 http://deb.debian.org/debian bullseye InRelease [116 kB]
+Get:3 http://deb.debian.org/debian bullseye-updates InRelease [39.4 kB]
+Get:4 http://security.debian.org/debian-security bullseye-security/main amd64 Packages [102 kB]
+Get:5 http://deb.debian.org/debian bullseye/main amd64 Packages [8183 kB]
+Get:6 http://deb.debian.org/debian bullseye-updates/main amd64 Packages [2592 B]
+Fetched 8487 kB in 3s (3074 kB/s)
+Reading package lists...
+Reading package lists...
+Building dependency tree...
+Reading state information...
+The following additional packages will be installed:
+  build-essential javascript-common libjs-jquery libjs-sphinxdoc
+  libjs-underscore libpython3-dev libpython3.9 libpython3.9-dev python-pip-whl
+  python3-dev python3-pkg-resources python3-setuptools python3-wheel
+  python3.9-dev
+Suggested packages:
+  apache2 | lighttpd | httpd python-setuptools-doc
+The following NEW packages will be installed:
+  build-essential javascript-common libjs-jquery libjs-sphinxdoc
+  libjs-underscore libpython3-dev libpython3.9 libpython3.9-dev python-pip-whl
+  python3-dev python3-pip python3-pkg-resources python3-setuptools
+  python3-wheel python3.9-dev
+0 upgraded, 15 newly installed, 0 to remove and 0 not upgraded.
+Need to get 9702 kB of archives.
+After this operation, 34.0 MB of additional disk space will be used.
+Get:1 http://deb.debian.org/debian bullseye/main amd64 build-essential amd64 12.9 [7704 B]
+Get:2 http://deb.debian.org/debian bullseye/main amd64 javascript-common all 11+nmu1 [6260 B]
+Get:3 http://deb.debian.org/debian bullseye/main amd64 libjs-jquery all 3.5.1+dfsg+~3.5.5-7 [315 kB]
+Get:4 http://deb.debian.org/debian bullseye/main amd64 libjs-underscore all 1.9.1~dfsg-3 [100 kB]
+Get:5 http://deb.debian.org/debian bullseye/main amd64 libjs-sphinxdoc all 3.4.3-2 [127 kB]
+Get:6 http://deb.debian.org/debian bullseye/main amd64 libpython3.9 amd64 3.9.2-1 [1691 kB]
+Get:7 http://deb.debian.org/debian bullseye/main amd64 libpython3.9-dev amd64 3.9.2-1 [4028 kB]
+Get:8 http://deb.debian.org/debian bullseye/main amd64 libpython3-dev amd64 3.9.2-3 [21.7 kB]
+Get:9 http://deb.debian.org/debian bullseye/main amd64 python-pip-whl all 20.3.4-4 [1948 kB]
+Get:10 http://deb.debian.org/debian bullseye/main amd64 python3.9-dev amd64 3.9.2-1 [515 kB]
+Get:11 http://deb.debian.org/debian bullseye/main amd64 python3-dev amd64 3.9.2-3 [24.8 kB]
+Get:12 http://deb.debian.org/debian bullseye/main amd64 python3-pkg-resources all 52.0.0-4 [190 kB]
+Get:13 http://deb.debian.org/debian bullseye/main amd64 python3-setuptools all 52.0.0-4 [366 kB]
+Get:14 http://deb.debian.org/debian bullseye/main amd64 python3-wheel all 0.34.2-1 [24.0 kB]
+Get:15 http://deb.debian.org/debian bullseye/main amd64 python3-pip all 20.3.4-4 [337 kB]
+[91mdebconf: delaying package configuration, since apt-utils is not installed
+[0mFetched 9702 kB in 2s (6361 kB/s)
+Selecting previously unselected package build-essential.
+(Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 22741 files and directories currently installed.)
+Preparing to unpack .../00-build-essential_12.9_amd64.deb ...
+Unpacking build-essential (12.9) ...
+Selecting previously unselected package javascript-common.
+Preparing to unpack .../01-javascript-common_11+nmu1_all.deb ...
+Unpacking javascript-common (11+nmu1) ...
+Selecting previously unselected package libjs-jquery.
+Preparing to unpack .../02-libjs-jquery_3.5.1+dfsg+~3.5.5-7_all.deb ...
+Unpacking libjs-jquery (3.5.1+dfsg+~3.5.5-7) ...
+Selecting previously unselected package libjs-underscore.
+Preparing to unpack .../03-libjs-underscore_1.9.1~dfsg-3_all.deb ...
+Unpacking libjs-underscore (1.9.1~dfsg-3) ...
+Selecting previously unselected package libjs-sphinxdoc.
+Preparing to unpack .../04-libjs-sphinxdoc_3.4.3-2_all.deb ...
+Unpacking libjs-sphinxdoc (3.4.3-2) ...
+Selecting previously unselected package libpython3.9:amd64.
+Preparing to unpack .../05-libpython3.9_3.9.2-1_amd64.deb ...
+Unpacking libpython3.9:amd64 (3.9.2-1) ...
+Selecting previously unselected package libpython3.9-dev:amd64.
+Preparing to unpack .../06-libpython3.9-dev_3.9.2-1_amd64.deb ...
+Unpacking libpython3.9-dev:amd64 (3.9.2-1) ...
+Selecting previously unselected package libpython3-dev:amd64.
+Preparing to unpack .../07-libpython3-dev_3.9.2-3_amd64.deb ...
+Unpacking libpython3-dev:amd64 (3.9.2-3) ...
+Selecting previously unselected package python-pip-whl.
+Preparing to unpack .../08-python-pip-whl_20.3.4-4_all.deb ...
+Unpacking python-pip-whl (20.3.4-4) ...
+Selecting previously unselected package python3.9-dev.
+Preparing to unpack .../09-python3.9-dev_3.9.2-1_amd64.deb ...
+Unpacking python3.9-dev (3.9.2-1) ...
+Selecting previously unselected package python3-dev.
+Preparing to unpack .../10-python3-dev_3.9.2-3_amd64.deb ...
+Unpacking python3-dev (3.9.2-3) ...
+Selecting previously unselected package python3-pkg-resources.
+Preparing to unpack .../11-python3-pkg-resources_52.0.0-4_all.deb ...
+Unpacking python3-pkg-resources (52.0.0-4) ...
+Selecting previously unselected package python3-setuptools.
+Preparing to unpack .../12-python3-setuptools_52.0.0-4_all.deb ...
+Unpacking python3-setuptools (52.0.0-4) ...
+Selecting previously unselected package python3-wheel.
+Preparing to unpack .../13-python3-wheel_0.34.2-1_all.deb ...
+Unpacking python3-wheel (0.34.2-1) ...
+Selecting previously unselected package python3-pip.
+Preparing to unpack .../14-python3-pip_20.3.4-4_all.deb ...
+Unpacking python3-pip (20.3.4-4) ...
+Setting up python3-pkg-resources (52.0.0-4) ...
+Setting up javascript-common (11+nmu1) ...
+Setting up python3-setuptools (52.0.0-4) ...
+Setting up python3-wheel (0.34.2-1) ...
+Setting up libpython3.9:amd64 (3.9.2-1) ...
+Setting up build-essential (12.9) ...
+Setting up python-pip-whl (20.3.4-4) ...
+Setting up libjs-jquery (3.5.1+dfsg+~3.5.5-7) ...
+Setting up libjs-underscore (1.9.1~dfsg-3) ...
+Setting up libpython3.9-dev:amd64 (3.9.2-1) ...
+Setting up python3-pip (20.3.4-4) ...
+Setting up libjs-sphinxdoc (3.4.3-2) ...
+Setting up python3.9-dev (3.9.2-1) ...
+Setting up libpython3-dev:amd64 (3.9.2-3) ...
+Setting up python3-dev (3.9.2-3) ...
+Processing triggers for libc-bin (2.31-13+deb11u2) ...
+Removing intermediate container 8f11463a80ec
+ ---> 1656377ee299
+Step 6/7 : RUN pip3 install -r configs/requirements.txt
+ ---> Running in 2f6d44cff53d
+Collecting pybatfish>=0.36.0
+  Downloading pybatfish-2021.11.4.1095-py2.py3-none-any.whl (128 kB)
+Collecting pandas>=1.1.5
+  Downloading pandas-1.3.5-cp39-cp39-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (11.5 MB)
+Collecting black>=21.7b0
+  Downloading black-21.12b0-py3-none-any.whl (156 kB)
+Collecting mypy-extensions>=0.4.3
+  Downloading mypy_extensions-0.4.3-py2.py3-none-any.whl (4.5 kB)
+Collecting tomli<2.0.0,>=0.2.6
+  Downloading tomli-1.2.3-py3-none-any.whl (12 kB)
+Collecting platformdirs>=2
+  Downloading platformdirs-2.4.1-py3-none-any.whl (14 kB)
+Collecting pathspec<1,>=0.9.0
+  Downloading pathspec-0.9.0-py2.py3-none-any.whl (31 kB)
+Collecting typing-extensions>=3.10.0.0
+  Downloading typing_extensions-4.0.1-py3-none-any.whl (22 kB)
+Collecting click>=7.1.2
+  Downloading click-8.0.3-py3-none-any.whl (97 kB)
+Collecting python-dateutil>=2.7.3
+  Downloading python_dateutil-2.8.2-py2.py3-none-any.whl (247 kB)
+Collecting pytz>=2017.3
+  Downloading pytz-2021.3-py2.py3-none-any.whl (503 kB)
+Collecting numpy>=1.17.3
+  Downloading numpy-1.22.0-cp39-cp39-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (16.8 MB)
+Collecting deepdiff
+  Downloading deepdiff-5.7.0-py3-none-any.whl (68 kB)
+Collecting pandas>=1.1.5
+  Downloading pandas-1.1.5-cp39-cp39-manylinux1_x86_64.whl (9.3 MB)
+Collecting requests
+  Downloading requests-2.27.1-py2.py3-none-any.whl (63 kB)
+Collecting PyYAML
+  Downloading PyYAML-6.0-cp39-cp39-manylinux_2_5_x86_64.manylinux1_x86_64.manylinux_2_12_x86_64.manylinux2010_x86_64.whl (661 kB)
+Collecting deprecated
+  Downloading Deprecated-1.2.13-py2.py3-none-any.whl (9.6 kB)
+Collecting simplejson
+  Downloading simplejson-3.17.6-cp39-cp39-manylinux_2_5_x86_64.manylinux1_x86_64.manylinux_2_12_x86_64.manylinux2010_x86_64.whl (136 kB)
+Collecting attrs>=18.1.0
+  Downloading attrs-21.4.0-py2.py3-none-any.whl (60 kB)
+Collecting netconan>=0.12.0
+  Downloading netconan-0.12.3-py2.py3-none-any.whl (50 kB)
+Collecting requests-toolbelt
+  Downloading requests_toolbelt-0.9.1-py2.py3-none-any.whl (54 kB)
+Collecting passlib<2.0.0
+  Downloading passlib-1.7.4-py2.py3-none-any.whl (525 kB)
+Collecting configargparse<1.0.0
+  Downloading ConfigArgParse-0.15.2.tar.gz (27 kB)
+Collecting six<2.0.0
+  Downloading six-1.16.0-py2.py3-none-any.whl (11 kB)
+Collecting bidict<1.0.0
+  Downloading bidict-0.21.4-py3-none-any.whl (36 kB)
+Collecting ordered-set==4.0.2
+  Downloading ordered-set-4.0.2.tar.gz (10 kB)
+Collecting wrapt<2,>=1.10
+  Downloading wrapt-1.13.3-cp39-cp39-manylinux_2_5_x86_64.manylinux1_x86_64.manylinux_2_12_x86_64.manylinux2010_x86_64.whl (81 kB)
+Collecting charset-normalizer~=2.0.0
+  Downloading charset_normalizer-2.0.10-py3-none-any.whl (39 kB)
+Collecting certifi>=2017.4.17
+  Downloading certifi-2021.10.8-py2.py3-none-any.whl (149 kB)
+Collecting urllib3<1.27,>=1.21.1
+  Downloading urllib3-1.26.8-py2.py3-none-any.whl (138 kB)
+Collecting idna<4,>=2.5
+  Downloading idna-3.3-py3-none-any.whl (61 kB)
+Building wheels for collected packages: configargparse, ordered-set
+  Building wheel for configargparse (setup.py): started
+  Building wheel for configargparse (setup.py): finished with status 'done'
+  Created wheel for configargparse: filename=ConfigArgParse-0.15.2-py3-none-any.whl size=17835 sha256=5747b99cb905f46b474e76cf917f748f81fae8f2240af1d4a6750fe86cc323ca
+  Stored in directory: /root/.cache/pip/wheels/2f/c7/25/0885345f7c93561c4addf27f7ba3921bea1408fa97ff93581f
+  Building wheel for ordered-set (setup.py): started
+  Building wheel for ordered-set (setup.py): finished with status 'done'
+  Created wheel for ordered-set: filename=ordered_set-4.0.2-py2.py3-none-any.whl size=8209 sha256=9aa2e80372e76acce487b30933e81420da49cbf497d6c84312980b1ed543cd43
+  Stored in directory: /root/.cache/pip/wheels/c0/a1/09/0c736ab4beb6a48ae2f5f2529b2ad3770c8e6cc32d01d75a2c
+Successfully built configargparse ordered-set
+Installing collected packages: urllib3, six, idna, charset-normalizer, certifi, wrapt, requests, pytz, python-dateutil, passlib, ordered-set, numpy, configargparse, bidict, typing-extensions, tomli, simplejson, requests-toolbelt, PyYAML, platformdirs, pathspec, pandas, netconan, mypy-extensions, deprecated, deepdiff, click, attrs, pybatfish, black
+Successfully installed PyYAML-6.0 attrs-21.4.0 bidict-0.21.4 black-21.12b0 certifi-2021.10.8 charset-normalizer-2.0.10 click-8.0.3 configargparse-0.15.2 deepdiff-5.7.0 deprecated-1.2.13 idna-3.3 mypy-extensions-0.4.3 netconan-0.12.3 numpy-1.22.0 ordered-set-4.0.2 pandas-1.1.5 passlib-1.7.4 pathspec-0.9.0 platformdirs-2.4.1 pybatfish-2021.11.4.1095 python-dateutil-2.8.2 pytz-2021.3 requests-2.27.1 requests-toolbelt-0.9.1 simplejson-3.17.6 six-1.16.0 tomli-1.2.3 typing-extensions-4.0.1 urllib3-1.26.8 wrapt-1.13.3
+Removing intermediate container 2f6d44cff53d
+ ---> 96a3aea87515
+Step 7/7 : RUN gem  install bundler
+ ---> Running in 8b95c90dd205
+Successfully installed bundler-2.3.4
+1 gem installed
+Removing intermediate container 8b95c90dd205
+ ---> 0492b14fb93c
+Successfully built 0492b14fb93c
+Successfully tagged netomox-exp_netomox:latest
+netomox-exp_netoviz_1 is up-to-date
+Recreating netomox-exp_netomox_1 ... 
+batfish is up-to-date
+Recreating netomox-exp_netomox_1 ... done
+The Docker Engine you're using is running in swarm mode.
+
+Compose does not use swarm mode to deploy services to multiple nodes in a swarm. All containers will be scheduled on the current node.
+
+To deploy your application across the swarm, use `docker stack deploy`.
+
+Building netomox
+Sending build context to Docker daemon  41.69MB
+Step 1/7 : FROM ruby:3.1.0
+ ---> f36ec0de68cd
+Step 2/7 : RUN mkdir /myapp
+ ---> Using cache
+ ---> cf5a529b46c7
+Step 3/7 : WORKDIR /myapp
+ ---> Using cache
+ ---> 06a62f659624
+Step 4/7 : COPY . /myapp
+ ---> f42d6e57d90b
+Step 5/7 : RUN apt-get update && apt-get install -y  python3-pip
+ ---> Running in 8aff9726334b
+Get:1 http://security.debian.org/debian-security bullseye-security InRelease [44.1 kB]
+Get:2 http://deb.debian.org/debian bullseye InRelease [116 kB]
+Get:3 http://deb.debian.org/debian bullseye-updates InRelease [39.4 kB]
+Get:4 http://security.debian.org/debian-security bullseye-security/main amd64 Packages [102 kB]
+Get:5 http://deb.debian.org/debian bullseye/main amd64 Packages [8183 kB]
+Get:6 http://deb.debian.org/debian bullseye-updates/main amd64 Packages [2592 B]
+Fetched 8487 kB in 3s (3178 kB/s)
+Reading package lists...
+Reading package lists...
+Building dependency tree...
+Reading state information...
+The following additional packages will be installed:
+  build-essential javascript-common libjs-jquery libjs-sphinxdoc
+  libjs-underscore libpython3-dev libpython3.9 libpython3.9-dev python-pip-whl
+  python3-dev python3-pkg-resources python3-setuptools python3-wheel
+  python3.9-dev
+Suggested packages:
+  apache2 | lighttpd | httpd python-setuptools-doc
+The following NEW packages will be installed:
+  build-essential javascript-common libjs-jquery libjs-sphinxdoc
+  libjs-underscore libpython3-dev libpython3.9 libpython3.9-dev python-pip-whl
+  python3-dev python3-pip python3-pkg-resources python3-setuptools
+  python3-wheel python3.9-dev
+0 upgraded, 15 newly installed, 0 to remove and 0 not upgraded.
+Need to get 9702 kB of archives.
+After this operation, 34.0 MB of additional disk space will be used.
+Get:1 http://deb.debian.org/debian bullseye/main amd64 build-essential amd64 12.9 [7704 B]
+Get:2 http://deb.debian.org/debian bullseye/main amd64 javascript-common all 11+nmu1 [6260 B]
+Get:3 http://deb.debian.org/debian bullseye/main amd64 libjs-jquery all 3.5.1+dfsg+~3.5.5-7 [315 kB]
+Get:4 http://deb.debian.org/debian bullseye/main amd64 libjs-underscore all 1.9.1~dfsg-3 [100 kB]
+Get:5 http://deb.debian.org/debian bullseye/main amd64 libjs-sphinxdoc all 3.4.3-2 [127 kB]
+Get:6 http://deb.debian.org/debian bullseye/main amd64 libpython3.9 amd64 3.9.2-1 [1691 kB]
+Get:7 http://deb.debian.org/debian bullseye/main amd64 libpython3.9-dev amd64 3.9.2-1 [4028 kB]
+Get:8 http://deb.debian.org/debian bullseye/main amd64 libpython3-dev amd64 3.9.2-3 [21.7 kB]
+Get:9 http://deb.debian.org/debian bullseye/main amd64 python-pip-whl all 20.3.4-4 [1948 kB]
+Get:10 http://deb.debian.org/debian bullseye/main amd64 python3.9-dev amd64 3.9.2-1 [515 kB]
+Get:11 http://deb.debian.org/debian bullseye/main amd64 python3-dev amd64 3.9.2-3 [24.8 kB]
+Get:12 http://deb.debian.org/debian bullseye/main amd64 python3-pkg-resources all 52.0.0-4 [190 kB]
+Get:13 http://deb.debian.org/debian bullseye/main amd64 python3-setuptools all 52.0.0-4 [366 kB]
+Get:14 http://deb.debian.org/debian bullseye/main amd64 python3-wheel all 0.34.2-1 [24.0 kB]
+Get:15 http://deb.debian.org/debian bullseye/main amd64 python3-pip all 20.3.4-4 [337 kB]
+[91mdebconf: delaying package configuration, since apt-utils is not installed
+[0mFetched 9702 kB in 2s (6121 kB/s)
+Selecting previously unselected package build-essential.
+(Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 22741 files and directories currently installed.)
+Preparing to unpack .../00-build-essential_12.9_amd64.deb ...
+Unpacking build-essential (12.9) ...
+Selecting previously unselected package javascript-common.
+Preparing to unpack .../01-javascript-common_11+nmu1_all.deb ...
+Unpacking javascript-common (11+nmu1) ...
+Selecting previously unselected package libjs-jquery.
+Preparing to unpack .../02-libjs-jquery_3.5.1+dfsg+~3.5.5-7_all.deb ...
+Unpacking libjs-jquery (3.5.1+dfsg+~3.5.5-7) ...
+Selecting previously unselected package libjs-underscore.
+Preparing to unpack .../03-libjs-underscore_1.9.1~dfsg-3_all.deb ...
+Unpacking libjs-underscore (1.9.1~dfsg-3) ...
+Selecting previously unselected package libjs-sphinxdoc.
+Preparing to unpack .../04-libjs-sphinxdoc_3.4.3-2_all.deb ...
+Unpacking libjs-sphinxdoc (3.4.3-2) ...
+Selecting previously unselected package libpython3.9:amd64.
+Preparing to unpack .../05-libpython3.9_3.9.2-1_amd64.deb ...
+Unpacking libpython3.9:amd64 (3.9.2-1) ...
+Selecting previously unselected package libpython3.9-dev:amd64.
+Preparing to unpack .../06-libpython3.9-dev_3.9.2-1_amd64.deb ...
+Unpacking libpython3.9-dev:amd64 (3.9.2-1) ...
+Selecting previously unselected package libpython3-dev:amd64.
+Preparing to unpack .../07-libpython3-dev_3.9.2-3_amd64.deb ...
+Unpacking libpython3-dev:amd64 (3.9.2-3) ...
+Selecting previously unselected package python-pip-whl.
+Preparing to unpack .../08-python-pip-whl_20.3.4-4_all.deb ...
+Unpacking python-pip-whl (20.3.4-4) ...
+Selecting previously unselected package python3.9-dev.
+Preparing to unpack .../09-python3.9-dev_3.9.2-1_amd64.deb ...
+Unpacking python3.9-dev (3.9.2-1) ...
+Selecting previously unselected package python3-dev.
+Preparing to unpack .../10-python3-dev_3.9.2-3_amd64.deb ...
+Unpacking python3-dev (3.9.2-3) ...
+Selecting previously unselected package python3-pkg-resources.
+Preparing to unpack .../11-python3-pkg-resources_52.0.0-4_all.deb ...
+Unpacking python3-pkg-resources (52.0.0-4) ...
+Selecting previously unselected package python3-setuptools.
+Preparing to unpack .../12-python3-setuptools_52.0.0-4_all.deb ...
+Unpacking python3-setuptools (52.0.0-4) ...
+Selecting previously unselected package python3-wheel.
+Preparing to unpack .../13-python3-wheel_0.34.2-1_all.deb ...
+Unpacking python3-wheel (0.34.2-1) ...
+Selecting previously unselected package python3-pip.
+Preparing to unpack .../14-python3-pip_20.3.4-4_all.deb ...
+Unpacking python3-pip (20.3.4-4) ...
+Setting up python3-pkg-resources (52.0.0-4) ...
+Setting up javascript-common (11+nmu1) ...
+Setting up python3-setuptools (52.0.0-4) ...
+Setting up python3-wheel (0.34.2-1) ...
+Setting up libpython3.9:amd64 (3.9.2-1) ...
+Setting up build-essential (12.9) ...
+Setting up python-pip-whl (20.3.4-4) ...
+Setting up libjs-jquery (3.5.1+dfsg+~3.5.5-7) ...
+Setting up libjs-underscore (1.9.1~dfsg-3) ...
+Setting up libpython3.9-dev:amd64 (3.9.2-1) ...
+Setting up python3-pip (20.3.4-4) ...
+Setting up libjs-sphinxdoc (3.4.3-2) ...
+Setting up python3.9-dev (3.9.2-1) ...
+Setting up libpython3-dev:amd64 (3.9.2-3) ...
+Setting up python3-dev (3.9.2-3) ...
+Processing triggers for libc-bin (2.31-13+deb11u2) ...
+Removing intermediate container 8aff9726334b
+ ---> bbfd64979af8
+Step 6/7 : RUN pip3 install -r configs/requirements.txt
+ ---> Running in 592014b0a781
+Collecting pybatfish>=0.36.0
+  Downloading pybatfish-2021.11.4.1095-py2.py3-none-any.whl (128 kB)
+Collecting pandas>=1.1.5
+  Downloading pandas-1.3.5-cp39-cp39-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (11.5 MB)
+Collecting black>=21.7b0
+  Downloading black-21.12b0-py3-none-any.whl (156 kB)
+Collecting tomli<2.0.0,>=0.2.6
+  Downloading tomli-1.2.3-py3-none-any.whl (12 kB)
+Collecting pathspec<1,>=0.9.0
+  Downloading pathspec-0.9.0-py2.py3-none-any.whl (31 kB)
+Collecting mypy-extensions>=0.4.3
+  Downloading mypy_extensions-0.4.3-py2.py3-none-any.whl (4.5 kB)
+Collecting typing-extensions>=3.10.0.0
+  Downloading typing_extensions-4.0.1-py3-none-any.whl (22 kB)
+Collecting platformdirs>=2
+  Downloading platformdirs-2.4.1-py3-none-any.whl (14 kB)
+Collecting click>=7.1.2
+  Downloading click-8.0.3-py3-none-any.whl (97 kB)
+Collecting pytz>=2017.3
+  Downloading pytz-2021.3-py2.py3-none-any.whl (503 kB)
+Collecting python-dateutil>=2.7.3
+  Downloading python_dateutil-2.8.2-py2.py3-none-any.whl (247 kB)
+Collecting numpy>=1.17.3
+  Downloading numpy-1.22.0-cp39-cp39-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (16.8 MB)
+Collecting netconan>=0.12.0
+  Downloading netconan-0.12.3-py2.py3-none-any.whl (50 kB)
+Collecting requests
+  Downloading requests-2.27.1-py2.py3-none-any.whl (63 kB)
+Collecting pandas>=1.1.5
+  Downloading pandas-1.1.5-cp39-cp39-manylinux1_x86_64.whl (9.3 MB)
+Collecting PyYAML
+  Downloading PyYAML-6.0-cp39-cp39-manylinux_2_5_x86_64.manylinux1_x86_64.manylinux_2_12_x86_64.manylinux2010_x86_64.whl (661 kB)
+Collecting deepdiff
+  Downloading deepdiff-5.7.0-py3-none-any.whl (68 kB)
+Collecting attrs>=18.1.0
+  Downloading attrs-21.4.0-py2.py3-none-any.whl (60 kB)
+Collecting simplejson
+  Downloading simplejson-3.17.6-cp39-cp39-manylinux_2_5_x86_64.manylinux1_x86_64.manylinux_2_12_x86_64.manylinux2010_x86_64.whl (136 kB)
+Collecting requests-toolbelt
+  Downloading requests_toolbelt-0.9.1-py2.py3-none-any.whl (54 kB)
+Collecting deprecated
+  Downloading Deprecated-1.2.13-py2.py3-none-any.whl (9.6 kB)
+Collecting bidict<1.0.0
+  Downloading bidict-0.21.4-py3-none-any.whl (36 kB)
+Collecting configargparse<1.0.0
+  Downloading ConfigArgParse-0.15.2.tar.gz (27 kB)
+Collecting six<2.0.0
+  Downloading six-1.16.0-py2.py3-none-any.whl (11 kB)
+Collecting passlib<2.0.0
+  Downloading passlib-1.7.4-py2.py3-none-any.whl (525 kB)
+Collecting ordered-set==4.0.2
+  Downloading ordered-set-4.0.2.tar.gz (10 kB)
+Collecting wrapt<2,>=1.10
+  Downloading wrapt-1.13.3-cp39-cp39-manylinux_2_5_x86_64.manylinux1_x86_64.manylinux_2_12_x86_64.manylinux2010_x86_64.whl (81 kB)
+Collecting urllib3<1.27,>=1.21.1
+  Downloading urllib3-1.26.8-py2.py3-none-any.whl (138 kB)
+Collecting charset-normalizer~=2.0.0
+  Downloading charset_normalizer-2.0.10-py3-none-any.whl (39 kB)
+Collecting certifi>=2017.4.17
+  Downloading certifi-2021.10.8-py2.py3-none-any.whl (149 kB)
+Collecting idna<4,>=2.5
+  Downloading idna-3.3-py3-none-any.whl (61 kB)
+Building wheels for collected packages: configargparse, ordered-set
+  Building wheel for configargparse (setup.py): started
+  Building wheel for configargparse (setup.py): finished with status 'done'
+  Created wheel for configargparse: filename=ConfigArgParse-0.15.2-py3-none-any.whl size=17835 sha256=683042a43548d4ce0e804023145a971b9bb6d25c209c52828814d1b966e2344f
+  Stored in directory: /root/.cache/pip/wheels/2f/c7/25/0885345f7c93561c4addf27f7ba3921bea1408fa97ff93581f
+  Building wheel for ordered-set (setup.py): started
+  Building wheel for ordered-set (setup.py): finished with status 'done'
+  Created wheel for ordered-set: filename=ordered_set-4.0.2-py2.py3-none-any.whl size=8209 sha256=ddc04f72c0e551db9bbed96ad9bcc9e461ab70b16fcf672e57741879d72c0f9d
+  Stored in directory: /root/.cache/pip/wheels/c0/a1/09/0c736ab4beb6a48ae2f5f2529b2ad3770c8e6cc32d01d75a2c
+Successfully built configargparse ordered-set
+Installing collected packages: urllib3, six, idna, charset-normalizer, certifi, wrapt, requests, pytz, python-dateutil, passlib, ordered-set, numpy, configargparse, bidict, typing-extensions, tomli, simplejson, requests-toolbelt, PyYAML, platformdirs, pathspec, pandas, netconan, mypy-extensions, deprecated, deepdiff, click, attrs, pybatfish, black
+Successfully installed PyYAML-6.0 attrs-21.4.0 bidict-0.21.4 black-21.12b0 certifi-2021.10.8 charset-normalizer-2.0.10 click-8.0.3 configargparse-0.15.2 deepdiff-5.7.0 deprecated-1.2.13 idna-3.3 mypy-extensions-0.4.3 netconan-0.12.3 numpy-1.22.0 ordered-set-4.0.2 pandas-1.1.5 passlib-1.7.4 pathspec-0.9.0 platformdirs-2.4.1 pybatfish-2021.11.4.1095 python-dateutil-2.8.2 pytz-2021.3 requests-2.27.1 requests-toolbelt-0.9.1 simplejson-3.17.6 six-1.16.0 tomli-1.2.3 typing-extensions-4.0.1 urllib3-1.26.8 wrapt-1.13.3
+Removing intermediate container 592014b0a781
+ ---> 46ed13a97b97
+Step 7/7 : RUN gem  install bundler
+ ---> Running in fbdfa8350b54
+Successfully installed bundler-2.3.4
+1 gem installed
+Removing intermediate container fbdfa8350b54
+ ---> 82b96346e25f
+Successfully built 82b96346e25f
+Successfully tagged netomox-exp_netomox:latest
+netomox-exp_netoviz_1 is up-to-date
+batfish is up-to-date
+Recreating netomox-exp_netomox_1 ... 
+Recreating netomox-exp_netomox_1 ... done
+The Docker Engine you're using is running in swarm mode.
+
+Compose does not use swarm mode to deploy services to multiple nodes in a swarm. All containers will be scheduled on the current node.
+
+To deploy your application across the swarm, use `docker stack deploy`.
+
+Starting netomox-exp_netomox_1 ... 
+netomox-exp_netoviz_1 is up-to-date
+batfish is up-to-date
+Starting netomox-exp_netomox_1 ... done

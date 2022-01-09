@@ -73,11 +73,11 @@ end
 
 task default: %i[netoviz_model_dir netoviz_index netoviz_models netoviz_layouts diff]
 
-desc 'pre-task'
+#desc 'pre-task'
 task :netoviz_model_dir do
-  sh 'docker-compose up -d'
-  # NOTE: `make_csv.sh` has directory definitions inside, independent of this script.
-  sh "#{CONFIGS_DIR}/make_csv.sh all"
+#  sh 'docker-compose up -d'
+#  # NOTE: `make_csv.sh` has directory definitions inside, independent of this script.
+#  sh "#{CONFIGS_DIR}/make_csv.sh all"
   sh "mkdir -p #{NETOVIZ_DIR}"
 end
 

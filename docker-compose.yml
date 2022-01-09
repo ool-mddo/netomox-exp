@@ -18,7 +18,7 @@ services:
       dockerfile: Dockerfile
     environment:
       - BATFISH_HOST=192.168.23.32
+      - GEM_PATH=/myapp
     volumes:
       - .:/myapp
-    command: ./configs/make_csv.sh all
-
+    command:   bash -c "cd /myapp &&bundle install --path=vendor/bundle && ./configs/make_csv.sh all && bundle exec rake"

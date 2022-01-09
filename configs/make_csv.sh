@@ -103,7 +103,7 @@ if "$USE_MDDO_LD"; then
   if [ -d "${MODELS_DIR}/${MDDO_LINKDOWN_BASE_DIR}" ]; then
     rm -rf "${MODELS_DIR:?}/${MDDO_LINKDOWN_BASE_DIR:?}"
   fi
-  python3 exec_queries.py -s "$BATFISH_HOST" -n "$MDDO_LINKDOWN_BASE_DIR" -s "${MDDO_LINKDOWN_SUB_DIRS[@]}" -o "$MODELS_DIR"
+  python3 exec_queries.py -b "$BATFISH_HOST" -n "$MDDO_LINKDOWN_BASE_DIR" -s "${MDDO_LINKDOWN_SUB_DIRS[@]}" -o "$MODELS_DIR"
 
   ## copy snapshot info
   for subdir in "${MDDO_LINKDOWN_SUB_DIRS[@]}"; do
