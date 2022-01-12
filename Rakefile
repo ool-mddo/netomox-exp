@@ -89,14 +89,6 @@ task :snapshot_to_model do
   end
 end
 
-<<<<<<< HEAD
-#desc 'pre-task'
-task :netoviz_model_dir do
-#  sh 'docker-compose up -d'
-#  # NOTE: `make_csv.sh` has directory definitions inside, independent of this script.
-#  sh "#{CONFIGS_DIR}/make_csv.sh all"
-  sh "mkdir -p #{NETOVIZ_DIR}"
-=======
 desc 'Clean linkdown snapshots and model data (csv)'
 task :clean_snapshots do
   # clean linkdown snapshots and models
@@ -117,7 +109,6 @@ end
 def model_dir_files(model_info, src_dir)
   file_name = model_info[:type] == :mddo_trial_linkdown ? 'snapshot_info.json' : 'edges_layer1.csv'
   Dir.glob("#{src_dir}/**/#{file_name}").sort
->>>>>>> dockerfile2
 end
 
 # @param [Hash] model_info An element of MODEL_INFO
@@ -236,3 +227,4 @@ end
 
 CLOBBER.include("#{NETOVIZ_DIR}/*linkdown*.json")
 CLEAN.include('**/*~')
+
