@@ -21,4 +21,8 @@ services:
       - GEM_PATH=/myapp
     volumes:
       - .:/myapp
+<<<<<<< HEAD
     command:   bash -c "cd /myapp &&bundle install --path=vendor/bundle && ./configs/make_csv.sh all && bundle exec rake"
+=======
+    command:   bash -c "cd /myapp &&bundle install --path=vendor/bundle && bundle exec rake"
+>>>>>>> dockerfile2

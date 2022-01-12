@@ -8,143 +8,201 @@ CONFIGS_DIR = 'configs'
 MODEL_DEFS_DIR = 'model_defs'
 MODELS_DIR = 'models'
 NETOVIZ_DIR = 'netoviz_model'
-MODEL_MAP = [
+BATFISH_HOST = ENV['BATFISH_HOST'] || 'localhost'
+
+MODEL_INFO = [
   {
+    name: 'mddo',
+    type: :standalone,
     script: "#{MODEL_DEFS_DIR}/mddo.rb",
     file: 'mddo.json',
-    label: 'OOL-MDDO PJ Trial (1)',
-    type: :standalone
+    label: 'OOL-MDDO PJ Trial (1)'
   },
   {
-    source: "#{MODELS_DIR}/batfish-test-topology/l2/sample(\\d+)",
-    file: 'mddo_l2s$1.json',
-    label: 'OOL-MDDO PJ Trial(2) L2 sample$1',
-    type: :mddo_trial
+    name: 'batfish-test-topology',
+    type: :mddo_trial,
+    label: 'OOL-MDDO PJ Trial (2)'
   },
   {
-    source: "#{MODELS_DIR}/batfish-test-topology/l2l3/sample3",
-    label: 'OOL-MDDO PJ Trial(2) L2-L3 sample3',
-    file: 'mddo_l23s3.json',
-    type: :mddo_trial
+    name: 'pushed_configs',
+    type: :mddo_trial,
+    label: 'OOL-MDDO Network'
   },
   {
-    source: "#{MODELS_DIR}/batfish-test-topology/l2l3/sample3err2",
-    file: 'mddo_l23s3e2.json',
-    label: 'OOL-MDDO PJ Trial(2) L2-L3 sample3 Error2',
-    type: :mddo_trial
-  },
-  {
-    source: "#{MODELS_DIR}/pushed_configs/mddo_network",
-    label: 'OOL-MDDO PJ Experiment Network',
-    file: 'mddo_network.json',
-    type: :mddo_trial
-  },
-  {
-    source: "#{MODELS_DIR}/pushed_configs_linkdown/mddo_network_(\\d+)",
-    file: 'mddo_network_linkdown_$1.json',
-    label: 'OOL-MDDO PJ Experiment Network',
-    diff_src: 'mddo_network.json',
-    type: :mddo_trial
+    name: 'pushed_configs_linkdown',
+    type: :mddo_trial_linkdown,
+    src_config_name: 'pushed_configs',
+    label: 'OOL-MDDO Network (LINKDOWN)'
   }
 ].freeze
 
-##################
-# common functions
+task default: %i[pre_task linkdown_snapshots snapshot_to_model netoviz_index netoviz_models netomox_diff
+                 netoviz_layouts]
 
-def convert_match_to_wildcard(path)
-  # replace regexp group `(.*)` and group-matched value `$1` to wildcard `*`
-  path.gsub(/(?:\(.+\)|\$\d)/, '*')
+task :pre_task do
+  #sh 'docker-compose up -d'
+  sh "mkdir -p #{NETOVIZ_DIR}"
+  sh "mkdir -p #{MODELS_DIR}"
 end
 
-def match_dirs(path)
-  Dir.glob(convert_match_to_wildcard(path)).sort
+def model_info_list(*types)
+  list = MODEL_INFO
+  list = MODEL_INFO.find_all { |mi| mi[:name] == ENV['MODEL_NAME'] } if ENV['MODEL_NAME']
+  list = list.find_all { |mi| types.include?(mi[:type]) } unless types.empty?
+  list
 end
 
-def match_eval(match_str, re_str, target_str)
-  if target_str =~ /\$\d/ && match_str =~ Regexp.new(re_str)
-    target_str.gsub(/\$1/, Regexp.last_match(1))
-  else
-    target_str
+def src_model_info(model_info)
+  # NOTICE: Use unfiltered MODEL_INFO to find src_config_name
+  MODEL_INFO.find { |m| m[:name] == model_info[:src_config_name] }
+end
+
+def src_config_name(model_info)
+  src_model_info(model_info)[:name]
+end
+
+def snapshot_path(src_base, src, dst_base, dst)
+  src_dir = File.join(src_base, src)
+  dst_dir = File.join(dst_base, dst)
+  warn "# src dir = #{src_dir}"
+  warn "# dst dir = #{dst_dir}"
+  if Dir.exist?(dst_dir)
+    warn "# clean dst dir: #{dst_dir}"
+    sh "rm -rf #{dst_dir}"
+  end
+  [src_dir, dst_dir]
+end
+
+desc 'Generate linkdown snapshots'
+task :linkdown_snapshots do
+  model_info_list(:mddo_trial_linkdown).each do |mi|
+    src_dir, dst_dir = snapshot_path(CONFIGS_DIR, src_config_name(mi), CONFIGS_DIR, mi[:name])
+    sh "python3 #{CONFIGS_DIR}/make_linkdown_snapshots.py -i #{src_dir} -o #{dst_dir}"
   end
 end
 
-##################
-# task definitions
+desc 'Generate model data (csv) from snapshots'
+task :snapshot_to_model do
+  model_info_list(:mddo_trial, :mddo_trial_linkdown).each do |mi|
+    src_dir, dst_dir = snapshot_path(CONFIGS_DIR, mi[:name], MODELS_DIR, mi[:name])
+    sh "python3 #{CONFIGS_DIR}/exec_queries.py -b #{BATFISH_HOST} -n #{mi[:name]} -i #{src_dir} -o #{dst_dir}"
+  end
+end
 
-task default: %i[netoviz_model_dir netoviz_index netoviz_models netoviz_layouts diff]
-
+<<<<<<< HEAD
 #desc 'pre-task'
 task :netoviz_model_dir do
 #  sh 'docker-compose up -d'
 #  # NOTE: `make_csv.sh` has directory definitions inside, independent of this script.
 #  sh "#{CONFIGS_DIR}/make_csv.sh all"
   sh "mkdir -p #{NETOVIZ_DIR}"
+=======
+desc 'Clean linkdown snapshots and model data (csv)'
+task :clean_snapshots do
+  # clean linkdown snapshots and models
+  model_info_list(:mddo_trial_linkdown).each do |mi|
+    snapshot_path(CONFIGS_DIR, src_config_name(mi), CONFIGS_DIR, mi[:name])
+    snapshot_path(CONFIGS_DIR, mi[:name], MODELS_DIR, mi[:name])
+  end
 end
 
+def snapshot_dir_name(file, dir)
+  File.dirname(file).gsub(dir, '').gsub(%r{^/}, '')
+end
+
+def topology_file_name(name, file, dir)
+  "#{name}_#{snapshot_dir_name(file, dir).gsub('/', '_')}.json"
+end
+
+def model_dir_files(model_info, src_dir)
+  file_name = model_info[:type] == :mddo_trial_linkdown ? 'snapshot_info.json' : 'edges_layer1.csv'
+  Dir.glob("#{src_dir}/**/#{file_name}").sort
+>>>>>>> dockerfile2
+end
+
+# @param [Hash] model_info An element of MODEL_INFO
+# @param [String] src_dir Base directory of csv data
+# @param [String] file Files in snapshot directory (to specify model dir for a snapshot)
+# @return [Hash] netoviz index datum
+def netoviz_index_datum(model_info, src_dir, file)
+  if model_info[:type] == :mddo_trial
+    sdir = snapshot_dir_name(file, src_dir)
+    topo_file = topology_file_name(model_info[:name], file, src_dir)
+    label = "#{model_info[:label]}: #{sdir}"
+    return { 'file' => topo_file, 'label' => label }
+  end
+  # when model_info[:type] == :mddo_trial_linkdown
+  topo_file = topology_file_name(model_info[:name], file, src_dir)
+  info = JSON.parse(File.read(file))
+  label = "#{model_info[:label]}: #{info['description']}"
+  { 'file' => topo_file, 'label' => label }
+end
+
+desc 'Generate netoviz index file'
 task :netoviz_index do
-  index_data = MODEL_MAP.map do |mm|
-    case mm[:type]
+  # Use unfiltered MODEL_INFO (make full-size index always)
+  index_data = MODEL_INFO.map do |mi|
+    case mi[:type]
     when :standalone
-      { 'file' => mm[:file], 'label' => mm[:label] }
-    when :mddo_trial
-      match_dirs(mm[:source]).map do |match_dir|
-        label_str = match_eval(match_dir, mm[:source], mm[:label])
-        snapshot_info_path = Pathname.new(match_dir).join('snapshot_info.json')
-        if File.exist?(snapshot_info_path.to_s)
-          snapshot_info = JSON.parse(File.read(snapshot_info_path.to_s))
-          label_str += ": #{snapshot_info['description']}"
-        end
-        {
-          'file' => match_eval(match_dir, mm[:source], mm[:file]),
-          'label' => label_str
-        }
-      end
+      { 'file' => mi[:file], 'label' => mi[:label] }
+    when :mddo_trial, :mddo_trial_linkdown
+      src_dir = File.join(MODELS_DIR, mi[:name])
+      model_dir_files(mi, src_dir).map { |file| netoviz_index_datum(mi, src_dir, file) }
     else
-      warn "Error: Unknown model-map type: #{mm[:type]}"
+      warn "Error: Unknown model-info type: #{mi[:type]}"
       exit 1
     end
   end
   File.write("#{NETOVIZ_DIR}/_index.json", JSON.pretty_generate(index_data.flatten))
 end
 
+desc 'Generate topology file (for netoviz)'
 task :netoviz_models do
-  MODEL_MAP.each do |mm|
-    puts "# model map = #{mm}"
-    case mm[:type]
+  # clean
+  sh "rm -f #{NETOVIZ_DIR}/*linkdown*.json"
+
+  model_info_list.each do |mi|
+    case mi[:type]
     when :standalone
-      sh "bundle exec ruby #{mm[:script]} > #{NETOVIZ_DIR}/#{mm[:file]}"
-    when :mddo_trial
-      # clean past output
-      sh "rm -f #{NETOVIZ_DIR}/#{convert_match_to_wildcard(mm[:file])}"
-      match_dirs(mm[:source]).each do |match_dir|
-        file = match_eval(match_dir, mm[:source], mm[:file])
-        sh "bundle exec ruby #{MODEL_DEFS_DIR}/mddo_trial.rb -i #{match_dir} > #{NETOVIZ_DIR}/#{file}"
+      sh "bundle exec ruby #{mi[:script]} > #{NETOVIZ_DIR}/#{mi[:file]}"
+    when :mddo_trial, :mddo_trial_linkdown
+      src_dir = File.join(MODELS_DIR, mi[:name])
+      model_dir_files(mi, src_dir).map do |file|
+        topo_file = File.join(NETOVIZ_DIR, topology_file_name(mi[:name], file, src_dir))
+        sh "bundle exec ruby #{MODEL_DEFS_DIR}/mddo_trial.rb -i #{File.dirname(file)} > #{topo_file}"
       end
     else
-      warn "Error: Unknown model-map type: #{mm[:type]}"
+      warn "Error: Unknown model-info type: #{mi[:type]}"
       exit 1
     end
   end
 end
 
+desc 'Copy netoviz layout files'
 task :netoviz_layouts do
   sh "cp #{MODEL_DEFS_DIR}/layout/*.json #{NETOVIZ_DIR}"
 end
 
-task :diff do
-  MODEL_MAP.filter { |mm| mm[:diff_src] }.each do |mm|
-    case mm[:type]
-    when :mddo_trial
-      match_dirs(mm[:source]).each do |match_dir|
-        src_file = "#{NETOVIZ_DIR}/#{mm[:diff_src]}"
-        file = match_eval(match_dir, mm[:source], mm[:file])
-        dst_file = "#{NETOVIZ_DIR}/#{file}"
-        dst_file_tmp = "#{dst_file}.tmp"
-        sh "bundle exec netomox diff -o #{dst_file_tmp} #{src_file} #{dst_file}"
-        sh "mv #{dst_file_tmp} #{dst_file}" # overwrite
-      end
-    else
-      warn 'Warning: diff is enabled for mddo_trial type'
+desc 'Generate diff data of linkdown snapshots and overwrite'
+task :netomox_diff do
+  model_info_list(:mddo_trial_linkdown).each do |dst_mi|
+    # clean
+    sh "rm -f #{NETOVIZ_DIR}/*.diff"
+
+    src_mi = src_model_info(dst_mi)
+    src_dir = File.join(MODELS_DIR, src_mi[:name])
+    # NOTE: choice one snapshot (head)
+    csv_file = Dir.glob("#{src_dir}/**/edges_layer1.csv").shift
+    src_file = File.join(NETOVIZ_DIR, topology_file_name(src_mi[:name], csv_file, src_dir))
+
+    dst_dir = File.join(MODELS_DIR, dst_mi[:name])
+    model_dir_files(dst_mi, dst_dir).map do |file|
+      dst_file = File.join(NETOVIZ_DIR, topology_file_name(dst_mi[:name], file, dst_dir))
+      dst_file_tmp = "#{dst_file}.diff"
+      warn "# src file: #{src_file}"
+      warn "# dst file: #{dst_file}"
+      sh "bundle exec netomox diff -o #{dst_file_tmp} #{src_file} #{dst_file}"
+      sh "mv #{dst_file_tmp} #{dst_file}" # overwrite
     end
   end
 end
@@ -176,5 +234,5 @@ rescue LoadError
   end
 end
 
-CLOBBER.include("#{NETOVIZ_DIR}/*_linkdown*.json")
+CLOBBER.include("#{NETOVIZ_DIR}/*linkdown*.json")
 CLEAN.include('**/*~')

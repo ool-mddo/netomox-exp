@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require_relative 'pseudo_dsl/pseudo_model'
+require 'ipaddress'
 
 module TopologyBuilder
   # Expanded L3 data builder
@@ -66,6 +67,16 @@ module TopologyBuilder
     end
     # rubocop:enable Metrics/ParameterLists
 
+    def same_subnet?(src_tp, dst_tp)
+      # NOTE: cannot handle if there is a term-point that has multiple ip address.
+      src_ip = IPAddress::IPv4.new(src_tp.attribute[:ip_addrs][0])
+      dst_ip = IPAddress::IPv4.new(dst_tp.attribute[:ip_addrs][0])
+      # IPAddress#to_string returns "a.b.c.d/nn" format ip address string
+      src_ip.network.to_string == dst_ip.network.to_string
+    end
+
+    # rubocop:disable Metrics/MethodLength
+
     # @param [Array<PLinkEdge>] seg_connected_edges Edges connected a segment node
     # @return [void]
     def add_node_tp_links(seg_connected_edges)
@@ -75,10 +86,16 @@ module TopologyBuilder
           next if dst_edge == src_edge
 
           dst_node, dst_tp = @layer3p.find_node_tp_by_edge(dst_edge)
-          @network.link(*add_node_tp(si, di, src_node, src_tp, dst_node, dst_tp))
+          link_elements = add_node_tp(si, di, src_node, src_tp, dst_node, dst_tp)
+          if same_subnet?(src_tp, dst_tp)
+            @network.link(*link_elements)
+          else
+            warn "# WARNING: ip address of #{src_tp} => #{dst_tp} is different"
+          end
         end
       end
     end
+    # rubocop:enable Metrics/MethodLength
 
     # Expand links connected a layer3 segment to P2P links
     # @return [void]

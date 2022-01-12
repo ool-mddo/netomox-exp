@@ -45,9 +45,12 @@ module TopologyBuilder
     # @param [PNode] l2_node A layer2 node
     # @return [PNode] Added layer3 node
     def add_l3_node(rec, l2_node)
-      l3_node = @network.node(l3_node_name(rec))
+      node_name = l3_node_name(rec)
+      l3_node = @network.node(node_name)
       l3_node.supports.push([@layer2p.name, l2_node.name])
-      l3_node.attribute = { node_type: 'node' }
+      l3_node.attribute = {
+        node_type: node_name =~ /.*svr\d+/i ? 'endpoint' : 'node'
+      }
       l3_node
     end
 
@@ -145,7 +148,14 @@ module TopologyBuilder
     # @return [String] Segment node suffix string
     def segment_node_suffix(segment)
       prefixes = @segment_prefixes[segment]
-      prefixes.length.positive? ? "_#{prefixes[0][:prefix]}" : ''
+      if prefixes.length == 1
+        "_#{prefixes[0][:prefix]}"
+      elsif prefixes.length > 1
+        # segment contains multiple ip prefixes
+        "_#{prefixes[0][:prefix]}+"
+      else
+        ''
+      end
     end
 
     # @param [Array<PLinkEdge>] segment Edge list in same segment
@@ -209,7 +219,7 @@ module TopologyBuilder
 
     # @return [Array<PNode>] Found nodes
     def find_all_node_type_nodes
-      @network.nodes.filter { |n| n.attribute[:node_type] == 'node' }
+      @network.nodes.filter { |n| %w[node endpoint].include?(n.attribute[:node_type]) }
     end
 
     # @param [PNode] l3_node Layer3 node

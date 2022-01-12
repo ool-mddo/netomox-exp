@@ -314,6 +314,7 @@
               {
                 "network-ref": "layer2",
                 "node-ref": "regiona-ce02_ae1.10"
+<<<<<<< HEAD:netoviz_model/mddo_network.json
               },
               {
                 "network-ref": "layer2",
@@ -325,6 +326,19 @@
               },
               {
                 "network-ref": "layer2",
+=======
+              },
+              {
+                "network-ref": "layer2",
+                "node-ref": "regiona-ce02_ge-0/0/0.0"
+              },
+              {
+                "network-ref": "layer2",
+                "node-ref": "regiona-ce02_ge-0/0/1.0"
+              },
+              {
+                "network-ref": "layer2",
+>>>>>>> dockerfile2:netoviz_model/pushed_configs_mddo_network.json
                 "node-ref": "regiona-ce02_ae0.0"
               }
             ],
@@ -494,7 +508,7 @@
               }
             ],
             "mddo-topology:l3-node-attributes": {
-              "node-type": "node",
+              "node-type": "endpoint",
               "prefix": [
                 {
                   "prefix": "172.30.10.0/24",
@@ -645,7 +659,7 @@
               }
             ],
             "mddo-topology:l3-node-attributes": {
-              "node-type": "node",
+              "node-type": "endpoint",
               "prefix": [
                 {
                   "prefix": "172.30.10.0/24",
@@ -1881,7 +1895,7 @@
               }
             ],
             "mddo-topology:l3-node-attributes": {
-              "node-type": "node",
+              "node-type": "endpoint",
               "prefix": [
                 {
                   "prefix": "172.31.10.0/24",
@@ -2220,7 +2234,7 @@
               }
             ],
             "mddo-topology:l3-node-attributes": {
-              "node-type": "node",
+              "node-type": "endpoint",
               "prefix": [
                 {
                   "prefix": "172.31.20.0/24",
@@ -2528,6 +2542,7 @@
             "destination": {
               "dest-node": "regiona-ce02",
               "dest-tp": "ge-0/0/0.0#1"
+<<<<<<< HEAD:netoviz_model/mddo_network.json
             }
           },
           {
@@ -2550,6 +2565,8 @@
             "destination": {
               "dest-node": "regiona-ce02",
               "dest-tp": "ge-0/0/1.0#1"
+=======
+>>>>>>> dockerfile2:netoviz_model/pushed_configs_mddo_network.json
             }
           },
           {
@@ -3420,6 +3437,7 @@
               {
                 "network-ref": "layer2",
                 "node-ref": "regiona-ce02_ae1.10"
+<<<<<<< HEAD:netoviz_model/mddo_network.json
               },
               {
                 "network-ref": "layer2",
@@ -3431,6 +3449,19 @@
               },
               {
                 "network-ref": "layer2",
+=======
+              },
+              {
+                "network-ref": "layer2",
+                "node-ref": "regiona-ce02_ge-0/0/0.0"
+              },
+              {
+                "network-ref": "layer2",
+                "node-ref": "regiona-ce02_ge-0/0/1.0"
+              },
+              {
+                "network-ref": "layer2",
+>>>>>>> dockerfile2:netoviz_model/pushed_configs_mddo_network.json
                 "node-ref": "regiona-ce02_ae0.0"
               }
             ],
@@ -3524,7 +3555,7 @@
               }
             ],
             "mddo-topology:l3-node-attributes": {
-              "node-type": "node",
+              "node-type": "endpoint",
               "prefix": [
                 {
                   "prefix": "172.30.10.0/24",
@@ -3599,7 +3630,7 @@
               }
             ],
             "mddo-topology:l3-node-attributes": {
-              "node-type": "node",
+              "node-type": "endpoint",
               "prefix": [
                 {
                   "prefix": "172.30.10.0/24",
@@ -4089,7 +4120,11 @@
             }
           },
           {
+<<<<<<< HEAD:netoviz_model/mddo_network.json
             "node-id": "Seg_172.17.4.0/30#0",
+=======
+            "node-id": "Seg_172.17.4.0/30+",
+>>>>>>> dockerfile2:netoviz_model/pushed_configs_mddo_network.json
             "ietf-network-topology:termination-point": [
               {
                 "tp-id": "regiona-pe02_GigabitEthernet0/0/0/3",
@@ -5451,7 +5486,7 @@
               }
             ],
             "mddo-topology:l3-node-attributes": {
-              "node-type": "node",
+              "node-type": "endpoint",
               "prefix": [
                 {
                   "prefix": "172.31.10.0/24",
@@ -5812,7 +5847,7 @@
               }
             ],
             "mddo-topology:l3-node-attributes": {
-              "node-type": "node",
+              "node-type": "endpoint",
               "prefix": [
                 {
                   "prefix": "172.31.20.0/24",
@@ -6250,6 +6285,7 @@
             "destination": {
               "dest-node": "Seg_172.30.20.0/24",
               "dest-tp": "regiona-acc01_Port-Channel3"
+<<<<<<< HEAD:netoviz_model/mddo_network.json
             }
           },
           {
@@ -6275,6 +6311,33 @@
             }
           },
           {
+=======
+            }
+          },
+          {
+            "link-id": "Seg_172.30.120.0/24,regiona-acc01_Port-Channel3,regiona-ce01_VR1,ae2.120",
+            "source": {
+              "source-node": "Seg_172.30.120.0/24",
+              "source-tp": "regiona-acc01_Port-Channel3"
+            },
+            "destination": {
+              "dest-node": "regiona-ce01_VR1",
+              "dest-tp": "ae2.120"
+            }
+          },
+          {
+            "link-id": "regiona-ce01_VR1,ae2.120,Seg_172.30.120.0/24,regiona-acc01_Port-Channel3",
+            "source": {
+              "source-node": "regiona-ce01_VR1",
+              "source-tp": "ae2.120"
+            },
+            "destination": {
+              "dest-node": "Seg_172.30.120.0/24",
+              "dest-tp": "regiona-acc01_Port-Channel3"
+            }
+          },
+          {
+>>>>>>> dockerfile2:netoviz_model/pushed_configs_mddo_network.json
             "link-id": "Seg_172.16.2.0/30,regiona-pe01_GigabitEthernet0/0/0/3,regiona-ce02,ge-0/0/0.0",
             "source": {
               "source-node": "Seg_172.16.2.0/30",
@@ -6319,9 +6382,15 @@
             }
           },
           {
+<<<<<<< HEAD:netoviz_model/mddo_network.json
             "link-id": "Seg_172.17.4.0/30#0,regiona-pe02_GigabitEthernet0/0/0/3,regiona-ce02,ge-0/0/1.0",
             "source": {
               "source-node": "Seg_172.17.4.0/30#0",
+=======
+            "link-id": "Seg_172.17.4.0/30+,regiona-pe02_GigabitEthernet0/0/0/3,regiona-ce02,ge-0/0/1.0",
+            "source": {
+              "source-node": "Seg_172.17.4.0/30+",
+>>>>>>> dockerfile2:netoviz_model/pushed_configs_mddo_network.json
               "source-tp": "regiona-pe02_GigabitEthernet0/0/0/3"
             },
             "destination": {
@@ -6330,20 +6399,34 @@
             }
           },
           {
+<<<<<<< HEAD:netoviz_model/mddo_network.json
             "link-id": "regiona-ce02,ge-0/0/1.0,Seg_172.17.4.0/30#0,regiona-pe02_GigabitEthernet0/0/0/3",
+=======
+            "link-id": "regiona-ce02,ge-0/0/1.0,Seg_172.17.4.0/30+,regiona-pe02_GigabitEthernet0/0/0/3",
+>>>>>>> dockerfile2:netoviz_model/pushed_configs_mddo_network.json
             "source": {
               "source-node": "regiona-ce02",
               "source-tp": "ge-0/0/1.0"
             },
             "destination": {
+<<<<<<< HEAD:netoviz_model/mddo_network.json
               "dest-node": "Seg_172.17.4.0/30#0",
+=======
+              "dest-node": "Seg_172.17.4.0/30+",
+>>>>>>> dockerfile2:netoviz_model/pushed_configs_mddo_network.json
               "dest-tp": "regiona-pe02_GigabitEthernet0/0/0/3"
             }
           },
           {
+<<<<<<< HEAD:netoviz_model/mddo_network.json
             "link-id": "Seg_172.17.4.0/30#0,regiona-ce02_ge-0/0/1.0,regiona-pe02,GigabitEthernet0/0/0/3",
             "source": {
               "source-node": "Seg_172.17.4.0/30#0",
+=======
+            "link-id": "Seg_172.17.4.0/30+,regiona-ce02_ge-0/0/1.0,regiona-pe02,GigabitEthernet0/0/0/3",
+            "source": {
+              "source-node": "Seg_172.17.4.0/30+",
+>>>>>>> dockerfile2:netoviz_model/pushed_configs_mddo_network.json
               "source-tp": "regiona-ce02_ge-0/0/1.0"
             },
             "destination": {
@@ -6352,13 +6435,21 @@
             }
           },
           {
+<<<<<<< HEAD:netoviz_model/mddo_network.json
             "link-id": "regiona-pe02,GigabitEthernet0/0/0/3,Seg_172.17.4.0/30#0,regiona-ce02_ge-0/0/1.0",
+=======
+            "link-id": "regiona-pe02,GigabitEthernet0/0/0/3,Seg_172.17.4.0/30+,regiona-ce02_ge-0/0/1.0",
+>>>>>>> dockerfile2:netoviz_model/pushed_configs_mddo_network.json
             "source": {
               "source-node": "regiona-pe02",
               "source-tp": "GigabitEthernet0/0/0/3"
             },
             "destination": {
+<<<<<<< HEAD:netoviz_model/mddo_network.json
               "dest-node": "Seg_172.17.4.0/30#0",
+=======
+              "dest-node": "Seg_172.17.4.0/30+",
+>>>>>>> dockerfile2:netoviz_model/pushed_configs_mddo_network.json
               "dest-tp": "regiona-ce02_ge-0/0/1.0"
             }
           },

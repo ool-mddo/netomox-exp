@@ -5,7 +5,16 @@ require 'json'
 require 'netomox'
 require_relative './disconnected_verifiable_networks'
 
+# 4fc8345 based topology operations
 module TopologyOperator
+  # @param [String] file_path Topology file path
+  # @return [Netomox::Topology::DisconnectedVerifiableNetworks]
+  def read_topology_data(file_path)
+    raw_topology_data = JSON.parse(File.read(file_path))
+    Netomox::Topology::DisconnectedVerifiableNetworks.new(raw_topology_data)
+  end
+  module_function :read_topology_data
+
   # handle subtract (diff) information of NetworkSets
   class NetworkSetsDiff
     # @!attribute [r] orig_file
@@ -55,8 +64,7 @@ module TopologyOperator
     # @param [String] file_path Topology file path
     # @return [NetworkSets] Network sets
     def disconnected_check(file_path)
-      raw_topology_data = JSON.parse(File.read(file_path))
-      nws = Netomox::Topology::DisconnectedVerifiableNetworks.new(raw_topology_data)
+      nws = TopologyOperator.read_topology_data(file_path)
       nws.find_all_network_sets
     end
 

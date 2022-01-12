@@ -16,12 +16,12 @@ module TopologyOperator
     #   @see Array#to_s
     # @!method length
     #   @see Array#length
-    def_delegators :subsets, :push, :to_s, :length
+    def_delegators :@subsets, :push, :to_s, :length
 
     # @param [String] network_name Network name
     def initialize(network_name)
       @network_name = network_name
-      @subsets = []
+      @subsets = [] # list of network subset
     end
 
     # @param [String] element_path Path of node/term-point to search
@@ -33,6 +33,17 @@ module TopologyOperator
     # @return [Array<String>] Union all subset elements
     def union_subsets
       @subsets.inject([]) { |union, subset| union | subset.elements }
+    end
+
+    # @return [Array] Array of subset-elements
+    def to_array
+      @subsets.map(&:elements)
+    end
+
+    # @return [NetworkSet] self
+    def reject_empty_set!
+      @subsets.reject!(&:empty?)
+      self
     end
 
     # @param [NetworkSet] other

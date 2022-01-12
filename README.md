@@ -1,4 +1,5 @@
 
+
 # netomox-exp
 
 A trial of network model construction. (original: https://github.com/corestate55/netomox-examples)
@@ -53,30 +54,15 @@ apt install docker.io docker-compose
 
 Optional: Add `docker` group to your group to allow use docker without sudo.
 
-## Generate normalized CSV files from configs
-
-### Up batfish and netoviz containers
-
-```shell
-docker-compose up -d
-```
-
-- netoviz: `http://localhost:3000/` with browser.
-- batfish: localhost `tcp/9996-9997`
-
-### Generate normalized network data from configs (snapshots)
-
-several keywords can use to target creating csv (see help: `-h`)
-
-```shell
-./configs/make_csv.sh all
-```
-
 ## Generate topology json from normalized network data
 
-```shell
-bundle exec rake
+```text
+bundle exec rake [MODEL_NAME=<target model name>]
 ```
+
+You can specify target snapshot base with `MODEL_NAME` environment value.
+
+See details of task sequence `default` task in `Rakefile`.
 
 ## Tools
 
@@ -103,7 +89,16 @@ bundle exec ruby exe/mddo_toolbox.rb make_l1_descr [options] <topology-file>
 ### Check disconnected network
 
 For topology file with layer1 link-down snapshot.
-Check disconnected network and compare origin topology.
+
+Check disconnected network
+
+- `-f`, `--format` : specify output format (json/yaml, default: yaml)
+
+```text
+bundle exec ruby exe/mddo_toolbox.rb get_subsets [options] <topology-file>
+```
+
+Compare origin topology.
 
 - before: topology file from original snapshot (without link-down)
 - after: topology file(s) with link-down snapshot(s)

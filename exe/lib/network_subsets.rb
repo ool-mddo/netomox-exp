@@ -14,7 +14,9 @@ module TopologyOperator
     #   @see Array#to_s
     # @!method include?
     #   @see Array#include?
-    def_delegators :@elements, :push, :to_s, :include?
+    # @!method empty?
+    #   @see Array#empty?
+    def_delegators :@elements, :push, :to_s, :include?, :empty?
 
     # @param [Array<String>] element_paths Paths of node/term-point
     def initialize(*element_paths)
