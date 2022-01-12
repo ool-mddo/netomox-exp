@@ -12,3 +12,13 @@ services:
     ports:
       - "9996:9996"
       - "9997:9997"
+  netomox:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      - BATFISH_HOST=192.168.23.32
+      - GEM_PATH=/myapp
+    volumes:
+      - .:/myapp
+    command:   bash -c "cd /myapp &&bundle install --path=vendor/bundle && bundle exec rake"

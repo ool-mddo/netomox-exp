@@ -33,35 +33,35 @@
   },
   {
     "file": "pushed_configs_linkdown_mddo_network_01.json",
-    "label": "OOL-MDDO Network (LINKDOWN): No.01: down RegionA-Acc01[Ethernet1] <=> RegionA-CE01[Ethernet5] in layer1"
+    "label": "OOL-MDDO Network (LINKDOWN): No.01: down RegionA-Acc01[Ethernet1] <=> RegionA-CE01[ge-0/0/4] in layer1"
   },
   {
     "file": "pushed_configs_linkdown_mddo_network_02.json",
-    "label": "OOL-MDDO Network (LINKDOWN): No.02: down RegionA-Acc01[Ethernet2] <=> RegionA-CE01[Ethernet6] in layer1"
+    "label": "OOL-MDDO Network (LINKDOWN): No.02: down RegionA-Acc01[Ethernet2] <=> RegionA-CE01[ge-0/0/5] in layer1"
   },
   {
     "file": "pushed_configs_linkdown_mddo_network_03.json",
-    "label": "OOL-MDDO Network (LINKDOWN): No.03: down RegionA-Acc01[Ethernet3] <=> RegionA-CE02[Ethernet5] in layer1"
+    "label": "OOL-MDDO Network (LINKDOWN): No.03: down RegionA-Acc01[Ethernet3] <=> RegionA-CE02[ge-0/0/4] in layer1"
   },
   {
     "file": "pushed_configs_linkdown_mddo_network_04.json",
-    "label": "OOL-MDDO Network (LINKDOWN): No.04: down RegionA-Acc01[Ethernet4] <=> RegionA-CE02[Ethernet6] in layer1"
+    "label": "OOL-MDDO Network (LINKDOWN): No.04: down RegionA-Acc01[Ethernet4] <=> RegionA-CE02[ge-0/0/5] in layer1"
   },
   {
     "file": "pushed_configs_linkdown_mddo_network_05.json",
-    "label": "OOL-MDDO Network (LINKDOWN): No.05: down RegionA-Acc01[Ethernet5] <=> RegionA-CE01[Ethernet7] in layer1"
+    "label": "OOL-MDDO Network (LINKDOWN): No.05: down RegionA-Acc01[Ethernet5] <=> RegionA-CE01[ge-0/0/6] in layer1"
   },
   {
     "file": "pushed_configs_linkdown_mddo_network_06.json",
-    "label": "OOL-MDDO Network (LINKDOWN): No.06: down RegionA-Acc01[Ethernet6] <=> RegionA-CE01[Ethernet8] in layer1"
+    "label": "OOL-MDDO Network (LINKDOWN): No.06: down RegionA-Acc01[Ethernet6] <=> RegionA-CE01[ge-0/0/7] in layer1"
   },
   {
     "file": "pushed_configs_linkdown_mddo_network_07.json",
-    "label": "OOL-MDDO Network (LINKDOWN): No.07: down RegionA-Acc01[Ethernet7] <=> RegionA-CE02[Ethernet7] in layer1"
+    "label": "OOL-MDDO Network (LINKDOWN): No.07: down RegionA-Acc01[Ethernet7] <=> RegionA-CE02[ge-0/0/6] in layer1"
   },
   {
     "file": "pushed_configs_linkdown_mddo_network_08.json",
-    "label": "OOL-MDDO Network (LINKDOWN): No.08: down RegionA-Acc01[Ethernet8] <=> RegionA-CE02[Ethernet8] in layer1"
+    "label": "OOL-MDDO Network (LINKDOWN): No.08: down RegionA-Acc01[Ethernet8] <=> RegionA-CE02[ge-0/0/7] in layer1"
   },
   {
     "file": "pushed_configs_linkdown_mddo_network_09.json",
@@ -81,19 +81,19 @@
   },
   {
     "file": "pushed_configs_linkdown_mddo_network_13.json",
-    "label": "OOL-MDDO Network (LINKDOWN): No.13: down RegionA-CE02[Ethernet1] <=> RegionA-PE01[GigabitEthernet0/0/0/3] in layer1"
+    "label": "OOL-MDDO Network (LINKDOWN): No.13: down RegionA-CE02[ge-0/0/0] <=> RegionA-PE01[GigabitEthernet0/0/0/3] in layer1"
   },
   {
     "file": "pushed_configs_linkdown_mddo_network_14.json",
-    "label": "OOL-MDDO Network (LINKDOWN): No.14: down RegionA-CE02[Ethernet2] <=> RegionA-PE02[GigabitEthernet0/0/0/3] in layer1"
+    "label": "OOL-MDDO Network (LINKDOWN): No.14: down RegionA-CE02[ge-0/0/1] <=> RegionA-PE02[GigabitEthernet0/0/0/3] in layer1"
   },
   {
     "file": "pushed_configs_linkdown_mddo_network_15.json",
-    "label": "OOL-MDDO Network (LINKDOWN): No.15: down RegionA-CE02[Ethernet3] <=> RegionA-CE01[Ethernet3] in layer1"
+    "label": "OOL-MDDO Network (LINKDOWN): No.15: down RegionA-CE02[ge-0/0/2] <=> RegionA-CE01[ge-0/0/2] in layer1"
   },
   {
     "file": "pushed_configs_linkdown_mddo_network_16.json",
-    "label": "OOL-MDDO Network (LINKDOWN): No.16: down RegionA-CE02[Ethernet4] <=> RegionA-CE01[Ethernet4] in layer1"
+    "label": "OOL-MDDO Network (LINKDOWN): No.16: down RegionA-CE02[ge-0/0/3] <=> RegionA-CE01[ge-0/0/3] in layer1"
   },
   {
     "file": "pushed_configs_linkdown_mddo_network_17.json",
@@ -105,7 +105,7 @@
   },
   {
     "file": "pushed_configs_linkdown_mddo_network_19.json",
-    "label": "OOL-MDDO Network (LINKDOWN): No.19: down RegionA-PE02[GigabitEthernet0/0/0/2] <=> RegionA-CE01[Ethernet2] in layer1"
+    "label": "OOL-MDDO Network (LINKDOWN): No.19: down RegionA-PE02[GigabitEthernet0/0/0/2] <=> RegionA-CE01[ge-0/0/1] in layer1"
   },
   {
     "file": "pushed_configs_linkdown_mddo_network_20.json",
@@ -189,6 +189,6 @@
   },
   {
     "file": "pushed_configs_linkdown_mddo_network_40.json",
-    "label": "OOL-MDDO Network (LINKDOWN): No.40: down RegionA-PE01[GigabitEthernet0/0/0/2] <=> RegionA-CE01[Ethernet1] in layer1"
+    "label": "OOL-MDDO Network (LINKDOWN): No.40: down RegionA-PE01[GigabitEthernet0/0/0/2] <=> RegionA-CE01[ge-0/0/0] in layer1"
   }
 ]
