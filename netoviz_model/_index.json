@@ -24,10 +24,6 @@
     "label": "OOL-MDDO PJ Trial (2): l2l3/sample3err"
   },
   {
-<<<<<<< HEAD
-    "file": "mddo_network.json",
-    "label": "OOL-MDDO PJ Experiment Network"
-=======
     "file": "batfish-test-topology_l2l3_sample3err2.json",
     "label": "OOL-MDDO PJ Trial (2): l2l3/sample3err2"
   },
@@ -194,6 +190,5 @@
   {
     "file": "pushed_configs_linkdown_mddo_network_40.json",
     "label": "OOL-MDDO Network (LINKDOWN): No.40: down RegionA-PE01[GigabitEthernet0/0/0/2] <=> RegionA-CE01[ge-0/0/0] in layer1"
->>>>>>> dockerfile2
   }
 ]

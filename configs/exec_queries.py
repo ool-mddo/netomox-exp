@@ -138,7 +138,6 @@ if __name__ == "__main__":
         other_query_dict = {args.query: other_query_dict[args.query]} if args.query in other_query_dict else {}
 
     # batfish session definition
-    print ("debug: " + str(args.batfish))
     bf = Session(host=args.batfish)
     bf.set_network(args.network)
     dirs = list(

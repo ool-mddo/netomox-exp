@@ -3606,3 +3606,61 @@ Starting netomox-exp_netomox_1 ...
 netomox-exp_netoviz_1 is up-to-date
 batfish is up-to-date
 Starting netomox-exp_netomox_1 ... done
+The Docker Engine you're using is running in swarm mode.
+
+Compose does not use swarm mode to deploy services to multiple nodes in a swarm. All containers will be scheduled on the current node.
+
+To deploy your application across the swarm, use `docker stack deploy`.
+
+batfish is up-to-date
+netomox-exp_netoviz_1 is up-to-date
+Starting netomox-exp_netomox_1 ... 
+Starting netomox-exp_netomox_1 ... done
+Stopping netomox-exp_netoviz_1 ... 
+Stopping batfish               ... 
+Stopping netomox-exp_netoviz_1 ... done
+Stopping batfish               ... done
+Removing netomox-exp_netomox_1 ... 
+Removing netomox-exp_netoviz_1 ... 
+Removing batfish               ... 
+Removing netomox-exp_netomox_1 ... done
+Removing netomox-exp_netoviz_1 ... done
+Removing batfish               ... done
+Removing network netomox-exp_default
+The Docker Engine you're using is running in swarm mode.
+
+Compose does not use swarm mode to deploy services to multiple nodes in a swarm. All containers will be scheduled on the current node.
+
+To deploy your application across the swarm, use `docker stack deploy`.
+
+Creating network "netomox-exp_default" with the default driver
+Creating batfish ... 
+Creating batfish ... done
+Creating netomox-exp_netomox_1 ... 
+Creating netomox-exp_netomox_1 ... done
+Creating netomox-exp_netoviz_1 ... 
+Creating netomox-exp_netoviz_1 ... done
+Stopping netomox-exp_netoviz_1 ... 
+Stopping batfish               ... 
+Stopping netomox-exp_netoviz_1 ... done
+Stopping batfish               ... done
+Removing netomox-exp_netoviz_1 ... 
+Removing netomox-exp_netomox_1 ... 
+Removing batfish               ... 
+Removing netomox-exp_netoviz_1 ... done
+Removing netomox-exp_netomox_1 ... done
+Removing batfish               ... done
+Removing network netomox-exp_default
+The Docker Engine you're using is running in swarm mode.
+
+Compose does not use swarm mode to deploy services to multiple nodes in a swarm. All containers will be scheduled on the current node.
+
+To deploy your application across the swarm, use `docker stack deploy`.
+
+Creating network "netomox-exp_default" with the default driver
+Creating batfish ... 
+Creating batfish ... done
+Creating netomox-exp_netomox_1 ... 
+Creating netomox-exp_netomox_1 ... done
+Creating netomox-exp_netoviz_1 ... 
+Creating netomox-exp_netoviz_1 ... done

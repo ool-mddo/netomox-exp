@@ -1,11 +1,5 @@
 version: "3"
 services:
-  netoviz:
-    image: netoviz/allinone
-    ports:
-      - "3000:3000"
-    volumes:
-      - ./netoviz_model:/home/netoviz/static/model
   batfish:
     image: "batfish/allinone"
     container_name: "batfish"
@@ -21,8 +15,15 @@ services:
       - GEM_PATH=/myapp
     volumes:
       - .:/myapp
-<<<<<<< HEAD
-    command:   bash -c "cd /myapp &&bundle install --path=vendor/bundle && ./configs/make_csv.sh all && bundle exec rake"
-=======
     command:   bash -c "cd /myapp &&bundle install --path=vendor/bundle && bundle exec rake"
->>>>>>> dockerfile2
+    depends_on:
+      - batfish
+  netoviz:
+    image: netoviz/allinone
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./netoviz_model:/home/netoviz/static/model
+    depends_on:
+      netomox:
+        condition: service_completed_successfully
