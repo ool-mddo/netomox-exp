@@ -25,5 +25,4 @@ services:
     volumes:
       - ./netoviz_model:/home/netoviz/static/model
     depends_on:
-      netomox:
-        condition: service_completed_successfully
+      - netomox
