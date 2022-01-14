@@ -17,7 +17,6 @@ services:
     volumes:
       - .:/netomox
     command:   bash -c "bundle exec rake"
-    #command:   bash -c "bundle install --path=vendor/bundle && bundle exec rake"
     depends_on:
       - batfish
   netoviz:
