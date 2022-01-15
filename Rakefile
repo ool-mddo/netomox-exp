@@ -40,7 +40,7 @@ task default: %i[pre_task linkdown_snapshots snapshot_to_model netoviz_index net
                  netoviz_layouts]
 
 task :pre_task do
-  sh 'docker-compose up -d'
+  #sh 'docker-compose up -d'
   sh "mkdir -p #{NETOVIZ_DIR}"
   sh "mkdir -p #{MODELS_DIR}"
 end
@@ -77,7 +77,7 @@ desc 'Generate linkdown snapshots'
 task :linkdown_snapshots do
   model_info_list(:mddo_trial_linkdown).each do |mi|
     src_dir, dst_dir = snapshot_path(CONFIGS_DIR, src_config_name(mi), CONFIGS_DIR, mi[:name])
-    sh "python #{CONFIGS_DIR}/make_linkdown_snapshots.py -i #{src_dir} -o #{dst_dir}"
+    sh "python3 #{CONFIGS_DIR}/make_linkdown_snapshots.py -i #{src_dir} -o #{dst_dir}"
   end
 end
 
@@ -85,7 +85,7 @@ desc 'Generate model data (csv) from snapshots'
 task :snapshot_to_model do
   model_info_list(:mddo_trial, :mddo_trial_linkdown).each do |mi|
     src_dir, dst_dir = snapshot_path(CONFIGS_DIR, mi[:name], MODELS_DIR, mi[:name])
-    sh "python #{CONFIGS_DIR}/exec_queries.py -b #{BATFISH_HOST} -n #{mi[:name]} -i #{src_dir} -o #{dst_dir}"
+    sh "python3 #{CONFIGS_DIR}/exec_queries.py -b #{BATFISH_HOST} -n #{mi[:name]} -i #{src_dir} -o #{dst_dir}"
   end
 end
 
@@ -227,3 +227,4 @@ end
 
 CLOBBER.include("#{NETOVIZ_DIR}/*linkdown*.json")
 CLEAN.include('**/*~')
+

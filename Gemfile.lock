@@ -27,7 +27,7 @@ GEM
       rubyzip (>= 1.0.0)
     os (1.1.4)
     parallel (1.21.0)
-    parser (3.0.3.2)
+    parser (3.1.0.0)
       ast (~> 2.4.1)
     rainbow (3.0.0)
     rake (13.0.6)
@@ -55,7 +55,7 @@ GEM
       webrick (~> 1.7.0)
 
 PLATFORMS
-  ruby
+  x86_64-linux
 
 DEPENDENCIES
   hashie (>= 4.1.0)
@@ -66,4 +66,4 @@ DEPENDENCIES
   yard (>= 0.9.20)
 
 BUNDLED WITH
-   2.1.4
+   2.3.4

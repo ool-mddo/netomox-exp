@@ -25,8 +25,6 @@ def copy_snapshot_info(snapshot_dir, csv_dir):
 
 
 def exec_bf_query(bf_session, query_dict, snapshot_dir, csv_dir, snapshot_name):
-    # load question
-    load_questions()
     # init snapshot
     bf_session.init_snapshot(snapshot_dir, name=snapshot_name, overwrite=True)
     # exec query

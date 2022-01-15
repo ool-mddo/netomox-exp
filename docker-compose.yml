@@ -1,14 +1,29 @@
 version: "3"
 services:
-  netoviz:
-    image: netoviz/allinone
-    ports:
-      - "3000:3000"
-    volumes:
-      - ./netoviz_model:/home/netoviz/static/model
   batfish:
     image: "batfish/allinone"
     container_name: "batfish"
     ports:
       - "9996:9996"
       - "9997:9997"
+  netomox:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        - APP_PATH=/netomox
+    environment:
+      - BATFISH_HOST=batfish
+    volumes:
+      - .:/netomox
+    command:   bash -c "bundle exec rake"
+    depends_on:
+      - batfish
+  netoviz:
+    image: netoviz/allinone
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./netoviz_model:/home/netoviz/static/model
+    depends_on:
+      - netomox
