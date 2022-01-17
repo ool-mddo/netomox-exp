@@ -1,0 +1,7 @@
+docs
+vendor
+**/venv
+.bundle
+.git
+**/.idea
+**/.vscode
