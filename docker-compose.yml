@@ -16,7 +16,7 @@ services:
       - BATFISH_HOST=batfish
     volumes:
       - .:/netomox
-    command:   bash -c "bundle exec rake"
+    command: bash -c "bundle exec rake"
     depends_on:
       - batfish
   netoviz:
