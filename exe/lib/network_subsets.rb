@@ -6,6 +6,9 @@ module TopologyOperator
     # @!attribute [r] elements
     #   return [Array<String>]
     attr_reader :elements
+    # @!attribute [rw] flag
+    #   @return [Hash]
+    attr_accessor :flag
 
     extend Forwardable
     # @!method push
@@ -21,12 +24,18 @@ module TopologyOperator
     # @param [Array<String>] element_paths Paths of node/term-point
     def initialize(*element_paths)
       @elements = element_paths || []
+      @flag = {}
     end
 
     # @return [NetworkSubset] self
     def uniq!
       @elements.uniq!
       self
+    end
+
+    # @return [Hash]
+    def to_data
+      { elements: @elements, flag: @flag }
     end
   end
 end

@@ -22,6 +22,7 @@ module TopologyOperator
     def initialize(network_name)
       @network_name = network_name
       @subsets = [] # list of network subset
+      @flag = {}
     end
 
     # @param [String] element_path Path of node/term-point to search
@@ -37,7 +38,7 @@ module TopologyOperator
 
     # @return [Array] Array of subset-elements
     def to_array
-      @subsets.map(&:elements)
+      @subsets.map(&:to_data)
     end
 
     # @return [NetworkSet] self

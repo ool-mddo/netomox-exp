@@ -72,15 +72,14 @@ module Netomox
         @links.delete_if { |link| link.diff_state.detect == :deleted }
       end
 
-      # rubocop:disable Metrics/MethodLength, Metrics/AbcSize, Metrics/CyclomaticComplexity
+      # rubocop:disable Metrics/MethodLength, Metrics/AbcSize, Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity
 
       # @param [Node] src_node (Source) Node
       # @param [TermPoint] src_tp (Source) Term-point
       # @param [NetworkSubset] nw_subset Connected node and term-point paths (as sub-graph)
       # @return [void]
       def find_connected_nodes_recursively(src_node, src_tp, nw_subset)
-        nw_subset.push(src_node.path)
-        nw_subset.push(src_tp.path)
+        nw_subset.push(src_node.path, src_tp.path)
         link = find_link_by_source(src_node.name, src_tp.name)
         return unless link
 
@@ -90,20 +89,27 @@ module Netomox
         dst_tp = dst_node.find_tp_by_name(link.destination.tp_ref)
         return unless dst_tp
 
-        nw_subset.push(dst_node.path) # node is pushed multiple times: need `uniq`
-        nw_subset.push(dst_tp.path)
+        # node is pushed multiple times: need `uniq`
+        nw_subset.push(dst_node.path, dst_tp.path)
 
         # stop recursive search if  destination node is endpoint node
         return if @name =~ /layer3/i && dst_node.attribute.node_type == 'endpoint'
 
         # select term-point and search recursively setting the destination node/tp as source
         dst_node.termination_points.each do |next_src_tp|
-          next if nw_subset.include?(next_src_tp.path) # loop avoidance
+          # ignore dst_tp itself
+          next if next_src_tp.name == dst_tp.name
+
+          # loop detection
+          if nw_subset.include?(next_src_tp.path)
+            nw_subset.flag[:loop] = true
+            next
+          end
 
           find_connected_nodes_recursively(dst_node, next_src_tp, nw_subset)
         end
       end
-      # rubocop:enable Metrics/MethodLength, Metrics/AbcSize, Metrics/CyclomaticComplexity
+      # rubocop:enable Metrics/MethodLength, Metrics/AbcSize, Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity
     end
   end
 end

@@ -28,6 +28,10 @@
     "label": "OOL-MDDO PJ Trial (2): l2l3/sample3err2"
   },
   {
+    "file": "batfish-test-topology_l2l3_sample3err3.json",
+    "label": "OOL-MDDO PJ Trial (2): l2l3/sample3err3"
+  },
+  {
     "file": "pushed_configs_mddo_network.json",
     "label": "OOL-MDDO Network: mddo_network"
   },

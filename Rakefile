@@ -40,7 +40,7 @@ task default: %i[pre_task linkdown_snapshots bf_snapshots snapshot_to_model neto
                  netoviz_layouts]
 
 task :pre_task do
-  #sh 'docker-compose up -d'
+  # sh 'docker-compose up -d'
   sh "mkdir -p #{NETOVIZ_DIR}"
   sh "mkdir -p #{MODELS_DIR}"
 end
