@@ -20,6 +20,11 @@ A trial of network model construction. (original: https://github.com/corestate55
 
 ## Setup
 
+### Requirements
+
+- Ruby >2.7 (development under ruby/3.1 and bundler/2.3.4)
+- Python 3.x (development under python/3.8.3 and pip/21.3.1)
+
 ### Update submodules
 
 Pull network device configurations for experiments (at netomox-exp directory).
@@ -35,13 +40,15 @@ git submodule update --init --recursive
 ### Install ruby gems
 
 ```shell
-bundle install --path=vendor/bundle
+# If you install gems into project local
+# bundle config set --local path 'vendor/bundle'
+bundle install
 ```
 
 ### Install python packages
 
 ```shell
-pip install -r configs/requirements.txt
+pip3 install -r configs/requirements.txt
 ```
 
 ### Install docker/docker-compose
@@ -111,6 +118,36 @@ bundle exec ruby exe/mddo_toolbox.rb compare_subseets [options] <before-topology
 ```
 
 ## Development
+
+### Build netomox container
+
+```shell
+docker-compose build
+```
+
+### Generate link-down snapshots (config files)
+
+```shell
+bundle exec rake linkdown_snapshots
+# or like below:
+python3 configs/make_linkdown_snapshots.py -i configs/pushed_configs -o configs/pushed_configs_linkdown
+```
+
+### Register snapshots into batfish
+
+```shell
+bundle exec rake bf_snapshots
+# or like below:
+python3 configs/register_snapshots.py -n pushed_configs -i configs/pushed_configs
+```
+
+### Generate normalized data (CSV) from batfish registered snapshots
+
+```shell
+bundle exec rake snapshot_to_model
+# or like below
+python3 configs/exec_queries.py -b localhost -n pushed_configs
+```
 
 ### Generate YARD documents
 

@@ -36,7 +36,7 @@ MODEL_INFO = [
   }
 ].freeze
 
-task default: %i[pre_task linkdown_snapshots snapshot_to_model netoviz_index netoviz_models netomox_diff
+task default: %i[pre_task linkdown_snapshots bf_snapshots snapshot_to_model netoviz_index netoviz_models netomox_diff
                  netoviz_layouts]
 
 task :pre_task do
@@ -64,8 +64,6 @@ end
 def snapshot_path(src_base, src, dst_base, dst)
   src_dir = File.join(src_base, src)
   dst_dir = File.join(dst_base, dst)
-  warn "# src dir = #{src_dir}"
-  warn "# dst dir = #{dst_dir}"
   if Dir.exist?(dst_dir)
     warn "# clean dst dir: #{dst_dir}"
     sh "rm -rf #{dst_dir}"
@@ -81,20 +79,18 @@ task :linkdown_snapshots do
   end
 end
 
-desc 'Generate model data (csv) from snapshots'
-task :snapshot_to_model do
+desc 'Register snapshots to batfish'
+task :bf_snapshots do
   model_info_list(:mddo_trial, :mddo_trial_linkdown).each do |mi|
-    src_dir, dst_dir = snapshot_path(CONFIGS_DIR, mi[:name], MODELS_DIR, mi[:name])
-    sh "python3 #{CONFIGS_DIR}/exec_queries.py -b #{BATFISH_HOST} -n #{mi[:name]} -i #{src_dir} -o #{dst_dir}"
+    src_dir = File.join(CONFIGS_DIR, mi[:name])
+    sh "python3 #{CONFIGS_DIR}/register_snapshots.py -b #{BATFISH_HOST} -n #{mi[:name]} -i #{src_dir}"
   end
 end
 
-desc 'Clean linkdown snapshots and model data (csv)'
-task :clean_snapshots do
-  # clean linkdown snapshots and models
-  model_info_list(:mddo_trial_linkdown).each do |mi|
-    snapshot_path(CONFIGS_DIR, src_config_name(mi), CONFIGS_DIR, mi[:name])
-    snapshot_path(CONFIGS_DIR, mi[:name], MODELS_DIR, mi[:name])
+desc 'Generate model data (csv) from snapshots'
+task :snapshot_to_model do
+  model_info_list(:mddo_trial, :mddo_trial_linkdown).each do |mi|
+    sh "python3 #{CONFIGS_DIR}/exec_queries.py -b #{BATFISH_HOST} -n #{mi[:name]}"
   end
 end
 
@@ -227,4 +223,3 @@ end
 
 CLOBBER.include("#{NETOVIZ_DIR}/*linkdown*.json")
 CLEAN.include('**/*~')
-
