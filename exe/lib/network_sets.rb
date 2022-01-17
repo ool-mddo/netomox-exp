@@ -25,7 +25,7 @@ module TopologyOperator
     # @param [NetworkSets] other
     # @return [Hash]
     # @raise [StandardError]
-    def -(other)
+    def diff(other)
       @sets.map(&:network_name).to_h do |nw_name|
         orig_set = network(nw_name)
         target_set = other.network(nw_name)
@@ -53,11 +53,14 @@ module TopologyOperator
     # @param [NetworkSet] target_set
     # @return [Hash]
     def subtract_result(orig_set, target_set)
+      elements_diff = orig_set.elements_diff(target_set)
       {
-        subsets_count_diff: (orig_set.length - target_set.length).abs,
+        subsets_diff_count: (orig_set.length - target_set.length).abs,
         # NOTE: find decreased elements (elements only in the original)
         # @see NetworkSet#-
-        elements_diff: orig_set - target_set
+        elements_diff: elements_diff,
+        elements_diff_count: elements_diff.length,
+        flag_diff_count: orig_set.flag_diff(target_set).abs
       }
     end
   end

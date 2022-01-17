@@ -29,6 +29,13 @@ module TopologyOperator
     #   @return [Hash]
     attr_reader :orig_file, :orig_sets, :target_file, :target_sets, :compared
 
+    # Weights to calculate score
+    SCORE_WEIGHT = {
+      subsets_diff_count: 10,
+      flag_diff_count: 5,
+      elements_diff_count: 1
+    }.freeze
+
     extend Forwardable
     # @!method []
     #   @see Hash#[]
@@ -43,7 +50,7 @@ module TopologyOperator
       @target_sets = disconnected_check(target_file)
       # Hash, { network_name: { subsets_count_diff: Integer, elements_diff: Array<String> }}
       # @see NetworkSets#-, NetworkSets#subtract_result
-      @compared = orig_sets - target_sets
+      @compared = orig_sets.diff(target_sets)
     end
 
     # @return [Hash]
@@ -70,8 +77,10 @@ module TopologyOperator
 
     # @return [Integer] total score
     def calculate_score
-      @compared.values.inject(0) do |sum, nw_result|
-        sum + (nw_result[:subsets_count_diff] * 10) + nw_result[:elements_diff].length
+      @compared.values.inject(0) do |sum1, nw_result|
+        sum1 + nw_result.keys.filter { |key| key.to_s =~ /_diff_count$/ }.inject(0) do |sum2, key|
+          sum2 + (nw_result[key] * SCORE_WEIGHT[key])
+        end
       end
     end
 
@@ -79,8 +88,9 @@ module TopologyOperator
     # @return [Hash]
     def network_datum(nw_name)
       {
-        subsets_count_diff: @compared[nw_name][:subsets_count_diff],
-        elements_diff_count: @compared[nw_name][:elements_diff].length,
+        subsets_diff_count: @compared[nw_name][:subsets_diff_count],
+        elements_diff_count: @compared[nw_name][:elements_diff_count],
+        flag_diff_count: @compared[nw_name][:flag_diff_count],
         elements_diff: @compared[nw_name][:elements_diff]
       }
     end

@@ -22,18 +22,12 @@ module TopologyOperator
     def initialize(network_name)
       @network_name = network_name
       @subsets = [] # list of network subset
-      @flag = {}
     end
 
     # @param [String] element_path Path of node/term-point to search
     # @return [nil, NetworkSubset] Found network subset
     def find_subset_includes(element_path)
       @subsets.find { |ss| ss.include?(element_path) }
-    end
-
-    # @return [Array<String>] Union all subset elements
-    def union_subsets
-      @subsets.inject([]) { |union, subset| union | subset.elements }
     end
 
     # @return [Array] Array of subset-elements
@@ -49,13 +43,31 @@ module TopologyOperator
 
     # @param [NetworkSet] other
     # @return [Array<String>]
-    def -(other)
+    def elements_diff(other)
       # NOTE: For now, the target is a pattern of "link-down".
       #   The original set contains all links, and the target should have fewer components than that.
       #   The result of subtraction does not contains elements which only in the target (increased elements).
       #   e.g. [1,2,3,4,5] - [3,4,5,6,7] # => [1, 2]
       # @see NetworkSets#subtract_result
-      union_subsets - other.union_subsets
+      union_subset_elements - other.union_subset_elements
+    end
+
+    # @param [NetworkSet] other
+    # @return [Integer]
+    def flag_diff(other)
+      union_subset_flags - other.union_subset_flags
+    end
+
+    protected
+
+    # @return [Array<String>] Union all subset elements
+    def union_subset_elements
+      @subsets.inject([]) { |union, subset| union | subset.elements }
+    end
+
+    # @param [Integer]
+    def union_subset_flags
+      @subsets.inject(0) { |sum, subset| sum + subset.flag.keys.filter { |k| subset.flag[k] }.length }
     end
   end
 end
