@@ -9,15 +9,6 @@ module TopologyOperator
     #   @return [Array<NetworkSubset>]
     attr_reader :network_name, :subsets
 
-    extend Forwardable
-    # @!method push
-    #   @see Array#push
-    # @!method to_s
-    #   @see Array#to_s
-    # @!method length
-    #   @see Array#length
-    def_delegators :@subsets, :push, :to_s, :length
-
     # @param [String] network_name Network name
     def initialize(network_name)
       @network_name = network_name
@@ -27,7 +18,7 @@ module TopologyOperator
     # @param [String] element_path Path of node/term-point to search
     # @return [nil, NetworkSubset] Found network subset
     def find_subset_includes(element_path)
-      @subsets.find { |ss| ss.include?(element_path) }
+      @subsets.find { |ss| ss.elements.include?(element_path) }
     end
 
     # @return [Array] Array of subset-elements
@@ -37,7 +28,7 @@ module TopologyOperator
 
     # @return [NetworkSet] self
     def reject_empty_set!
-      @subsets.reject!(&:empty?)
+      @subsets.reject! { |ss| ss.elements.empty? }
       self
     end
 

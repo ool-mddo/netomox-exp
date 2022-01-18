@@ -55,7 +55,7 @@ module TopologyOperator
     def subtract_result(orig_set, target_set)
       elements_diff = orig_set.elements_diff(target_set)
       {
-        subsets_diff_count: (orig_set.length - target_set.length).abs,
+        subsets_diff_count: (orig_set.subsets.length - target_set.subsets.length).abs,
         # NOTE: find decreased elements (elements only in the original)
         # @see NetworkSet#-
         elements_diff: elements_diff,

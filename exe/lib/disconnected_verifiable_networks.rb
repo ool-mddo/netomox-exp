@@ -40,7 +40,7 @@ module Netomox
           # if the node doesn't have any interface,
           # it assumes that a standalone node is a single subset.
           if node.termination_points.length.zero?
-            network_set.push(TopologyOperator::NetworkSubset.new(node.path))
+            network_set.subsets.push(TopologyOperator::NetworkSubset.new(node.path))
             next
           end
 
@@ -54,7 +54,7 @@ module Netomox
 
             find_connected_nodes_recursively(node, tp, network_subset)
           end
-          network_set.push(network_subset.uniq!)
+          network_set.subsets.push(network_subset.uniq!)
         end
         network_set.reject_empty_set!
       end
@@ -79,7 +79,7 @@ module Netomox
       # @param [NetworkSubset] nw_subset Connected node and term-point paths (as sub-graph)
       # @return [void]
       def find_connected_nodes_recursively(src_node, src_tp, nw_subset)
-        nw_subset.push(src_node.path, src_tp.path)
+        nw_subset.elements.push(src_node.path, src_tp.path)
         link = find_link_by_source(src_node.name, src_tp.name)
         return unless link
 
@@ -90,7 +90,7 @@ module Netomox
         return unless dst_tp
 
         # node is pushed multiple times: need `uniq`
-        nw_subset.push(dst_node.path, dst_tp.path)
+        nw_subset.elements.push(dst_node.path, dst_tp.path)
 
         # stop recursive search if  destination node is endpoint node
         return if @name =~ /layer3/i && dst_node.attribute.node_type == 'endpoint'
@@ -101,7 +101,7 @@ module Netomox
           next if next_src_tp.name == dst_tp.name
 
           # loop detection
-          if nw_subset.include?(next_src_tp.path)
+          if nw_subset.elements.include?(next_src_tp.path)
             nw_subset.flag[:loop] = true
             next
           end
