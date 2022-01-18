@@ -56,11 +56,26 @@ module Netomox
           end
           network_set.subsets.push(network_subset.uniq!)
         end
-        network_set.reject_empty_set!
+        other_policy_check(network_set.reject_empty_set!)
       end
       # rubocop:enable Metrics/MethodLength, Metrics/AbcSize
 
       private
+
+      # @param [TopologyOperator::NetworkSet] network_set
+      # @return [TopologyOperator::NetworkSet]
+      def other_policy_check(network_set)
+        return network_set unless network_set.network_name =~ /layer3/
+
+        # add flags for layer3
+        network_set.subsets.each do |subset|
+          mp_seg_nodes = subset.find_all_multiple_prefix_seg_nodes
+          subset.flag[:multiple_prefix_segments] = mp_seg_nodes.length unless mp_seg_nodes.empty?
+          dp_seg_nodes = subset.find_all_duplicated_prefix_seg_nodes
+          subset.flag[:duplicated_prefix_segments] = dp_seg_nodes.length unless dp_seg_nodes.empty?
+        end
+        network_set
+      end
 
       # Remove node/tp, link which has "deleted" diff_state
       # @return [void]

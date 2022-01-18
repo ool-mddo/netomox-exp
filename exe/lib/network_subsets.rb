@@ -13,6 +13,7 @@ module TopologyOperator
     # @param [Array<String>] element_paths Paths of node/term-point
     def initialize(*element_paths)
       @elements = element_paths || []
+      # flags contains key:value, value must be Integer of Boolean(true/false)
       @flag = {}
     end
 
@@ -25,6 +26,18 @@ module TopologyOperator
     # @return [Hash]
     def to_data
       { elements: @elements, flag: @flag }
+    end
+
+    # for layer3 segment node type checking
+    # @return [Array<String>] Found segment node names
+    def find_all_multiple_prefix_seg_nodes
+      @elements.grep(/.+__Seg.+\+$/)
+    end
+
+    # for layer3 segment node type checking
+    # @return [Array<String>] Found segment node names
+    def find_all_duplicated_prefix_seg_nodes
+      @elements.grep(/.+__Seg.+#\d+$/)
     end
   end
 end

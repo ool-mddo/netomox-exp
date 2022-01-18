@@ -53,12 +53,12 @@ module TopologyOperator
     # @param [NetworkSet] target_set
     # @return [Hash]
     def subtract_result(orig_set, target_set)
-      elements_diff = orig_set.elements_diff(target_set)
+      lost = orig_set.elements_diff(target_set)
+      found = target_set.elements_diff(orig_set)
+      elements_diff = lost | found
       {
         subsets_diff_count: (orig_set.subsets.length - target_set.subsets.length).abs,
-        # NOTE: find decreased elements (elements only in the original)
-        # @see NetworkSet#-
-        elements_diff: elements_diff,
+        elements_diff: { lost: lost, found: found },
         elements_diff_count: elements_diff.length,
         flag_diff_count: orig_set.flag_diff(target_set).abs
       }
