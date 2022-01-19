@@ -42,7 +42,9 @@ module TopologyBuilder
           type: :error,
           src_tp_prop: target_src_tp_prop,
           dst_tp_prop: target_dst_tp_prop,
-          message: 'L2 term-point config mismatch'
+          message: 'L2 term-point config mismatch: ' \
+            "#{target_src_tp_prop.node}[#{target_src_tp_prop.interface}], " \
+            "#{target_dst_tp_prop.node}[#{target_dst_tp_prop.interface}]"
         }
       end
     end
@@ -61,6 +63,7 @@ module TopologyBuilder
     # @return [nil, InterfacePropertiesTableRecord] Term-point property
     def choose_tp_prop(l1_node, tp_prop)
       # NOTICE: if edge node is juniper device, use interface unit config instead of physical.
+      debug_print "  l1 node #{l1_node.name} is juniper? : #{juniper_node?(l1_node)}"
       juniper_node?(l1_node) ? find_unit_prop_by_phy_prop(tp_prop) : tp_prop
     end
 

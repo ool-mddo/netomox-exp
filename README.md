@@ -71,6 +71,13 @@ You can specify target snapshot base with `MODEL_NAME` environment value.
 
 See details of task sequence `default` task in `Rakefile`.
 
+Optional: environment variables
+
+- Log level variable
+  - `NETOMOX_LOG_LEVEL` (default `info`)
+  - `TOPOLOGY_BUILDER_LOG_LEVEL` (default `info`)
+  - select a value from `fatal`, `error`, `warn`, `info` and `debug`
+
 ## Tools
 
 ### Check/Make L1 interface description

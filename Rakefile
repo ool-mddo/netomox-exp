@@ -36,10 +36,11 @@ MODEL_INFO = [
   }
 ].freeze
 
-task default: %i[pre_task linkdown_snapshots bf_snapshots snapshot_to_model netoviz_index netoviz_models netomox_diff
+task default: %i[make_dirs linkdown_snapshots bf_snapshots snapshot_to_model netoviz_index netoviz_models netomox_diff
                  netoviz_layouts]
 
-task :pre_task do
+desc 'Make directories for models and netoviz'
+task :make_dirs do
   # sh 'docker-compose up -d'
   sh "mkdir -p #{NETOVIZ_DIR}"
   sh "mkdir -p #{MODELS_DIR}"

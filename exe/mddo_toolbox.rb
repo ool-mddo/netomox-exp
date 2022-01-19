@@ -15,7 +15,7 @@ module TopologyOperator
 
     desc 'check_l1_descr [options] TOPOLOGY', 'Check interface descriptions in layer1 topology'
     method_option :format, aliases: :f, default: 'yaml', type: :string, enum: %w[yaml json], desc: 'Output format'
-    method_option :level, aliases: :l, default: 'info', type: :string, enum: %w[info warning error], desc: 'Outpu level'
+    method_option :level, aliases: :l, default: 'info', type: :string, enum: %w[info warning error], desc: 'Output level'
     # @param [String] target_file Topology file path to check
     # @return [void]
     def check_l1_descr(target_file)

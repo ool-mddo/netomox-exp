@@ -4,6 +4,8 @@ FROM ruby:3.1.0-slim
 ARG APP_PATH="/myapp"
 # suppress `Calling `DidYouMean::SPELL_CHECKERS.merge!` warning
 ENV RUBYOPT='--disable-did_you_mean'
+ENV NETOMOX_LOG_LEVEL=warn
+ENV TOPOLOGY_BUILDER_LOG_LEVEL=warn
 
 WORKDIR $APP_PATH
 COPY . $APP_PATH

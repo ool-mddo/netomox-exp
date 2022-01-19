@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require 'json'
+require 'logger'
 require_relative 'l1_data_builder'
 require_relative 'l2_data_builder'
 require_relative 'l3_data_builder'
@@ -8,6 +9,29 @@ require_relative 'expanded_l3_data_builder'
 
 # Topology data builder
 module TopologyBuilder
+  # logger for netomox
+  @logger = Logger.new($stderr)
+  @logger.progname = 'TopologyBuilder'
+  @logger.level = case ENV['TOPOLOGY_BUILDER_LOG_LEVEL']
+                  when /fatal/i
+                    Logger::FATAL
+                  when /error/i
+                    Logger::ERROR
+                  when /warn/i
+                    Logger::WARN
+                  when /debug/i
+                    Logger::DEBUG
+                  else
+                    Logger::INFO # default
+                  end
+
+  module_function
+
+  # @return [Logger]
+  def logger
+    @logger
+  end
+
   # @param [Array<PNetworks>] nws Networks
   # @return [String] RFC8345-structure json string
   def to_json(nws)
@@ -73,8 +97,4 @@ module TopologyBuilder
     to_json([layer3exp_nws, layer3_nws, layer2_nws, layer1_nws])
   end
   # rubocop:enable Metrics/AbcSize, Metrics/MethodLength
-
-  module_function :generate_json
-  module_function :debug_layer?
-  module_function :to_json
 end

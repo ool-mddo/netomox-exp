@@ -24,7 +24,7 @@ module TopologyBuilder
         @links = [] # Array<PLink>
       end
 
-      # print data to stderr
+      # print data to stderr (for debugging)
       # @return [void]
       def dump
         warn "network: #{name}"

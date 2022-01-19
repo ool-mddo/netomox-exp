@@ -59,7 +59,7 @@ module TopologyBuilder
       def make_nmx_network(network)
         nmx_network = @nmx_networks.network(network.name)
         unless nmx_network
-          warn "ERROR: network: #{network.name} not found"
+          TopologyBuilder.logger.error "Network: #{network.name} not found"
           return
         end
 

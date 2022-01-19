@@ -90,7 +90,7 @@ module TopologyBuilder
           if same_subnet?(src_tp, dst_tp)
             @network.link(*link_elements)
           else
-            warn "# WARNING: ip address of #{src_tp} => #{dst_tp} is different"
+            TopologyBuilder.logger.error "IP address of #{src_tp} => #{dst_tp} is different"
           end
         end
       end

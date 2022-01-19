@@ -42,16 +42,16 @@ module TopologyBuilder
     # for junos: physical-interface <> its unit matching
     # @param [InterfacePropertiesTableRecord] phy_prop Physical interface property
     # @return [nil, InterfacePropertiesTableRecord] interface unit property
-    # @raise [StandardError] If unit interface is not found
     def find_unit_prop_by_phy_prop(phy_prop)
       unit_props = @intf_props.find_all_unit_records_by_node_intf(phy_prop.node, phy_prop.interface)
-      if unit_props.length == 1
+      debug_print "find_unit_props (junos): #{unit_props.length}"
+
+      if unit_props.length == 1 && unit_props[0].interface =~ /\.0$/
+        # interface if it have only unit.0
         unit_props[0]
-      elsif unit_props.length > 1
-        # NOTE: it seems layer3-sub-interface
-        junos_trunk_port_as_subif(phy_prop, unit_props)
       else
-        raise StandardError("Interface unit not found : #{phy_prop}")
+        # NOTE: it seems layer3-sub-interface (assume unit numbers = allowed vlans config)
+        junos_trunk_port_as_subif(phy_prop, unit_props)
       end
     end
 
@@ -173,7 +173,7 @@ module TopologyBuilder
       dst_l2_node, dst_l2_tp = add_l2_node_tp(dst_node, dst_tp, dst_vlan_id, dst_tp_prop).map(&:name)
       # NOTE: Layer2 link is added according to layer1 link.
       # Therefore, layer1 link is bidirectional, layer2 is same
-      debug_print "  Add L2 ink: #{src_l2_node}[#{src_l2_tp}] > #{dst_l2_node}[#{dst_l2_tp}]"
+      debug_print "  Add L2 link: #{src_l2_node}[#{src_l2_tp}] > #{dst_l2_node}[#{dst_l2_tp}]"
       @network.link(src_l2_node, src_l2_tp, dst_l2_node, dst_l2_tp)
     end
     # rubocop:enable Metrics/ParameterLists
@@ -202,7 +202,7 @@ module TopologyBuilder
         # type: :error
         add_l2_node_tp(src_node, src_tp, 0, check_result[:src_tp_prop])
         add_l2_node_tp(dst_node, dst_tp, 0, check_result[:dst_tp_prop])
-        warn "Warning: #{check_result[:message]}"
+        TopologyBuilder.logger.error "L2 term-point check error: #{check_result[:message]}"
       end
     end
     # rubocop:enable Metrics/MethodLength, Metrics/AbcSize

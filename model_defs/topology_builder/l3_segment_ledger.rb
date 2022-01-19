@@ -51,7 +51,7 @@ module TopologyBuilder
       @segments[-1]
     end
 
-    # print stderr
+    # print stderr (for debugging)
     # @return [void]
     def dump
       @segments.each_with_index do |seg, i|

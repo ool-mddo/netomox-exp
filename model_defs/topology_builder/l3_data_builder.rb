@@ -132,7 +132,6 @@ module TopologyBuilder
         # debug_print "  prefix in Segment: #{l2_edge}] -> #{rec}"
         rec && IPAddress::IPv4.new("#{rec.ip}/#{rec.mask}")
       end
-      warn '# WARNING: L2 closed segment?'
       prefixes.compact.map { |ip| "#{ip.network}/#{ip.prefix}" }.uniq.map do |prefix|
         { prefix: prefix, metric: 0 } # metric = 0 : default metric of connected route
       end
@@ -154,6 +153,7 @@ module TopologyBuilder
         # segment contains multiple ip prefixes
         "_#{prefixes[0][:prefix]}+"
       else
+        # the segment does not have any prefix...L2 closed?
         ''
       end
     end
@@ -180,7 +180,9 @@ module TopologyBuilder
     def segment_node_name(segment)
       seg_index = index_of_same_prefix_segment(segment)
       seg_suffix = segment_node_suffix(segment)
-      seg_index.negative? ? "Seg#{seg_suffix}" : "Seg#{seg_suffix}##{seg_index}"
+      name = seg_index.negative? ? "Seg#{seg_suffix}" : "Seg#{seg_suffix}##{seg_index}"
+      TopologyBuilder.logger.warn "Segment node #{name} is L2 closed segment? " if seg_suffix.empty?
+      name
     end
 
     # @param [Array<PLinkEdge>] segment Edge list in same segment
@@ -207,7 +209,7 @@ module TopologyBuilder
           l3_seg_node.supports.push([@layer2p.name, l2_edge.node])
           l3_node, l3_tp = add_l3_node_tp(l2_edge)
           if l3_node.nil? || l3_tp.nil?
-            warn "# WARNING: Can not link (it seems L2 link): #{l3_seg_node.name} > #{l2_edge}"
+            TopologyBuilder.logger.info "Can not link: #{l3_seg_node.name} > #{l2_edge}, (it seems L2 link)"
             next
           end
 
