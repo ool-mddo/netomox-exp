@@ -43,8 +43,8 @@ module TopologyBuilder
           src_tp_prop: target_src_tp_prop,
           dst_tp_prop: target_dst_tp_prop,
           message: 'L2 term-point config mismatch: ' \
-            "#{target_src_tp_prop.node}[#{target_src_tp_prop.interface}], " \
-            "#{target_dst_tp_prop.node}[#{target_dst_tp_prop.interface}]"
+                   "#{target_src_tp_prop.node}[#{target_src_tp_prop.interface}], " \
+                   "#{target_dst_tp_prop.node}[#{target_dst_tp_prop.interface}]"
         }
       end
     end

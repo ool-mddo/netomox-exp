@@ -196,7 +196,7 @@ module TopologyBuilder
       l3_seg_node
     end
 
-    # rubocop:disable Metrics/MethodLength
+    # rubocop:disable Metrics/MethodLength, Metrics/AbcSize
 
     # Add all layer3 node, tp and link
     # @return [void]
@@ -217,7 +217,7 @@ module TopologyBuilder
         end
       end
     end
-    # rubocop:enable Metrics/MethodLength
+    # rubocop:enable Metrics/MethodLength, Metrics/AbcSize
 
     # @return [Array<PNode>] Found nodes
     def find_all_node_type_nodes

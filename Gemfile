@@ -8,5 +8,6 @@ gem 'hashie', '>= 4.1.0'
 gem 'ipaddress', '~> 0.8.3'
 gem 'netomox', github: 'corestate55/netomox', branch: 'develop'
 gem 'rubocop', '>= 0.80'
+gem 'rubocop-rake', require: false
 gem 'thor', '~> 1.0.1'
 gem 'yard', '>= 0.9.20'
