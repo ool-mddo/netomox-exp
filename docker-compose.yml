@@ -1,7 +1,7 @@
 version: "3"
 services:
   batfish:
-    image: "batfish/allinone"
+    image: "batfish/batfish"
     container_name: "batfish"
     ports:
       - "9996:9996"
