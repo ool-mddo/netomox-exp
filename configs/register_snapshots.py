@@ -1,8 +1,9 @@
-from pybatfish.client.session import Session
-from os import path
 import argparse
 import glob
+import logging
 import re
+from os import path
+from pybatfish.client.session import Session
 
 
 def find_all_l1topology_files(input_dir):
@@ -15,8 +16,8 @@ def dir_info(input_snapshot_base_dir, input_snapshot_dir):
         input_snapshot_base_name = path.basename(path.dirname(input_snapshot_base_dir))
 
     # pick path string follows input_snapshot_base_name
-    m = re.search("%s/(.*)" % input_snapshot_base_name, input_snapshot_dir)
-    input_snapshot_name = m.group(1)
+    match = re.search("%s/(.*)" % input_snapshot_base_name, input_snapshot_dir)
+    input_snapshot_name = match.group(1)
 
     return {
         # used as snapshot name: snapshot name cannot contain '/'
@@ -45,7 +46,22 @@ if __name__ == "__main__":
         "--network", "-n", required=True, type=str, default="default_network", help="Network name of snapshots"
     )
     parser.add_argument("--input_snapshot_base", "-i", required=True, type=str, help="Input snapshot base directory")
+    log_levels = ["critical", "error", "warning", "info", "debug"]
+    parser.add_argument("--log_level", type=str, default="warning", choices=log_levels, help="Log level")
     args = parser.parse_args()
+
+    # set log level
+    logger = logging.getLogger("pybatfish")
+    if args.log_level == "critical":
+        logger.setLevel(logging.CRITICAL)
+    elif args.log_level == "error":
+        logger.setLevel(logging.ERROR)
+    elif args.log_level == "warning":
+        logger.setLevel(logging.WARNING)
+    elif args.log_level == "info":
+        logger.setLevel(logging.INFO)
+    else:
+        logger.setLevel(logging.DEBUG)
 
     # batfish session definition
     bf = Session(host=args.batfish)

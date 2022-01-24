@@ -1,79 +1,8 @@
-from os import path, makedirs, link
+from os import path
 import argparse
 import glob
-import json
 import sys
-
-
-def revers_edge(edge):
-    return {"node1": edge["node2"], "node2": edge["node1"]}
-
-
-def is_same_edge(edge1, edge2):
-    # NOTE: simple dictionary comparison
-    # probably, the comparison condition are too strict.
-    # Be careful if you have mixed interface expression (long/short name, upper/lower case)
-    # It might be better to use "DeepDiff" (ignore-case compare etc)
-    return edge1 == edge2 or revers_edge(edge1) == edge2
-
-
-def read_l1_topology_data(dir_path):
-    with open(path.join(dir_path, "layer1_topology.json"), "r") as file:
-        try:
-            return json.load(file)
-        except Exception as e:
-            print(
-                "Error: cannot read layer1_topology.json in %s with: %s" % (dir_path, e),
-                file=sys.stderr,
-            )
-            sys.exit(1)
-
-
-def write_l1_topology_data(snapshot_dir_path, edges):
-    with open(path.join(snapshot_dir_path, "layer1_topology.json"), "w") as file:
-        json.dump({"edges": edges}, file, indent=2)
-
-
-def write_snapshot_metadata(src_dir_path, dst_dir_path, index, edge):
-    metadata = {
-        "index": index,
-        "target_links": [edge, revers_edge(edge)],
-        "original_snapshot_path": src_dir_path,
-        "snapshot_path": dst_dir_path,
-        "description": "No.%02d: down %s[%s] <=> %s[%s] in layer1"
-        % (
-            index,
-            edge["node1"]["hostname"],
-            edge["node1"]["interfaceName"],
-            edge["node2"]["hostname"],
-            edge["node2"]["interfaceName"],
-        ),
-    }
-    with open(path.join(dst_dir_path, "snapshot_info.json"), "w") as file:
-        json.dump(metadata, file, indent=2)
-
-
-def deduplicate_edges(edges):
-    uniq_edges = []
-    for edge in edges:
-        if next((e for e in uniq_edges if is_same_edge(e, edge)), None):
-            continue
-        uniq_edges.append(edge)
-    return uniq_edges
-
-
-def make_output_configs(src_snapshot_configs_dir_path, dst_snapshot_dir_path, config_files):
-    # configs directory
-    dst_snapshot_configs_dir_path = path.join(dst_snapshot_dir_path, "configs")
-    makedirs(dst_snapshot_configs_dir_path, exist_ok=True)
-    # config files
-    for config_file in config_files:
-        src_file = path.join(src_snapshot_configs_dir_path, config_file)
-        dst_file = path.join(dst_snapshot_configs_dir_path, config_file)
-        if path.exists(dst_file):
-            print("Warning: dst file: %s already exists" % dst_file, file=sys.stderr)
-        else:
-            link(src_file, dst_file)  # hard link
+import snapshot_ops as so
 
 
 if __name__ == "__main__":
@@ -92,6 +21,9 @@ if __name__ == "__main__":
         type=str,
         help="Output snapshot(s) base directory",
     )
+    parser.add_argument("--node", "-n", default=None, type=str, help="A node name to draw-off")
+    parser.add_argument("--link_regexp", "-l", type=str, help="Link name or pattern regexp to draw-off")
+    parser.add_argument("--dry_run", action="store_true", default=False, help="Dry-run")
     args = parser.parse_args()
 
     # input/output snapshot directory construction:
@@ -119,35 +51,38 @@ if __name__ == "__main__":
     print("# + snapshot base dir: %s" % args.input_snapshot_base)
     print("#   + snapshot dir: %s (%s)" % (input_snapshot_configs_dir_path, input_snapshot_dir_name))
     print("#     + snapshot config dir:  %s" % input_snapshot_configs_dir_path)
-    print("# output")
-    print("# + snapshot base dir:  %s" % output_snapshot_base_dir_path)
 
     # read layer1 topology data
-    l1_topology_data = read_l1_topology_data(input_snapshot_dir_path)
+    l1_topology_data = so.read_l1_topology_data(input_snapshot_dir_path)
 
-    # deduplicate edges (layer1_topology link definition is bidirectional)
-    uniq_edges = deduplicate_edges(l1_topology_data["edges"])
-
-    # list config files in input snapshot directory
-    config_files = [path.basename(f) for f in glob.glob(path.join(input_snapshot_configs_dir_path, "*"))]
-
-    # make outputs
-    makedirs(output_snapshot_base_dir_path, exist_ok=True)
-    for i, edge in enumerate(uniq_edges):
-        # index number start 1
-        index = i + 1
-
-        # output directory defs
-        output_snapshot_dir_name = "%s_%02d" % (input_snapshot_dir_name, index)
-        output_snapshot_dir_path = path.join(output_snapshot_base_dir_path, output_snapshot_dir_name)
-        makedirs(output_snapshot_dir_path, exist_ok=True)
-
-        # make configs directory and config files in output snap@shot directory
-        make_output_configs(input_snapshot_configs_dir_path, output_snapshot_dir_path, config_files)
-
-        # remove a link as "down link"
-        edges_without_target = list(filter(lambda e: not is_same_edge(e, edge), l1_topology_data["edges"]))
-        # write data to layer1_topology.json in output snapshot directory
-        write_l1_topology_data(output_snapshot_dir_path, edges_without_target)
-        # write metadata
-        write_snapshot_metadata(input_snapshot_dir_path, output_snapshot_dir_path, index, edge)
+    # option control
+    if args.node is None:
+        # deduplicate edges (layer1_topology link definition is bidirectional)
+        uniq_edges = so.deduplicate_edges(l1_topology_data["edges"])
+        for i, edge in enumerate(uniq_edges):
+            index = i + 1  # index number start 1
+            so.make_snapshot_dir(
+                index,
+                input_snapshot_dir_path,
+                input_snapshot_configs_dir_path,
+                output_snapshot_base_dir_path,
+                "%s_%02d" % (input_snapshot_dir_name, index),
+                l1_topology_data,
+                edge["node1"]["hostname"],
+                edge["node1"]["interfaceName"],
+                "No.%02d: " % index + "down %s[%s] <=> %s[%s] in layer1" % so.edge2tuple(edge),
+                args.dry_run,
+            )
+    else:
+        so.make_snapshot_dir(
+            0,
+            input_snapshot_dir_path,
+            input_snapshot_configs_dir_path,
+            output_snapshot_base_dir_path,
+            input_snapshot_dir_name,
+            l1_topology_data,
+            args.node,
+            args.link_regexp,
+            "Draw-off node: %s, link_pattern: %s" % (args.node, args.link_regexp),
+            args.dry_run,
+        )

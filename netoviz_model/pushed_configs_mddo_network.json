@@ -69,6 +69,25 @@
                 }
               },
               {
+                "tp-id": "ae2.20#1",
+                "supporting-termination-point": [
+                  {
+                    "network-ref": "layer2",
+                    "node-ref": "regiona-ce01_ae2.20",
+                    "tp-ref": "ae2.20"
+                  }
+                ],
+                "mddo-topology:l3-termination-point-attributes": {
+                  "description": "",
+                  "ip-address": [
+                    "172.30.20.1/24"
+                  ],
+                  "flag": [
+
+                  ]
+                }
+              },
+              {
                 "tp-id": "ae0.0#0",
                 "supporting-termination-point": [
                   {
@@ -253,6 +272,25 @@
                 }
               },
               {
+                "tp-id": "ae2.20#0",
+                "supporting-termination-point": [
+                  {
+                    "network-ref": "layer2",
+                    "node-ref": "regiona-ce02_ae2.20",
+                    "tp-ref": "ae2.20"
+                  }
+                ],
+                "mddo-topology:l3-termination-point-attributes": {
+                  "description": "",
+                  "ip-address": [
+                    "172.30.20.2/24"
+                  ],
+                  "flag": [
+
+                  ]
+                }
+              },
+              {
                 "tp-id": "ge-0/0/0.0#1",
                 "supporting-termination-point": [
                   {
@@ -317,6 +355,10 @@
               },
               {
                 "network-ref": "layer2",
+                "node-ref": "regiona-ce02_ae2.20"
+              },
+              {
+                "network-ref": "layer2",
                 "node-ref": "regiona-ce02_ge-0/0/0.0"
               },
               {
@@ -333,6 +375,13 @@
               "prefix": [
                 {
                   "prefix": "172.30.10.0/24",
+                  "metric": 0,
+                  "flag": [
+                    "directly-connected"
+                  ]
+                },
+                {
+                  "prefix": "172.30.20.0/24",
                   "metric": 0,
                   "flag": [
                     "directly-connected"
@@ -852,7 +901,7 @@
                 "mddo-topology:l3-termination-point-attributes": {
                   "description": "",
                   "ip-address": [
-                    "172.30.20.2/24"
+                    "172.30.120.2/24"
                   ],
                   "flag": [
 
@@ -881,7 +930,7 @@
                   ]
                 },
                 {
-                  "prefix": "172.30.20.0/24",
+                  "prefix": "172.30.120.0/24",
                   "metric": 0,
                   "flag": [
                     "directly-connected"
@@ -2558,6 +2607,50 @@
             }
           },
           {
+            "link-id": "regiona-ce01,ae2.20#1,regiona-ce02,ae2.20#0",
+            "source": {
+              "source-node": "regiona-ce01",
+              "source-tp": "ae2.20#1"
+            },
+            "destination": {
+              "dest-node": "regiona-ce02",
+              "dest-tp": "ae2.20#0"
+            }
+          },
+          {
+            "link-id": "regiona-ce02,ae2.20#0,regiona-ce01,ae2.20#1",
+            "source": {
+              "source-node": "regiona-ce02",
+              "source-tp": "ae2.20#0"
+            },
+            "destination": {
+              "dest-node": "regiona-ce01",
+              "dest-tp": "ae2.20#1"
+            }
+          },
+          {
+            "link-id": "regiona-ce01_VR1,ae2.120#1,regiona-ce02_VR1,ae2.120#0",
+            "source": {
+              "source-node": "regiona-ce01_VR1",
+              "source-tp": "ae2.120#1"
+            },
+            "destination": {
+              "dest-node": "regiona-ce02_VR1",
+              "dest-tp": "ae2.120#0"
+            }
+          },
+          {
+            "link-id": "regiona-ce02_VR1,ae2.120#0,regiona-ce01_VR1,ae2.120#1",
+            "source": {
+              "source-node": "regiona-ce02_VR1",
+              "source-tp": "ae2.120#0"
+            },
+            "destination": {
+              "dest-node": "regiona-ce01_VR1",
+              "dest-tp": "ae2.120#1"
+            }
+          },
+          {
             "link-id": "regiona-ce02,ge-0/0/0.0#1,regiona-pe01,GigabitEthernet0/0/0/3#0",
             "source": {
               "source-node": "regiona-ce02",
@@ -3408,6 +3501,25 @@
                 }
               },
               {
+                "tp-id": "ae2.20",
+                "supporting-termination-point": [
+                  {
+                    "network-ref": "layer2",
+                    "node-ref": "regiona-ce02_ae2.20",
+                    "tp-ref": "ae2.20"
+                  }
+                ],
+                "mddo-topology:l3-termination-point-attributes": {
+                  "description": "",
+                  "ip-address": [
+                    "172.30.20.2/24"
+                  ],
+                  "flag": [
+
+                  ]
+                }
+              },
+              {
                 "tp-id": "ge-0/0/0.0",
                 "supporting-termination-point": [
                   {
@@ -3472,6 +3584,10 @@
               },
               {
                 "network-ref": "layer2",
+                "node-ref": "regiona-ce02_ae2.20"
+              },
+              {
+                "network-ref": "layer2",
                 "node-ref": "regiona-ce02_ge-0/0/0.0"
               },
               {
@@ -3488,6 +3604,13 @@
               "prefix": [
                 {
                   "prefix": "172.30.10.0/24",
+                  "metric": 0,
+                  "flag": [
+                    "directly-connected"
+                  ]
+                },
+                {
+                  "prefix": "172.30.20.0/24",
                   "metric": 0,
                   "flag": [
                     "directly-connected"
@@ -3861,7 +3984,7 @@
                 "mddo-topology:l3-termination-point-attributes": {
                   "description": "",
                   "ip-address": [
-                    "172.30.20.2/24"
+                    "172.30.120.2/24"
                   ],
                   "flag": [
 
@@ -3890,7 +4013,7 @@
                   ]
                 },
                 {
-                  "prefix": "172.30.20.0/24",
+                  "prefix": "172.30.120.0/24",
                   "metric": 0,
                   "flag": [
                     "directly-connected"
@@ -3914,6 +4037,16 @@
                     "tp-ref": "Port-Channel3"
                   }
                 ]
+              },
+              {
+                "tp-id": "regiona-acc01_Port-Channel4",
+                "supporting-termination-point": [
+                  {
+                    "network-ref": "layer2",
+                    "node-ref": "regiona-acc01_Vlan20",
+                    "tp-ref": "Port-Channel4"
+                  }
+                ]
               }
             ],
             "supporting-node": [
@@ -3924,6 +4057,10 @@
               {
                 "network-ref": "layer2",
                 "node-ref": "regiona-ce01_ae2.20"
+              },
+              {
+                "network-ref": "layer2",
+                "node-ref": "regiona-ce02_ae2.20"
               }
             ],
             "mddo-topology:l3-node-attributes": {
@@ -3943,7 +4080,7 @@
             }
           },
           {
-            "node-id": "Seg_172.30.120.0/24+",
+            "node-id": "Seg_172.30.120.0/24",
             "ietf-network-topology:termination-point": [
               {
                 "tp-id": "regiona-acc01_Port-Channel3",
@@ -3985,13 +4122,6 @@
               "prefix": [
                 {
                   "prefix": "172.30.120.0/24",
-                  "metric": 0,
-                  "flag": [
-
-                  ]
-                },
-                {
-                  "prefix": "172.30.20.0/24",
                   "metric": 0,
                   "flag": [
 
@@ -6346,9 +6476,31 @@
             }
           },
           {
-            "link-id": "Seg_172.30.120.0/24+,regiona-acc01_Port-Channel3,regiona-ce01_VR1,ae2.120",
+            "link-id": "Seg_172.30.20.0/24,regiona-acc01_Port-Channel4,regiona-ce02,ae2.20",
             "source": {
-              "source-node": "Seg_172.30.120.0/24+",
+              "source-node": "Seg_172.30.20.0/24",
+              "source-tp": "regiona-acc01_Port-Channel4"
+            },
+            "destination": {
+              "dest-node": "regiona-ce02",
+              "dest-tp": "ae2.20"
+            }
+          },
+          {
+            "link-id": "regiona-ce02,ae2.20,Seg_172.30.20.0/24,regiona-acc01_Port-Channel4",
+            "source": {
+              "source-node": "regiona-ce02",
+              "source-tp": "ae2.20"
+            },
+            "destination": {
+              "dest-node": "Seg_172.30.20.0/24",
+              "dest-tp": "regiona-acc01_Port-Channel4"
+            }
+          },
+          {
+            "link-id": "Seg_172.30.120.0/24,regiona-acc01_Port-Channel3,regiona-ce01_VR1,ae2.120",
+            "source": {
+              "source-node": "Seg_172.30.120.0/24",
               "source-tp": "regiona-acc01_Port-Channel3"
             },
             "destination": {
@@ -6357,20 +6509,20 @@
             }
           },
           {
-            "link-id": "regiona-ce01_VR1,ae2.120,Seg_172.30.120.0/24+,regiona-acc01_Port-Channel3",
+            "link-id": "regiona-ce01_VR1,ae2.120,Seg_172.30.120.0/24,regiona-acc01_Port-Channel3",
             "source": {
               "source-node": "regiona-ce01_VR1",
               "source-tp": "ae2.120"
             },
             "destination": {
-              "dest-node": "Seg_172.30.120.0/24+",
+              "dest-node": "Seg_172.30.120.0/24",
               "dest-tp": "regiona-acc01_Port-Channel3"
             }
           },
           {
-            "link-id": "Seg_172.30.120.0/24+,regiona-acc01_Port-Channel4,regiona-ce02_VR1,ae2.120",
+            "link-id": "Seg_172.30.120.0/24,regiona-acc01_Port-Channel4,regiona-ce02_VR1,ae2.120",
             "source": {
-              "source-node": "Seg_172.30.120.0/24+",
+              "source-node": "Seg_172.30.120.0/24",
               "source-tp": "regiona-acc01_Port-Channel4"
             },
             "destination": {
@@ -6379,13 +6531,13 @@
             }
           },
           {
-            "link-id": "regiona-ce02_VR1,ae2.120,Seg_172.30.120.0/24+,regiona-acc01_Port-Channel4",
+            "link-id": "regiona-ce02_VR1,ae2.120,Seg_172.30.120.0/24,regiona-acc01_Port-Channel4",
             "source": {
               "source-node": "regiona-ce02_VR1",
               "source-tp": "ae2.120"
             },
             "destination": {
-              "dest-node": "Seg_172.30.120.0/24+",
+              "dest-node": "Seg_172.30.120.0/24",
               "dest-tp": "regiona-acc01_Port-Channel4"
             }
           },
@@ -7667,6 +7819,29 @@
 
                   ]
                 }
+              },
+              {
+                "tp-id": "Port-Channel4",
+                "supporting-termination-point": [
+                  {
+                    "network-ref": "layer1",
+                    "node-ref": "regiona-acc01",
+                    "tp-ref": "Ethernet7"
+                  },
+                  {
+                    "network-ref": "layer1",
+                    "node-ref": "regiona-acc01",
+                    "tp-ref": "Ethernet8"
+                  }
+                ],
+                "mddo-topology:l2-termination-point-attributes": {
+                  "description": "",
+                  "encapsulation": "dot1q",
+                  "switchport-mode": "trunk",
+                  "flag": [
+
+                  ]
+                }
               }
             ],
             "supporting-node": [
@@ -7824,6 +7999,47 @@
             "mddo-topology:l2-node-attributes": {
               "name": "regiona-ce01",
               "vlan-id": 120,
+              "flag": [
+
+              ]
+            }
+          },
+          {
+            "node-id": "regiona-ce02_ae2.20",
+            "ietf-network-topology:termination-point": [
+              {
+                "tp-id": "ae2.20",
+                "supporting-termination-point": [
+                  {
+                    "network-ref": "layer1",
+                    "node-ref": "regiona-ce02",
+                    "tp-ref": "ge-0/0/6"
+                  },
+                  {
+                    "network-ref": "layer1",
+                    "node-ref": "regiona-ce02",
+                    "tp-ref": "ge-0/0/7"
+                  }
+                ],
+                "mddo-topology:l2-termination-point-attributes": {
+                  "description": "",
+                  "encapsulation": "dot1q",
+                  "switchport-mode": "trunk",
+                  "flag": [
+
+                  ]
+                }
+              }
+            ],
+            "supporting-node": [
+              {
+                "network-ref": "layer1",
+                "node-ref": "regiona-ce02"
+              }
+            ],
+            "mddo-topology:l2-node-attributes": {
+              "name": "regiona-ce02",
+              "vlan-id": 20,
               "flag": [
 
               ]
@@ -9977,6 +10193,17 @@
             }
           },
           {
+            "link-id": "regiona-acc01_Vlan20,Port-Channel4,regiona-ce02_ae2.20,ae2.20",
+            "source": {
+              "source-node": "regiona-acc01_Vlan20",
+              "source-tp": "Port-Channel4"
+            },
+            "destination": {
+              "dest-node": "regiona-ce02_ae2.20",
+              "dest-tp": "ae2.20"
+            }
+          },
+          {
             "link-id": "regiona-acc01_Vlan120,Port-Channel4,regiona-ce02_ae2.120,ae2.120",
             "source": {
               "source-node": "regiona-acc01_Vlan120",
@@ -9985,6 +10212,17 @@
             "destination": {
               "dest-node": "regiona-ce02_ae2.120",
               "dest-tp": "ae2.120"
+            }
+          },
+          {
+            "link-id": "regiona-ce02_ae2.20,ae2.20,regiona-acc01_Vlan20,Port-Channel4",
+            "source": {
+              "source-node": "regiona-ce02_ae2.20",
+              "source-tp": "ae2.20"
+            },
+            "destination": {
+              "dest-node": "regiona-acc01_Vlan20",
+              "dest-tp": "Port-Channel4"
             }
           },
           {

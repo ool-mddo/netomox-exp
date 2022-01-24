@@ -31,13 +31,20 @@ MODEL_INFO = [
   {
     name: 'pushed_configs_linkdown',
     type: :mddo_trial_linkdown,
-    src_config_name: 'pushed_configs',
+    src_config_name: 'pushed_configs_drawoff',
     label: 'OOL-MDDO Network (LINKDOWN)'
+  },
+  {
+    name: 'pushed_configs_drawoff',
+    type: :mddo_trial_drawoff,
+    src_config_name: 'pushed_configs',
+    diff_config_name: 'pushed_configs',
+    label: 'OOL-MDDO Network (DRAWOFF)'
   }
 ].freeze
 
-task default: %i[make_dirs linkdown_snapshots bf_snapshots snapshot_to_model netoviz_index netoviz_models netomox_diff
-                 netoviz_layouts]
+task default: %i[make_dirs drawoff_snapshot linkdown_snapshots bf_snapshots snapshot_to_model
+                 netoviz_index netoviz_models netomox_diff netoviz_layouts]
 
 desc 'Make directories for models and netoviz'
 task :make_dirs do
@@ -72,6 +79,16 @@ def snapshot_path(src_base, src, dst_base, dst)
   [src_dir, dst_dir]
 end
 
+desc 'Generate drawoff snapshot'
+task :drawoff_snapshot do
+  model_info_list(:mddo_trial_drawoff).each do |mi|
+    src_dir, dst_dir = snapshot_path(CONFIGS_DIR, src_config_name(mi), CONFIGS_DIR, mi[:name])
+    node = ENV['OFF_NODE'] || 'DUMMY'
+    link_re = ENV['OFF_LINK_RE'] || 'DUMMY'
+    sh "python3 #{CONFIGS_DIR}/make_linkdown_snapshots.py -i #{src_dir} -o #{dst_dir} -n #{node} -l '#{link_re}'"
+  end
+end
+
 desc 'Generate linkdown snapshots'
 task :linkdown_snapshots do
   model_info_list(:mddo_trial_linkdown).each do |mi|
@@ -82,16 +99,16 @@ end
 
 desc 'Register snapshots to batfish'
 task :bf_snapshots do
-  model_info_list(:mddo_trial, :mddo_trial_linkdown).each do |mi|
+  model_info_list(:mddo_trial, :mddo_trial_drawoff, :mddo_trial_linkdown).each do |mi|
     src_dir = File.join(CONFIGS_DIR, mi[:name])
-    sh "python3 #{CONFIGS_DIR}/register_snapshots.py -b #{BATFISH_HOST} -n #{mi[:name]} -i #{src_dir}"
+    sh "python3 #{CONFIGS_DIR}/register_snapshots.py -b #{BATFISH_HOST} -n #{mi[:name]} -i #{src_dir} --log_level error"
   end
 end
 
 desc 'Generate model data (csv) from snapshots'
 task :snapshot_to_model do
-  model_info_list(:mddo_trial, :mddo_trial_linkdown).each do |mi|
-    sh "python3 #{CONFIGS_DIR}/exec_queries.py -b #{BATFISH_HOST} -n #{mi[:name]}"
+  model_info_list(:mddo_trial, :mddo_trial_drawoff, :mddo_trial_linkdown).each do |mi|
+    sh "python3 #{CONFIGS_DIR}/exec_queries.py -b #{BATFISH_HOST} -n #{mi[:name]} --log_level error"
   end
 end
 
@@ -104,7 +121,12 @@ def topology_file_name(name, file, dir)
 end
 
 def model_dir_files(model_info, src_dir)
-  file_name = model_info[:type] == :mddo_trial_linkdown ? 'snapshot_info.json' : 'edges_layer1.csv'
+  file_name = if %i[mddo_trial_drawoff
+                    mddo_trial_linkdown].include?(model_info[:type])
+                'snapshot_info.json'
+              else
+                'edges_layer1.csv'
+              end
   Dir.glob("#{src_dir}/**/#{file_name}").sort
 end
 
@@ -133,7 +155,7 @@ task :netoviz_index do
     case mi[:type]
     when :standalone
       { 'file' => mi[:file], 'label' => mi[:label] }
-    when :mddo_trial, :mddo_trial_linkdown
+    when :mddo_trial, :mddo_trial_drawoff, :mddo_trial_linkdown
       src_dir = File.join(MODELS_DIR, mi[:name])
       model_dir_files(mi, src_dir).map { |file| netoviz_index_datum(mi, src_dir, file) }
     else
@@ -153,7 +175,7 @@ task :netoviz_models do
     case mi[:type]
     when :standalone
       sh "bundle exec ruby #{mi[:script]} > #{NETOVIZ_DIR}/#{mi[:file]}"
-    when :mddo_trial, :mddo_trial_linkdown
+    when :mddo_trial, :mddo_trial_drawoff, :mddo_trial_linkdown
       src_dir = File.join(MODELS_DIR, mi[:name])
       model_dir_files(mi, src_dir).map do |file|
         topo_file = File.join(NETOVIZ_DIR, topology_file_name(mi[:name], file, src_dir))
@@ -173,7 +195,7 @@ end
 
 desc 'Generate diff data of linkdown snapshots and overwrite'
 task :netomox_diff do
-  model_info_list(:mddo_trial_linkdown).each do |dst_mi|
+  model_info_list(:mddo_trial_linkdown, :mddo_trial_drawoff).each do |dst_mi|
     # clean
     sh "rm -f #{NETOVIZ_DIR}/*.diff"
 
@@ -187,8 +209,8 @@ task :netomox_diff do
     model_dir_files(dst_mi, dst_dir).map do |file|
       dst_file = File.join(NETOVIZ_DIR, topology_file_name(dst_mi[:name], file, dst_dir))
       dst_file_tmp = "#{dst_file}.diff"
-      warn "# src file: #{src_file}"
-      warn "# dst file: #{dst_file}"
+      # warn "# src file: #{src_file}"
+      # warn "# dst file: #{dst_file}"
       sh "bundle exec netomox diff -o #{dst_file_tmp} #{src_file} #{dst_file}"
       sh "mv #{dst_file_tmp} #{dst_file}" # overwrite
     end

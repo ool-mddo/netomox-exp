@@ -65,13 +65,18 @@ Optional: Add `docker` group to your group to allow use docker without sudo.
 
 ```text
 bundle exec rake [MODEL_NAME=<target model name>]
+                 [OFF_NODE=<draw-off target node> [OFF_LINK_RE=<draw-off target link>]]
 ```
 
-You can specify target snapshot base with `MODEL_NAME` environment value.
+Arguments of the rake tasks (Environment Values):
+
+* MODEL_NAME`: target snapshot base
+* OFF_NODE : A node name to draw-off
+* OFF_LINK_RE : A regexp pattern to specify draw-off link(s) on the node (`OFF_NODE`), default: `/.*/` (any links)
 
 See details of task sequence `default` task in `Rakefile`.
 
-Optional: environment variables
+Optional environment variables:
 
 - Log level variable
   - `NETOMOX_LOG_LEVEL` (default `info`)

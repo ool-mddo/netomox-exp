@@ -1,7 +1,13 @@
 .idea/
+__pycache__
+venv
 configs/*_linkdown
+configs/*_drawoff
 models/*_linkdown
+models/*_drawoff
 netoviz_model/*_linkdown*.json
+netoviz_model/*_drawoff*.json
+*.swp
 
 *.gem
 *.rbc

@@ -1,10 +1,11 @@
-from pybatfish.client.session import Session
-from os import path, makedirs
 import argparse
 import json
-import pandas as pd
+import logging
 import shutil
 import sys
+from os import path, makedirs
+import pandas as pd
+from pybatfish.client.session import Session
 
 
 def save_df_as_csv(dataframe, csv_dir, csv_file_name):
@@ -67,7 +68,6 @@ if __name__ == "__main__":
     pd.set_option("display.width", 300)
     pd.set_option("display.max_columns", 20)
     pd.set_option("display.max_rows", 200)
-
     # for batfish
     bf_query_dict = {
         "ip_owners": lambda bf: bf.q.ipOwners(),
@@ -104,8 +104,23 @@ if __name__ == "__main__":
     parser.add_argument("--models_dir", "-m", default="models", help="Models directory to batfish output CSVs")
     query_keys = list(other_query_dict.keys()) + list(bf_query_dict.keys())
     parser.add_argument("--query", "-q", type=str, choices=query_keys, help="A Query to exec")
+    log_levels = ["critical", "error", "warning", "info", "debug"]
+    parser.add_argument("--log_level", type=str, default="warning", choices=log_levels, help="Log level")
     parser.add_argument("--debug", action="store_true", default=False, help="Debug")
     args = parser.parse_args()
+
+    # set log level
+    logger = logging.getLogger("pybatfish")
+    if args.log_level == "critical":
+        logger.setLevel(logging.CRITICAL)
+    elif args.log_level == "error":
+        logger.setLevel(logging.ERROR)
+    elif args.log_level == "warning":
+        logger.setLevel(logging.WARNING)
+    elif args.log_level == "info":
+        logger.setLevel(logging.INFO)
+    else:
+        logger.setLevel(logging.DEBUG)
 
     # limiting target query when using --query arg
     if args.query:
