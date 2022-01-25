@@ -15,6 +15,7 @@ GEM
     excon (0.90.0)
     hashie (5.0.0)
     highline (2.0.3)
+    httpclient (2.8.3)
     ipaddress (0.8.3)
     json (2.6.1)
     multi_json (1.15.0)
@@ -61,8 +62,10 @@ PLATFORMS
 
 DEPENDENCIES
   hashie (>= 4.1.0)
+  httpclient (>= 2.8.3)
   ipaddress (~> 0.8.3)
   netomox!
+  rake (>= 13.0.6)
   rubocop (>= 0.80)
   rubocop-rake
   thor (~> 1.0.1)

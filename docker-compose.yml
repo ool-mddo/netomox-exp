@@ -27,3 +27,11 @@ services:
       - ./netoviz_model:/home/netoviz/static/model
     depends_on:
       - netomox
+  batfish-wrapper:
+    image: batfish-wrapper
+    environment:
+      - BATFISH_HOST=batfish
+    ports:
+      - "5000:5000"
+    depends_on:
+      - batfish

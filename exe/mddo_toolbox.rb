@@ -7,6 +7,7 @@ require 'yaml'
 require_relative 'lib/l1_intf_descr_checker'
 require_relative 'lib/l1_intf_descr_maker'
 require_relative 'lib/network_sets_diff'
+require_relative 'lib/reach_tester'
 
 module TopologyOperator
   # Tools to operate topology data (CLI frontend)
@@ -54,6 +55,15 @@ module TopologyOperator
     def get_subsets(file)
       nws = TopologyOperator.read_topology_data(file)
       print_data(nws.find_all_network_sets.to_array)
+    end
+
+    desc 'test_reachability PATTERN_FILE', 'Test L3 reachability with pattern file'
+    method_option :format, aliases: :f, default: 'yaml', type: :string, enum: %w[yaml json], desc: 'Output format'
+    # @param [String] file Topology file path
+    # @return [void]
+    def test_reachability(file)
+      tester = ReachTester.new(file)
+      print_data(tester.exec_all_tests('pushed_configs'))
     end
 
     private
