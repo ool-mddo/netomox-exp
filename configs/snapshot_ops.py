@@ -59,18 +59,25 @@ def deduplicate_edges(edges):
     return uniq_edges
 
 
-def make_output_configs(src_snapshot_configs_dir_path, dst_snapshot_dir_path, config_files):
-    # configs directory
-    dst_snapshot_configs_dir_path = path.join(dst_snapshot_dir_path, "configs")
-    makedirs(dst_snapshot_configs_dir_path, exist_ok=True)
-    # config files
-    for config_file in config_files:
-        src_file = path.join(src_snapshot_configs_dir_path, config_file)
-        dst_file = path.join(dst_snapshot_configs_dir_path, config_file)
+def copy_output_files(src_dir_path, dst_dir_path):
+    for copy_file in [path.basename(f) for f in glob.glob(path.join(src_dir_path, "*"))]:
+        src_file = path.join(src_dir_path, copy_file)
+        dst_file = path.join(dst_dir_path, copy_file)
         if path.exists(dst_file):
             print("Warning: dst file: %s already exists" % dst_file, file=sys.stderr)
         else:
             link(src_file, dst_file)  # hard link
+
+
+def make_output_configs(src_snapshot_dir_path, dst_snapshot_dir_path):
+    # configs directory
+    copy_dirs = ["configs", "hosts"]
+    for copy_dir in copy_dirs:
+        src_snapshot_copy_dir_path = path.join(src_snapshot_dir_path, copy_dir)
+        dst_snapshot_copy_dir_path = path.join(dst_snapshot_dir_path, copy_dir)
+        makedirs(dst_snapshot_copy_dir_path, exist_ok=True)
+        # config files
+        copy_output_files(src_snapshot_copy_dir_path, dst_snapshot_copy_dir_path)
 
 
 def edge2tuple(edge):
@@ -105,7 +112,6 @@ def draw_off(l1topo, node, link_regexp):
 def make_snapshot_dir(
     index,
     input_snapshot_dir_path,
-    input_snapshot_configs_dir_path,
     output_snapshot_base_dir_path,
     output_snapshot_dir_name,
     l1_topology_data,
@@ -121,9 +127,6 @@ def make_snapshot_dir(
     print("#   + snapshot dir: %s (%s)" % (output_snapshot_dir_path, output_snapshot_dir_name))
     print("#     + snapshot_configs dir: %s" % output_snapshot_configs_dir_path)
 
-    # list config files in input snapshot directory
-    config_files = [path.basename(f) for f in glob.glob(path.join(input_snapshot_configs_dir_path, "*"))]
-
     # draw-off layer1 topology data
     l1_topology_data_off = draw_off(l1_topology_data, node, link_re_str)
     metadata = snapshot_metadata(
@@ -138,7 +141,7 @@ def make_snapshot_dir(
     # make configs directory and config files in output snap@shot directory
     shutil.rmtree(output_snapshot_dir_path, ignore_errors=True)  # clean
     makedirs(output_snapshot_configs_dir_path, exist_ok=True)  # make dirs recursively
-    make_output_configs(input_snapshot_configs_dir_path, output_snapshot_dir_path, config_files)
+    make_output_configs(input_snapshot_dir_path, output_snapshot_dir_path)
     # write data to layer1_topology.json in output snapshot directory
     write_l1_topology_data(output_snapshot_dir_path, l1_topology_data_off["found_edges"])
     # write metadata

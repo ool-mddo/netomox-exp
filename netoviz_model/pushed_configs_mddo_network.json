@@ -418,16 +418,16 @@
             "node-id": "regiona-svr01",
             "ietf-network-topology:termination-point": [
               {
-                "tp-id": "Ethernet1#0",
+                "tp-id": "enp1s4#0",
                 "supporting-termination-point": [
                   {
                     "network-ref": "layer2",
-                    "node-ref": "regiona-svr01_Ethernet1",
-                    "tp-ref": "Ethernet1"
+                    "node-ref": "regiona-svr01_enp1s4",
+                    "tp-ref": "enp1s4"
                   }
                 ],
                 "mddo-topology:l3-termination-point-attributes": {
-                  "description": "to_RegionA-Acc01_Ethernet9",
+                  "description": "",
                   "ip-address": [
                     "172.30.10.100/24"
                   ],
@@ -437,16 +437,16 @@
                 }
               },
               {
-                "tp-id": "Ethernet1#1",
+                "tp-id": "enp1s4#1",
                 "supporting-termination-point": [
                   {
                     "network-ref": "layer2",
-                    "node-ref": "regiona-svr01_Ethernet1",
-                    "tp-ref": "Ethernet1"
+                    "node-ref": "regiona-svr01_enp1s4",
+                    "tp-ref": "enp1s4"
                   }
                 ],
                 "mddo-topology:l3-termination-point-attributes": {
-                  "description": "to_RegionA-Acc01_Ethernet9",
+                  "description": "",
                   "ip-address": [
                     "172.30.10.100/24"
                   ],
@@ -456,16 +456,16 @@
                 }
               },
               {
-                "tp-id": "Ethernet1#3",
+                "tp-id": "enp1s4#3",
                 "supporting-termination-point": [
                   {
                     "network-ref": "layer2",
-                    "node-ref": "regiona-svr01_Ethernet1",
-                    "tp-ref": "Ethernet1"
+                    "node-ref": "regiona-svr01_enp1s4",
+                    "tp-ref": "enp1s4"
                   }
                 ],
                 "mddo-topology:l3-termination-point-attributes": {
-                  "description": "to_RegionA-Acc01_Ethernet9",
+                  "description": "",
                   "ip-address": [
                     "172.30.10.100/24"
                   ],
@@ -475,16 +475,16 @@
                 }
               },
               {
-                "tp-id": "Ethernet2#0",
+                "tp-id": "enp1s5#0",
                 "supporting-termination-point": [
                   {
                     "network-ref": "layer2",
-                    "node-ref": "regiona-svr01_Ethernet2",
-                    "tp-ref": "Ethernet2"
+                    "node-ref": "regiona-svr01_enp1s5",
+                    "tp-ref": "enp1s5"
                   }
                 ],
                 "mddo-topology:l3-termination-point-attributes": {
-                  "description": "to_RegionA-Acc01_Ethernet10",
+                  "description": "",
                   "ip-address": [
                     "172.30.110.100/24"
                   ],
@@ -494,16 +494,16 @@
                 }
               },
               {
-                "tp-id": "Ethernet2#1",
+                "tp-id": "enp1s5#1",
                 "supporting-termination-point": [
                   {
                     "network-ref": "layer2",
-                    "node-ref": "regiona-svr01_Ethernet2",
-                    "tp-ref": "Ethernet2"
+                    "node-ref": "regiona-svr01_enp1s5",
+                    "tp-ref": "enp1s5"
                   }
                 ],
                 "mddo-topology:l3-termination-point-attributes": {
-                  "description": "to_RegionA-Acc01_Ethernet10",
+                  "description": "",
                   "ip-address": [
                     "172.30.110.100/24"
                   ],
@@ -513,16 +513,16 @@
                 }
               },
               {
-                "tp-id": "Ethernet2#3",
+                "tp-id": "enp1s5#3",
                 "supporting-termination-point": [
                   {
                     "network-ref": "layer2",
-                    "node-ref": "regiona-svr01_Ethernet2",
-                    "tp-ref": "Ethernet2"
+                    "node-ref": "regiona-svr01_enp1s5",
+                    "tp-ref": "enp1s5"
                   }
                 ],
                 "mddo-topology:l3-termination-point-attributes": {
-                  "description": "to_RegionA-Acc01_Ethernet10",
+                  "description": "",
                   "ip-address": [
                     "172.30.110.100/24"
                   ],
@@ -535,11 +535,11 @@
             "supporting-node": [
               {
                 "network-ref": "layer2",
-                "node-ref": "regiona-svr01_Ethernet1"
+                "node-ref": "regiona-svr01_enp1s4"
               },
               {
                 "network-ref": "layer2",
-                "node-ref": "regiona-svr01_Ethernet2"
+                "node-ref": "regiona-svr01_enp1s5"
               }
             ],
             "mddo-topology:l3-node-attributes": {
@@ -569,16 +569,16 @@
             "node-id": "regiona-svr02",
             "ietf-network-topology:termination-point": [
               {
-                "tp-id": "Ethernet1#0",
+                "tp-id": "enp1s4#0",
                 "supporting-termination-point": [
                   {
                     "network-ref": "layer2",
-                    "node-ref": "regiona-svr02_Ethernet1",
-                    "tp-ref": "Ethernet1"
+                    "node-ref": "regiona-svr02_enp1s4",
+                    "tp-ref": "enp1s4"
                   }
                 ],
                 "mddo-topology:l3-termination-point-attributes": {
-                  "description": "to_RegionA-Acc01_Ethernet11",
+                  "description": "",
                   "ip-address": [
                     "172.30.10.101/24"
                   ],
@@ -588,16 +588,16 @@
                 }
               },
               {
-                "tp-id": "Ethernet1#1",
+                "tp-id": "enp1s4#1",
                 "supporting-termination-point": [
                   {
                     "network-ref": "layer2",
-                    "node-ref": "regiona-svr02_Ethernet1",
-                    "tp-ref": "Ethernet1"
+                    "node-ref": "regiona-svr02_enp1s4",
+                    "tp-ref": "enp1s4"
                   }
                 ],
                 "mddo-topology:l3-termination-point-attributes": {
-                  "description": "to_RegionA-Acc01_Ethernet11",
+                  "description": "",
                   "ip-address": [
                     "172.30.10.101/24"
                   ],
@@ -607,16 +607,16 @@
                 }
               },
               {
-                "tp-id": "Ethernet1#2",
+                "tp-id": "enp1s4#2",
                 "supporting-termination-point": [
                   {
                     "network-ref": "layer2",
-                    "node-ref": "regiona-svr02_Ethernet1",
-                    "tp-ref": "Ethernet1"
+                    "node-ref": "regiona-svr02_enp1s4",
+                    "tp-ref": "enp1s4"
                   }
                 ],
                 "mddo-topology:l3-termination-point-attributes": {
-                  "description": "to_RegionA-Acc01_Ethernet11",
+                  "description": "",
                   "ip-address": [
                     "172.30.10.101/24"
                   ],
@@ -626,16 +626,16 @@
                 }
               },
               {
-                "tp-id": "Ethernet2#0",
+                "tp-id": "enp1s5#0",
                 "supporting-termination-point": [
                   {
                     "network-ref": "layer2",
-                    "node-ref": "regiona-svr02_Ethernet2",
-                    "tp-ref": "Ethernet2"
+                    "node-ref": "regiona-svr02_enp1s5",
+                    "tp-ref": "enp1s5"
                   }
                 ],
                 "mddo-topology:l3-termination-point-attributes": {
-                  "description": "to_RegionA-Acc01_Ethernet12",
+                  "description": "",
                   "ip-address": [
                     "172.30.110.101/24"
                   ],
@@ -645,16 +645,16 @@
                 }
               },
               {
-                "tp-id": "Ethernet2#1",
+                "tp-id": "enp1s5#1",
                 "supporting-termination-point": [
                   {
                     "network-ref": "layer2",
-                    "node-ref": "regiona-svr02_Ethernet2",
-                    "tp-ref": "Ethernet2"
+                    "node-ref": "regiona-svr02_enp1s5",
+                    "tp-ref": "enp1s5"
                   }
                 ],
                 "mddo-topology:l3-termination-point-attributes": {
-                  "description": "to_RegionA-Acc01_Ethernet12",
+                  "description": "",
                   "ip-address": [
                     "172.30.110.101/24"
                   ],
@@ -664,16 +664,16 @@
                 }
               },
               {
-                "tp-id": "Ethernet2#2",
+                "tp-id": "enp1s5#2",
                 "supporting-termination-point": [
                   {
                     "network-ref": "layer2",
-                    "node-ref": "regiona-svr02_Ethernet2",
-                    "tp-ref": "Ethernet2"
+                    "node-ref": "regiona-svr02_enp1s5",
+                    "tp-ref": "enp1s5"
                   }
                 ],
                 "mddo-topology:l3-termination-point-attributes": {
-                  "description": "to_RegionA-Acc01_Ethernet12",
+                  "description": "",
                   "ip-address": [
                     "172.30.110.101/24"
                   ],
@@ -686,11 +686,11 @@
             "supporting-node": [
               {
                 "network-ref": "layer2",
-                "node-ref": "regiona-svr02_Ethernet1"
+                "node-ref": "regiona-svr02_enp1s4"
               },
               {
                 "network-ref": "layer2",
-                "node-ref": "regiona-svr02_Ethernet2"
+                "node-ref": "regiona-svr02_enp1s5"
               }
             ],
             "mddo-topology:l3-node-attributes": {
@@ -1892,16 +1892,16 @@
             "node-id": "regionb-svr01",
             "ietf-network-topology:termination-point": [
               {
-                "tp-id": "Ethernet1#0",
+                "tp-id": "enp1s4#0",
                 "supporting-termination-point": [
                   {
                     "network-ref": "layer2",
-                    "node-ref": "regionb-svr01_Ethernet1",
-                    "tp-ref": "Ethernet1"
+                    "node-ref": "regionb-svr01_enp1s4",
+                    "tp-ref": "enp1s4"
                   }
                 ],
                 "mddo-topology:l3-termination-point-attributes": {
-                  "description": "to_RegionB-Acc01_Ethernet5",
+                  "description": "",
                   "ip-address": [
                     "172.31.10.100/24"
                   ],
@@ -1911,16 +1911,16 @@
                 }
               },
               {
-                "tp-id": "Ethernet1#1",
+                "tp-id": "enp1s4#1",
                 "supporting-termination-point": [
                   {
                     "network-ref": "layer2",
-                    "node-ref": "regionb-svr01_Ethernet1",
-                    "tp-ref": "Ethernet1"
+                    "node-ref": "regionb-svr01_enp1s4",
+                    "tp-ref": "enp1s4"
                   }
                 ],
                 "mddo-topology:l3-termination-point-attributes": {
-                  "description": "to_RegionB-Acc01_Ethernet5",
+                  "description": "",
                   "ip-address": [
                     "172.31.10.100/24"
                   ],
@@ -1930,16 +1930,16 @@
                 }
               },
               {
-                "tp-id": "Ethernet2#0",
+                "tp-id": "enp1s5#0",
                 "supporting-termination-point": [
                   {
                     "network-ref": "layer2",
-                    "node-ref": "regionb-svr01_Ethernet2",
-                    "tp-ref": "Ethernet2"
+                    "node-ref": "regionb-svr01_enp1s5",
+                    "tp-ref": "enp1s5"
                   }
                 ],
                 "mddo-topology:l3-termination-point-attributes": {
-                  "description": "to_RegionB-Acc01_Ethernet6",
+                  "description": "",
                   "ip-address": [
                     "172.31.110.100/24"
                   ],
@@ -1949,16 +1949,16 @@
                 }
               },
               {
-                "tp-id": "Ethernet2#1",
+                "tp-id": "enp1s5#1",
                 "supporting-termination-point": [
                   {
                     "network-ref": "layer2",
-                    "node-ref": "regionb-svr01_Ethernet2",
-                    "tp-ref": "Ethernet2"
+                    "node-ref": "regionb-svr01_enp1s5",
+                    "tp-ref": "enp1s5"
                   }
                 ],
                 "mddo-topology:l3-termination-point-attributes": {
-                  "description": "to_RegionB-Acc01_Ethernet6",
+                  "description": "",
                   "ip-address": [
                     "172.31.110.100/24"
                   ],
@@ -1971,11 +1971,11 @@
             "supporting-node": [
               {
                 "network-ref": "layer2",
-                "node-ref": "regionb-svr01_Ethernet1"
+                "node-ref": "regionb-svr01_enp1s4"
               },
               {
                 "network-ref": "layer2",
-                "node-ref": "regionb-svr01_Ethernet2"
+                "node-ref": "regionb-svr01_enp1s5"
               }
             ],
             "mddo-topology:l3-node-attributes": {
@@ -2231,16 +2231,16 @@
             "node-id": "regionb-svr02",
             "ietf-network-topology:termination-point": [
               {
-                "tp-id": "Ethernet1#0",
+                "tp-id": "enp1s4#0",
                 "supporting-termination-point": [
                   {
                     "network-ref": "layer2",
-                    "node-ref": "regionb-svr02_Ethernet1",
-                    "tp-ref": "Ethernet1"
+                    "node-ref": "regionb-svr02_enp1s4",
+                    "tp-ref": "enp1s4"
                   }
                 ],
                 "mddo-topology:l3-termination-point-attributes": {
-                  "description": "to_RegionB-Acc02_Ethernet5",
+                  "description": "",
                   "ip-address": [
                     "172.31.20.100/24"
                   ],
@@ -2250,16 +2250,16 @@
                 }
               },
               {
-                "tp-id": "Ethernet1#1",
+                "tp-id": "enp1s4#1",
                 "supporting-termination-point": [
                   {
                     "network-ref": "layer2",
-                    "node-ref": "regionb-svr02_Ethernet1",
-                    "tp-ref": "Ethernet1"
+                    "node-ref": "regionb-svr02_enp1s4",
+                    "tp-ref": "enp1s4"
                   }
                 ],
                 "mddo-topology:l3-termination-point-attributes": {
-                  "description": "to_RegionB-Acc02_Ethernet5",
+                  "description": "",
                   "ip-address": [
                     "172.31.20.100/24"
                   ],
@@ -2269,16 +2269,16 @@
                 }
               },
               {
-                "tp-id": "Ethernet2#0",
+                "tp-id": "enp1s5#0",
                 "supporting-termination-point": [
                   {
                     "network-ref": "layer2",
-                    "node-ref": "regionb-svr02_Ethernet2",
-                    "tp-ref": "Ethernet2"
+                    "node-ref": "regionb-svr02_enp1s5",
+                    "tp-ref": "enp1s5"
                   }
                 ],
                 "mddo-topology:l3-termination-point-attributes": {
-                  "description": "to_RegionB-Acc02_Ethernet6",
+                  "description": "",
                   "ip-address": [
                     "172.31.120.100/24"
                   ],
@@ -2288,16 +2288,16 @@
                 }
               },
               {
-                "tp-id": "Ethernet2#1",
+                "tp-id": "enp1s5#1",
                 "supporting-termination-point": [
                   {
                     "network-ref": "layer2",
-                    "node-ref": "regionb-svr02_Ethernet2",
-                    "tp-ref": "Ethernet2"
+                    "node-ref": "regionb-svr02_enp1s5",
+                    "tp-ref": "enp1s5"
                   }
                 ],
                 "mddo-topology:l3-termination-point-attributes": {
-                  "description": "to_RegionB-Acc02_Ethernet6",
+                  "description": "",
                   "ip-address": [
                     "172.31.120.100/24"
                   ],
@@ -2310,11 +2310,11 @@
             "supporting-node": [
               {
                 "network-ref": "layer2",
-                "node-ref": "regionb-svr02_Ethernet1"
+                "node-ref": "regionb-svr02_enp1s4"
               },
               {
                 "network-ref": "layer2",
-                "node-ref": "regionb-svr02_Ethernet2"
+                "node-ref": "regionb-svr02_enp1s5"
               }
             ],
             "mddo-topology:l3-node-attributes": {
@@ -2354,25 +2354,25 @@
             }
           },
           {
-            "link-id": "regiona-ce01,ae1.10#2,regiona-svr01,Ethernet1#0",
+            "link-id": "regiona-ce01,ae1.10#2,regiona-svr01,enp1s4#0",
             "source": {
               "source-node": "regiona-ce01",
               "source-tp": "ae1.10#2"
             },
             "destination": {
               "dest-node": "regiona-svr01",
-              "dest-tp": "Ethernet1#0"
+              "dest-tp": "enp1s4#0"
             }
           },
           {
-            "link-id": "regiona-ce01,ae1.10#3,regiona-svr02,Ethernet1#0",
+            "link-id": "regiona-ce01,ae1.10#3,regiona-svr02,enp1s4#0",
             "source": {
               "source-node": "regiona-ce01",
               "source-tp": "ae1.10#3"
             },
             "destination": {
               "dest-node": "regiona-svr02",
-              "dest-tp": "Ethernet1#0"
+              "dest-tp": "enp1s4#0"
             }
           },
           {
@@ -2387,32 +2387,32 @@
             }
           },
           {
-            "link-id": "regiona-ce02,ae1.10#2,regiona-svr01,Ethernet1#1",
+            "link-id": "regiona-ce02,ae1.10#2,regiona-svr01,enp1s4#1",
             "source": {
               "source-node": "regiona-ce02",
               "source-tp": "ae1.10#2"
             },
             "destination": {
               "dest-node": "regiona-svr01",
-              "dest-tp": "Ethernet1#1"
+              "dest-tp": "enp1s4#1"
             }
           },
           {
-            "link-id": "regiona-ce02,ae1.10#3,regiona-svr02,Ethernet1#1",
+            "link-id": "regiona-ce02,ae1.10#3,regiona-svr02,enp1s4#1",
             "source": {
               "source-node": "regiona-ce02",
               "source-tp": "ae1.10#3"
             },
             "destination": {
               "dest-node": "regiona-svr02",
-              "dest-tp": "Ethernet1#1"
+              "dest-tp": "enp1s4#1"
             }
           },
           {
-            "link-id": "regiona-svr01,Ethernet1#0,regiona-ce01,ae1.10#2",
+            "link-id": "regiona-svr01,enp1s4#0,regiona-ce01,ae1.10#2",
             "source": {
               "source-node": "regiona-svr01",
-              "source-tp": "Ethernet1#0"
+              "source-tp": "enp1s4#0"
             },
             "destination": {
               "dest-node": "regiona-ce01",
@@ -2420,10 +2420,10 @@
             }
           },
           {
-            "link-id": "regiona-svr01,Ethernet1#1,regiona-ce02,ae1.10#2",
+            "link-id": "regiona-svr01,enp1s4#1,regiona-ce02,ae1.10#2",
             "source": {
               "source-node": "regiona-svr01",
-              "source-tp": "Ethernet1#1"
+              "source-tp": "enp1s4#1"
             },
             "destination": {
               "dest-node": "regiona-ce02",
@@ -2431,21 +2431,21 @@
             }
           },
           {
-            "link-id": "regiona-svr01,Ethernet1#3,regiona-svr02,Ethernet1#2",
+            "link-id": "regiona-svr01,enp1s4#3,regiona-svr02,enp1s4#2",
             "source": {
               "source-node": "regiona-svr01",
-              "source-tp": "Ethernet1#3"
+              "source-tp": "enp1s4#3"
             },
             "destination": {
               "dest-node": "regiona-svr02",
-              "dest-tp": "Ethernet1#2"
+              "dest-tp": "enp1s4#2"
             }
           },
           {
-            "link-id": "regiona-svr02,Ethernet1#0,regiona-ce01,ae1.10#3",
+            "link-id": "regiona-svr02,enp1s4#0,regiona-ce01,ae1.10#3",
             "source": {
               "source-node": "regiona-svr02",
-              "source-tp": "Ethernet1#0"
+              "source-tp": "enp1s4#0"
             },
             "destination": {
               "dest-node": "regiona-ce01",
@@ -2453,10 +2453,10 @@
             }
           },
           {
-            "link-id": "regiona-svr02,Ethernet1#1,regiona-ce02,ae1.10#3",
+            "link-id": "regiona-svr02,enp1s4#1,regiona-ce02,ae1.10#3",
             "source": {
               "source-node": "regiona-svr02",
-              "source-tp": "Ethernet1#1"
+              "source-tp": "enp1s4#1"
             },
             "destination": {
               "dest-node": "regiona-ce02",
@@ -2464,14 +2464,14 @@
             }
           },
           {
-            "link-id": "regiona-svr02,Ethernet1#2,regiona-svr01,Ethernet1#3",
+            "link-id": "regiona-svr02,enp1s4#2,regiona-svr01,enp1s4#3",
             "source": {
               "source-node": "regiona-svr02",
-              "source-tp": "Ethernet1#2"
+              "source-tp": "enp1s4#2"
             },
             "destination": {
               "dest-node": "regiona-svr01",
-              "dest-tp": "Ethernet1#3"
+              "dest-tp": "enp1s4#3"
             }
           },
           {
@@ -2486,25 +2486,25 @@
             }
           },
           {
-            "link-id": "regiona-ce01_VR1,ae1.110#2,regiona-svr01,Ethernet2#0",
+            "link-id": "regiona-ce01_VR1,ae1.110#2,regiona-svr01,enp1s5#0",
             "source": {
               "source-node": "regiona-ce01_VR1",
               "source-tp": "ae1.110#2"
             },
             "destination": {
               "dest-node": "regiona-svr01",
-              "dest-tp": "Ethernet2#0"
+              "dest-tp": "enp1s5#0"
             }
           },
           {
-            "link-id": "regiona-ce01_VR1,ae1.110#3,regiona-svr02,Ethernet2#0",
+            "link-id": "regiona-ce01_VR1,ae1.110#3,regiona-svr02,enp1s5#0",
             "source": {
               "source-node": "regiona-ce01_VR1",
               "source-tp": "ae1.110#3"
             },
             "destination": {
               "dest-node": "regiona-svr02",
-              "dest-tp": "Ethernet2#0"
+              "dest-tp": "enp1s5#0"
             }
           },
           {
@@ -2519,32 +2519,32 @@
             }
           },
           {
-            "link-id": "regiona-ce02_VR1,ae1.110#2,regiona-svr01,Ethernet2#1",
+            "link-id": "regiona-ce02_VR1,ae1.110#2,regiona-svr01,enp1s5#1",
             "source": {
               "source-node": "regiona-ce02_VR1",
               "source-tp": "ae1.110#2"
             },
             "destination": {
               "dest-node": "regiona-svr01",
-              "dest-tp": "Ethernet2#1"
+              "dest-tp": "enp1s5#1"
             }
           },
           {
-            "link-id": "regiona-ce02_VR1,ae1.110#3,regiona-svr02,Ethernet2#1",
+            "link-id": "regiona-ce02_VR1,ae1.110#3,regiona-svr02,enp1s5#1",
             "source": {
               "source-node": "regiona-ce02_VR1",
               "source-tp": "ae1.110#3"
             },
             "destination": {
               "dest-node": "regiona-svr02",
-              "dest-tp": "Ethernet2#1"
+              "dest-tp": "enp1s5#1"
             }
           },
           {
-            "link-id": "regiona-svr01,Ethernet2#0,regiona-ce01_VR1,ae1.110#2",
+            "link-id": "regiona-svr01,enp1s5#0,regiona-ce01_VR1,ae1.110#2",
             "source": {
               "source-node": "regiona-svr01",
-              "source-tp": "Ethernet2#0"
+              "source-tp": "enp1s5#0"
             },
             "destination": {
               "dest-node": "regiona-ce01_VR1",
@@ -2552,10 +2552,10 @@
             }
           },
           {
-            "link-id": "regiona-svr01,Ethernet2#1,regiona-ce02_VR1,ae1.110#2",
+            "link-id": "regiona-svr01,enp1s5#1,regiona-ce02_VR1,ae1.110#2",
             "source": {
               "source-node": "regiona-svr01",
-              "source-tp": "Ethernet2#1"
+              "source-tp": "enp1s5#1"
             },
             "destination": {
               "dest-node": "regiona-ce02_VR1",
@@ -2563,21 +2563,21 @@
             }
           },
           {
-            "link-id": "regiona-svr01,Ethernet2#3,regiona-svr02,Ethernet2#2",
+            "link-id": "regiona-svr01,enp1s5#3,regiona-svr02,enp1s5#2",
             "source": {
               "source-node": "regiona-svr01",
-              "source-tp": "Ethernet2#3"
+              "source-tp": "enp1s5#3"
             },
             "destination": {
               "dest-node": "regiona-svr02",
-              "dest-tp": "Ethernet2#2"
+              "dest-tp": "enp1s5#2"
             }
           },
           {
-            "link-id": "regiona-svr02,Ethernet2#0,regiona-ce01_VR1,ae1.110#3",
+            "link-id": "regiona-svr02,enp1s5#0,regiona-ce01_VR1,ae1.110#3",
             "source": {
               "source-node": "regiona-svr02",
-              "source-tp": "Ethernet2#0"
+              "source-tp": "enp1s5#0"
             },
             "destination": {
               "dest-node": "regiona-ce01_VR1",
@@ -2585,10 +2585,10 @@
             }
           },
           {
-            "link-id": "regiona-svr02,Ethernet2#1,regiona-ce02_VR1,ae1.110#3",
+            "link-id": "regiona-svr02,enp1s5#1,regiona-ce02_VR1,ae1.110#3",
             "source": {
               "source-node": "regiona-svr02",
-              "source-tp": "Ethernet2#1"
+              "source-tp": "enp1s5#1"
             },
             "destination": {
               "dest-node": "regiona-ce02_VR1",
@@ -2596,14 +2596,14 @@
             }
           },
           {
-            "link-id": "regiona-svr02,Ethernet2#2,regiona-svr01,Ethernet2#3",
+            "link-id": "regiona-svr02,enp1s5#2,regiona-svr01,enp1s5#3",
             "source": {
               "source-node": "regiona-svr02",
-              "source-tp": "Ethernet2#2"
+              "source-tp": "enp1s5#2"
             },
             "destination": {
               "dest-node": "regiona-svr01",
-              "dest-tp": "Ethernet2#3"
+              "dest-tp": "enp1s5#3"
             }
           },
           {
@@ -2904,14 +2904,14 @@
             }
           },
           {
-            "link-id": "regionb-ce02,ae1.1010#2,regionb-svr01,Ethernet1#0",
+            "link-id": "regionb-ce02,ae1.1010#2,regionb-svr01,enp1s4#0",
             "source": {
               "source-node": "regionb-ce02",
               "source-tp": "ae1.1010#2"
             },
             "destination": {
               "dest-node": "regionb-svr01",
-              "dest-tp": "Ethernet1#0"
+              "dest-tp": "enp1s4#0"
             }
           },
           {
@@ -2926,21 +2926,21 @@
             }
           },
           {
-            "link-id": "regionb-ce01,ae1.1010#2,regionb-svr01,Ethernet1#1",
+            "link-id": "regionb-ce01,ae1.1010#2,regionb-svr01,enp1s4#1",
             "source": {
               "source-node": "regionb-ce01",
               "source-tp": "ae1.1010#2"
             },
             "destination": {
               "dest-node": "regionb-svr01",
-              "dest-tp": "Ethernet1#1"
+              "dest-tp": "enp1s4#1"
             }
           },
           {
-            "link-id": "regionb-svr01,Ethernet1#0,regionb-ce02,ae1.1010#2",
+            "link-id": "regionb-svr01,enp1s4#0,regionb-ce02,ae1.1010#2",
             "source": {
               "source-node": "regionb-svr01",
-              "source-tp": "Ethernet1#0"
+              "source-tp": "enp1s4#0"
             },
             "destination": {
               "dest-node": "regionb-ce02",
@@ -2948,10 +2948,10 @@
             }
           },
           {
-            "link-id": "regionb-svr01,Ethernet1#1,regionb-ce01,ae1.1010#2",
+            "link-id": "regionb-svr01,enp1s4#1,regionb-ce01,ae1.1010#2",
             "source": {
               "source-node": "regionb-svr01",
-              "source-tp": "Ethernet1#1"
+              "source-tp": "enp1s4#1"
             },
             "destination": {
               "dest-node": "regionb-ce01",
@@ -2970,14 +2970,14 @@
             }
           },
           {
-            "link-id": "regionb-ce02_VR1,ae1.1110#2,regionb-svr01,Ethernet2#0",
+            "link-id": "regionb-ce02_VR1,ae1.1110#2,regionb-svr01,enp1s5#0",
             "source": {
               "source-node": "regionb-ce02_VR1",
               "source-tp": "ae1.1110#2"
             },
             "destination": {
               "dest-node": "regionb-svr01",
-              "dest-tp": "Ethernet2#0"
+              "dest-tp": "enp1s5#0"
             }
           },
           {
@@ -2992,21 +2992,21 @@
             }
           },
           {
-            "link-id": "regionb-ce01_VR1,ae1.1110#2,regionb-svr01,Ethernet2#1",
+            "link-id": "regionb-ce01_VR1,ae1.1110#2,regionb-svr01,enp1s5#1",
             "source": {
               "source-node": "regionb-ce01_VR1",
               "source-tp": "ae1.1110#2"
             },
             "destination": {
               "dest-node": "regionb-svr01",
-              "dest-tp": "Ethernet2#1"
+              "dest-tp": "enp1s5#1"
             }
           },
           {
-            "link-id": "regionb-svr01,Ethernet2#0,regionb-ce02_VR1,ae1.1110#2",
+            "link-id": "regionb-svr01,enp1s5#0,regionb-ce02_VR1,ae1.1110#2",
             "source": {
               "source-node": "regionb-svr01",
-              "source-tp": "Ethernet2#0"
+              "source-tp": "enp1s5#0"
             },
             "destination": {
               "dest-node": "regionb-ce02_VR1",
@@ -3014,10 +3014,10 @@
             }
           },
           {
-            "link-id": "regionb-svr01,Ethernet2#1,regionb-ce01_VR1,ae1.1110#2",
+            "link-id": "regionb-svr01,enp1s5#1,regionb-ce01_VR1,ae1.1110#2",
             "source": {
               "source-node": "regionb-svr01",
-              "source-tp": "Ethernet2#1"
+              "source-tp": "enp1s5#1"
             },
             "destination": {
               "dest-node": "regionb-ce01_VR1",
@@ -3036,14 +3036,14 @@
             }
           },
           {
-            "link-id": "regionb-ce02,ae2.1020#2,regionb-svr02,Ethernet1#0",
+            "link-id": "regionb-ce02,ae2.1020#2,regionb-svr02,enp1s4#0",
             "source": {
               "source-node": "regionb-ce02",
               "source-tp": "ae2.1020#2"
             },
             "destination": {
               "dest-node": "regionb-svr02",
-              "dest-tp": "Ethernet1#0"
+              "dest-tp": "enp1s4#0"
             }
           },
           {
@@ -3058,21 +3058,21 @@
             }
           },
           {
-            "link-id": "regionb-ce01,ae2.1020#2,regionb-svr02,Ethernet1#1",
+            "link-id": "regionb-ce01,ae2.1020#2,regionb-svr02,enp1s4#1",
             "source": {
               "source-node": "regionb-ce01",
               "source-tp": "ae2.1020#2"
             },
             "destination": {
               "dest-node": "regionb-svr02",
-              "dest-tp": "Ethernet1#1"
+              "dest-tp": "enp1s4#1"
             }
           },
           {
-            "link-id": "regionb-svr02,Ethernet1#0,regionb-ce02,ae2.1020#2",
+            "link-id": "regionb-svr02,enp1s4#0,regionb-ce02,ae2.1020#2",
             "source": {
               "source-node": "regionb-svr02",
-              "source-tp": "Ethernet1#0"
+              "source-tp": "enp1s4#0"
             },
             "destination": {
               "dest-node": "regionb-ce02",
@@ -3080,10 +3080,10 @@
             }
           },
           {
-            "link-id": "regionb-svr02,Ethernet1#1,regionb-ce01,ae2.1020#2",
+            "link-id": "regionb-svr02,enp1s4#1,regionb-ce01,ae2.1020#2",
             "source": {
               "source-node": "regionb-svr02",
-              "source-tp": "Ethernet1#1"
+              "source-tp": "enp1s4#1"
             },
             "destination": {
               "dest-node": "regionb-ce01",
@@ -3102,14 +3102,14 @@
             }
           },
           {
-            "link-id": "regionb-ce02_VR1,ae2.1120#2,regionb-svr02,Ethernet2#0",
+            "link-id": "regionb-ce02_VR1,ae2.1120#2,regionb-svr02,enp1s5#0",
             "source": {
               "source-node": "regionb-ce02_VR1",
               "source-tp": "ae2.1120#2"
             },
             "destination": {
               "dest-node": "regionb-svr02",
-              "dest-tp": "Ethernet2#0"
+              "dest-tp": "enp1s5#0"
             }
           },
           {
@@ -3124,21 +3124,21 @@
             }
           },
           {
-            "link-id": "regionb-ce01_VR1,ae2.1120#2,regionb-svr02,Ethernet2#1",
+            "link-id": "regionb-ce01_VR1,ae2.1120#2,regionb-svr02,enp1s5#1",
             "source": {
               "source-node": "regionb-ce01_VR1",
               "source-tp": "ae2.1120#2"
             },
             "destination": {
               "dest-node": "regionb-svr02",
-              "dest-tp": "Ethernet2#1"
+              "dest-tp": "enp1s5#1"
             }
           },
           {
-            "link-id": "regionb-svr02,Ethernet2#0,regionb-ce02_VR1,ae2.1120#2",
+            "link-id": "regionb-svr02,enp1s5#0,regionb-ce02_VR1,ae2.1120#2",
             "source": {
               "source-node": "regionb-svr02",
-              "source-tp": "Ethernet2#0"
+              "source-tp": "enp1s5#0"
             },
             "destination": {
               "dest-node": "regionb-ce02_VR1",
@@ -3146,10 +3146,10 @@
             }
           },
           {
-            "link-id": "regionb-svr02,Ethernet2#1,regionb-ce01_VR1,ae2.1120#2",
+            "link-id": "regionb-svr02,enp1s5#1,regionb-ce01_VR1,ae2.1120#2",
             "source": {
               "source-node": "regionb-svr02",
-              "source-tp": "Ethernet2#1"
+              "source-tp": "enp1s5#1"
             },
             "destination": {
               "dest-node": "regionb-ce01_VR1",
@@ -3290,11 +3290,11 @@
               },
               {
                 "network-ref": "layer2",
-                "node-ref": "regiona-svr01_Ethernet1"
+                "node-ref": "regiona-svr01_enp1s4"
               },
               {
                 "network-ref": "layer2",
-                "node-ref": "regiona-svr02_Ethernet1"
+                "node-ref": "regiona-svr02_enp1s4"
               }
             ],
             "mddo-topology:l3-node-attributes": {
@@ -3647,16 +3647,16 @@
             "node-id": "regiona-svr01",
             "ietf-network-topology:termination-point": [
               {
-                "tp-id": "Ethernet1",
+                "tp-id": "enp1s4",
                 "supporting-termination-point": [
                   {
                     "network-ref": "layer2",
-                    "node-ref": "regiona-svr01_Ethernet1",
-                    "tp-ref": "Ethernet1"
+                    "node-ref": "regiona-svr01_enp1s4",
+                    "tp-ref": "enp1s4"
                   }
                 ],
                 "mddo-topology:l3-termination-point-attributes": {
-                  "description": "to_RegionA-Acc01_Ethernet9",
+                  "description": "",
                   "ip-address": [
                     "172.30.10.100/24"
                   ],
@@ -3666,16 +3666,16 @@
                 }
               },
               {
-                "tp-id": "Ethernet2",
+                "tp-id": "enp1s5",
                 "supporting-termination-point": [
                   {
                     "network-ref": "layer2",
-                    "node-ref": "regiona-svr01_Ethernet2",
-                    "tp-ref": "Ethernet2"
+                    "node-ref": "regiona-svr01_enp1s5",
+                    "tp-ref": "enp1s5"
                   }
                 ],
                 "mddo-topology:l3-termination-point-attributes": {
-                  "description": "to_RegionA-Acc01_Ethernet10",
+                  "description": "",
                   "ip-address": [
                     "172.30.110.100/24"
                   ],
@@ -3688,11 +3688,11 @@
             "supporting-node": [
               {
                 "network-ref": "layer2",
-                "node-ref": "regiona-svr01_Ethernet1"
+                "node-ref": "regiona-svr01_enp1s4"
               },
               {
                 "network-ref": "layer2",
-                "node-ref": "regiona-svr01_Ethernet2"
+                "node-ref": "regiona-svr01_enp1s5"
               }
             ],
             "mddo-topology:l3-node-attributes": {
@@ -3722,16 +3722,16 @@
             "node-id": "regiona-svr02",
             "ietf-network-topology:termination-point": [
               {
-                "tp-id": "Ethernet1",
+                "tp-id": "enp1s4",
                 "supporting-termination-point": [
                   {
                     "network-ref": "layer2",
-                    "node-ref": "regiona-svr02_Ethernet1",
-                    "tp-ref": "Ethernet1"
+                    "node-ref": "regiona-svr02_enp1s4",
+                    "tp-ref": "enp1s4"
                   }
                 ],
                 "mddo-topology:l3-termination-point-attributes": {
-                  "description": "to_RegionA-Acc01_Ethernet11",
+                  "description": "",
                   "ip-address": [
                     "172.30.10.101/24"
                   ],
@@ -3741,16 +3741,16 @@
                 }
               },
               {
-                "tp-id": "Ethernet2",
+                "tp-id": "enp1s5",
                 "supporting-termination-point": [
                   {
                     "network-ref": "layer2",
-                    "node-ref": "regiona-svr02_Ethernet2",
-                    "tp-ref": "Ethernet2"
+                    "node-ref": "regiona-svr02_enp1s5",
+                    "tp-ref": "enp1s5"
                   }
                 ],
                 "mddo-topology:l3-termination-point-attributes": {
-                  "description": "to_RegionA-Acc01_Ethernet12",
+                  "description": "",
                   "ip-address": [
                     "172.30.110.101/24"
                   ],
@@ -3763,11 +3763,11 @@
             "supporting-node": [
               {
                 "network-ref": "layer2",
-                "node-ref": "regiona-svr02_Ethernet1"
+                "node-ref": "regiona-svr02_enp1s4"
               },
               {
                 "network-ref": "layer2",
-                "node-ref": "regiona-svr02_Ethernet2"
+                "node-ref": "regiona-svr02_enp1s5"
               }
             ],
             "mddo-topology:l3-node-attributes": {
@@ -3852,11 +3852,11 @@
               },
               {
                 "network-ref": "layer2",
-                "node-ref": "regiona-svr01_Ethernet2"
+                "node-ref": "regiona-svr01_enp1s5"
               },
               {
                 "network-ref": "layer2",
-                "node-ref": "regiona-svr02_Ethernet2"
+                "node-ref": "regiona-svr02_enp1s5"
               }
             ],
             "mddo-topology:l3-node-attributes": {
@@ -5602,7 +5602,7 @@
               },
               {
                 "network-ref": "layer2",
-                "node-ref": "regionb-svr01_Ethernet1"
+                "node-ref": "regionb-svr01_enp1s4"
               }
             ],
             "mddo-topology:l3-node-attributes": {
@@ -5625,16 +5625,16 @@
             "node-id": "regionb-svr01",
             "ietf-network-topology:termination-point": [
               {
-                "tp-id": "Ethernet1",
+                "tp-id": "enp1s4",
                 "supporting-termination-point": [
                   {
                     "network-ref": "layer2",
-                    "node-ref": "regionb-svr01_Ethernet1",
-                    "tp-ref": "Ethernet1"
+                    "node-ref": "regionb-svr01_enp1s4",
+                    "tp-ref": "enp1s4"
                   }
                 ],
                 "mddo-topology:l3-termination-point-attributes": {
-                  "description": "to_RegionB-Acc01_Ethernet5",
+                  "description": "",
                   "ip-address": [
                     "172.31.10.100/24"
                   ],
@@ -5644,16 +5644,16 @@
                 }
               },
               {
-                "tp-id": "Ethernet2",
+                "tp-id": "enp1s5",
                 "supporting-termination-point": [
                   {
                     "network-ref": "layer2",
-                    "node-ref": "regionb-svr01_Ethernet2",
-                    "tp-ref": "Ethernet2"
+                    "node-ref": "regionb-svr01_enp1s5",
+                    "tp-ref": "enp1s5"
                   }
                 ],
                 "mddo-topology:l3-termination-point-attributes": {
-                  "description": "to_RegionB-Acc01_Ethernet6",
+                  "description": "",
                   "ip-address": [
                     "172.31.110.100/24"
                   ],
@@ -5666,11 +5666,11 @@
             "supporting-node": [
               {
                 "network-ref": "layer2",
-                "node-ref": "regionb-svr01_Ethernet1"
+                "node-ref": "regionb-svr01_enp1s4"
               },
               {
                 "network-ref": "layer2",
-                "node-ref": "regionb-svr01_Ethernet2"
+                "node-ref": "regionb-svr01_enp1s5"
               }
             ],
             "mddo-topology:l3-node-attributes": {
@@ -5745,7 +5745,7 @@
               },
               {
                 "network-ref": "layer2",
-                "node-ref": "regionb-svr01_Ethernet2"
+                "node-ref": "regionb-svr01_enp1s5"
               }
             ],
             "mddo-topology:l3-node-attributes": {
@@ -5963,7 +5963,7 @@
               },
               {
                 "network-ref": "layer2",
-                "node-ref": "regionb-svr02_Ethernet1"
+                "node-ref": "regionb-svr02_enp1s4"
               }
             ],
             "mddo-topology:l3-node-attributes": {
@@ -5986,16 +5986,16 @@
             "node-id": "regionb-svr02",
             "ietf-network-topology:termination-point": [
               {
-                "tp-id": "Ethernet1",
+                "tp-id": "enp1s4",
                 "supporting-termination-point": [
                   {
                     "network-ref": "layer2",
-                    "node-ref": "regionb-svr02_Ethernet1",
-                    "tp-ref": "Ethernet1"
+                    "node-ref": "regionb-svr02_enp1s4",
+                    "tp-ref": "enp1s4"
                   }
                 ],
                 "mddo-topology:l3-termination-point-attributes": {
-                  "description": "to_RegionB-Acc02_Ethernet5",
+                  "description": "",
                   "ip-address": [
                     "172.31.20.100/24"
                   ],
@@ -6005,16 +6005,16 @@
                 }
               },
               {
-                "tp-id": "Ethernet2",
+                "tp-id": "enp1s5",
                 "supporting-termination-point": [
                   {
                     "network-ref": "layer2",
-                    "node-ref": "regionb-svr02_Ethernet2",
-                    "tp-ref": "Ethernet2"
+                    "node-ref": "regionb-svr02_enp1s5",
+                    "tp-ref": "enp1s5"
                   }
                 ],
                 "mddo-topology:l3-termination-point-attributes": {
-                  "description": "to_RegionB-Acc02_Ethernet6",
+                  "description": "",
                   "ip-address": [
                     "172.31.120.100/24"
                   ],
@@ -6027,11 +6027,11 @@
             "supporting-node": [
               {
                 "network-ref": "layer2",
-                "node-ref": "regionb-svr02_Ethernet1"
+                "node-ref": "regionb-svr02_enp1s4"
               },
               {
                 "network-ref": "layer2",
-                "node-ref": "regionb-svr02_Ethernet2"
+                "node-ref": "regionb-svr02_enp1s5"
               }
             ],
             "mddo-topology:l3-node-attributes": {
@@ -6106,7 +6106,7 @@
               },
               {
                 "network-ref": "layer2",
-                "node-ref": "regionb-svr02_Ethernet2"
+                "node-ref": "regionb-svr02_enp1s5"
               }
             ],
             "mddo-topology:l3-node-attributes": {
@@ -6322,21 +6322,21 @@
             }
           },
           {
-            "link-id": "Seg_172.30.10.0/24,regiona-acc01_Ethernet9,regiona-svr01,Ethernet1",
+            "link-id": "Seg_172.30.10.0/24,regiona-acc01_Ethernet9,regiona-svr01,enp1s4",
             "source": {
               "source-node": "Seg_172.30.10.0/24",
               "source-tp": "regiona-acc01_Ethernet9"
             },
             "destination": {
               "dest-node": "regiona-svr01",
-              "dest-tp": "Ethernet1"
+              "dest-tp": "enp1s4"
             }
           },
           {
-            "link-id": "regiona-svr01,Ethernet1,Seg_172.30.10.0/24,regiona-acc01_Ethernet9",
+            "link-id": "regiona-svr01,enp1s4,Seg_172.30.10.0/24,regiona-acc01_Ethernet9",
             "source": {
               "source-node": "regiona-svr01",
-              "source-tp": "Ethernet1"
+              "source-tp": "enp1s4"
             },
             "destination": {
               "dest-node": "Seg_172.30.10.0/24",
@@ -6344,21 +6344,21 @@
             }
           },
           {
-            "link-id": "Seg_172.30.10.0/24,regiona-acc01_Ethernet11,regiona-svr02,Ethernet1",
+            "link-id": "Seg_172.30.10.0/24,regiona-acc01_Ethernet11,regiona-svr02,enp1s4",
             "source": {
               "source-node": "Seg_172.30.10.0/24",
               "source-tp": "regiona-acc01_Ethernet11"
             },
             "destination": {
               "dest-node": "regiona-svr02",
-              "dest-tp": "Ethernet1"
+              "dest-tp": "enp1s4"
             }
           },
           {
-            "link-id": "regiona-svr02,Ethernet1,Seg_172.30.10.0/24,regiona-acc01_Ethernet11",
+            "link-id": "regiona-svr02,enp1s4,Seg_172.30.10.0/24,regiona-acc01_Ethernet11",
             "source": {
               "source-node": "regiona-svr02",
-              "source-tp": "Ethernet1"
+              "source-tp": "enp1s4"
             },
             "destination": {
               "dest-node": "Seg_172.30.10.0/24",
@@ -6410,21 +6410,21 @@
             }
           },
           {
-            "link-id": "Seg_172.30.110.0/24,regiona-acc01_Ethernet10,regiona-svr01,Ethernet2",
+            "link-id": "Seg_172.30.110.0/24,regiona-acc01_Ethernet10,regiona-svr01,enp1s5",
             "source": {
               "source-node": "Seg_172.30.110.0/24",
               "source-tp": "regiona-acc01_Ethernet10"
             },
             "destination": {
               "dest-node": "regiona-svr01",
-              "dest-tp": "Ethernet2"
+              "dest-tp": "enp1s5"
             }
           },
           {
-            "link-id": "regiona-svr01,Ethernet2,Seg_172.30.110.0/24,regiona-acc01_Ethernet10",
+            "link-id": "regiona-svr01,enp1s5,Seg_172.30.110.0/24,regiona-acc01_Ethernet10",
             "source": {
               "source-node": "regiona-svr01",
-              "source-tp": "Ethernet2"
+              "source-tp": "enp1s5"
             },
             "destination": {
               "dest-node": "Seg_172.30.110.0/24",
@@ -6432,21 +6432,21 @@
             }
           },
           {
-            "link-id": "Seg_172.30.110.0/24,regiona-acc01_Ethernet12,regiona-svr02,Ethernet2",
+            "link-id": "Seg_172.30.110.0/24,regiona-acc01_Ethernet12,regiona-svr02,enp1s5",
             "source": {
               "source-node": "Seg_172.30.110.0/24",
               "source-tp": "regiona-acc01_Ethernet12"
             },
             "destination": {
               "dest-node": "regiona-svr02",
-              "dest-tp": "Ethernet2"
+              "dest-tp": "enp1s5"
             }
           },
           {
-            "link-id": "regiona-svr02,Ethernet2,Seg_172.30.110.0/24,regiona-acc01_Ethernet12",
+            "link-id": "regiona-svr02,enp1s5,Seg_172.30.110.0/24,regiona-acc01_Ethernet12",
             "source": {
               "source-node": "regiona-svr02",
-              "source-tp": "Ethernet2"
+              "source-tp": "enp1s5"
             },
             "destination": {
               "dest-node": "Seg_172.30.110.0/24",
@@ -7070,21 +7070,21 @@
             }
           },
           {
-            "link-id": "Seg_172.31.10.0/24,regionb-acc01_Ethernet5,regionb-svr01,Ethernet1",
+            "link-id": "Seg_172.31.10.0/24,regionb-acc01_Ethernet5,regionb-svr01,enp1s4",
             "source": {
               "source-node": "Seg_172.31.10.0/24",
               "source-tp": "regionb-acc01_Ethernet5"
             },
             "destination": {
               "dest-node": "regionb-svr01",
-              "dest-tp": "Ethernet1"
+              "dest-tp": "enp1s4"
             }
           },
           {
-            "link-id": "regionb-svr01,Ethernet1,Seg_172.31.10.0/24,regionb-acc01_Ethernet5",
+            "link-id": "regionb-svr01,enp1s4,Seg_172.31.10.0/24,regionb-acc01_Ethernet5",
             "source": {
               "source-node": "regionb-svr01",
-              "source-tp": "Ethernet1"
+              "source-tp": "enp1s4"
             },
             "destination": {
               "dest-node": "Seg_172.31.10.0/24",
@@ -7136,21 +7136,21 @@
             }
           },
           {
-            "link-id": "Seg_172.31.110.0/24,regionb-acc01_Ethernet6,regionb-svr01,Ethernet2",
+            "link-id": "Seg_172.31.110.0/24,regionb-acc01_Ethernet6,regionb-svr01,enp1s5",
             "source": {
               "source-node": "Seg_172.31.110.0/24",
               "source-tp": "regionb-acc01_Ethernet6"
             },
             "destination": {
               "dest-node": "regionb-svr01",
-              "dest-tp": "Ethernet2"
+              "dest-tp": "enp1s5"
             }
           },
           {
-            "link-id": "regionb-svr01,Ethernet2,Seg_172.31.110.0/24,regionb-acc01_Ethernet6",
+            "link-id": "regionb-svr01,enp1s5,Seg_172.31.110.0/24,regionb-acc01_Ethernet6",
             "source": {
               "source-node": "regionb-svr01",
-              "source-tp": "Ethernet2"
+              "source-tp": "enp1s5"
             },
             "destination": {
               "dest-node": "Seg_172.31.110.0/24",
@@ -7202,21 +7202,21 @@
             }
           },
           {
-            "link-id": "Seg_172.31.20.0/24,regionb-acc02_Ethernet5,regionb-svr02,Ethernet1",
+            "link-id": "Seg_172.31.20.0/24,regionb-acc02_Ethernet5,regionb-svr02,enp1s4",
             "source": {
               "source-node": "Seg_172.31.20.0/24",
               "source-tp": "regionb-acc02_Ethernet5"
             },
             "destination": {
               "dest-node": "regionb-svr02",
-              "dest-tp": "Ethernet1"
+              "dest-tp": "enp1s4"
             }
           },
           {
-            "link-id": "regionb-svr02,Ethernet1,Seg_172.31.20.0/24,regionb-acc02_Ethernet5",
+            "link-id": "regionb-svr02,enp1s4,Seg_172.31.20.0/24,regionb-acc02_Ethernet5",
             "source": {
               "source-node": "regionb-svr02",
-              "source-tp": "Ethernet1"
+              "source-tp": "enp1s4"
             },
             "destination": {
               "dest-node": "Seg_172.31.20.0/24",
@@ -7268,21 +7268,21 @@
             }
           },
           {
-            "link-id": "Seg_172.31.120.0/24,regionb-acc02_Ethernet6,regionb-svr02,Ethernet2",
+            "link-id": "Seg_172.31.120.0/24,regionb-acc02_Ethernet6,regionb-svr02,enp1s5",
             "source": {
               "source-node": "Seg_172.31.120.0/24",
               "source-tp": "regionb-acc02_Ethernet6"
             },
             "destination": {
               "dest-node": "regionb-svr02",
-              "dest-tp": "Ethernet2"
+              "dest-tp": "enp1s5"
             }
           },
           {
-            "link-id": "regionb-svr02,Ethernet2,Seg_172.31.120.0/24,regionb-acc02_Ethernet6",
+            "link-id": "regionb-svr02,enp1s5,Seg_172.31.120.0/24,regionb-acc02_Ethernet6",
             "source": {
               "source-node": "regionb-svr02",
-              "source-tp": "Ethernet2"
+              "source-tp": "enp1s5"
             },
             "destination": {
               "dest-node": "Seg_172.31.120.0/24",
@@ -7489,7 +7489,7 @@
                   }
                 ],
                 "mddo-topology:l2-termination-point-attributes": {
-                  "description": "to_RegionA-Svr01_Ethernet1",
+                  "description": "to_RegionA-Svr01_enp1s4",
                   "encapsulation": "",
                   "switchport-mode": "access",
                   "flag": [
@@ -7507,7 +7507,7 @@
                   }
                 ],
                 "mddo-topology:l2-termination-point-attributes": {
-                  "description": "to_RegionA-Svr02_Ethernet1",
+                  "description": "to_RegionA-Svr02_enp1s4",
                   "encapsulation": "",
                   "switchport-mode": "access",
                   "flag": [
@@ -7630,7 +7630,7 @@
                   }
                 ],
                 "mddo-topology:l2-termination-point-attributes": {
-                  "description": "to_RegionA-Svr01_Ethernet2",
+                  "description": "to_RegionA-Svr01_enp1s5",
                   "encapsulation": "",
                   "switchport-mode": "access",
                   "flag": [
@@ -7648,7 +7648,7 @@
                   }
                 ],
                 "mddo-topology:l2-termination-point-attributes": {
-                  "description": "to_RegionA-Svr02_Ethernet2",
+                  "description": "to_RegionA-Svr02_enp1s5",
                   "encapsulation": "",
                   "switchport-mode": "access",
                   "flag": [
@@ -8087,19 +8087,19 @@
             }
           },
           {
-            "node-id": "regiona-svr01_Ethernet1",
+            "node-id": "regiona-svr01_enp1s4",
             "ietf-network-topology:termination-point": [
               {
-                "tp-id": "Ethernet1",
+                "tp-id": "enp1s4",
                 "supporting-termination-point": [
                   {
                     "network-ref": "layer1",
                     "node-ref": "regiona-svr01",
-                    "tp-ref": "Ethernet1"
+                    "tp-ref": "enp1s4"
                   }
                 ],
                 "mddo-topology:l2-termination-point-attributes": {
-                  "description": "to_RegionA-Acc01_Ethernet9",
+                  "description": "",
                   "encapsulation": "",
                   "switchport-mode": "none",
                   "flag": [
@@ -8123,19 +8123,19 @@
             }
           },
           {
-            "node-id": "regiona-svr01_Ethernet2",
+            "node-id": "regiona-svr01_enp1s5",
             "ietf-network-topology:termination-point": [
               {
-                "tp-id": "Ethernet2",
+                "tp-id": "enp1s5",
                 "supporting-termination-point": [
                   {
                     "network-ref": "layer1",
                     "node-ref": "regiona-svr01",
-                    "tp-ref": "Ethernet2"
+                    "tp-ref": "enp1s5"
                   }
                 ],
                 "mddo-topology:l2-termination-point-attributes": {
-                  "description": "to_RegionA-Acc01_Ethernet10",
+                  "description": "",
                   "encapsulation": "",
                   "switchport-mode": "none",
                   "flag": [
@@ -8159,19 +8159,19 @@
             }
           },
           {
-            "node-id": "regiona-svr02_Ethernet1",
+            "node-id": "regiona-svr02_enp1s4",
             "ietf-network-topology:termination-point": [
               {
-                "tp-id": "Ethernet1",
+                "tp-id": "enp1s4",
                 "supporting-termination-point": [
                   {
                     "network-ref": "layer1",
                     "node-ref": "regiona-svr02",
-                    "tp-ref": "Ethernet1"
+                    "tp-ref": "enp1s4"
                   }
                 ],
                 "mddo-topology:l2-termination-point-attributes": {
-                  "description": "to_RegionA-Acc01_Ethernet11",
+                  "description": "",
                   "encapsulation": "",
                   "switchport-mode": "none",
                   "flag": [
@@ -8195,19 +8195,19 @@
             }
           },
           {
-            "node-id": "regiona-svr02_Ethernet2",
+            "node-id": "regiona-svr02_enp1s5",
             "ietf-network-topology:termination-point": [
               {
-                "tp-id": "Ethernet2",
+                "tp-id": "enp1s5",
                 "supporting-termination-point": [
                   {
                     "network-ref": "layer1",
                     "node-ref": "regiona-svr02",
-                    "tp-ref": "Ethernet2"
+                    "tp-ref": "enp1s5"
                   }
                 ],
                 "mddo-topology:l2-termination-point-attributes": {
-                  "description": "to_RegionA-Acc01_Ethernet12",
+                  "description": "",
                   "encapsulation": "",
                   "switchport-mode": "none",
                   "flag": [
@@ -9142,7 +9142,7 @@
                   }
                 ],
                 "mddo-topology:l2-termination-point-attributes": {
-                  "description": "to_RegionB-Svr01_Ethernet1",
+                  "description": "to_RegionB-Svr01_enp1s4",
                   "encapsulation": "",
                   "switchport-mode": "access",
                   "flag": [
@@ -9265,7 +9265,7 @@
                   }
                 ],
                 "mddo-topology:l2-termination-point-attributes": {
-                  "description": "to_RegionB-Svr01_Ethernet2",
+                  "description": "to_RegionB-Svr01_enp1s5",
                   "encapsulation": "",
                   "switchport-mode": "access",
                   "flag": [
@@ -9388,7 +9388,7 @@
                   }
                 ],
                 "mddo-topology:l2-termination-point-attributes": {
-                  "description": "to_RegionB-Svr02_Ethernet1",
+                  "description": "to_RegionB-Svr02_enp1s4",
                   "encapsulation": "",
                   "switchport-mode": "access",
                   "flag": [
@@ -9511,7 +9511,7 @@
                   }
                 ],
                 "mddo-topology:l2-termination-point-attributes": {
-                  "description": "to_RegionB-Svr02_Ethernet2",
+                  "description": "to_RegionB-Svr02_enp1s5",
                   "encapsulation": "",
                   "switchport-mode": "access",
                   "flag": [
@@ -9617,19 +9617,19 @@
             }
           },
           {
-            "node-id": "regionb-svr02_Ethernet1",
+            "node-id": "regionb-svr02_enp1s4",
             "ietf-network-topology:termination-point": [
               {
-                "tp-id": "Ethernet1",
+                "tp-id": "enp1s4",
                 "supporting-termination-point": [
                   {
                     "network-ref": "layer1",
                     "node-ref": "regionb-svr02",
-                    "tp-ref": "Ethernet1"
+                    "tp-ref": "enp1s4"
                   }
                 ],
                 "mddo-topology:l2-termination-point-attributes": {
-                  "description": "to_RegionB-Acc02_Ethernet5",
+                  "description": "",
                   "encapsulation": "",
                   "switchport-mode": "none",
                   "flag": [
@@ -9653,19 +9653,19 @@
             }
           },
           {
-            "node-id": "regionb-svr02_Ethernet2",
+            "node-id": "regionb-svr02_enp1s5",
             "ietf-network-topology:termination-point": [
               {
-                "tp-id": "Ethernet2",
+                "tp-id": "enp1s5",
                 "supporting-termination-point": [
                   {
                     "network-ref": "layer1",
                     "node-ref": "regionb-svr02",
-                    "tp-ref": "Ethernet2"
+                    "tp-ref": "enp1s5"
                   }
                 ],
                 "mddo-topology:l2-termination-point-attributes": {
-                  "description": "to_RegionB-Acc02_Ethernet6",
+                  "description": "",
                   "encapsulation": "",
                   "switchport-mode": "none",
                   "flag": [
@@ -9771,19 +9771,19 @@
             }
           },
           {
-            "node-id": "regionb-svr01_Ethernet1",
+            "node-id": "regionb-svr01_enp1s4",
             "ietf-network-topology:termination-point": [
               {
-                "tp-id": "Ethernet1",
+                "tp-id": "enp1s4",
                 "supporting-termination-point": [
                   {
                     "network-ref": "layer1",
                     "node-ref": "regionb-svr01",
-                    "tp-ref": "Ethernet1"
+                    "tp-ref": "enp1s4"
                   }
                 ],
                 "mddo-topology:l2-termination-point-attributes": {
-                  "description": "to_RegionB-Acc01_Ethernet5",
+                  "description": "",
                   "encapsulation": "",
                   "switchport-mode": "none",
                   "flag": [
@@ -9807,19 +9807,19 @@
             }
           },
           {
-            "node-id": "regionb-svr01_Ethernet2",
+            "node-id": "regionb-svr01_enp1s5",
             "ietf-network-topology:termination-point": [
               {
-                "tp-id": "Ethernet2",
+                "tp-id": "enp1s5",
                 "supporting-termination-point": [
                   {
                     "network-ref": "layer1",
                     "node-ref": "regionb-svr01",
-                    "tp-ref": "Ethernet2"
+                    "tp-ref": "enp1s5"
                   }
                 ],
                 "mddo-topology:l2-termination-point-attributes": {
-                  "description": "to_RegionB-Acc01_Ethernet6",
+                  "description": "",
                   "encapsulation": "",
                   "switchport-mode": "none",
                   "flag": [
@@ -10237,21 +10237,21 @@
             }
           },
           {
-            "link-id": "regiona-acc01_Vlan10,Ethernet9,regiona-svr01_Ethernet1,Ethernet1",
+            "link-id": "regiona-acc01_Vlan10,Ethernet9,regiona-svr01_enp1s4,enp1s4",
             "source": {
               "source-node": "regiona-acc01_Vlan10",
               "source-tp": "Ethernet9"
             },
             "destination": {
-              "dest-node": "regiona-svr01_Ethernet1",
-              "dest-tp": "Ethernet1"
+              "dest-node": "regiona-svr01_enp1s4",
+              "dest-tp": "enp1s4"
             }
           },
           {
-            "link-id": "regiona-svr01_Ethernet1,Ethernet1,regiona-acc01_Vlan10,Ethernet9",
+            "link-id": "regiona-svr01_enp1s4,enp1s4,regiona-acc01_Vlan10,Ethernet9",
             "source": {
-              "source-node": "regiona-svr01_Ethernet1",
-              "source-tp": "Ethernet1"
+              "source-node": "regiona-svr01_enp1s4",
+              "source-tp": "enp1s4"
             },
             "destination": {
               "dest-node": "regiona-acc01_Vlan10",
@@ -10259,21 +10259,21 @@
             }
           },
           {
-            "link-id": "regiona-acc01_Vlan110,Ethernet10,regiona-svr01_Ethernet2,Ethernet2",
+            "link-id": "regiona-acc01_Vlan110,Ethernet10,regiona-svr01_enp1s5,enp1s5",
             "source": {
               "source-node": "regiona-acc01_Vlan110",
               "source-tp": "Ethernet10"
             },
             "destination": {
-              "dest-node": "regiona-svr01_Ethernet2",
-              "dest-tp": "Ethernet2"
+              "dest-node": "regiona-svr01_enp1s5",
+              "dest-tp": "enp1s5"
             }
           },
           {
-            "link-id": "regiona-svr01_Ethernet2,Ethernet2,regiona-acc01_Vlan110,Ethernet10",
+            "link-id": "regiona-svr01_enp1s5,enp1s5,regiona-acc01_Vlan110,Ethernet10",
             "source": {
-              "source-node": "regiona-svr01_Ethernet2",
-              "source-tp": "Ethernet2"
+              "source-node": "regiona-svr01_enp1s5",
+              "source-tp": "enp1s5"
             },
             "destination": {
               "dest-node": "regiona-acc01_Vlan110",
@@ -10281,21 +10281,21 @@
             }
           },
           {
-            "link-id": "regiona-acc01_Vlan10,Ethernet11,regiona-svr02_Ethernet1,Ethernet1",
+            "link-id": "regiona-acc01_Vlan10,Ethernet11,regiona-svr02_enp1s4,enp1s4",
             "source": {
               "source-node": "regiona-acc01_Vlan10",
               "source-tp": "Ethernet11"
             },
             "destination": {
-              "dest-node": "regiona-svr02_Ethernet1",
-              "dest-tp": "Ethernet1"
+              "dest-node": "regiona-svr02_enp1s4",
+              "dest-tp": "enp1s4"
             }
           },
           {
-            "link-id": "regiona-svr02_Ethernet1,Ethernet1,regiona-acc01_Vlan10,Ethernet11",
+            "link-id": "regiona-svr02_enp1s4,enp1s4,regiona-acc01_Vlan10,Ethernet11",
             "source": {
-              "source-node": "regiona-svr02_Ethernet1",
-              "source-tp": "Ethernet1"
+              "source-node": "regiona-svr02_enp1s4",
+              "source-tp": "enp1s4"
             },
             "destination": {
               "dest-node": "regiona-acc01_Vlan10",
@@ -10303,21 +10303,21 @@
             }
           },
           {
-            "link-id": "regiona-acc01_Vlan110,Ethernet12,regiona-svr02_Ethernet2,Ethernet2",
+            "link-id": "regiona-acc01_Vlan110,Ethernet12,regiona-svr02_enp1s5,enp1s5",
             "source": {
               "source-node": "regiona-acc01_Vlan110",
               "source-tp": "Ethernet12"
             },
             "destination": {
-              "dest-node": "regiona-svr02_Ethernet2",
-              "dest-tp": "Ethernet2"
+              "dest-node": "regiona-svr02_enp1s5",
+              "dest-tp": "enp1s5"
             }
           },
           {
-            "link-id": "regiona-svr02_Ethernet2,Ethernet2,regiona-acc01_Vlan110,Ethernet12",
+            "link-id": "regiona-svr02_enp1s5,enp1s5,regiona-acc01_Vlan110,Ethernet12",
             "source": {
-              "source-node": "regiona-svr02_Ethernet2",
-              "source-tp": "Ethernet2"
+              "source-node": "regiona-svr02_enp1s5",
+              "source-tp": "enp1s5"
             },
             "destination": {
               "dest-node": "regiona-acc01_Vlan110",
@@ -10699,21 +10699,21 @@
             }
           },
           {
-            "link-id": "regionb-acc02_Vlan1020,Ethernet5,regionb-svr02_Ethernet1,Ethernet1",
+            "link-id": "regionb-acc02_Vlan1020,Ethernet5,regionb-svr02_enp1s4,enp1s4",
             "source": {
               "source-node": "regionb-acc02_Vlan1020",
               "source-tp": "Ethernet5"
             },
             "destination": {
-              "dest-node": "regionb-svr02_Ethernet1",
-              "dest-tp": "Ethernet1"
+              "dest-node": "regionb-svr02_enp1s4",
+              "dest-tp": "enp1s4"
             }
           },
           {
-            "link-id": "regionb-svr02_Ethernet1,Ethernet1,regionb-acc02_Vlan1020,Ethernet5",
+            "link-id": "regionb-svr02_enp1s4,enp1s4,regionb-acc02_Vlan1020,Ethernet5",
             "source": {
-              "source-node": "regionb-svr02_Ethernet1",
-              "source-tp": "Ethernet1"
+              "source-node": "regionb-svr02_enp1s4",
+              "source-tp": "enp1s4"
             },
             "destination": {
               "dest-node": "regionb-acc02_Vlan1020",
@@ -10721,21 +10721,21 @@
             }
           },
           {
-            "link-id": "regionb-acc02_Vlan1120,Ethernet6,regionb-svr02_Ethernet2,Ethernet2",
+            "link-id": "regionb-acc02_Vlan1120,Ethernet6,regionb-svr02_enp1s5,enp1s5",
             "source": {
               "source-node": "regionb-acc02_Vlan1120",
               "source-tp": "Ethernet6"
             },
             "destination": {
-              "dest-node": "regionb-svr02_Ethernet2",
-              "dest-tp": "Ethernet2"
+              "dest-node": "regionb-svr02_enp1s5",
+              "dest-tp": "enp1s5"
             }
           },
           {
-            "link-id": "regionb-svr02_Ethernet2,Ethernet2,regionb-acc02_Vlan1120,Ethernet6",
+            "link-id": "regionb-svr02_enp1s5,enp1s5,regionb-acc02_Vlan1120,Ethernet6",
             "source": {
-              "source-node": "regionb-svr02_Ethernet2",
-              "source-tp": "Ethernet2"
+              "source-node": "regionb-svr02_enp1s5",
+              "source-tp": "enp1s5"
             },
             "destination": {
               "dest-node": "regionb-acc02_Vlan1120",
@@ -10787,21 +10787,21 @@
             }
           },
           {
-            "link-id": "regionb-acc01_Vlan1010,Ethernet5,regionb-svr01_Ethernet1,Ethernet1",
+            "link-id": "regionb-acc01_Vlan1010,Ethernet5,regionb-svr01_enp1s4,enp1s4",
             "source": {
               "source-node": "regionb-acc01_Vlan1010",
               "source-tp": "Ethernet5"
             },
             "destination": {
-              "dest-node": "regionb-svr01_Ethernet1",
-              "dest-tp": "Ethernet1"
+              "dest-node": "regionb-svr01_enp1s4",
+              "dest-tp": "enp1s4"
             }
           },
           {
-            "link-id": "regionb-svr01_Ethernet1,Ethernet1,regionb-acc01_Vlan1010,Ethernet5",
+            "link-id": "regionb-svr01_enp1s4,enp1s4,regionb-acc01_Vlan1010,Ethernet5",
             "source": {
-              "source-node": "regionb-svr01_Ethernet1",
-              "source-tp": "Ethernet1"
+              "source-node": "regionb-svr01_enp1s4",
+              "source-tp": "enp1s4"
             },
             "destination": {
               "dest-node": "regionb-acc01_Vlan1010",
@@ -10809,21 +10809,21 @@
             }
           },
           {
-            "link-id": "regionb-acc01_Vlan1110,Ethernet6,regionb-svr01_Ethernet2,Ethernet2",
+            "link-id": "regionb-acc01_Vlan1110,Ethernet6,regionb-svr01_enp1s5,enp1s5",
             "source": {
               "source-node": "regionb-acc01_Vlan1110",
               "source-tp": "Ethernet6"
             },
             "destination": {
-              "dest-node": "regionb-svr01_Ethernet2",
-              "dest-tp": "Ethernet2"
+              "dest-node": "regionb-svr01_enp1s5",
+              "dest-tp": "enp1s5"
             }
           },
           {
-            "link-id": "regionb-svr01_Ethernet2,Ethernet2,regionb-acc01_Vlan1110,Ethernet6",
+            "link-id": "regionb-svr01_enp1s5,enp1s5,regionb-acc01_Vlan1110,Ethernet6",
             "source": {
-              "source-node": "regionb-svr01_Ethernet2",
-              "source-tp": "Ethernet2"
+              "source-node": "regionb-svr01_enp1s5",
+              "source-tp": "enp1s5"
             },
             "destination": {
               "dest-node": "regionb-acc01_Vlan1110",
@@ -10988,7 +10988,7 @@
               {
                 "tp-id": "Ethernet9",
                 "mddo-topology:l1-termination-point-attributes": {
-                  "description": "to_RegionA-Svr01_Ethernet1",
+                  "description": "to_RegionA-Svr01_enp1s4",
                   "flag": [
 
                   ]
@@ -10997,7 +10997,7 @@
               {
                 "tp-id": "Ethernet10",
                 "mddo-topology:l1-termination-point-attributes": {
-                  "description": "to_RegionA-Svr01_Ethernet2",
+                  "description": "to_RegionA-Svr01_enp1s5",
                   "flag": [
 
                   ]
@@ -11006,7 +11006,7 @@
               {
                 "tp-id": "Ethernet11",
                 "mddo-topology:l1-termination-point-attributes": {
-                  "description": "to_RegionA-Svr02_Ethernet1",
+                  "description": "to_RegionA-Svr02_enp1s4",
                   "flag": [
 
                   ]
@@ -11015,7 +11015,7 @@
               {
                 "tp-id": "Ethernet12",
                 "mddo-topology:l1-termination-point-attributes": {
-                  "description": "to_RegionA-Svr02_Ethernet2",
+                  "description": "to_RegionA-Svr02_enp1s5",
                   "flag": [
 
                   ]
@@ -11199,26 +11199,14 @@
             "node-id": "regiona-svr01",
             "ietf-network-topology:termination-point": [
               {
-                "tp-id": "Ethernet1",
-                "mddo-topology:l1-termination-point-attributes": {
-                  "description": "to_RegionA-Acc01_Ethernet9",
-                  "flag": [
-
-                  ]
-                }
+                "tp-id": "enp1s4"
               },
               {
-                "tp-id": "Ethernet2",
-                "mddo-topology:l1-termination-point-attributes": {
-                  "description": "to_RegionA-Acc01_Ethernet10",
-                  "flag": [
-
-                  ]
-                }
+                "tp-id": "enp1s5"
               }
             ],
             "mddo-topology:l1-node-attributes": {
-              "os-type": "arista",
+              "os-type": "host",
               "flag": [
 
               ]
@@ -11228,26 +11216,14 @@
             "node-id": "regiona-svr02",
             "ietf-network-topology:termination-point": [
               {
-                "tp-id": "Ethernet1",
-                "mddo-topology:l1-termination-point-attributes": {
-                  "description": "to_RegionA-Acc01_Ethernet11",
-                  "flag": [
-
-                  ]
-                }
+                "tp-id": "enp1s4"
               },
               {
-                "tp-id": "Ethernet2",
-                "mddo-topology:l1-termination-point-attributes": {
-                  "description": "to_RegionA-Acc01_Ethernet12",
-                  "flag": [
-
-                  ]
-                }
+                "tp-id": "enp1s5"
               }
             ],
             "mddo-topology:l1-node-attributes": {
-              "os-type": "arista",
+              "os-type": "host",
               "flag": [
 
               ]
@@ -11649,7 +11625,7 @@
               {
                 "tp-id": "Ethernet5",
                 "mddo-topology:l1-termination-point-attributes": {
-                  "description": "to_RegionB-Svr01_Ethernet1",
+                  "description": "to_RegionB-Svr01_enp1s4",
                   "flag": [
 
                   ]
@@ -11658,7 +11634,7 @@
               {
                 "tp-id": "Ethernet6",
                 "mddo-topology:l1-termination-point-attributes": {
-                  "description": "to_RegionB-Svr01_Ethernet2",
+                  "description": "to_RegionB-Svr01_enp1s5",
                   "flag": [
 
                   ]
@@ -11714,7 +11690,7 @@
               {
                 "tp-id": "Ethernet5",
                 "mddo-topology:l1-termination-point-attributes": {
-                  "description": "to_RegionB-Svr02_Ethernet1",
+                  "description": "to_RegionB-Svr02_enp1s4",
                   "flag": [
 
                   ]
@@ -11723,7 +11699,7 @@
               {
                 "tp-id": "Ethernet6",
                 "mddo-topology:l1-termination-point-attributes": {
-                  "description": "to_RegionB-Svr02_Ethernet2",
+                  "description": "to_RegionB-Svr02_enp1s5",
                   "flag": [
 
                   ]
@@ -11741,26 +11717,14 @@
             "node-id": "regionb-svr02",
             "ietf-network-topology:termination-point": [
               {
-                "tp-id": "Ethernet1",
-                "mddo-topology:l1-termination-point-attributes": {
-                  "description": "to_RegionB-Acc02_Ethernet5",
-                  "flag": [
-
-                  ]
-                }
+                "tp-id": "enp1s4"
               },
               {
-                "tp-id": "Ethernet2",
-                "mddo-topology:l1-termination-point-attributes": {
-                  "description": "to_RegionB-Acc02_Ethernet6",
-                  "flag": [
-
-                  ]
-                }
+                "tp-id": "enp1s5"
               }
             ],
             "mddo-topology:l1-node-attributes": {
-              "os-type": "arista",
+              "os-type": "host",
               "flag": [
 
               ]
@@ -11770,26 +11734,14 @@
             "node-id": "regionb-svr01",
             "ietf-network-topology:termination-point": [
               {
-                "tp-id": "Ethernet1",
-                "mddo-topology:l1-termination-point-attributes": {
-                  "description": "to_RegionB-Acc01_Ethernet5",
-                  "flag": [
-
-                  ]
-                }
+                "tp-id": "enp1s4"
               },
               {
-                "tp-id": "Ethernet2",
-                "mddo-topology:l1-termination-point-attributes": {
-                  "description": "to_RegionB-Acc01_Ethernet6",
-                  "flag": [
-
-                  ]
-                }
+                "tp-id": "enp1s5"
               }
             ],
             "mddo-topology:l1-node-attributes": {
-              "os-type": "arista",
+              "os-type": "host",
               "flag": [
 
               ]
@@ -11974,21 +11926,21 @@
             }
           },
           {
-            "link-id": "regiona-acc01,Ethernet9,regiona-svr01,Ethernet1",
+            "link-id": "regiona-acc01,Ethernet9,regiona-svr01,enp1s4",
             "source": {
               "source-node": "regiona-acc01",
               "source-tp": "Ethernet9"
             },
             "destination": {
               "dest-node": "regiona-svr01",
-              "dest-tp": "Ethernet1"
+              "dest-tp": "enp1s4"
             }
           },
           {
-            "link-id": "regiona-svr01,Ethernet1,regiona-acc01,Ethernet9",
+            "link-id": "regiona-svr01,enp1s4,regiona-acc01,Ethernet9",
             "source": {
               "source-node": "regiona-svr01",
-              "source-tp": "Ethernet1"
+              "source-tp": "enp1s4"
             },
             "destination": {
               "dest-node": "regiona-acc01",
@@ -11996,21 +11948,21 @@
             }
           },
           {
-            "link-id": "regiona-acc01,Ethernet10,regiona-svr01,Ethernet2",
+            "link-id": "regiona-acc01,Ethernet10,regiona-svr01,enp1s5",
             "source": {
               "source-node": "regiona-acc01",
               "source-tp": "Ethernet10"
             },
             "destination": {
               "dest-node": "regiona-svr01",
-              "dest-tp": "Ethernet2"
+              "dest-tp": "enp1s5"
             }
           },
           {
-            "link-id": "regiona-svr01,Ethernet2,regiona-acc01,Ethernet10",
+            "link-id": "regiona-svr01,enp1s5,regiona-acc01,Ethernet10",
             "source": {
               "source-node": "regiona-svr01",
-              "source-tp": "Ethernet2"
+              "source-tp": "enp1s5"
             },
             "destination": {
               "dest-node": "regiona-acc01",
@@ -12018,21 +11970,21 @@
             }
           },
           {
-            "link-id": "regiona-acc01,Ethernet11,regiona-svr02,Ethernet1",
+            "link-id": "regiona-acc01,Ethernet11,regiona-svr02,enp1s4",
             "source": {
               "source-node": "regiona-acc01",
               "source-tp": "Ethernet11"
             },
             "destination": {
               "dest-node": "regiona-svr02",
-              "dest-tp": "Ethernet1"
+              "dest-tp": "enp1s4"
             }
           },
           {
-            "link-id": "regiona-svr02,Ethernet1,regiona-acc01,Ethernet11",
+            "link-id": "regiona-svr02,enp1s4,regiona-acc01,Ethernet11",
             "source": {
               "source-node": "regiona-svr02",
-              "source-tp": "Ethernet1"
+              "source-tp": "enp1s4"
             },
             "destination": {
               "dest-node": "regiona-acc01",
@@ -12040,21 +11992,21 @@
             }
           },
           {
-            "link-id": "regiona-acc01,Ethernet12,regiona-svr02,Ethernet2",
+            "link-id": "regiona-acc01,Ethernet12,regiona-svr02,enp1s5",
             "source": {
               "source-node": "regiona-acc01",
               "source-tp": "Ethernet12"
             },
             "destination": {
               "dest-node": "regiona-svr02",
-              "dest-tp": "Ethernet2"
+              "dest-tp": "enp1s5"
             }
           },
           {
-            "link-id": "regiona-svr02,Ethernet2,regiona-acc01,Ethernet12",
+            "link-id": "regiona-svr02,enp1s5,regiona-acc01,Ethernet12",
             "source": {
               "source-node": "regiona-svr02",
-              "source-tp": "Ethernet2"
+              "source-tp": "enp1s5"
             },
             "destination": {
               "dest-node": "regiona-acc01",
@@ -12480,21 +12432,21 @@
             }
           },
           {
-            "link-id": "regionb-acc02,Ethernet5,regionb-svr02,Ethernet1",
+            "link-id": "regionb-acc02,Ethernet5,regionb-svr02,enp1s4",
             "source": {
               "source-node": "regionb-acc02",
               "source-tp": "Ethernet5"
             },
             "destination": {
               "dest-node": "regionb-svr02",
-              "dest-tp": "Ethernet1"
+              "dest-tp": "enp1s4"
             }
           },
           {
-            "link-id": "regionb-svr02,Ethernet1,regionb-acc02,Ethernet5",
+            "link-id": "regionb-svr02,enp1s4,regionb-acc02,Ethernet5",
             "source": {
               "source-node": "regionb-svr02",
-              "source-tp": "Ethernet1"
+              "source-tp": "enp1s4"
             },
             "destination": {
               "dest-node": "regionb-acc02",
@@ -12502,21 +12454,21 @@
             }
           },
           {
-            "link-id": "regionb-acc02,Ethernet6,regionb-svr02,Ethernet2",
+            "link-id": "regionb-acc02,Ethernet6,regionb-svr02,enp1s5",
             "source": {
               "source-node": "regionb-acc02",
               "source-tp": "Ethernet6"
             },
             "destination": {
               "dest-node": "regionb-svr02",
-              "dest-tp": "Ethernet2"
+              "dest-tp": "enp1s5"
             }
           },
           {
-            "link-id": "regionb-svr02,Ethernet2,regionb-acc02,Ethernet6",
+            "link-id": "regionb-svr02,enp1s5,regionb-acc02,Ethernet6",
             "source": {
               "source-node": "regionb-svr02",
-              "source-tp": "Ethernet2"
+              "source-tp": "enp1s5"
             },
             "destination": {
               "dest-node": "regionb-acc02",
@@ -12568,21 +12520,21 @@
             }
           },
           {
-            "link-id": "regionb-acc01,Ethernet5,regionb-svr01,Ethernet1",
+            "link-id": "regionb-acc01,Ethernet5,regionb-svr01,enp1s4",
             "source": {
               "source-node": "regionb-acc01",
               "source-tp": "Ethernet5"
             },
             "destination": {
               "dest-node": "regionb-svr01",
-              "dest-tp": "Ethernet1"
+              "dest-tp": "enp1s4"
             }
           },
           {
-            "link-id": "regionb-svr01,Ethernet1,regionb-acc01,Ethernet5",
+            "link-id": "regionb-svr01,enp1s4,regionb-acc01,Ethernet5",
             "source": {
               "source-node": "regionb-svr01",
-              "source-tp": "Ethernet1"
+              "source-tp": "enp1s4"
             },
             "destination": {
               "dest-node": "regionb-acc01",
@@ -12590,21 +12542,21 @@
             }
           },
           {
-            "link-id": "regionb-acc01,Ethernet6,regionb-svr01,Ethernet2",
+            "link-id": "regionb-acc01,Ethernet6,regionb-svr01,enp1s5",
             "source": {
               "source-node": "regionb-acc01",
               "source-tp": "Ethernet6"
             },
             "destination": {
               "dest-node": "regionb-svr01",
-              "dest-tp": "Ethernet2"
+              "dest-tp": "enp1s5"
             }
           },
           {
-            "link-id": "regionb-svr01,Ethernet2,regionb-acc01,Ethernet6",
+            "link-id": "regionb-svr01,enp1s5,regionb-acc01,Ethernet6",
             "source": {
               "source-node": "regionb-svr01",
-              "source-tp": "Ethernet2"
+              "source-tp": "enp1s5"
             },
             "destination": {
               "dest-node": "regionb-acc01",

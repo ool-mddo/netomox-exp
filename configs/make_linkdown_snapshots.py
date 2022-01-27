@@ -64,7 +64,6 @@ if __name__ == "__main__":
             so.make_snapshot_dir(
                 index,
                 input_snapshot_dir_path,
-                input_snapshot_configs_dir_path,
                 output_snapshot_base_dir_path,
                 "%s_%02d" % (input_snapshot_dir_name, index),
                 l1_topology_data,
@@ -77,7 +76,6 @@ if __name__ == "__main__":
         so.make_snapshot_dir(
             0,
             input_snapshot_dir_path,
-            input_snapshot_configs_dir_path,
             output_snapshot_base_dir_path,
             input_snapshot_dir_name,
             l1_topology_data,
