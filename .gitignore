@@ -8,6 +8,8 @@ models/*_drawoff
 netoviz_model/*_linkdown*.json
 netoviz_model/*_drawoff*.json
 *.swp
+.env
+*result*.json
 
 *.gem
 *.rbc

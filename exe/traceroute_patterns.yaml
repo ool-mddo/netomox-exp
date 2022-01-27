@@ -1,10 +1,10 @@
 groups:
   regiona_vlan10_endpoints:
-    - regiona-svr01__Ethernet1
-    - regiona-svr02__Ethernet1
+    - regiona-svr01__enp1s4
+    - regiona-svr02__enp1s4
   regiona_vlan110_endpoints:
-    - regiona-svr01__Ethernet2
-    - regiona-svr02__Ethernet2
+    - regiona-svr01__enp1s5
+    - regiona-svr02__enp1s5
   regiona_vlan20_endpoints: []
   regiona_vlan120_endpoints: []
   regiona_vlan10_gateways:
@@ -20,13 +20,13 @@ groups:
     - regiona-ce01__ae2.120
     - regiona-ce02__ae2.120
   regionb_vlan1010_endpoints:
-    - regionb-svr01__Ethernet1
+    - regionb-svr01__enp1s4
   regionb_vlan1110_endpoints:
-    - regionb-svr01__Ethernet2
+    - regionb-svr01__enp1s5
   regionb_vlan1020_endpoints:
-    - regionb-svr02__Ethernet1
+    - regionb-svr02__enp1s4
   regionb_vlan1120_endpoints:
-    - regionb-svr02__Ethernet2
+    - regionb-svr02__enp1s5
   regionb_vlan1010_gateways:
     - regionb-ce01__ae1.1010
     - regionb-ce02__ae1.1010
@@ -52,5 +52,5 @@ patterns:
 #  - [regionb_vlan1120_endpoints, regionb_vlan1120_gateways]
 #  - [regionb_vlan1010_endpoints, regionb_vlan1020_endpoints]
 #  - [regionb_vlan1110_endpoints, regionb_vlan1120_endpoints]
-  - [regiona_vlan10_endpoints, regionb_vlan1010_endpoints]
-  - [regiona_vlan10_endpoints, regionb_vlan1020_endpoints]
+#  - [regiona_vlan10_endpoints, regionb_vlan1010_endpoints]
+#  - [regiona_vlan10_endpoints, regionb_vlan1020_endpoints]

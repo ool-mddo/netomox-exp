@@ -1,13 +1,15 @@
 #!/usr/bin/env ruby
 # frozen_string_literal: true
 
-require 'thor'
+require 'csv'
 require 'json'
+require 'thor'
 require 'yaml'
 require_relative 'lib/l1_intf_descr_checker'
 require_relative 'lib/l1_intf_descr_maker'
 require_relative 'lib/network_sets_diff'
 require_relative 'lib/reach_tester'
+require_relative 'lib/reach_result_converter'
 
 module TopologyOperator
   # Tools to operate topology data (CLI frontend)
@@ -58,12 +60,20 @@ module TopologyOperator
     end
 
     desc 'test_reachability PATTERN_FILE', 'Test L3 reachability with pattern file'
-    method_option :format, aliases: :f, default: 'yaml', type: :string, enum: %w[yaml json], desc: 'Output format'
+    method_option :network, aliases: :n, default: 'pushed_configs', type: :string, desc: 'network name in batfish'
+    method_option :format, aliases: :f, default: 'yaml', type: :string, enum: %w[yaml json csv], desc: 'Output format'
     # @param [String] file Topology file path
     # @return [void]
     def test_reachability(file)
       tester = ReachTester.new(file)
-      print_data(tester.exec_all_tests('pushed_configs'))
+      reach_results = tester.exec_all_tests(options[:network])
+      # print_data(reach_results)
+      rconv = ReachResultConverter.new(reach_results)
+      if options[:format] == 'csv'
+        print_csv(rconv.full_table)
+      else
+        print_data(rconv.summary)
+      end
     end
 
     private
@@ -71,7 +81,23 @@ module TopologyOperator
     # @param [Object] data Data to print
     # @return [void]
     def print_data(data)
-      puts options[:format] == 'yaml' ? YAML.dump(data) : JSON.pretty_generate(data)
+      case options[:format]
+      when 'yaml'
+        puts YAML.dump(data)
+      when 'json'
+        puts JSON.pretty_generate(data)
+      else
+        warn "Unknown format option: #{options[:format]}"
+        exit 1
+      end
+    end
+
+    # @param [Array<Array>] data Table data: [[header cols],[data],...]
+    # @return [void]
+    def print_csv(data)
+      CSV do |csv_out|
+        data.each { |row| csv_out << row }
+      end
     end
   end
 end

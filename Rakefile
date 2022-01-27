@@ -83,9 +83,10 @@ desc 'Generate drawoff snapshot'
 task :drawoff_snapshot do
   model_info_list(:mddo_trial_drawoff).each do |mi|
     src_dir, dst_dir = snapshot_path(CONFIGS_DIR, src_config_name(mi), CONFIGS_DIR, mi[:name])
-    node = ENV['OFF_NODE'] || 'DUMMY'
-    link_re = ENV['OFF_LINK_RE'] || 'DUMMY'
-    sh "python3 #{CONFIGS_DIR}/make_linkdown_snapshots.py -i #{src_dir} -o #{dst_dir} -n #{node} -l '#{link_re}'"
+    opts = []
+    opts.push('-n', ENV['OFF_NODE']) if ENV['OFF_NODE']
+    opts.push('-l', ENV['OFF_LINK_RE']) if ENV['OFF_LINK_RE']
+    sh "python3 #{CONFIGS_DIR}/make_linkdown_snapshots.py -i #{src_dir} -o #{dst_dir} #{opts.join(' ')}"
   end
 end
 
