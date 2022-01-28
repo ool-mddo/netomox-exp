@@ -9,6 +9,7 @@ netoviz_model/*_linkdown*.json
 netoviz_model/*_drawoff*.json
 *.swp
 .env
+.env.sh
 *result*.json
 
 *.gem

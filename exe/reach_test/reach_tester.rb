@@ -35,9 +35,17 @@ module TopologyOperator
       #   Traces: [ trace ]
       bft_results.map do |bft_result|
         {
+          flow: simplify_flow(bft_result['Flow']),
           traces: simplify_traces(bft_result['Traces'])
         }
       end
+    end
+
+    # @param [Hash] flow Batfish flow
+    # @return [Hash] Simplified flow
+    def simplify_flow(flow)
+      keys = %w[dstIp dstPort ingressInterface ingressNode ipProtocol srcIp srcPort]
+      flow.slice(*keys)
     end
 
     # @param [Array<Hash>] traces
