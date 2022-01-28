@@ -5,11 +5,11 @@ require 'csv'
 require 'json'
 require 'thor'
 require 'yaml'
-require_relative 'lib/l1_intf_descr_checker'
-require_relative 'lib/l1_intf_descr_maker'
-require_relative 'lib/network_sets_diff'
-require_relative 'lib/reach_tester'
-require_relative 'lib/reach_result_converter'
+require_relative 'l1_descr/l1_intf_descr_checker'
+require_relative 'l1_descr/l1_intf_descr_maker'
+require_relative 'nw_subsets/network_sets_diff'
+require_relative 'reach_test/reach_tester'
+require_relative 'reach_test/reach_result_converter'
 
 module TopologyOperator
   # Tools to operate topology data (CLI frontend)
@@ -28,12 +28,11 @@ module TopologyOperator
     end
 
     desc 'make_l1_descr [options] TOPOLOGY', 'Make interface description from layer1 topology'
-    method_option :output, aliases: :o, type: :string, desc: 'Output to file (CSV)'
     # @param [String] target_file Topology file to read
     # @return [void]
     def make_l1_descr(target_file)
       maker = L1InterfaceDescriptionMaker.new(target_file)
-      maker.make(options[:output] || '')
+      print_csv(maker.full_table)
     end
 
     desc 'compare_subsets [options] BEFORE_TOPOLOGY AFTER_TOPOLOGY', 'Compare topology data before linkdown'
@@ -82,7 +81,7 @@ module TopologyOperator
         print_json_data_to_file(reach_results_summary, file)
         # test_traceroute_result.rb reads fixed file name
         print_json_data_to_file(reach_results_summary, '.traceroute_result.json')
-        exec("bundle exec ruby #{__dir__}/test_traceroute_result.rb")
+        exec("bundle exec ruby #{__dir__}/reach_test/test_traceroute_result.rb")
       end
     end
     # rubocop:enable Metrics/AbcSize, Metrics/MethodLength
