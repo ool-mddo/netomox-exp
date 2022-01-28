@@ -7,7 +7,7 @@ require 'httpclient'
 module TopologyOperator
   # Reachability-test pattern handler
   class ReachPatternHandler
-    # @param [String] pattern_file Test pattern file name (json)
+    # @param [String] pattern_file Test pattern file name (yaml)
     def initialize(pattern_file)
       data = YAML.load_file(pattern_file)
       @group_table = data['groups']

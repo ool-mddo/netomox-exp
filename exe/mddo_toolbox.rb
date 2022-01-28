@@ -59,22 +59,33 @@ module TopologyOperator
       print_data(nws.find_all_network_sets.to_array)
     end
 
+    # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
     desc 'test_reachability PATTERN_FILE', 'Test L3 reachability with pattern file'
-    method_option :network, aliases: :n, default: 'pushed_configs', type: :string, desc: 'network name in batfish'
-    method_option :format, aliases: :f, default: 'yaml', type: :string, enum: %w[yaml json csv], desc: 'Output format'
-    # @param [String] file Topology file path
+    method_option :network, aliases: :n, required: true, type: :string, desc: 'network name in batfish'
+    method_option :format, aliases: :f, default: 'yaml', type: :string, enum: %w[yaml json csv],
+                           desc: 'Output format (to stdout, ignored with --run_test)'
+    method_option :run_test, aliases: :r, default: '', type: :string, desc: 'Save result to file (json) and run test'
+    # @param [String] file Test pattern def file (yaml)
     # @return [void]
     def test_reachability(file)
       tester = ReachTester.new(file)
       reach_results = tester.exec_all_tests(options[:network])
-      # print_data(reach_results)
-      rconv = ReachResultConverter.new(reach_results)
-      if options[:format] == 'csv'
-        print_csv(rconv.full_table)
+      converter = ReachResultConverter.new(reach_results)
+      reach_results_summary = converter.summary
+      if options[:run_test].empty?
+        options[:format] == 'csv' ? print_csv(converter.full_table) : print_data(reach_results_summary)
       else
-        print_data(rconv.summary)
+        file = options[:run_test]
+        detail_file = "#{File.basename(file, '.*')}.detail#{File.extname(file)}"
+        # save test result (detail/summary)
+        print_json_data_to_file(reach_results, detail_file)
+        print_json_data_to_file(reach_results_summary, file)
+        # test_traceroute_result.rb reads fixed file name
+        print_json_data_to_file(reach_results_summary, '.traceroute_result.json')
+        exec("bundle exec ruby #{__dir__}/test_traceroute_result.rb")
       end
     end
+    # rubocop:enable Metrics/AbcSize, Metrics/MethodLength
 
     private
 
@@ -89,6 +100,15 @@ module TopologyOperator
       else
         warn "Unknown format option: #{options[:format]}"
         exit 1
+      end
+    end
+
+    # @param [Object] data Data to print as json
+    # @return [String] file_name File name to write
+    # @return [void]
+    def print_json_data_to_file(data, file_name)
+      File.open(file_name, 'w') do |file|
+        JSON.dump(data, file)
       end
     end
 

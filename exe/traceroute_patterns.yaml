@@ -41,9 +41,9 @@ groups:
     - regionb-ce02__ae2.1120
 patterns:
   - [regiona_vlan10_endpoints, regiona_vlan10_gateways]
-  - [regiona_vlan20_endpoints, regiona_vlan20_gateways]
-#  - [regiona_vlan110_endpoints, regiona_vlan110_gateways]
-#  - [regiona_vlan120_endpoints, regiona_vlan120_gateways]
+#  - [regiona_vlan20_endpoints, regiona_vlan20_gateways] # empty
+  - [regiona_vlan110_endpoints, regiona_vlan110_gateways]
+#  - [regiona_vlan120_endpoints, regiona_vlan120_gateways] # empty
 #  - [regiona_vlan10_gateways, regiona_vlan20_gateways]
 #  - [regiona_vlan110_gateways, regiona_vlan120_gateways]
 #  - [regionb_vlan1010_endpoints, regionb_vlan1010_gateways]
