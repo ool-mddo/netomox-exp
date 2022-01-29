@@ -5,10 +5,10 @@ require 'rake/clean'
 require 'json'
 require 'httpclient'
 
-CONFIGS_DIR = 'configs'
+CONFIGS_DIR = ENV['MDDO_CONFIGS_DIR'] || 'configs'
+MODELS_DIR = ENV['MDDO_MODELS_DIR'] || 'models'
+NETOVIZ_DIR = ENV['MDDO_NETOVIZ_MODEL_DIR'] || 'netoviz_model'
 MODEL_DEFS_DIR = 'model_defs'
-MODELS_DIR = 'models'
-NETOVIZ_DIR = 'netoviz_model'
 BATFISH_HOST = ENV['BATFISH_HOST'] || 'localhost'
 BATFISH_WRAPPER_HOST = ENV['BATFISH_WRAPPER_HOST'] || 'localhost:5000'
 BFW_CLIENT = HTTPClient.new
@@ -125,7 +125,11 @@ end
 desc 'Generate model data (csv) from snapshots'
 task :snapshot_to_model do
   model_info_list(:mddo_trial, :mddo_trial_drawoff, :mddo_trial_linkdown).each do |mi|
-    opt = { 'network' => mi[:name] }
+    opt = {
+      'network' => mi[:name],
+      'configs_dir' => CONFIGS_DIR,
+      'models_dir' => MODELS_DIR
+    }
     post_bfq('api/queries', opt)
   end
 end
