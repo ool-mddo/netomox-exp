@@ -3,12 +3,15 @@
 require 'rake'
 require 'rake/clean'
 require 'json'
+require 'httpclient'
 
 CONFIGS_DIR = 'configs'
 MODEL_DEFS_DIR = 'model_defs'
 MODELS_DIR = 'models'
 NETOVIZ_DIR = 'netoviz_model'
 BATFISH_HOST = ENV['BATFISH_HOST'] || 'localhost'
+BATFISH_WRAPPER_HOST = ENV['BATFISH_WRAPPER_HOST'] || 'localhost:5000'
+BFW_CLIENT = HTTPClient.new
 
 MODEL_INFO = [
   {
@@ -53,6 +56,12 @@ task :make_dirs do
   sh "mkdir -p #{MODELS_DIR}"
 end
 
+def post_bfq(api, data)
+  header = { 'Content-Type' => 'application/json' }
+  body = JSON.generate(data)
+  BFW_CLIENT.post "http://#{BATFISH_WRAPPER_HOST}/#{api}", body: body, header: header
+end
+
 def model_info_list(*types)
   list = MODEL_INFO
   list = MODEL_INFO.find_all { |mi| mi[:name] == ENV['MODEL_NAME'] } if ENV['MODEL_NAME']
@@ -72,10 +81,6 @@ end
 def snapshot_path(src_base, src, dst_base, dst)
   src_dir = File.join(src_base, src)
   dst_dir = File.join(dst_base, dst)
-  if Dir.exist?(dst_dir)
-    warn "# clean dst dir: #{dst_dir}"
-    sh "rm -rf #{dst_dir}"
-  end
   [src_dir, dst_dir]
 end
 
@@ -83,10 +88,13 @@ desc 'Generate drawoff snapshot'
 task :drawoff_snapshot do
   model_info_list(:mddo_trial_drawoff).each do |mi|
     src_dir, dst_dir = snapshot_path(CONFIGS_DIR, src_config_name(mi), CONFIGS_DIR, mi[:name])
-    opts = []
-    opts.push('-n', ENV['OFF_NODE'] ? ENV['OFF_NODE'] : 'DUMMY')
-    opts.push('-l', ENV['OFF_LINK_RE']) if ENV['OFF_LINK_RE']
-    sh "python3 #{CONFIGS_DIR}/make_linkdown_snapshots.py -i #{src_dir} -o #{dst_dir} #{opts.join(' ')}"
+    opt = {
+      'input_snapshot_base' => src_dir,
+      'output_snapshot_base' => dst_dir
+    }
+    opt['node'] = ENV['OFF_NODE'] ? ENV['OFF_NODE'] : 'NO-OPERATION'
+    opt['link_regexp'] = ENV['OFF_LINK_RE'] if ENV['OFF_LINK_RE']
+    post_bfq('api/linkdown_snapshots', opt)
   end
 end
 
@@ -94,7 +102,11 @@ desc 'Generate linkdown snapshots'
 task :linkdown_snapshots do
   model_info_list(:mddo_trial_linkdown).each do |mi|
     src_dir, dst_dir = snapshot_path(CONFIGS_DIR, src_config_name(mi), CONFIGS_DIR, mi[:name])
-    sh "python3 #{CONFIGS_DIR}/make_linkdown_snapshots.py -i #{src_dir} -o #{dst_dir}"
+    opt = {
+      'input_snapshot_base' => src_dir,
+      'output_snapshot_base' => dst_dir
+    }
+    post_bfq('api/linkdown_snapshots', opt)
   end
 end
 
@@ -102,14 +114,19 @@ desc 'Register snapshots to batfish'
 task :bf_snapshots do
   model_info_list(:mddo_trial, :mddo_trial_drawoff, :mddo_trial_linkdown).each do |mi|
     src_dir = File.join(CONFIGS_DIR, mi[:name])
-    sh "python3 #{CONFIGS_DIR}/register_snapshots.py -b #{BATFISH_HOST} -n #{mi[:name]} -i #{src_dir} --log_level error"
+    opt = {
+      'network' => mi[:name],
+      'input_snapshot_base' => src_dir
+    }
+    post_bfq('api/register_snapshots', opt)
   end
 end
 
 desc 'Generate model data (csv) from snapshots'
 task :snapshot_to_model do
   model_info_list(:mddo_trial, :mddo_trial_drawoff, :mddo_trial_linkdown).each do |mi|
-    sh "python3 #{CONFIGS_DIR}/exec_queries.py -b #{BATFISH_HOST} -n #{mi[:name]} --log_level error"
+    opt = { 'network' => mi[:name] }
+    post_bfq('api/queries', opt)
   end
 end
 

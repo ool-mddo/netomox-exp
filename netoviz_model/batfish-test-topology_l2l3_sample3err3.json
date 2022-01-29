@@ -27,11 +27,6 @@
                   {
                     "network-ref": "layer2",
                     "node-ref": "switch1_Vlan100",
-                    "tp-ref": "GigabitEthernet1/0/23"
-                  },
-                  {
-                    "network-ref": "layer2",
-                    "node-ref": "switch1_Vlan100",
                     "tp-ref": "GigabitEthernet1/0/24"
                   }
                 ],
@@ -57,11 +52,6 @@
                     "network-ref": "layer2",
                     "node-ref": "switch1_Vlan100",
                     "tp-ref": "GigabitEthernet1/0/2"
-                  },
-                  {
-                    "network-ref": "layer2",
-                    "node-ref": "switch1_Vlan100",
-                    "tp-ref": "GigabitEthernet1/0/23"
                   },
                   {
                     "network-ref": "layer2",
@@ -95,11 +85,6 @@
                   {
                     "network-ref": "layer2",
                     "node-ref": "switch1_Vlan100",
-                    "tp-ref": "GigabitEthernet1/0/23"
-                  },
-                  {
-                    "network-ref": "layer2",
-                    "node-ref": "switch1_Vlan100",
                     "tp-ref": "GigabitEthernet1/0/24"
                   }
                 ],
@@ -129,11 +114,6 @@
                   {
                     "network-ref": "layer2",
                     "node-ref": "switch1_Vlan100",
-                    "tp-ref": "GigabitEthernet1/0/23"
-                  },
-                  {
-                    "network-ref": "layer2",
-                    "node-ref": "switch1_Vlan100",
                     "tp-ref": "GigabitEthernet1/0/24"
                   }
                 ],
@@ -159,11 +139,6 @@
                     "network-ref": "layer2",
                     "node-ref": "switch1_Vlan100",
                     "tp-ref": "GigabitEthernet1/0/2"
-                  },
-                  {
-                    "network-ref": "layer2",
-                    "node-ref": "switch1_Vlan100",
-                    "tp-ref": "GigabitEthernet1/0/23"
                   },
                   {
                     "network-ref": "layer2",
@@ -485,7 +460,7 @@
                   {
                     "network-ref": "layer2",
                     "node-ref": "switch2_Vlan100",
-                    "tp-ref": "GigabitEthernet1/0/23"
+                    "tp-ref": "GigabitEthernet1/0/24"
                   },
                   {
                     "network-ref": "layer2",
@@ -496,11 +471,6 @@
                     "network-ref": "layer2",
                     "node-ref": "switch2_Vlan100",
                     "tp-ref": "GigabitEthernet1/0/4"
-                  },
-                  {
-                    "network-ref": "layer2",
-                    "node-ref": "switch2_Vlan100",
-                    "tp-ref": "GigabitEthernet1/0/24"
                   }
                 ],
                 "mddo-topology:l3-termination-point-attributes": {
@@ -519,7 +489,7 @@
                   {
                     "network-ref": "layer2",
                     "node-ref": "switch2_Vlan100",
-                    "tp-ref": "GigabitEthernet1/0/23"
+                    "tp-ref": "GigabitEthernet1/0/24"
                   },
                   {
                     "network-ref": "layer2",
@@ -530,11 +500,6 @@
                     "network-ref": "layer2",
                     "node-ref": "switch2_Vlan100",
                     "tp-ref": "GigabitEthernet1/0/4"
-                  },
-                  {
-                    "network-ref": "layer2",
-                    "node-ref": "switch2_Vlan100",
-                    "tp-ref": "GigabitEthernet1/0/24"
                   }
                 ],
                 "mddo-topology:l3-termination-point-attributes": {
@@ -553,7 +518,7 @@
                   {
                     "network-ref": "layer2",
                     "node-ref": "switch2_Vlan100",
-                    "tp-ref": "GigabitEthernet1/0/23"
+                    "tp-ref": "GigabitEthernet1/0/24"
                   },
                   {
                     "network-ref": "layer2",
@@ -564,11 +529,6 @@
                     "network-ref": "layer2",
                     "node-ref": "switch2_Vlan100",
                     "tp-ref": "GigabitEthernet1/0/4"
-                  },
-                  {
-                    "network-ref": "layer2",
-                    "node-ref": "switch2_Vlan100",
-                    "tp-ref": "GigabitEthernet1/0/24"
                   }
                 ],
                 "mddo-topology:l3-termination-point-attributes": {
@@ -587,7 +547,7 @@
                   {
                     "network-ref": "layer2",
                     "node-ref": "switch2_Vlan100",
-                    "tp-ref": "GigabitEthernet1/0/23"
+                    "tp-ref": "GigabitEthernet1/0/24"
                   },
                   {
                     "network-ref": "layer2",
@@ -598,11 +558,6 @@
                     "network-ref": "layer2",
                     "node-ref": "switch2_Vlan100",
                     "tp-ref": "GigabitEthernet1/0/4"
-                  },
-                  {
-                    "network-ref": "layer2",
-                    "node-ref": "switch2_Vlan100",
-                    "tp-ref": "GigabitEthernet1/0/24"
                   }
                 ],
                 "mddo-topology:l3-termination-point-attributes": {
@@ -621,7 +576,7 @@
                   {
                     "network-ref": "layer2",
                     "node-ref": "switch2_Vlan100",
-                    "tp-ref": "GigabitEthernet1/0/23"
+                    "tp-ref": "GigabitEthernet1/0/24"
                   },
                   {
                     "network-ref": "layer2",
@@ -632,11 +587,6 @@
                     "network-ref": "layer2",
                     "node-ref": "switch2_Vlan100",
                     "tp-ref": "GigabitEthernet1/0/4"
-                  },
-                  {
-                    "network-ref": "layer2",
-                    "node-ref": "switch2_Vlan100",
-                    "tp-ref": "GigabitEthernet1/0/24"
                   }
                 ],
                 "mddo-topology:l3-termination-point-attributes": {
@@ -1887,11 +1837,6 @@
                   {
                     "network-ref": "layer2",
                     "node-ref": "switch2_Vlan100",
-                    "tp-ref": "GigabitEthernet1/0/23"
-                  },
-                  {
-                    "network-ref": "layer2",
-                    "node-ref": "switch2_Vlan100",
                     "tp-ref": "GigabitEthernet1/0/24"
                   }
                 ]
@@ -1922,7 +1867,7 @@
                   {
                     "network-ref": "layer2",
                     "node-ref": "switch1_Vlan100",
-                    "tp-ref": "GigabitEthernet1/0/23"
+                    "tp-ref": "GigabitEthernet1/0/24"
                   },
                   {
                     "network-ref": "layer2",
@@ -1933,11 +1878,6 @@
                     "network-ref": "layer2",
                     "node-ref": "host14_eth0",
                     "tp-ref": "eth0"
-                  },
-                  {
-                    "network-ref": "layer2",
-                    "node-ref": "switch1_Vlan100",
-                    "tp-ref": "GigabitEthernet1/0/24"
                   }
                 ]
               },
@@ -2019,11 +1959,6 @@
                     "network-ref": "layer2",
                     "node-ref": "switch1_Vlan100",
                     "tp-ref": "GigabitEthernet1/0/2"
-                  },
-                  {
-                    "network-ref": "layer2",
-                    "node-ref": "switch1_Vlan100",
-                    "tp-ref": "GigabitEthernet1/0/23"
                   },
                   {
                     "network-ref": "layer2",
@@ -2193,7 +2128,7 @@
                   {
                     "network-ref": "layer2",
                     "node-ref": "switch2_Vlan100",
-                    "tp-ref": "GigabitEthernet1/0/23"
+                    "tp-ref": "GigabitEthernet1/0/24"
                   },
                   {
                     "network-ref": "layer2",
@@ -2204,11 +2139,6 @@
                     "network-ref": "layer2",
                     "node-ref": "switch2_Vlan100",
                     "tp-ref": "GigabitEthernet1/0/4"
-                  },
-                  {
-                    "network-ref": "layer2",
-                    "node-ref": "switch2_Vlan100",
-                    "tp-ref": "GigabitEthernet1/0/24"
                   }
                 ],
                 "mddo-topology:l3-termination-point-attributes": {
@@ -3164,24 +3094,6 @@
                 }
               },
               {
-                "tp-id": "GigabitEthernet1/0/23",
-                "supporting-termination-point": [
-                  {
-                    "network-ref": "layer1",
-                    "node-ref": "switch1",
-                    "tp-ref": "GigabitEthernet1/0/23"
-                  }
-                ],
-                "mddo-topology:l2-termination-point-attributes": {
-                  "description": "",
-                  "encapsulation": "dot1q",
-                  "switchport-mode": "trunk",
-                  "flag": [
-
-                  ]
-                }
-              },
-              {
                 "tp-id": "GigabitEthernet1/0/24",
                 "supporting-termination-point": [
                   {
@@ -3320,24 +3232,6 @@
                   "description": "",
                   "encapsulation": "",
                   "switchport-mode": "access",
-                  "flag": [
-
-                  ]
-                }
-              },
-              {
-                "tp-id": "GigabitEthernet1/0/23",
-                "supporting-termination-point": [
-                  {
-                    "network-ref": "layer1",
-                    "node-ref": "switch2",
-                    "tp-ref": "GigabitEthernet1/0/23"
-                  }
-                ],
-                "mddo-topology:l2-termination-point-attributes": {
-                  "description": "",
-                  "encapsulation": "dot1q",
-                  "switchport-mode": "trunk",
                   "flag": [
 
                   ]
@@ -3488,24 +3382,6 @@
                 }
               },
               {
-                "tp-id": "GigabitEthernet1/0/23",
-                "supporting-termination-point": [
-                  {
-                    "network-ref": "layer1",
-                    "node-ref": "switch1",
-                    "tp-ref": "GigabitEthernet1/0/23"
-                  }
-                ],
-                "mddo-topology:l2-termination-point-attributes": {
-                  "description": "",
-                  "encapsulation": "dot1q",
-                  "switchport-mode": "trunk",
-                  "flag": [
-
-                  ]
-                }
-              },
-              {
                 "tp-id": "GigabitEthernet1/0/24",
                 "supporting-termination-point": [
                   {
@@ -3644,24 +3520,6 @@
                   "description": "",
                   "encapsulation": "",
                   "switchport-mode": "access",
-                  "flag": [
-
-                  ]
-                }
-              },
-              {
-                "tp-id": "GigabitEthernet1/0/23",
-                "supporting-termination-point": [
-                  {
-                    "network-ref": "layer1",
-                    "node-ref": "switch2",
-                    "tp-ref": "GigabitEthernet1/0/23"
-                  }
-                ],
-                "mddo-topology:l2-termination-point-attributes": {
-                  "description": "",
-                  "encapsulation": "dot1q",
-                  "switchport-mode": "trunk",
                   "flag": [
 
                   ]
@@ -4092,50 +3950,6 @@
             "destination": {
               "dest-node": "switch2_Vlan200",
               "dest-tp": "GigabitEthernet1/0/8"
-            }
-          },
-          {
-            "link-id": "switch1_Vlan100,GigabitEthernet1/0/23,switch2_Vlan100,GigabitEthernet1/0/23",
-            "source": {
-              "source-node": "switch1_Vlan100",
-              "source-tp": "GigabitEthernet1/0/23"
-            },
-            "destination": {
-              "dest-node": "switch2_Vlan100",
-              "dest-tp": "GigabitEthernet1/0/23"
-            }
-          },
-          {
-            "link-id": "switch1_Vlan200,GigabitEthernet1/0/23,switch2_Vlan200,GigabitEthernet1/0/23",
-            "source": {
-              "source-node": "switch1_Vlan200",
-              "source-tp": "GigabitEthernet1/0/23"
-            },
-            "destination": {
-              "dest-node": "switch2_Vlan200",
-              "dest-tp": "GigabitEthernet1/0/23"
-            }
-          },
-          {
-            "link-id": "switch2_Vlan100,GigabitEthernet1/0/23,switch1_Vlan100,GigabitEthernet1/0/23",
-            "source": {
-              "source-node": "switch2_Vlan100",
-              "source-tp": "GigabitEthernet1/0/23"
-            },
-            "destination": {
-              "dest-node": "switch1_Vlan100",
-              "dest-tp": "GigabitEthernet1/0/23"
-            }
-          },
-          {
-            "link-id": "switch2_Vlan200,GigabitEthernet1/0/23,switch1_Vlan200,GigabitEthernet1/0/23",
-            "source": {
-              "source-node": "switch2_Vlan200",
-              "source-tp": "GigabitEthernet1/0/23"
-            },
-            "destination": {
-              "dest-node": "switch1_Vlan200",
-              "dest-tp": "GigabitEthernet1/0/23"
             }
           },
           {

@@ -2,21 +2,21 @@ version: "3"
 services:
   batfish:
     image: "batfish/batfish"
-    container_name: "batfish"
     ports:
       - "9996:9996"
       - "9997:9997"
-  netomox:
+  netomox-exp:
     build:
       context: .
       dockerfile: Dockerfile
-      args:
-        - APP_PATH=/netomox
     environment:
       - BATFISH_HOST=batfish
+      - BATFISH_WRAPPER_HOST=batfish-wrapper:5000
     volumes:
-      - .:/netomox
-    command: bash -c "bundle exec rake"
+      - ./configs:/netomox-exp/configs
+      - ./models:/netomox-exp/models
+      - ./netoviz_model:/netomox-exp/netoviz_model
+    # command: bash -c "bundle exec rake"
     depends_on:
       - batfish
   netoviz:
@@ -26,12 +26,15 @@ services:
     volumes:
       - ./netoviz_model:/home/netoviz/static/model
     depends_on:
-      - netomox
+      - netomox-exp
   batfish-wrapper:
     image: batfish-wrapper
     environment:
       - BATFISH_HOST=batfish
     ports:
       - "5000:5000"
+    volumes:
+      - ./configs:/batfish-wrapper/configs
+      - ./models:/batfish-wrapper/models
     depends_on:
       - batfish

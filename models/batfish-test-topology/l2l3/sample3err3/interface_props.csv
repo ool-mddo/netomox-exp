@@ -59,7 +59,7 @@
 57,switch2[GigabitEthernet1/0/20],,,,[],,,False,NONE,DOT1Q,default
 58,switch2[GigabitEthernet1/0/21],,,,[],,,False,NONE,DOT1Q,default
 59,switch2[GigabitEthernet1/0/22],,,,[],,,False,NONE,DOT1Q,default
-60,switch2[GigabitEthernet1/0/23],,"100,200",,[],,,True,TRUNK,DOT1Q,default
+60,switch2[GigabitEthernet1/0/23],,100,,[],,,True,TRUNK,DOT1Q,default
 61,switch2[GigabitEthernet1/0/24],,"100,200",,[],,,True,TRUNK,DOT1Q,default
 62,switch2[Vlan1],,,,[],,,False,NONE,DOT1Q,default
 63,switch2[Vlan100],,,,[],,192.168.1.3/24,False,NONE,DOT1Q,default

@@ -197,6 +197,6 @@
   },
   {
     "file": "pushed_configs_drawoff_mddo_network.json",
-    "label": "OOL-MDDO Network (DRAWOFF): Draw-off node: DUMMY, link_pattern: DUMMY"
+    "label": "OOL-MDDO Network (DRAWOFF): Draw-off node: NO-OPERATION, link_pattern: .*"
   }
 ]
