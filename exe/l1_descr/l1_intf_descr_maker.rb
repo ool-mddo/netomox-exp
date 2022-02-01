@@ -9,7 +9,7 @@ module TopologyOperator
     # @return [Array<Array<String>>] Table records
     def full_table
       header = %w[No. Source_Node Source_Interface Destination_Node Destination_Interface Source_Interface_Description]
-      [header] + layer1_link_table.map {|rec| ordering_layer1_link_table_rec(rec)}
+      [header] + layer1_link_table.map { |rec| ordering_layer1_link_table_rec(rec) }
     end
 
     private

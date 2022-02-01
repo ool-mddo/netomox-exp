@@ -1,3 +1,6 @@
+environment:
+  network: pushed_configs
+  snapshot: mddo_network
 groups:
   regiona_vlan10_endpoints:
     - regiona-svr01__enp1s4

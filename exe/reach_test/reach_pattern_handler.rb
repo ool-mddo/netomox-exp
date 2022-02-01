@@ -3,18 +3,22 @@
 require 'json'
 require 'yaml'
 require 'httpclient'
+require_relative 'bf_wrapper_query_base'
 
 module TopologyOperator
   # Reachability-test pattern handler
-  class ReachPatternHandler
+  class ReachPatternHandler < BFWrapperQueryBase
     # @param [String] pattern_file Test pattern file name (yaml)
     def initialize(pattern_file)
+      super()
       data = YAML.load_file(pattern_file)
+      @env_table = data['environment']
       @group_table = data['groups']
       @patterns = data['patterns']
+      validate_environment
       @intf_list = fetch_interface_list
-      check_keys_in_patterns
-      check_node_intf_in_groups
+      validate_keys_in_patterns
+      validate_node_intf_in_groups
     end
 
     # @return [Array<Hash>]
@@ -28,6 +32,21 @@ module TopologyOperator
     end
 
     private
+
+    # @return [void]
+    def validate_environment
+      networks = fetch_networks
+      unless networks.include?(@env_table['network'])
+        warn "Error: network:#{@env_table['network']} is not found in batfish"
+        exit 1
+      end
+
+      snapshots = fetch_snapshots(@env_table['network'])
+      return if snapshots.include?(@env_table['snapshot'])
+
+      warn "Error: snapshot:#{@env_table['snapshot']} is not found in network #{@env_table['network']}"
+      exit 1
+    end
 
     # @param [String] intf_path "node__interface" format string (interface path)
     # @return [Hash]
@@ -70,7 +89,7 @@ module TopologyOperator
     end
 
     # @return [void]
-    def check_keys_in_patterns
+    def validate_keys_in_patterns
       found_error = false
       @patterns.each do |pair|
         pair.each do |group_key|
@@ -83,34 +102,23 @@ module TopologyOperator
       exit 1 if found_error
     end
 
-    # @return [String] json string
-    def fetch_interface_list
-      client = HTTPClient.new
-      res = client.get('http://localhost:5000/api/interfaces')
-      JSON.parse(res.body)
-    end
-
     # @param [String] node Node name to search
     # @return [Array<Hash>]
     def find_all_intfs_of_node(node)
-      # result:
-      #   - node: str
-      #     interface: str
-      #     addresses: []
-      @intf_list['result'].find_all { |res| res['node'] == node }
+      @intf_list.find_all { |intf_item| intf_item['node'] == node }
     end
 
     # @param [String] node Node name
     # @param [String] intf Interface name to find
     # @return [Hash, nil]
     def find_intf_in_node(node, intf)
-      find_all_intfs_of_node(node).find { |res| res['interface'] == intf }
+      find_all_intfs_of_node(node).find { |intf_item| intf_item['interface'] == intf }
     end
 
     # rubocop:disable Metrics/MethodLength
 
     # return [void]
-    def check_node_intf_in_groups
+    def validate_node_intf_in_groups
       found_error = false
       @group_table.each_pair do |grp_key, intf_paths|
         intf_paths.each do |intf_path|

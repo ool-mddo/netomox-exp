@@ -92,7 +92,7 @@ task :drawoff_snapshot do
       'input_snapshot_base' => src_dir,
       'output_snapshot_base' => dst_dir
     }
-    opt['node'] = ENV['OFF_NODE'] ? ENV['OFF_NODE'] : 'NO-OPERATION'
+    opt['node'] = ENV['OFF_NODE'] || 'NO-OPERATION'
     opt['link_regexp'] = ENV['OFF_LINK_RE'] if ENV['OFF_LINK_RE']
     post_bfq('api/linkdown_snapshots', opt)
   end
