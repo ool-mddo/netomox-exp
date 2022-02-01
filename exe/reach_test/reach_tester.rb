@@ -30,15 +30,21 @@ module TopologyOperator
 
     private
 
+    # @param [Hash] test_case Test case
+    def test_case_to_str(test_case)
+      "#{test_case[:src][:node]}[#{test_case[:src][:intf]}] -> #{test_case[:dst][:node]}[#{test_case[:dst][:intf]}]"
+    end
+
     # @param [Hash] test_case Expanded test case
     # @param [String] bf_network Network name to analyze (in batfish)
     # @param [Array<String>] snapshots Snapshot names in bf_network
     # @return [Hash]
     def exec_test(test_case, bf_network, snapshots)
       traceroute_results = snapshots.map do |snapshot|
+        warn "- traceroute: #{bf_network}/#{snapshot} #{test_case_to_str(test_case)}"
         {
           network: bf_network,
-          snapshot: snapshots,
+          snapshot: snapshot,
           # TODO: check: traceroute returns single object?
           result: [fetch_traceroute(bf_network, snapshot,
                                     test_case[:src][:node], test_case[:src][:intf], test_case[:dst][:intf_ip])]

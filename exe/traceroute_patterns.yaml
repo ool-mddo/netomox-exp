@@ -2,58 +2,59 @@ environment:
   network: pushed_configs
   snapshot: mddo_network
 groups:
-  regiona_vlan10_endpoints:
+  reg.a_VL10_hosts:
     - regiona-svr01__enp1s4
     - regiona-svr02__enp1s4
-  regiona_vlan110_endpoints:
+  reg.a_VL110_hosts:
     - regiona-svr01__enp1s5
     - regiona-svr02__enp1s5
-  regiona_vlan20_endpoints: []
-  regiona_vlan120_endpoints: []
-  regiona_vlan10_gateways:
+  reg.a_VL20_hosts: []
+  reg.a_VL120_hosts: []
+  reg.a_VL10_gws:
     - regiona-ce01__ae1.10
     - regiona-ce02__ae1.10
-  regiona_vlan20_gateways:
+  reg.a_VL20_gws:
     - regiona-ce01__ae2.20
     - regiona-ce02__ae2.20
-  regiona_vlan110_gateways:
+  reg.a_VL110_gws:
     - regiona-ce01__ae1.110
     - regiona-ce02__ae1.110
-  regiona_vlan120_gateways:
+  reg.a_VL120_gws:
     - regiona-ce01__ae2.120
     - regiona-ce02__ae2.120
-  regionb_vlan1010_endpoints:
+  reg.b_VL1010_hosts:
     - regionb-svr01__enp1s4
-  regionb_vlan1110_endpoints:
+  reg.b_VL1110_hosts:
     - regionb-svr01__enp1s5
-  regionb_vlan1020_endpoints:
+  reg.b_VL1020_hosts:
     - regionb-svr02__enp1s4
-  regionb_vlan1120_endpoints:
+  reg.b_VL1120_hosts:
     - regionb-svr02__enp1s5
-  regionb_vlan1010_gateways:
+  reg.b_VL1010_gws:
     - regionb-ce01__ae1.1010
     - regionb-ce02__ae1.1010
-  regionb_vlan1020_gateways:
+  reg.b_VL1020_gws:
     - regionb-ce01__ae2.1020
     - regionb-ce02__ae2.1020
-  regionb_vlan1110_gateways:
+  reg.b_VL1110_gws:
     - regionb-ce01__ae1.1110
     - regionb-ce02__ae1.1110
-  regionb_vlan1120_gateways:
+  reg.b_VL1120_gws:
     - regionb-ce01__ae2.1120
     - regionb-ce02__ae2.1120
 patterns:
-  - [regiona_vlan10_endpoints, regiona_vlan10_gateways]
-#  - [regiona_vlan20_endpoints, regiona_vlan20_gateways] # empty
-  - [regiona_vlan110_endpoints, regiona_vlan110_gateways]
-#  - [regiona_vlan120_endpoints, regiona_vlan120_gateways] # empty
-#  - [regiona_vlan10_gateways, regiona_vlan20_gateways]
-#  - [regiona_vlan110_gateways, regiona_vlan120_gateways]
-#  - [regionb_vlan1010_endpoints, regionb_vlan1010_gateways]
-#  - [regionb_vlan1110_endpoints, regionb_vlan1110_gateways]
-#  - [regionb_vlan1020_endpoints, regionb_vlan1020_gateways]
-#  - [regionb_vlan1120_endpoints, regionb_vlan1120_gateways]
-#  - [regionb_vlan1010_endpoints, regionb_vlan1020_endpoints]
-#  - [regionb_vlan1110_endpoints, regionb_vlan1120_endpoints]
-#  - [regiona_vlan10_endpoints, regionb_vlan1010_endpoints]
-#  - [regiona_vlan10_endpoints, regionb_vlan1020_endpoints]
+  - [reg.a_VL10_hosts, reg.a_VL10_gws]
+#  - [reg.a_VL10_hosts, reg.a_VL20_gws]
+#  - [reg.a_VL20_hosts, reg.a_VL20_gws] # empty
+#  - [reg.a_VL110_hosts, reg.a_VL110_gws]
+#  - [reg.a_VL120_hosts, reg.a_VL120_gws] # empty
+#  - [reg.a_VL10_gws, reg.a_VL20_gws]
+#  - [reg.a_VL110_gws, reg.a_VL120_gws]
+#  - [reg.b_VL1010_hosts, reg.b_VL1010_gws]
+#  - [reg.b_VL1110_hosts, reg.b_VL1110_gws]
+#  - [reg.b_VL1020_hosts, reg.b_VL1020_gws]
+#  - [reg.b_VL1120_hosts, reg.b_VL1120_gws]
+#  - [reg.b_VL1010_hosts, reg.b_VL1020_hosts]
+#  - [reg.b_VL1110_hosts, reg.b_VL1120_hosts]
+#  - [reg.a_VL10_hosts, reg.b_VL1010_hosts]
+#  - [reg.a_VL10_hosts, reg.b_VL1020_hosts]

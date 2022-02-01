@@ -81,7 +81,7 @@ module TopologyOperator
         print_json_data_to_file(reach_results_summary, file)
         # test_traceroute_result.rb reads fixed file name
         print_json_data_to_file(reach_results_summary, '.traceroute_result.json')
-        exec("bundle exec ruby #{__dir__}/reach_test/test_traceroute_result.rb")
+        exec("bundle exec ruby #{__dir__}/reach_test/test_traceroute_result.rb -v silent")
       end
     end
     # rubocop:enable Metrics/AbcSize, Metrics/MethodLength
