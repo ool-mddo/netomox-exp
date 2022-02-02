@@ -10,7 +10,7 @@ COPY . /netomox-exp
 
 # install required packages
 RUN apt-get update \
-    && apt-get install -y git \
+    && apt-get install -y git jq \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 # ruby tools

@@ -114,11 +114,8 @@ desc 'Register snapshots to batfish'
 task :bf_snapshots do
   model_info_list(:mddo_trial, :mddo_trial_drawoff, :mddo_trial_linkdown).each do |mi|
     src_dir = File.join(CONFIGS_DIR, mi[:name])
-    opt = {
-      'network' => mi[:name],
-      'input_snapshot_base' => src_dir
-    }
-    post_bfq('api/register_snapshots', opt)
+    opt = { 'input_snapshot_base' => src_dir }
+    post_bfq("api/networks/#{mi[:name]}", opt)
   end
 end
 
@@ -126,11 +123,10 @@ desc 'Generate model data (csv) from snapshots'
 task :snapshot_to_model do
   model_info_list(:mddo_trial, :mddo_trial_drawoff, :mddo_trial_linkdown).each do |mi|
     opt = {
-      'network' => mi[:name],
       'configs_dir' => CONFIGS_DIR,
       'models_dir' => MODELS_DIR
     }
-    post_bfq('api/queries', opt)
+    post_bfq("api/networks/#{mi[:name]}/queries", opt)
   end
 end
 

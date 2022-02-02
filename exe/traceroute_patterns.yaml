@@ -43,17 +43,17 @@ groups:
     - regionb-ce01__ae2.1120
     - regionb-ce02__ae2.1120
 patterns:
-  - [reg.a_VL10_hosts, reg.a_VL10_gws] # ok
-#  - [reg.a_VL20_hosts, reg.a_VL20_gws] # empty
-  - [reg.a_VL110_hosts, reg.a_VL110_gws] # ok
-#  - [reg.a_VL120_hosts, reg.a_VL120_gws] # empty
-  - [reg.a_VL10_gws, reg.a_VL20_gws] # ok
-  - [reg.a_VL110_gws, reg.a_VL120_gws] # ok
-  - [reg.b_VL1010_hosts, reg.b_VL1010_gws] # ok
-#  - [reg.b_VL1110_hosts, reg.b_VL1110_gws] # NG, bf cannot handle junos vrf l3edges
-  - [reg.b_VL1020_hosts, reg.b_VL1020_gws] # ok
-#  - [reg.b_VL1120_hosts, reg.b_VL1120_gws] # NG, bf cannot handle junos vrf l3edges
-  - [reg.b_VL1010_hosts, reg.b_VL1020_hosts] # ok
-#  - [reg.b_VL1110_hosts, reg.b_VL1120_hosts] # NG, bf cannot handle junos vrf l3edges
+#   - [reg.a_VL10_hosts, reg.a_VL10_gws] # ok
+# #  - [reg.a_VL20_hosts, reg.a_VL20_gws] # empty
+#   - [reg.a_VL110_hosts, reg.a_VL110_gws] # ok
+# #  - [reg.a_VL120_hosts, reg.a_VL120_gws] # empty
+#   - [reg.a_VL10_gws, reg.a_VL20_gws] # ok
+#   - [reg.a_VL110_gws, reg.a_VL120_gws] # ok
+#   - [reg.b_VL1010_hosts, reg.b_VL1010_gws] # ok
+# #  - [reg.b_VL1110_hosts, reg.b_VL1110_gws] # NG, bf cannot handle junos vrf l3edges
+#   - [reg.b_VL1020_hosts, reg.b_VL1020_gws] # ok
+# #  - [reg.b_VL1120_hosts, reg.b_VL1120_gws] # NG, bf cannot handle junos vrf l3edges
+#   - [reg.b_VL1010_hosts, reg.b_VL1020_hosts] # ok
+# #  - [reg.b_VL1110_hosts, reg.b_VL1120_hosts] # NG, bf cannot handle junos vrf l3edges
   - [reg.a_VL10_hosts, reg.b_VL1010_hosts] # ok
   - [reg.a_VL10_hosts, reg.b_VL1020_hosts] # ok
