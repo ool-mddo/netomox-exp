@@ -32,7 +32,6 @@ Pull network device configurations for experiments (at netomox-exp directory).
 - [configs/batfish-test-topology](https://github.com/corestate55/batfish-test-topology)
 - [configs/pushed_configs](https://github.com/ool-mddo/pushed_configs)
 
-
 ```shell
 git submodule update --init --recursive
 ```
@@ -43,12 +42,6 @@ git submodule update --init --recursive
 # If you install gems into project local
 # bundle config set --local path 'vendor/bundle'
 bundle install
-```
-
-### Install python packages
-
-```shell
-pip3 install -r configs/requirements.txt
 ```
 
 ### Install docker/docker-compose
@@ -63,6 +56,21 @@ Optional: Add `docker` group to your group to allow use docker without sudo.
 
 ## Generate topology json from normalized network data
 
+Up services with docker-compose.
+
+```shell
+docker-compose up
+```
+
+Service:
+
+- [batfish](https://github.com/batfish/batfish)
+- [batfish-wrapper](https://github.com/ool-mddo/batfish-wrapper)
+  - Some rake tasks and [mddo_boolbox](exe/mddo_toolbox.rb) call its API (REST).
+- [netoviz](https://github.com/corestate55/netoviz)
+
+Exec data analysis and topology data generation tasks.
+
 ```text
 bundle exec rake [MODEL_NAME=<target model name>]
                  [OFF_NODE=<draw-off target node> [OFF_LINK_RE=<draw-off target link>]]
@@ -70,18 +78,18 @@ bundle exec rake [MODEL_NAME=<target model name>]
 
 Arguments of the rake tasks (Environment Values):
 
-* MODEL_NAME`: target snapshot base
-* OFF_NODE : A node name to draw-off
-* OFF_LINK_RE : A regexp pattern to specify draw-off link(s) on the node (`OFF_NODE`), default: `/.*/` (any links)
+* `MODEL_NAME`: target snapshot base
+* `OFF_NODE` : A node name to draw-off
+* `OFF_LINK_RE` : A regexp pattern to specify draw-off link(s) on the node (`OFF_NODE`), default: `/.*/` (any links)
 
-See details of task sequence `default` task in `Rakefile`.
+See details of task sequence `default` task in [Rakefile](./Rakefile).
 
 Optional environment variables:
 
 - Log level variable
   - `NETOMOX_LOG_LEVEL` (default `info`)
   - `TOPOLOGY_BUILDER_LOG_LEVEL` (default `info`)
-  - select a value from `fatal`, `error`, `warn`, `info` and `debug`
+- select a value from `fatal`, `error`, `warn`, `info` and `debug`
 
 ## Tools
 
@@ -127,6 +135,22 @@ Compare origin topology.
 
 ```text
 bundle exec ruby exe/mddo_toolbox.rb compare_subseets [options] <before-topology-file> <after-topology-file(s)>
+```
+
+### Check reachability (traceroute)
+
+Run reachability test.
+
+- test-pattern-def: reachability test pattern definition
+  - [traceroute_patterns.yaml](exe/traceroute_patterns.yaml)
+- `-n`, `--network` : target network name (a test case runs for all snapshots in a network)
+- `-f`, `--format` : specify output format (yaml/json/csv, default: yaml)
+  - ignored with `-r` option
+- `-r`, `--run_test` : save reachability test results to specified (json) files.
+  - the results are saved in specified `hoge.json` file (summary) and `hoge.detail.json` file (detail)
+
+```text
+bundle exec ruby exe/mddo_toolbox.rb test_reachability [options] <test-pattern-def>
 ```
 
 ## Development
