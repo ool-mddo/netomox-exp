@@ -23,7 +23,6 @@ A trial of network model construction. (original: https://github.com/corestate55
 ### Requirements
 
 - Ruby >2.7 (development under ruby/3.1 and bundler/2.3.4)
-- Python 3.x (development under python/3.8.3 and pip/21.3.1)
 
 ### Update submodules
 
