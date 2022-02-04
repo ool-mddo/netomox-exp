@@ -1,6 +1,4 @@
 .idea/
-__pycache__
-venv
 configs/*_linkdown
 configs/*_drawoff
 models/*_linkdown

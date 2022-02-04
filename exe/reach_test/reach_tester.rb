@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require 'json'
-require 'httpclient'
 require_relative 'reach_pattern_handler'
 require_relative 'bf_trace_results'
 require_relative 'bf_wrapper_query_base'

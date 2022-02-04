@@ -1,5 +1,8 @@
 # frozen_string_literal: true
 
+require 'httpclient'
+require 'json'
+
 module TopologyOperator
   # Batfish-Wrapper Query base: base class to query batfish via batfish-wrapper
   class BFWrapperQueryBase
@@ -33,6 +36,10 @@ module TopologyOperator
       bfw_query("/api/networks/#{@env_table['network']}/snapshots/#{@env_table['snapshot']}/interfaces")
     end
 
+    # @param [String] src_node Source-node name
+    # @param [String] src_intf Source-interface name
+    # @param [String] dst_ip Destination IP address
+    # @return [Hash]
     def empty_trace_data(src_node, src_intf, dst_ip)
       {
         'Flow' => { 'ingressNode' => src_node, 'ingressInterface' => src_intf, 'dstIp' => dst_ip },

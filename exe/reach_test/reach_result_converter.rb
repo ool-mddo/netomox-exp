@@ -1,9 +1,5 @@
 # frozen_string_literal: true
 
-require 'csv'
-require 'json'
-require 'optparse'
-
 module TopologyOperator
   # convert reachability test results
   class ReachResultConverter

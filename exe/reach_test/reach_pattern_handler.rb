@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
-require 'json'
 require 'yaml'
-require 'httpclient'
 require_relative 'bf_wrapper_query_base'
 
 module TopologyOperator
