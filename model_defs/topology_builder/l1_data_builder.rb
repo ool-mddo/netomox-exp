@@ -57,8 +57,8 @@ module TopologyBuilder
     end
 
     # L1 edges table is converted from layer1-topology.json.
-    #   but, the json data are converted from interface-description in configs or handwriting data.
-    #   it must to validate all node and interface names are correct.
+    # but, the json data are converted from interface-description in configs or handwriting data.
+    # it must to validate all node and interface names are correct.
     # @return [void]
     def validate_l1_edges
       # find node name and interface name in other (batfish-generated) table

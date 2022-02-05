@@ -56,9 +56,10 @@ module TopologyOperator
       @subsets.inject([]) { |union, subset| union | subset.elements }
     end
 
-    # @param [Integer]
+    # Make summary count of count,
+    # non-zero or True(=1) flags for each subsets in this network
+    # @return [Integer]
     def union_subset_flags
-      # make summary count of count non-zero or True(=1) flags for each subsets in this network
       @subsets.inject(0) do |sum, subset|
         sum + subset.flag.values.inject(0) { |sum2, v| sum2 + to_integer(v) }
       end
