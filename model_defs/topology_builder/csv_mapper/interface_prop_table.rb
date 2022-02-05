@@ -158,6 +158,12 @@ module TopologyBuilder
       end
 
       # @param [String] node_name Node name
+      # @return [Array<InterfacePropertiesTableRecord>] Records
+      def find_all_records_by_node(node_name)
+        @records.find_all { |r| r.node == node_name }
+      end
+
+      # @param [String] node_name Node name
       # @param [String] intf_name Interface name
       # @return [nil, InterfacePropertiesTableRecord] Record if found or nil if not found
       def find_record_by_node_intf(node_name, intf_name)

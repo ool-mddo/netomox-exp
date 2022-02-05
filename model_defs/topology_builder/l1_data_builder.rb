@@ -14,6 +14,7 @@ module TopologyBuilder
       @l1_edges = CSVMapper::EdgesLayer1Table.new(target)
       @intf_props = CSVMapper::InterfacePropertiesTable.new(target)
       @node_props = CSVMapper::NodePropsTable.new(target)
+      validate_l1_edges
     end
 
     # @return [PNetworks] Networks contains only layer1 network topology
@@ -26,6 +27,50 @@ module TopologyBuilder
     end
 
     private
+
+    # @param [CSVMapper:EdgeBase] edge Source/Destination of layer1 edge
+    # @return [Boolean]
+    def valid_edge_in_intf_props?(edge)
+      props = @intf_props.find_all_records_by_node(edge.node)
+      if props.empty?
+        TopologyBuilder.logger.error("L1 edges have invalid node name: #{edge.node}")
+        return false
+      end
+
+      return true if props.find { |p| p.interface == edge.interface }
+
+      TopologyBuilder.logger.error("L1 edges have invalid interface name: #{edge.node}[#{edge.node}]")
+      false
+    end
+
+    # @param [CSVMapper::EdgesLayer1TableRecord] edge Layer1 edge
+    # @return [Boolean]
+    def bidirectional_link?(edge)
+      rev_edge = @l1_edges.find_link_by_src_node_intf(edge.dst.node, edge.dst.interface)
+      unless rev_edge
+        # NOTE: netomox cannot support unidirectional link
+        TopologyBuilder.logger.error("Link #{edge} is unidirectional link")
+        return false
+      end
+
+      rev_edge.dst == edge.src
+    end
+
+    # L1 edges table is converted from layer1-topology.json.
+    #   but, the json data are converted from interface-description in configs or handwriting data.
+    #   it must to validate all node and interface names are correct.
+    # @return [void]
+    def validate_l1_edges
+      # find node name and interface name in other (batfish-generated) table
+      names_check_results = @l1_edges.records.map do |l1_edge|
+        valid_edge_in_intf_props?(l1_edge.src) && valid_edge_in_intf_props?(l1_edge.dst)
+      end
+      bd_check_results = @l1_edges.records.map { |l1_edge| bidirectional_link?(l1_edge) }
+      return unless (names_check_results + bd_check_results).include?(false)
+
+      TopologyBuilder.logger.fatal('Found invalid layer1 edges')
+      exit 1
+    end
 
     # @param [PLink] l1_link Layer1 link
     # @return [Boolean] true if the link is LAG link

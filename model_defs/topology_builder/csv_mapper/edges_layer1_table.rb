@@ -24,6 +24,11 @@ module TopologyBuilder
       def ==(other)
         @src == other.src && @dst == other.dst
       end
+
+      # @return [String]
+      def to_s
+        "EdgesLayer1TableRecord: #{@src}->#{@dst}"
+      end
     end
 
     # layer1-edges table
