@@ -12,12 +12,14 @@ module TopologyOperator
     def to_data
       # - network: str
       #   snapshot: str
+      #   snapshot_info: {...}
       #   result: [ bft_result ]
       @bft_results.map do |bft_result|
         {
-          network: bft_result[:network],
-          snapshot: bft_result[:snapshot],
-          results: simplify_bft_results(bft_result[:result])
+          network: bft_result['network'],
+          snapshot: bft_result['snapshot'],
+          snapshot_info: bft_result['snapshot_info'],
+          results: simplify_bft_results(bft_result['result'])
         }
       end
     end

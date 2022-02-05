@@ -24,7 +24,7 @@ module TopologyOperator
           [pattern_str(traceroute_result[:pattern]), *sr]
         end
       end
-      header = [%w[Pattern Source Destination Network Snapshot Deposition Hops]]
+      header = [%w[Pattern Source Destination Network Snapshot Description Deposition Hops]]
       header.concat(rows.flatten(1))
     end
 
@@ -63,7 +63,8 @@ module TopologyOperator
     # @return [Array<Array<<String>>]
     def summary_trace(trace)
       summary_results(trace[:results]).map do |sr|
-        [trace[:network], trace[:snapshot], *sr]
+        descr = trace[:snapshot_info]['description']
+        [trace[:network], trace[:snapshot], descr, *sr]
       end
     end
 

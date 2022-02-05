@@ -40,13 +40,8 @@ module TopologyOperator
     def exec_test(test_case, bf_network, snapshots)
       traceroute_results = snapshots.map do |snapshot|
         warn "- traceroute: #{bf_network}/#{snapshot} #{test_case_to_str(test_case)}"
-        {
-          network: bf_network,
-          snapshot: snapshot,
-          # TODO: check: traceroute returns single object?
-          result: [fetch_traceroute(bf_network, snapshot,
-                                    test_case[:src][:node], test_case[:src][:intf], test_case[:dst][:intf_ip])]
-        }
+        fetch_traceroute(bf_network, snapshot, test_case[:src][:node], test_case[:src][:intf],
+                         test_case[:dst][:intf_ip])
       end
       { case: test_case, traceroute: BFTracerouteResults.new(traceroute_results).to_data }
     end
