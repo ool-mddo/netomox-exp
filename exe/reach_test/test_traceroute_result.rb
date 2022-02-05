@@ -6,11 +6,14 @@ require 'json'
 # Test traceroute result (json)
 class TestTracerouteResult < Test::Unit::TestCase
   JSON.parse(File.read('.traceroute_result.json')).each do |pattern|
-    sub_test_case "pattern: #{pattern['pattern']}" do
+    sub_test_case "PATTERN: #{pattern['pattern']}" do
       pattern['cases'].each do |test_case|
-        test_descr = "#{test_case[2]}/#{test_case[3]} (#{test_case[4]})"
-        test "#{test_case[0]}->#{test_case[1]} in #{test_descr}" do
-          assert_equal('ACCEPTED', test_case[5])
+        sub_test_case "CASE: #{test_case['case'][0]} -> #{test_case['case'][1]}" do
+          test_case['traceroute'].each do |trace|
+            test "#{trace[0]}/#{trace[1]} <#{trace[2]}>" do
+              assert_equal('ACCEPTED', trace[3])
+            end
+          end
         end
       end
     end

@@ -20,7 +20,7 @@ module TopologyOperator
     # @return [Array<Array<String>>]
     def full_table
       rows = @traceroute_results.map do |traceroute_result|
-        summary_cases(traceroute_result[:cases]).map do |sr|
+        summary_cases_as_table(traceroute_result[:cases]).map do |sr|
           [pattern_str(traceroute_result[:pattern]), *sr]
         end
       end
@@ -30,6 +30,20 @@ module TopologyOperator
 
     private
 
+    # @param [Array] test_cases Test cases
+    # @return [Array<Hash>]
+    def summary_cases(test_cases)
+      test_cases.map do |test_case|
+        src = case_str(test_case[:case][:src])
+        dst = case_str(test_case[:case][:dst])
+        {
+          case: [src, dst],
+          traceroute: test_case[:traceroute].map { |trace| summary_trace(trace) }
+                                            .flatten(1)
+        }
+      end
+    end
+
     # @param [Array<String>] pattern Test pattern (src group, dst group)
     # @return [String]
     def pattern_str(pattern)
@@ -38,7 +52,7 @@ module TopologyOperator
 
     # @param [Array] test_cases Test cases
     # @return [Array<Array<String>>]
-    def summary_cases(test_cases)
+    def summary_cases_as_table(test_cases)
       test_cases.map { |test_case| cases_to_array(test_case) }
                 .flatten(2)
     end
