@@ -36,43 +36,15 @@ module TopologyOperator
       bfw_query("/api/networks/#{@env_table['network']}/snapshots/#{@env_table['snapshot']}/interfaces")
     end
 
-    # rubocop:disable Metrics/MethodLength
-
     # @param [String] network Network name in batfish
     # @param [String] snapshot Snapshot name in network
     # @param [String] src_node Source-node name
     # @param [String] src_intf Source-interface name
     # @param [String] dst_ip Destination IP address
-    # @return [Hash]
-    def empty_trace_data(network, snapshot, src_node, src_intf, dst_ip)
-      {
-        'network' => network,
-        'snapshot' => snapshot,
-        'snapshot_info' => {
-          'description' => '',
-          'index' => -1,
-          'lost_edges' => [],
-          'original_snapshot_path' => '',
-          'snapshot_path' => ''
-        },
-        'result' => {
-          'Flow' => { 'ingressNode' => src_node, 'ingressInterface' => src_intf, 'dstIp' => dst_ip },
-          'Traces' => [{ 'disposition' => 'SOURCE_INTERFACE_IS_DISABLED', 'hops' => [] }]
-        }
-      }
-    end
-    # rubocop:enable Metrics/MethodLength
-
-    # @param [String] network Network name in batfish
-    # @param [String] snapshot Snapshot name in network
-    # @param [String] src_node Source-node name
-    # @param [String] src_intf Source-interface name
-    # @param [String] dst_ip Destination IP address
-    # @return [Hash]
+    # @return [Hash,nil]
     def fetch_traceroute(network, snapshot, src_node, src_intf, dst_ip)
       url = "/api/networks/#{network}/snapshots/#{snapshot}/nodes/#{src_node}/traceroute"
       param = { 'interface' => src_intf, 'destination' => dst_ip }
-      res = bfw_query(url, param)
       # network: str
       # snapshot: str
       # snapshot_info:
@@ -85,9 +57,7 @@ module TopologyOperator
       #   - Flow: {}
       #     Traces: []
       #   - ...
-      return res unless res.nil?
-
-      empty_trace_data(network, snapshot, src_node, src_intf, dst_ip)
+      bfw_query(url, param)
     end
 
     # @return [Array<String>,nil] networks
