@@ -9,8 +9,9 @@ WORKDIR /netomox-exp
 COPY . /netomox-exp
 
 # install required packages
+# bsdextrautils: `column` command
 RUN apt-get update \
-    && apt-get install -y --no-install-recommends git jq \
+    && apt-get install -y --no-install-recommends git jq csvtool bsdextrautils \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 # ruby tools

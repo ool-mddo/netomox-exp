@@ -63,7 +63,7 @@ module TopologyOperator
     method_option :network, aliases: :n, required: true, type: :string, desc: 'network name in batfish'
     method_option :format, aliases: :f, default: 'yaml', type: :string, enum: %w[yaml json csv],
                            desc: 'Output format (to stdout, ignored with --run_test)'
-    method_option :run_test, aliases: :r, default: '', type: :string, desc: 'Save result to file (json) and run test'
+    method_option :run_test, aliases: :r, type: :boolean, default: false, desc: 'Save result to files and run test'
     # @param [String] file Test pattern def file (yaml)
     # @return [void]
     def test_reachability(file)
@@ -71,18 +71,22 @@ module TopologyOperator
       reach_results = tester.exec_all_tests(options[:network])
       converter = ReachResultConverter.new(reach_results)
       reach_results_summary = converter.summary
-      if options[:run_test].empty?
+      unless options[:run_test]
         options[:format] == 'csv' ? print_csv(converter.full_table) : print_data(reach_results_summary)
-      else
-        file = options[:run_test]
-        detail_file = "#{File.basename(file, '.*')}.detail#{File.extname(file)}"
-        # save test result (detail/summary)
-        print_json_data_to_file(reach_results, detail_file)
-        print_json_data_to_file(reach_results_summary, file)
-        # test_traceroute_result.rb reads fixed file name
-        print_json_data_to_file(reach_results_summary, '.traceroute_result.json')
-        exec("bundle exec ruby #{__dir__}/reach_test/test_traceroute_result.rb -v silent")
+        exit 0
       end
+
+      file_base = options[:network]
+      summary_json_file = "#{file_base}_result.json"
+      detail_json_file = "#{file_base}_result.detail.json"
+      summary_csv_file = "#{file_base}_result.summary.csv"
+      # save test result (detail/summary)
+      print_json_data_to_file(reach_results, detail_json_file)
+      print_json_data_to_file(reach_results_summary, summary_json_file)
+      print_csv_data_to_file(converter.full_table, summary_csv_file)
+      # test_traceroute_result.rb reads fixed file name
+      print_json_data_to_file(reach_results_summary, '.traceroute_result.json')
+      exec("bundle exec ruby #{__dir__}/reach_test/test_traceroute_result.rb -v silent")
     end
     # rubocop:enable Metrics/AbcSize, Metrics/MethodLength
 
@@ -115,6 +119,15 @@ module TopologyOperator
     # @return [void]
     def print_csv(data)
       CSV do |csv_out|
+        data.each { |row| csv_out << row }
+      end
+    end
+
+    # @param [Array<Array>] data Table data: [[header cols],[data],...]
+    # @param [String] file_name File name to write
+    # @return [void]
+    def print_csv_data_to_file(data, file_name)
+      CSV.open(file_name, 'wb') do |csv_out|
         data.each { |row| csv_out << row }
       end
     end
