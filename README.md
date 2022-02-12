@@ -145,8 +145,11 @@ Run reachability test.
 - `-n`, `--network` : target network name (a test case runs for all snapshots in a network)
 - `-f`, `--format` : specify output format (yaml/json/csv, default: yaml)
   - ignored with `-r` option
-- `-r`, `--run_test` : save reachability test results to specified (json) files.
-  - the results are saved in specified `hoge.json` file (summary) and `hoge.detail.json` file (detail)
+- `-r`, `--run_test` : run test-unit for test-results
+  (all test results are saved to each files automatically from network name: `-n`)
+  - `<network-name>.test_summary.json`
+  - `<network-name>.test_detail.json`
+  - `<network-name>.test_summary.csv`
 
 ```text
 bundle exec ruby exe/mddo_toolbox.rb test_reachability [options] <test-pattern-def>

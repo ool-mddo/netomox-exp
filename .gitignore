@@ -8,7 +8,8 @@ netoviz_model/*_drawoff*.json
 *.swp
 .env
 .env.sh
-*result*.json
+*.test_summary.*
+*.test_detail.*
 
 *.gem
 *.rbc

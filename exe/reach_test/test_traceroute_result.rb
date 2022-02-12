@@ -5,7 +5,7 @@ require 'json'
 
 # Test traceroute result (json)
 class TestTracerouteResult < Test::Unit::TestCase
-  JSON.parse(File.read('.traceroute_result.json')).each do |pattern|
+  JSON.parse(File.read('.test_detail.json')).each do |pattern|
     sub_test_case "PATTERN: #{pattern['pattern']}" do
       pattern['cases'].each do |test_case|
         sub_test_case "CASE: #{test_case['case'][0]} -> #{test_case['case'][1]}" do
