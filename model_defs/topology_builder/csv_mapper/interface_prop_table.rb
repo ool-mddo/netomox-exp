@@ -134,15 +134,17 @@ module TopologyBuilder
       def parse_allowed_vlans(vlans_str)
         # string to array
         case vlans_str
-        when /^\d+$/
-          # single number
-          [vlans_str.to_i]
-        when /^\d+-\d+$/
-          # single range
-          vlan_range_to_array(vlans_str)
         when /,/
           # multiple numbers and ranges
           vlans_str.split(',').map { |str| vlan_range_to_array(str) }.flatten
+        when /^\d+-\d+$/
+          # single range
+          vlan_range_to_array(vlans_str)
+        when /^\d+$/, Integer
+          # single number
+          # NOTE: the "Allowed_VLANs" column in interface_props.csv (batfish output) contains
+          # single vlan (a number) as Integer, multiple vlans (like "A,B,C-D") as String.
+          [vlans_str.to_i]
         else
           []
         end
