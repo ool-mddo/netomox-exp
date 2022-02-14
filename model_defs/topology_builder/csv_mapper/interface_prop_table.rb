@@ -118,37 +118,34 @@ module TopologyBuilder
       end
       # rubocop:enable Security/Eval
 
-      # @param [String] range_str VLAN id range string
-      # @return [Array<Integer>] List of VLAN id
-      def vlan_range_to_array(range_str)
-        if range_str =~ /(\d+)-(\d+)/
-          md = Regexp.last_match
-          return (md[1].to_i..md[2].to_i).to_a
-        end
+      # rubocop:disable Metrics/MethodLength
 
-        [range_str.to_i]
-      end
-
-      # @param [String] vlans_str Multiple VLAN id string
+      # @param [String,Integer] vlans Multiple VLAN id string (or a number for single vlan)
       # @return [Array<Integer>] List of VLAN id
-      def parse_allowed_vlans(vlans_str)
+      # @raise StandardError Invalid vlan string format
+      def parse_allowed_vlans(vlans)
         # string to array
-        case vlans_str
+        case vlans
         when /,/
           # multiple numbers and ranges
-          vlans_str.split(',').map { |str| vlan_range_to_array(str) }.flatten
-        when /^\d+-\d+$/
+          vlans.split(',').map { |str| parse_allowed_vlans(str) }.flatten
+        when /^(\d+)-(\d+)$/
           # single range
-          vlan_range_to_array(vlans_str)
+          md = Regexp.last_match
+          (md[1].to_i..md[2].to_i).to_a
         when /^\d+$/, Integer
           # single number
           # NOTE: the "Allowed_VLANs" column in interface_props.csv (batfish output) contains
           # single vlan (a number) as Integer, multiple vlans (like "A,B,C-D") as String.
-          [vlans_str.to_i]
-        else
+          [vlans.to_i]
+        when '', nil, /^\s*$/
+          # empty
           []
+        else
+          raise StandardError, "Error: Invalid vlan string: /#{vlans}/"
         end
       end
+      # rubocop:enable Metrics/MethodLength
     end
 
     # interface-properties table
