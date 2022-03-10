@@ -161,7 +161,10 @@ module TopologyBuilder
       # subtract linked_nodes from whole_nodes (result = layer1 standalone nodes)
       standalone_nodes = whole_nodes - linked_nodes
       debug_print "diff? #{standalone_nodes}"
-      standalone_nodes.each { |node_name| add_node(node_name) }
+      standalone_nodes.each do |node_name|
+        TopologyBuilder.logger.error("Found standalone node: #{node_name}")
+        add_node(node_name)
+      end
     end
   end
 end

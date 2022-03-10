@@ -48,6 +48,7 @@ module TopologyBuilder
         @node = interface.node
         @interface = interface.interface
 
+        @active = record[:active]
         @access_vlan = record[:access_vlan]
         @allowed_vlans = parse_allowed_vlans(record[:allowed_vlans])
         @primary_address = record[:primary_address]
@@ -61,9 +62,15 @@ module TopologyBuilder
       end
       # rubocop:enable Metrics/MethodLength, Metrics/AbcSize
 
+      # @return [Boolean] true if the interface is active
+      def active?
+        !!(@active =~ /true/i)
+      end
+      alias active active?
+
       # @return [Boolean] true if the interface is switchport
       def switchport?
-        !!(@switchport =~ /TRUE/i)
+        !!(@switchport =~ /true/i)
       end
 
       # @return [Boolean] true if the interface is routed port

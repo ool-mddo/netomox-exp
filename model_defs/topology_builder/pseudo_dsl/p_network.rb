@@ -92,13 +92,20 @@ module TopologyBuilder
       end
 
       # @param [PLinkEdge] edge Link-edge to find
-      # @return [Array<PNode, pTermPoint>] Node and term-point if found or nil if not found
+      # @return [Array<PNode, PTermPoint>] Node and term-point if found or nil if not found
       def find_node_tp_by_edge(edge)
         node = find_node_by_name(edge.node)
         return [] unless node
 
         tp = node.find_tp_by_name(edge.tp)
         [node, tp]
+      end
+
+      # @param [String] node_name Node name
+      # @param [String] tp_name Term-point name
+      # @return [Array<PNode, PTermPoint>] Node and term-point if found or nil if not found
+      def find_node_tp_by_name(node_name, tp_name)
+        find_node_tp_by_edge(PLinkEdge.new(node_name, tp_name))
       end
 
       # @param [String] node1 Source node name

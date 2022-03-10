@@ -22,38 +22,11 @@ module TopologyBuilder
       @network.type = Netomox::NWTYPE_MDDO_L2
       @network.supports.push(@layer1p.name)
       setup_nodes_and_links
+      check_disconnected_node
       @networks
     end
 
     private
-
-    # @param [InterfacePropertiesTableRecord] phy_prop Intf property of physical intf
-    # @param [Array<InterfacePropertiesTableRecord>] unit_props Unit interface properties of phy_intf
-    # @return [InterfacePropertiesTableRecord] Phy. interface property (as trunk port)
-    def junos_trunk_port_as_subif(phy_prop, unit_props)
-      # NOTICE: L3 sub-interface : batfish cannot handle sub-interface vlan configuration
-      #   here, it assumes that unit-number is vlan-id
-      phy_prop.allowed_vlans = unit_props.map(&:unit_number).map(&:to_i)
-      phy_prop.switchport = 'True'
-      phy_prop.switchport_mode = 'TRUNK'
-      phy_prop
-    end
-
-    # for junos: physical-interface <> its unit matching
-    # @param [InterfacePropertiesTableRecord] phy_prop Physical interface property
-    # @return [nil, InterfacePropertiesTableRecord] interface unit property
-    def find_unit_prop_by_phy_prop(phy_prop)
-      unit_props = @intf_props.find_all_unit_records_by_node_intf(phy_prop.node, phy_prop.interface)
-      debug_print "find_unit_props (junos): #{unit_props.length}"
-
-      if unit_props.length == 1 && unit_props[0].interface =~ /\.0$/
-        # interface if it have only unit.0
-        unit_props[0]
-      else
-        # NOTE: it seems layer3-sub-interface (assume unit numbers = allowed vlans config)
-        junos_trunk_port_as_subif(phy_prop, unit_props)
-      end
-    end
 
     # @param [PNode] l1_node A node under the new layer2 node
     # @param [Integer] vlan_id VLAN id (if used)
@@ -83,7 +56,8 @@ module TopologyBuilder
     def add_l2_node(l1_node, vlan_id, tp_prop)
       new_node = @network.node(l2_node_name(l1_node, vlan_id, tp_prop))
       new_node.attribute = { name: l1_node.name, vlan_id: vlan_id }
-      new_node.supports.push([@layer1p.name, l1_node.name])
+      # same supports are pushed when vlan bridge node (uniq)
+      new_node.supports.push([@layer1p.name, l1_node.name]).uniq!
       new_node
     end
 
@@ -143,7 +117,8 @@ module TopologyBuilder
       l1_tp_prop = @intf_props.find_record_by_node_intf(l1_node.name, l1_tp.name)
       raise StandardError, "Layer1 term-point property not found: #{l1_node.name}[#{l1_tp.name}]" unless l1_tp_prop
 
-      new_tp.supports.push(*l2_tp_supports(l1_node, l1_tp, l1_tp_prop))
+      # same supports are added for LAG
+      new_tp.supports.push(*l2_tp_supports(l1_node, l1_tp, l1_tp_prop)).uniq!
       new_tp.attribute = l2_tp_attribute(l1_node, vlan_id, tp_prop)
       new_tp
     end
@@ -219,19 +194,103 @@ module TopologyBuilder
 
     # @param [PLinkEdge] link_edge A Link-edge to get interface property
     # @return [Array(PNode, PTermPoint, InterfacePropertiesTableRecord)]
-    #   Node, interface, interface property of the edge
     # @raise [StandardError] if term-point props of the link-edge is not found
-    def tp_prop_by_link_edge(link_edge)
+    def l1_link_edge_to_node_tp(link_edge)
       node = @layer1p.find_node_by_name(link_edge.node)
       tp = node.find_tp_by_name(link_edge.tp)
       tp_prop = @intf_props.find_record_by_node_intf(node.name, tp.name)
       raise StandardError, "Term point not found: #{link_edge}" unless tp_prop
 
+      [node, tp, tp_prop]
+    end
+
+    # @param [PLinkEdge] link_edge A Link-edge to get interface property
+    # @return [Array(PNode, PTermPoint, InterfacePropertiesTableRecord)]
+    #   Node, interface, interface property of the edge
+    def tp_prop_by_link_edge(link_edge)
+      node, tp, tp_prop = l1_link_edge_to_node_tp(link_edge)
       [
         node,
         tp_prop.lag_member? ? make_l1_lag_tp(tp_prop.lag_parent_interface, tp) : tp,
         tp_prop.lag_member? ? @intf_props.find_record_by_node_intf(node.name, tp_prop.lag_parent_interface) : tp_prop
       ]
+    end
+
+    # @param [PLinkEdge] link_edge
+    # @return [Array(PNode, PTermPoint)]
+    def l2_link_edge_to_node_tp(link_edge)
+      node = @network.find_node_by_name(link_edge.node)
+      tp = node.find_tp_by_name(link_edge.tp)
+      [node, tp]
+    end
+
+    # @param [PNode] l2_tp
+    # @return [Array(PNode, PTermPoint)] layer1 node, term-point under l2_node/l2_tp
+    def l1_supported_node_tp_list(l2_tp)
+      # NOTE: usually, l2_node and l2_tp (in l2_node) has same support path (network__node)
+      l2_tp_l1sups = l2_tp.supports.find_all { |s| s[0] == @layer1p.name }
+      sups = l2_tp_l1sups.map do |l2_tp_l1sup|
+        l1_node, l1_tp = @layer1p.find_node_tp_by_name(l2_tp_l1sup[1], l2_tp_l1sup[2])
+        [l1_node, l1_tp]
+      end
+      # NOTE: for link-down test: There is a case that supported interface is not found in intf-props table
+      sups.reject { |s| s[1].nil? }
+    end
+
+    # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
+
+    # @return [Array<Hash>]
+    def enumerate_connected_intfs
+      connected_intfs = []
+      @network.links.each do |l2_link|
+        l2_node, l2_tp = l2_link_edge_to_node_tp(l2_link.src)
+        debug_print "* l2: #{l2_node.name}[#{l2_tp.name}], tp_sups=#{l2_tp.supports}"
+        l1_sups = l1_supported_node_tp_list(l2_tp)
+        l1_sups.each do |l1_sup|
+          l1_node, l1_tp = l1_sup
+          debug_print "  l1: #{l1_node.name}[#{l1_tp.name}]"
+
+          # logical (Cisco SVI) interface name
+          if l1_node.attribute[:os_type] =~ /(cisco|arista)/i && l2_node.name =~ /.+_Vlan(\d+)/
+            connected_intfs.push({ node: l1_node.name, intf: "Vlan#{Regexp.last_match[1]}" })
+          end
+          # logical (unit/LAG) interface name
+          tp_sup = @intf_props.find_record_by_node_intf(l1_node.name, l2_tp.name)
+          connected_intfs.push({ node: tp_sup.node, intf: tp_sup.interface })
+          # physical interface name
+          connected_intfs.push({ node: l1_node.name, intf: l1_tp.name })
+        end
+      end
+      connected_intfs.uniq
+    end
+    # rubocop:enable Metrics/AbcSize, Metrics/MethodLength
+
+    # @param [Array<Hash>] whole_intfs
+    # @param [Array<Hash>] connected_intfs
+    # @return [Array<Hash>] disconnected_interfaces
+    def filtered_disconnected_intfs(whole_intfs, connected_intfs)
+      disconnected_intfs = whole_intfs - connected_intfs
+      # reject layer2 ports
+      disconnected_intfs.reject do |intf|
+        prop = @intf_props.find_record_by_node_intf(intf[:node], intf[:intf])
+        return false unless prop # keep it as disconnected one
+
+        prop.primary_address.nil? or prop.primary_address.empty?
+      end
+    end
+
+    # @return [void]
+    def check_disconnected_node
+      debug_print '# check disconnected node'
+      connected_intfs = enumerate_connected_intfs
+      debug_print("# connected_intfs = #{connected_intfs}")
+      whole_intfs = @intf_props.records.map { |rec| { node: rec.node, intf: rec.interface } }
+      debug_print "# whole_interfaces = #{whole_intfs}"
+      disconnected_intfs = filtered_disconnected_intfs(whole_intfs, connected_intfs)
+      debug_print "# disconnected_interfaces (rej) = #{disconnected_intfs}"
+      disconnected_intfs.each do |intf|
+        TopologyBuilder.logger.warn "L3 interface #{intf[:node]}[#{intf[:intf]}] is inactive or disconnected (L1/L2)."
+      end
     end
 
     # @return [void]

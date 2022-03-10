@@ -4,6 +4,8 @@ require_relative 'pseudo_dsl/pseudo_model'
 require_relative 'csv_mapper/sw_vlan_props_table'
 
 module TopologyBuilder
+  # rubocop:disable Metrics/ClassLength
+
   # L2 data builder for L1-edge config check
   class L2DataChecker < PseudoDSL::DataBuilderBase
     # @param [String] target Target network (config) data name
@@ -51,6 +53,35 @@ module TopologyBuilder
     # rubocop:enable Metrics/MethodLength
 
     private
+
+    # Overwrite physical-interface-property vlan information
+    # @param [InterfacePropertiesTableRecord] phy_prop Intf property of physical intf
+    # @param [Array<InterfacePropertiesTableRecord>] unit_props Unit interface properties of phy_intf
+    # @return [InterfacePropertiesTableRecord] Phy. interface property (as trunk port)
+    def junos_trunk_port_as_subif(phy_prop, unit_props)
+      # NOTICE: L3 sub-interface : batfish cannot handle sub-interface vlan configuration
+      #   here, it assumes that unit-number is vlan-id
+      phy_prop.allowed_vlans = unit_props.map(&:unit_number).map(&:to_i)
+      phy_prop.switchport = 'True'
+      phy_prop.switchport_mode = 'TRUNK'
+      phy_prop
+    end
+
+    # for junos: physical-interface <> its unit matching
+    # @param [InterfacePropertiesTableRecord] phy_prop Physical interface property
+    # @return [nil, InterfacePropertiesTableRecord] interface unit property
+    def find_unit_prop_by_phy_prop(phy_prop)
+      unit_props = @intf_props.find_all_unit_records_by_node_intf(phy_prop.node, phy_prop.interface)
+      debug_print "find_unit_props (junos) #{phy_prop.node}[#{phy_prop.interface}]: #{unit_props.map(&:interface)}"
+
+      if unit_props.length == 1 && unit_props[0].interface =~ /\.0$/
+        # interface if it have only unit.0
+        unit_props[0]
+      else
+        # NOTE: it seems layer3-sub-interface (assume unit numbers = allowed vlans config)
+        junos_trunk_port_as_subif(phy_prop, unit_props)
+      end
+    end
 
     # @param [PNode] l1_node Layer1 node
     # @return [Boolean] True if the node os-type is juniper
@@ -164,4 +195,5 @@ module TopologyBuilder
       }
     end
   end
+  # rubocop:enable Metrics/ClassLength
 end
