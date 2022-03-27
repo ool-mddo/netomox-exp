@@ -1,0 +1,12 @@
+,Node,Configuration_Format
+0,host21,HOST
+1,switch2,CISCO_IOS
+2,switch1,CISCO_IOS
+3,host12,HOST
+4,host23,HOST
+5,host13,HOST
+6,host24,HOST
+7,host14,HOST
+8,host11,HOST
+9,host22,HOST
+10,router1,CISCO_IOS

@@ -16,6 +16,26 @@
     "label": "OOL-MDDO PJ Trial (2): l2/sample5"
   },
   {
+    "file": "batfish-test-topology_l2l3_demo1.json",
+    "label": "OOL-MDDO PJ Trial (2): l2l3/demo1"
+  },
+  {
+    "file": "batfish-test-topology_l2l3_demo1a.json",
+    "label": "OOL-MDDO PJ Trial (2): l2l3/demo1a"
+  },
+  {
+    "file": "batfish-test-topology_l2l3_demo1b.json",
+    "label": "OOL-MDDO PJ Trial (2): l2l3/demo1b"
+  },
+  {
+    "file": "batfish-test-topology_l2l3_demo1c.json",
+    "label": "OOL-MDDO PJ Trial (2): l2l3/demo1c"
+  },
+  {
+    "file": "batfish-test-topology_l2l3_demo1d.json",
+    "label": "OOL-MDDO PJ Trial (2): l2l3/demo1d"
+  },
+  {
     "file": "batfish-test-topology_l2l3_sample3.json",
     "label": "OOL-MDDO PJ Trial (2): l2l3/sample3"
   },
