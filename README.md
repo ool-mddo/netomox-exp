@@ -35,7 +35,10 @@ Pull network device configurations for experiments (at netomox-exp directory).
 git submodule update --init --recursive
 ```
 
-### Install ruby gems
+### Optional: Install ruby gems
+
+It can work attaching netomox-exp container on localhost that doesn't have ruby environment.
+Local installation of gems is needed to exec tools or develop scripts in your localhost directly.
 
 ```shell
 # If you install gems into project local
@@ -55,6 +58,8 @@ Optional: Add `docker` group to your group to allow use docker without sudo.
 
 ## Generate topology json from normalized network data
 
+### Run containers
+
 Up services with docker-compose.
 
 ```shell
@@ -70,6 +75,16 @@ Service:
 
 Exec data analysis and topology data generation tasks.
 
+### Optional: Attach ruby environment
+
+If you don't have ruby environment locally, exec all `bundle exec foo` below inside netomox-exp container.
+
+```shell
+docker-compose run netomox-exp bash
+```
+
+### Perform all data generation steps at once
+
 ```text
 bundle exec rake [MODEL_NAME=<target model name>]
                  [OFF_NODE=<draw-off target node> [OFF_LINK_RE=<draw-off target link>]]
@@ -77,9 +92,15 @@ bundle exec rake [MODEL_NAME=<target model name>]
 
 Arguments of the rake tasks (Environment Values):
 
-* `MODEL_NAME`: target snapshot base
+* `MODEL_NAME`: target snapshot base, to specify data generation snapshot
+  * specify a `name` attribute value of `MODEL_INFO` data in Rakefile
+  * e.g. `bundle exec rake MODEL_NAME=pushed_configs`
 * `OFF_NODE` : A node name to draw-off
-* `OFF_LINK_RE` : A regexp pattern to specify draw-off link(s) on the node (`OFF_NODE`), default: `/.*/` (any links)
+  * Without `OFF_LINK_RE`, it assumes node-down case (draw-off all links of the node)
+  * e.g. `bundle exec rake OFF_NODE=regiona-ce01`
+* `OFF_LINK_RE` : A regexp pattern to specify draw-off link(s) on the node (`OFF_NODE`)
+  * default: `/.*/` (any links)
+  * e.g. `bundle exec rake OFF_NODE=regiona-ce01 OFF_LINK_RE="ge-0/0/[45]"`
 
 See details of task sequence `default` task in [Rakefile](./Rakefile).
 
@@ -89,6 +110,27 @@ Optional environment variables:
   - `NETOMOX_LOG_LEVEL` (default `info`)
   - `TOPOLOGY_BUILDER_LOG_LEVEL` (default `info`)
 - select a value from `fatal`, `error`, `warn`, `info` and `debug`
+
+### Optional: Step-by-step data generation (for debugging)
+
+Generate link-down snapshots (config files)
+
+```shell
+bundle exec rake linkdown_snapshots
+```
+
+Register snapshots into batfish
+
+```shell
+bundle exec rake bf_snapshots
+```
+
+Generate normalized data (CSV) from batfish registered snapshots
+
+```shell
+bundle exec rake snapshot_to_model
+```
+
 
 ## Tools
 
@@ -157,34 +199,10 @@ bundle exec ruby exe/mddo_toolbox.rb test_reachability [options] <test-pattern-d
 
 ## Development
 
-### Build netomox container
+### Optional: Build netomox container
 
 ```shell
-docker-compose build
-```
-
-### Generate link-down snapshots (config files)
-
-```shell
-bundle exec rake linkdown_snapshots
-# or like below:
-python3 configs/make_linkdown_snapshots.py -i configs/pushed_configs -o configs/pushed_configs_linkdown
-```
-
-### Register snapshots into batfish
-
-```shell
-bundle exec rake bf_snapshots
-# or like below:
-python3 configs/register_snapshots.py -n pushed_configs -i configs/pushed_configs
-```
-
-### Generate normalized data (CSV) from batfish registered snapshots
-
-```shell
-bundle exec rake snapshot_to_model
-# or like below
-python3 configs/exec_queries.py -b localhost -n pushed_configs
+docker build -t netomox-exp .
 ```
 
 ### Generate YARD documents

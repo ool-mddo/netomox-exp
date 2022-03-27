@@ -6,9 +6,7 @@ services:
       - "9996:9996"
       - "9997:9997"
   netomox-exp:
-    build:
-      context: .
-      dockerfile: Dockerfile
+    image: ghcr.io/ool-mddo/netmox-exp:develop
     environment:
       - BATFISH_HOST=batfish
       - BATFISH_WRAPPER_HOST=batfish-wrapper:5000
@@ -28,7 +26,7 @@ services:
     depends_on:
       - netomox-exp
   batfish-wrapper:
-    image: batfish-wrapper
+    image: ghcr.io/ool-mddo/batfish-wrapper:main
     environment:
       - BATFISH_HOST=batfish
     ports:
