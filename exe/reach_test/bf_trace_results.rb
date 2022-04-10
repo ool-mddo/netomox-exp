@@ -3,38 +3,27 @@
 module TopologyOperator
   # Batfish traceroute data operations
   class BFTracerouteResults
-    # @param [Array<Hash>] bft_results Output of Batfish traceroute query
-    def initialize(bft_results)
-      @bft_results = bft_results # array
+    # @param [Array<Hash>] bft_result Output of Batfish traceroute query
+    def initialize(bft_result)
+      @bft_result = bft_result # array
     end
 
     # @return [Array<Hash>]
     def to_data
-      # - network: str
-      #   snapshot: str
-      #   snapshot_info: {...}
-      #   result: [ bft_result ]
-      @bft_results.map do |bft_result|
-        {
-          network: bft_result['network'],
-          snapshot: bft_result['snapshot'],
-          snapshot_info: bft_result['snapshot_info'],
-          results: simplify_bft_results(bft_result['result'])
-        }
-      end
+      simplify_bft_results(@bft_result[:result])
     end
 
     private
 
     # @param [Array<Hash>] bft_results
-    # @return [Array<Hash]
+    # @return [Array<Hash>]
     def simplify_bft_results(bft_results)
-      # - Flow: {}
-      #   Traces: [ trace ]
+      # Flow: {}
+      # Traces: [ trace ]
       bft_results.map do |bft_result|
         {
-          flow: simplify_flow(bft_result['Flow']),
-          traces: simplify_traces(bft_result['Traces'])
+          flow: simplify_flow(bft_result[:Flow]),
+          traces: simplify_traces(bft_result[:Traces])
         }
       end
     end
@@ -49,12 +38,12 @@ module TopologyOperator
     # @param [Array<Hash>] traces
     # @return [Array<Hash>]
     def simplify_traces(traces)
-      # - disposition: str
-      #   hops: [ hop ]
+      # disposition: str
+      # hops: [ hop ]
       traces.map do |trace|
         {
-          disposition: trace['disposition'],
-          hops: simplify_hops(trace['hops'])
+          disposition: trace[:disposition],
+          hops: simplify_hops(trace[:hops])
         }
       end
     end
@@ -62,14 +51,14 @@ module TopologyOperator
     # @param [Array<Hash>] hops
     # @return [Array<String>] Simplified hops (list of node[interface])
     def simplify_hops(hops)
-      # - node: str
-      #   steps:
-      #     - action
-      #     - detail
+      # node: str
+      # steps:
+      # - action
+      # - detail
       hops.map do |hop|
-        node = hop['node']
-        received_hop = hop['steps'].find { |step| step['action'] == 'RECEIVED' }
-        "#{node}[#{received_hop['detail']['inputInterface']}]"
+        node = hop[:node]
+        received_hop = hop[:steps].find { |step| step[:action] == 'RECEIVED' }
+        "#{node}[#{received_hop[:detail][:inputInterface]}]"
       end
     end
   end

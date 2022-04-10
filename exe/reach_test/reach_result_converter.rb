@@ -7,25 +7,38 @@ module TopologyOperator
       @traceroute_results = traceroute_results
     end
 
+    # rubocop:disable Metrics/MethodLength
+
     # @return [Array<Hash>]
     def summary
       @traceroute_results.map do |traceroute_result|
         {
-          pattern: pattern_str(traceroute_result[:pattern]),
-          cases: summary_cases(traceroute_result[:cases])
+          network: traceroute_result[:network],
+          snapshot: traceroute_result[:snapshot],
+          description: traceroute_result[:description],
+          patterns: traceroute_result[:patterns].map do |pattern|
+            {
+              pattern: pattern_str(pattern[:pattern]),
+              cases: summary_cases(pattern[:cases])
+            }
+          end
         }
       end
     end
+    # rubocop:enable Metrics/MethodLength
 
     # @return [Array<Array<String>>]
     def full_table
       rows = @traceroute_results.map do |traceroute_result|
-        summary_cases_as_table(traceroute_result[:cases]).map do |sr|
-          [pattern_str(traceroute_result[:pattern]), *sr]
+        values = traceroute_result.fetch_values(:network, :snapshot, :description)
+        traceroute_result[:patterns].map do |pattern|
+          summary_cases_as_table(pattern[:cases]).map do |sr|
+            values + [pattern_str(pattern[:pattern])] + sr
+          end
         end
       end
-      header = [%w[Pattern Source Destination Network Snapshot Description Deposition Hops]]
-      header.concat(rows.flatten(1))
+      header = [%w[Network Snapshot Description Pattern Source Destination Deposition Hops]]
+      header.concat(rows.flatten(2))
     end
 
     private
@@ -38,8 +51,7 @@ module TopologyOperator
         dst = case_str(test_case[:case][:dst])
         {
           case: [src, dst],
-          traceroute: test_case[:traceroute].map { |trace| summary_trace(trace) }
-                                            .flatten(1)
+          traceroute: summary_traceroute_results(test_case[:traceroute])
         }
       end
     end
@@ -54,7 +66,6 @@ module TopologyOperator
     # @return [Array<Array<String>>]
     def summary_cases_as_table(test_cases)
       test_cases.map { |test_case| cases_to_array(test_case) }
-                .flatten(2)
     end
 
     # @param [Hash] target Source or Destination of test case
@@ -64,28 +75,18 @@ module TopologyOperator
     end
 
     # @param [Hash] test_case Test case data
-    # @return [Array<Array<String>>]
+    # @return [Array<String>]
     def cases_to_array(test_case)
-      src = case_str(test_case[:case][:src])
-      dst = case_str(test_case[:case][:dst])
-      test_case[:traceroute].map do |trace|
-        summary_trace(trace).map { |st| [src, dst, *st] }
-      end
-    end
-
-    # @param [Hash] trace Traceroute data in test case data
-    # @return [Array<Array<<String>>]
-    def summary_trace(trace)
-      summary_results(trace[:results]).map do |sr|
-        descr = trace[:snapshot_info]['description']
-        [trace[:network], trace[:snapshot], descr, *sr]
-      end
+      [
+        case_str(test_case[:case][:src]),
+        case_str(test_case[:case][:dst]),
+        summary_traceroute_results(test_case[:traceroute])
+      ].flatten
     end
 
     # @param [Array<Hash>] results Traceroute results of traceroute data
     # @return [Array<String>]
-    def summary_results(results)
-      # warn "# results: #{results}"
+    def summary_traceroute_results(results)
       results.each.map do |result|
         result[:traces].map { |trace| [trace[:disposition], trace[:hops].join('->')] }
                        .flatten

@@ -14,7 +14,7 @@ module TopologyOperator
       @group_table = data['groups']
       @patterns = data['patterns']
       validate_environment
-      @intf_list = fetch_interface_list
+      @intf_list = fetch_all_interface_list(@env_table['network'], @env_table['snapshot'])
       validate_keys_in_patterns
       validate_node_intf_in_groups
     end
@@ -34,15 +34,15 @@ module TopologyOperator
     # @return [void]
     def validate_environment
       networks = fetch_networks
-      unless networks.include?(@env_table['network'])
-        warn "Error: network:#{@env_table['network']} is not found in batfish"
+      if networks.nil? || networks.include?(@env_table[:network])
+        warn "Error: network:#{@env_table[:network]} is not found in batfish"
         exit 1
       end
 
-      snapshots = fetch_snapshots(@env_table['network'])
-      return if snapshots.include?(@env_table['snapshot'])
+      snapshots = fetch_snapshots(@env_table[:network], true)
+      return if snapshots.nil? || snapshots.include?(@env_table[:snapshot])
 
-      warn "Error: snapshot:#{@env_table['snapshot']} is not found in network #{@env_table['network']}"
+      warn "Error: snapshot:#{@env_table[:snapshot]} is not found in network #{@env_table[:network]}"
       exit 1
     end
 
@@ -75,7 +75,7 @@ module TopologyOperator
     # @return [String] ip address of the interface (empty-string if the interface does not have ip addr)
     def find_intf_ip(node, intf)
       bf_intf = find_intf_in_node(node, intf)
-      bf_intf.empty? ? '' : bf_intf['addresses'][0]
+      bf_intf.nil? || bf_intf.empty? ? '' : bf_intf[:addresses][0]
     end
 
     # @param [String] intf_path "node__interface" format string (interface path)
@@ -103,14 +103,14 @@ module TopologyOperator
     # @param [String] node Node name to search
     # @return [Array<Hash>]
     def find_all_intfs_of_node(node)
-      @intf_list.find_all { |intf_item| intf_item['node'] == node }
+      @intf_list.find_all { |intf_item| intf_item[:node] == node }
     end
 
     # @param [String] node Node name
     # @param [String] intf Interface name to find
     # @return [Hash, nil]
     def find_intf_in_node(node, intf)
-      find_all_intfs_of_node(node).find { |intf_item| intf_item['interface'] == intf }
+      find_all_intfs_of_node(node).find { |intf_item| intf_item[:interface] == intf }
     end
 
     # rubocop:disable Metrics/MethodLength

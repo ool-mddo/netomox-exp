@@ -14,19 +14,43 @@ module TopologyOperator
       @patterns = reach_ops.expand_patterns.reject { |pt| pt[:cases].empty? }
     end
 
-    # @param [String] bf_network Network name to analyze (in batfish)
+    # rubocop:disable Metrics/MethodLength
+
+    # @param [String] network Network name to analyze (in batfish)
+    # @param [String] snapshot_re Snapshot name regexp
     # @return [Array<Hash>]
-    def exec_all_tests(bf_network)
-      snapshots = fetch_snapshots(bf_network)
-      @patterns.map do |pattern|
+    def exec_all_traceroute_tests(network, snapshot_re)
+      snapshots = fetch_snapshots(network, true)
+      return [] if snapshots.nil?
+
+      snapshots.grep(Regexp.new(snapshot_re)).map do |snapshot|
         {
-          pattern: pattern[:pattern],
-          cases: pattern[:cases].map { |c| exec_test(c, bf_network, snapshots) }
+          network: network,
+          snapshot: snapshot,
+          description: fetch_snapshot_description(network, snapshot),
+          patterns: @patterns.map do |pattern|
+            {
+              pattern: pattern[:pattern],
+              cases: pattern[:cases].map { |c| exec_traceroute_test(c, network, snapshot) }
+            }
+          end
         }
       end
     end
+    # rubocop:enable Metrics/MethodLength
 
     private
+
+    def fetch_snapshot_description(network, snapshot)
+      snapshot_pattern = fetch_snapshot_pattern(network, snapshot)
+      return 'Origin snapshot?' if snapshot_pattern.nil?
+      # Origin (physical) snapshot: returns all logical snapshot patterns
+      return 'Origin snapshot' if snapshot_pattern.is_a?(Array)
+      # Logical snapshot: returns single snapshot pattern
+      return snapshot_pattern[:description] if snapshot_pattern.key?(:description)
+
+      '(Description not found)'
+    end
 
     # @param [Hash] test_case Test case
     def test_case_to_str(test_case)
@@ -34,16 +58,14 @@ module TopologyOperator
     end
 
     # @param [Hash] test_case Expanded test case
-    # @param [String] bf_network Network name to analyze (in batfish)
-    # @param [Array<String>] snapshots Snapshot names in bf_network
+    # @param [String] network Network name to analyze (in batfish)
+    # @param [String] snapshot Snapshot names in bf_network
     # @return [Hash]
-    def exec_test(test_case, bf_network, snapshots)
-      traceroute_results = snapshots.map do |snapshot|
-        warn "- traceroute: #{bf_network}/#{snapshot} #{test_case_to_str(test_case)}"
-        fetch_traceroute(bf_network, snapshot, test_case[:src][:node], test_case[:src][:intf],
-                         test_case[:dst][:intf_ip])
-      end
-      { case: test_case, traceroute: BFTracerouteResults.new(traceroute_results).to_data }
+    def exec_traceroute_test(test_case, network, snapshot)
+      warn "- traceroute: #{network}/#{snapshot} #{test_case_to_str(test_case)}"
+      src = test_case[:src]
+      traceroute_result = fetch_traceroute(network, snapshot, src[:node], src[:intf], test_case[:dst][:intf_ip])
+      { case: test_case, traceroute: BFTracerouteResults.new(traceroute_result).to_data }
     end
   end
 end

@@ -1,5 +1,3 @@
-
-
 # netomox-exp
 
 A trial of network model construction. (original: https://github.com/corestate55/netomox-examples)
@@ -56,6 +54,22 @@ apt install docker.io docker-compose
 
 Optional: Add `docker` group to your group to allow use docker without sudo.
 
+## Environment variables
+
+see. [Rakefile](./Rakefile)
+
+* `BATFISH_WRAPPER_HOST`: specify batfish-wrapper service (hostname)
+* `MDDO_CONFIGS_DIR`: batfish snapshot directory (default: `./configs`)
+* `MDDO_MODELS_DIR`: query result directory (default: `./models`)
+* `MDDO_NETOVIZ_MODEL_DIR`: topology data directory (for netoviz; defualt: `./netoviz_model`)
+
+Optional environment variables:
+
+- Log level variable
+  - `NETOMOX_LOG_LEVEL` (default `info`)
+  - `TOPOLOGY_BUILDER_LOG_LEVEL` (default `info`)
+- select a value from `fatal`, `error`, `warn`, `info` and `debug`
+
 ## Generate topology json from normalized network data
 
 ### Run containers
@@ -70,59 +84,43 @@ Service:
 
 - [batfish](https://github.com/batfish/batfish)
 - [batfish-wrapper](https://github.com/ool-mddo/batfish-wrapper)
-  - Some rake tasks and [mddo_boolbox](exe/mddo_toolbox.rb) call its API (REST).
+  - Some rake tasks and [mddo_toolbox](exe/mddo_toolbox.rb) call its API (REST).
 - [netoviz](https://github.com/corestate55/netoviz)
 
 Exec data analysis and topology data generation tasks.
 
 ### Optional: Attach ruby environment
 
-If you don't have ruby environment locally, exec all `bundle exec foo` below inside netomox-exp container.
+If you don't have ruby environment locally, exec all `bundle exec foo` commands below inside netomox-exp container.
 
 ```shell
-docker-compose run netomox-exp bash
+docker-compose exec netomox-exp bash
 ```
 
 ### Perform all data generation steps at once
 
 ```text
-bundle exec rake [MODEL_NAME=<target model name>]
-                 [OFF_NODE=<draw-off target node> [OFF_LINK_RE=<draw-off target link>]]
+bundle exec rake [NETWORK=<network-name>]
+                 [OFF_NODE=<draw-off-node> [OFF_LINK_RE=<draw-off-link>]]
 ```
 
 Arguments of the rake tasks (Environment Values):
-
-* `MODEL_NAME`: target snapshot base, to specify data generation snapshot
-  * specify a `name` attribute value of `MODEL_INFO` data in Rakefile
-  * e.g. `bundle exec rake MODEL_NAME=pushed_configs`
-* `OFF_NODE` : A node name to draw-off
+* `NETWORK`: A target network name to analyze and data-generate
+* `OFF_NODE`: A node name to draw-off
   * Without `OFF_LINK_RE`, it assumes node-down case (draw-off all links of the node)
   * e.g. `bundle exec rake OFF_NODE=regiona-ce01`
-* `OFF_LINK_RE` : A regexp pattern to specify draw-off link(s) on the node (`OFF_NODE`)
+* `OFF_LINK_RE`: A regexp pattern to specify draw-off link(s) on the node (`OFF_NODE`)
   * default: `/.*/` (any links)
   * e.g. `bundle exec rake OFF_NODE=regiona-ce01 OFF_LINK_RE="ge-0/0/[45]"`
 
 See details of task sequence `default` task in [Rakefile](./Rakefile).
 
-Optional environment variables:
-
-- Log level variable
-  - `NETOMOX_LOG_LEVEL` (default `info`)
-  - `TOPOLOGY_BUILDER_LOG_LEVEL` (default `info`)
-- select a value from `fatal`, `error`, `warn`, `info` and `debug`
-
 ### Optional: Step-by-step data generation (for debugging)
 
-Generate link-down snapshots (config files)
+Generate draw-off/link-down snapshot patterns
 
 ```shell
-bundle exec rake linkdown_snapshots
-```
-
-Register snapshots into batfish
-
-```shell
-bundle exec rake bf_snapshots
+bundle exec rake simulation_pattern
 ```
 
 Generate normalized data (CSV) from batfish registered snapshots
@@ -131,6 +129,23 @@ Generate normalized data (CSV) from batfish registered snapshots
 bundle exec rake snapshot_to_model
 ```
 
+Generate index file for netoviz
+
+```shell
+bundle exec rake netoviz_index
+```
+
+Generate topology data for netoviz
+
+```shell
+bundle exec rake netoviz_model
+```
+
+Generate diff data between original and simulated (draw-off/link-down) topology data
+
+```shell
+bundle exec rake netomox_diff
+```
 
 ## Tools
 
@@ -185,8 +200,8 @@ Run reachability test.
 - test-pattern-def: reachability test pattern definition
   - [traceroute_patterns.yaml](exe/traceroute_patterns.yaml)
 - `-n`, `--network` : target network name (a test case runs for all snapshots in a network)
-- `-f`, `--format` : specify output format (yaml/json/csv, default: yaml)
-  - ignored with `-r` option
+- `-s`, `--snapshot-re` : [optional] target snapshot name (limit snapshots matching the regexp)
+- `-f`, `--format` : specify output format (yaml/json/csv, default: yaml; ignored with `-r` option)
 - `-r`, `--run_test` : run test-unit for test-results
   (all test results are saved to each files automatically from network name: `-n`)
   - `<network-name>.test_summary.json`
