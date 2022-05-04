@@ -5,11 +5,11 @@ require 'rake/clean'
 require 'json'
 require 'httpclient'
 
-CONFIGS_DIR = ENV['MDDO_CONFIGS_DIR'] || 'configs'
-MODELS_DIR = ENV['MDDO_MODELS_DIR'] || 'models'
-NETOVIZ_DIR = ENV['MDDO_NETOVIZ_MODEL_DIR'] || 'netoviz_model'
+CONFIGS_DIR = ENV.fetch('MDDO_CONFIGS_DIR', 'configs')
+MODELS_DIR = ENV.fetch('MDDO_MODELS_DIR', 'models')
+NETOVIZ_DIR = ENV.fetch('MDDO_NETOVIZ_MODEL_DIR', 'netoviz_model')
 MODEL_DEFS_DIR = 'model_defs'
-BATFISH_WRAPPER_HOST = ENV['BATFISH_WRAPPER_HOST'] || 'localhost:5000'
+BATFISH_WRAPPER_HOST = ENV.fetch('BATFISH_WRAPPER_HOST', 'localhost:5000')
 BFW_CLIENT = HTTPClient.new
 BFW_CLIENT.receive_timeout = 300
 
@@ -56,7 +56,7 @@ def find_all_model_info_by_network(network)
 end
 
 def find_all_model_info_by_type(*model_info_type)
-  model_info = ENV['NETWORK'] ? find_all_model_info_by_network(ENV['NETWORK']) : MODEL_INFO
+  model_info = ENV['NETWORK'] ? find_all_model_info_by_network(ENV.fetch('NETWORK')) : MODEL_INFO
   model_info.find_all { |mi| model_info_type.include?(mi[:type]) }
 end
 
@@ -65,8 +65,8 @@ task :simulation_pattern do
   puts '# Generate snapshot patterns'
   opt = {}
   if ENV['OFF_NODE']
-    opt['node'] = ENV['OFF_NODE']
-    opt['link_regexp'] = ENV['OFF_LINK_RE'] if ENV['OFF_LINK_RE']
+    opt['node'] = ENV.fetch('OFF_NODE', nil)
+    opt['link_regexp'] = ENV.fetch('OFF_LINK_RE', nil) if ENV['OFF_LINK_RE']
   end
   find_all_model_info_by_type(:simulation_target).each do |model_info|
     post_bfw("api/networks/#{model_info[:network]}/snapshots/#{model_info[:snapshot]}/patterns", opt)

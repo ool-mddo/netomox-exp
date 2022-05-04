@@ -16,4 +16,5 @@ RUN apt-get update \
     && rm -rf /var/lib/apt/lists/*
 # ruby tools
 RUN gem install bundler \
+    && bundle config set --local without 'development'\
     && bundle install

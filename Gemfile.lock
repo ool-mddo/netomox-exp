@@ -12,7 +12,7 @@ GEM
   remote: https://rubygems.org/
   specs:
     ast (2.4.2)
-    excon (0.91.0)
+    excon (0.92.3)
     hashie (5.0.0)
     highline (2.0.3)
     httpclient (2.8.3)
@@ -27,24 +27,24 @@ GEM
       rake (>= 0.8.7)
       rubyzip (>= 1.0.0)
     os (1.1.4)
-    parallel (1.21.0)
-    parser (3.1.1.0)
+    parallel (1.22.1)
+    parser (3.1.2.0)
       ast (~> 2.4.1)
     power_assert (2.0.1)
     rainbow (3.1.1)
     rake (13.0.6)
-    regexp_parser (2.2.1)
+    regexp_parser (2.3.1)
     rexml (3.2.5)
-    rubocop (1.25.1)
+    rubocop (1.28.2)
       parallel (~> 1.10)
       parser (>= 3.1.0.0)
       rainbow (>= 2.2.2, < 4.0)
       regexp_parser (>= 1.8, < 3.0)
       rexml
-      rubocop-ast (>= 1.15.1, < 2.0)
+      rubocop-ast (>= 1.17.0, < 2.0)
       ruby-progressbar (~> 1.7)
       unicode-display_width (>= 1.4.0, < 3.0)
-    rubocop-ast (1.16.0)
+    rubocop-ast (1.17.0)
       parser (>= 3.1.1.0)
     rubocop-rake (0.6.0)
       rubocop (~> 1.0)
@@ -69,6 +69,7 @@ DEPENDENCIES
   ipaddress (~> 0.8.3)
   netomox!
   rake (>= 13.0.6)
+  rexml (>= 3.2.5)
   rubocop (>= 0.80)
   rubocop-rake
   test-unit (>= 3.5.3)
@@ -76,4 +77,4 @@ DEPENDENCIES
   yard (>= 0.9.20)
 
 BUNDLED WITH
-   2.3.4
+   2.3.5

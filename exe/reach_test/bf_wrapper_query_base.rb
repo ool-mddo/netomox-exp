@@ -16,7 +16,7 @@ module TopologyOperator
     # @param [Hash] param GET parameter
     # @return [Object,nil] JSON parsed object
     def bfw_query(api, param = {})
-      batfish_wrapper = ENV['BATFISH_WRAPPER_HOST'] || 'localhost:5000'
+      batfish_wrapper = ENV.fetch('BATFISH_WRAPPER_HOST', nil) || 'localhost:5000'
       url = "http://#{[batfish_wrapper, api].join('/').gsub(%r{/+}, '/')}"
 
       # # debug
