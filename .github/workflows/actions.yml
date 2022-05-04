@@ -6,7 +6,7 @@ jobs:
   build_and_push:
     runs-on: ubuntu-latest
     env:
-      IMAGE_NAME: netmox-exp 
+      IMAGE_NAME: netomox-exp 
     steps:
       - name: checkout
         uses: actions/checkout@v2
