@@ -66,7 +66,7 @@ task :simulation_pattern do
   opt = {}
   if ENV['OFF_NODE']
     opt['node'] = ENV.fetch('OFF_NODE', nil)
-    opt['link_regexp'] = ENV.fetch('OFF_LINK_RE', nil) if ENV['OFF_LINK_RE']
+    opt['interface_regexp'] = ENV.fetch('OFF_INTF_RE', nil) if ENV['OFF_INTF_RE']
   end
   find_all_model_info_by_type(:simulation_target).each do |model_info|
     post_bfw("api/networks/#{model_info[:network]}/snapshots/#{model_info[:snapshot]}/patterns", opt)

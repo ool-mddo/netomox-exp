@@ -101,17 +101,17 @@ docker-compose exec netomox-exp bash
 
 ```text
 bundle exec rake [NETWORK=<network-name>]
-                 [OFF_NODE=<draw-off-node> [OFF_LINK_RE=<draw-off-link>]]
+                 [OFF_NODE=<draw-off-node> [OFF_INTF_RE=<draw-off-link>]]
 ```
 
 Arguments of the rake tasks (Environment Values):
 * `NETWORK`: A target network name to analyze and data-generate
 * `OFF_NODE`: A node name to draw-off
-  * Without `OFF_LINK_RE`, it assumes node-down case (draw-off all links of the node)
+  * Without `OFF_INTF_RE`, it assumes node-down case (draw-off all links of the node)
   * e.g. `bundle exec rake OFF_NODE=regiona-ce01`
-* `OFF_LINK_RE`: A regexp pattern to specify draw-off link(s) on the node (`OFF_NODE`)
+* `OFF_INTF_RE`: A regexp pattern to specify draw-off link(s) on the node (`OFF_NODE`)
   * default: `/.*/` (any links)
-  * e.g. `bundle exec rake OFF_NODE=regiona-ce01 OFF_LINK_RE="ge-0/0/[45]"`
+  * e.g. `bundle exec rake OFF_NODE=regiona-ce01 OFF_INTF_RE="ge-0/0/[45]"`
 
 See details of task sequence `default` task in [Rakefile](./Rakefile).
 
