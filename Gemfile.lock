@@ -68,6 +68,7 @@ DEPENDENCIES
   httpclient (>= 2.8.3)
   ipaddress (~> 0.8.3)
   netomox!
+  parallel (>= 1.22.1)
   rake (>= 13.0.6)
   rexml (>= 3.2.5)
   rubocop (>= 0.80)
