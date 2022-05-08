@@ -19,7 +19,9 @@ class TestTracerouteResult < Test::Unit::TestCase
           # traceroute: [deposition, hops]
           test "#{test_case[:case][0]} -> #{test_case[:case][1]}" do
             depositions = test_case[:traceroute].map { |t| t[0] }
-            assert(depositions.include?('ACCEPTED'), 'Traceroute expected to be ACCEPTED')
+            assert(depositions.all? do |d|
+                     %w[ACCEPTED DISABLED].include?(d)
+                   end, 'Traceroute expected to be ACCEPTED or DISABLED')
           end
         end
       end
