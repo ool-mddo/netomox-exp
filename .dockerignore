@@ -1,4 +1,9 @@
 docs
+configs
+models
+netoviz_model
+.env
+docker-compose.yml
 vendor
 **/venv
 .bundle

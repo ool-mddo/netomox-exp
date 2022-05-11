@@ -1,12 +1,8 @@
 .idea/
-configs/*_linkdown
-configs/*_drawoff
-models/*_linkdown
-models/*_drawoff
-netoviz_model/*_linkdown*.json
-netoviz_model/*_drawoff*.json
+configs/
+models/
+netoviz_model/
 *.swp
-.env
 .env.sh
 *.test_summary.*
 *.test_detail.*

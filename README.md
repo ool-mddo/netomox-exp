@@ -22,17 +22,6 @@ A trial of network model construction. (original: https://github.com/corestate55
 
 - Ruby >2.7 (development under ruby/3.1 and bundler/2.3.4)
 
-### Update submodules
-
-Pull network device configurations for experiments (at netomox-exp directory).
-
-- [configs/batfish-test-topology](https://github.com/corestate55/batfish-test-topology)
-- [configs/pushed_configs](https://github.com/ool-mddo/pushed_configs)
-
-```shell
-git submodule update --init --recursive
-```
-
 ### Optional: Install ruby gems
 
 It can work attaching netomox-exp container on localhost that doesn't have ruby environment.
@@ -54,12 +43,14 @@ apt install docker.io docker-compose
 
 Optional: Add `docker` group to your group to allow use docker without sudo.
 
-## Environment variables
+## Set environment variables
 
-see. [Rakefile](./Rakefile)
+see. [Rakefile](./Rakefile), [.env](./.env) and [docker-compose.yml](./docker-compose.yml)
 
 * `BATFISH_WRAPPER_HOST`: specify batfish-wrapper service (hostname)
-* `MDDO_CONFIGS_DIR`: batfish snapshot directory (default: `./configs`)
+* `MDDO_CONFIGS_DIR`: batfish snapshot directory (default: `./configs`). Tasks in the Rakefile assumes that `MDDO_CONFIGS_DIR` directory has these two directory:
+    * [batfish-test-topology](https://github.com/corestate55/batfish-test-topology) (small network data for testing and debugging)
+    * [pushed_configs](https://github.com/ool-mddo/pushed_configs) (project network)
 * `MDDO_MODELS_DIR`: query result directory (default: `./models`)
 * `MDDO_NETOVIZ_MODEL_DIR`: topology data directory (for netoviz; defualt: `./netoviz_model`)
 
