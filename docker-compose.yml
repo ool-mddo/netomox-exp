@@ -1,38 +1,43 @@
 version: "3"
 services:
   batfish:
-    image: "batfish/batfish"
-    ports:
-      - "9996:9996"
-      - "9997:9997"
+    image: batfish/batfish:2022.04.06.1263
   netomox-exp:
-    image: ghcr.io/ool-mddo/netmox-exp:develop
+    image: ghcr.io/ool-mddo/netomox-exp:develop
+    tty: true
     environment:
-      - BATFISH_HOST=batfish
-      - BATFISH_WRAPPER_HOST=batfish-wrapper:5000
+      BATFISH_WRAPPER_HOST: batfish-wrapper:5000
+      MDDO_CONFIGS_DIR: ${MDDO_CONFIGS_DIR}
+      MDDO_MODELS_DIR: ${MDDO_MODELS_DIR}
+      MDDO_NETOVIZ_MODEL_DIR: ${MDDO_NETOVIZ_MODEL_DIR}
     volumes:
-      - ./configs:/netomox-exp/configs
-      - ./models:/netomox-exp/models
-      - ./netoviz_model:/netomox-exp/netoviz_model
-    # command: bash -c "bundle exec rake"
+      - ./model_defs:/netomox-exp/model_defs # for development
+      - ./exe:/netomox-exp/exe # for development
+      - ./Rakefile:/netomox-exp/Rakefile # for development
+      - ${SHARED_CONFIGS_DIR}:${MDDO_CONFIGS_DIR}
+      - ${SHARED_MODELS_DIR}:${MDDO_MODELS_DIR}
+      - ${SHARED_NETOVIZ_MODEL_DIR}:${MDDO_NETOVIZ_MODEL_DIR}
     depends_on:
-      - batfish
+      - batfish-wrapper
   netoviz:
-    image: netoviz/allinone
+    image: netoviz/allinone:mddo-trial
     ports:
       - "3000:3000"
+    environment:
+      MDDO_NETOVIZ_MODEL_DIR: /home/netoviz/static/model
     volumes:
-      - ./netoviz_model:/home/netoviz/static/model
-    depends_on:
-      - netomox-exp
+      - ${SHARED_NETOVIZ_MODEL_DIR}:/home/netoviz/static/model
   batfish-wrapper:
     image: ghcr.io/ool-mddo/batfish-wrapper:main
     environment:
-      - BATFISH_HOST=batfish
+      BATFISH_HOST: batfish
+      MDDO_CONFIGS_DIR: ${MDDO_CONFIGS_DIR}
+      MDDO_MODELS_DIR: ${MDDO_MODELS_DIR}
+      PYTHONUNBUFFERED: 1
     ports:
-      - "5000:5000"
+      - 5000:5000
     volumes:
-      - ./configs:/batfish-wrapper/configs
-      - ./models:/batfish-wrapper/models
+      - ${SHARED_CONFIGS_DIR}:${MDDO_CONFIGS_DIR}
+      - ${SHARED_MODELS_DIR}:${MDDO_MODELS_DIR}
     depends_on:
       - batfish

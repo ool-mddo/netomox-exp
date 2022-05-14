@@ -11,9 +11,10 @@ COPY . /netomox-exp
 # install required packages
 # bsdextrautils: `column` command
 RUN apt-get update \
-    && apt-get install -y --no-install-recommends git jq csvtool bsdextrautils \
+    && apt-get install -y --no-install-recommends git curl jq less csvtool bsdextrautils \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 # ruby tools
 RUN gem install bundler \
+    && bundle config set --local without 'development'\
     && bundle install

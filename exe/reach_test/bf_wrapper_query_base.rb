@@ -16,7 +16,7 @@ module TopologyOperator
     # @param [Hash] param GET parameter
     # @return [Object,nil] JSON parsed object
     def bfw_query(api, param = {})
-      batfish_wrapper = ENV['BATFISH_WRAPPER_HOST'] || 'localhost:5000'
+      batfish_wrapper = ENV.fetch('BATFISH_WRAPPER_HOST', nil) || 'localhost:5000'
       url = "http://#{[batfish_wrapper, api].join('/').gsub(%r{/+}, '/')}"
 
       # # debug
@@ -24,16 +24,18 @@ module TopologyOperator
       # warn "# url = #{param.empty? ? url : [url, param_str].join('?')}"
 
       res = param.empty? ? @client.get(url) : @client.get(url, query: param)
-      res.status == 200 ? JSON.parse(res.body) : nil
+      res.status == 200 ? JSON.parse(res.body, { symbolize_names: true }) : nil
     end
 
+    # @param [String] network Network name
+    # @param [String] snapshot Snapshot name
     # @return [String,nil] json string
-    def fetch_interface_list
+    def fetch_all_interface_list(network, snapshot)
       # - node: str
       #   interface: str
       #   addresses: []
       # - ...
-      bfw_query("/api/networks/#{@env_table['network']}/snapshots/#{@env_table['snapshot']}/interfaces")
+      bfw_query("/api/networks/#{network}/snapshots/#{snapshot}/interfaces")
     end
 
     # @param [String] network Network name in batfish
@@ -45,14 +47,9 @@ module TopologyOperator
     def fetch_traceroute(network, snapshot, src_node, src_intf, dst_ip)
       url = "/api/networks/#{network}/snapshots/#{snapshot}/nodes/#{src_node}/traceroute"
       param = { 'interface' => src_intf, 'destination' => dst_ip }
+
       # network: str
       # snapshot: str
-      # snapshot_info:
-      #   description: str
-      #   index: int
-      #   lost_edges: []
-      #   original_snapshot_path: str
-      #   snapshot_path: str
       # result:
       #   - Flow: {}
       #     Traces: []
@@ -65,9 +62,21 @@ module TopologyOperator
       bfw_query('/api/networks')
     end
 
+    # @param [String] network Network name
+    # @param [Boolean] simulated Enable to get all simualted snapshots
     # @return [Array<String>,nil] snapshots
-    def fetch_snapshots(network)
-      bfw_query("/api/networks/#{network}/snapshots")
+    def fetch_snapshots(network, simulated)
+      url = "/api/networks/#{network}/snapshots"
+      url = [url, 'simulated=true'].join('?') if simulated
+      bfw_query(url)
+    end
+
+    # @param [String] network Network name
+    # @param [String] snapshot Snapshot name
+    # @return [Array<Hash>,Hash,nil]
+    def fetch_snapshot_pattern(network, snapshot)
+      url = "/api/networks/#{network}/snapshots/#{snapshot}/patterns"
+      bfw_query(url)
     end
   end
 end

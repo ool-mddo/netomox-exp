@@ -12,7 +12,7 @@ module TopologyBuilder
   # logger for netomox
   @logger = Logger.new($stderr)
   @logger.progname = 'TopologyBuilder'
-  @logger.level = case ENV['TOPOLOGY_BUILDER_LOG_LEVEL']
+  @logger.level = case ENV.fetch('TOPOLOGY_BUILDER_LOG_LEVEL', nil)
                   when /fatal/i
                     Logger::FATAL
                   when /error/i

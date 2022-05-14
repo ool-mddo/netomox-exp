@@ -61,6 +61,7 @@ module TopologyOperator
     # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
     desc 'test_reachability PATTERN_FILE', 'Test L3 reachability with pattern file'
     method_option :network, aliases: :n, required: true, type: :string, desc: 'network name in batfish'
+    method_option :snapshot_re, aliases: :s, type: :string, default: '.*', desc: 'snapshot name (regexp)'
     method_option :format, aliases: :f, default: 'yaml', type: :string, enum: %w[yaml json csv],
                            desc: 'Output format (to stdout, ignored with --run_test)'
     method_option :run_test, aliases: :r, type: :boolean, default: false, desc: 'Save result to files and run test'
@@ -68,9 +69,10 @@ module TopologyOperator
     # @return [void]
     def test_reachability(file)
       tester = ReachTester.new(file)
-      reach_results = tester.exec_all_tests(options[:network])
+      reach_results = tester.exec_all_traceroute_tests(options[:network], options[:snapshot_re])
       converter = ReachResultConverter.new(reach_results)
       reach_results_summary = converter.summary
+      # for debug: without -r option, print data and exit
       unless options[:run_test]
         options[:format] == 'csv' ? print_csv(converter.full_table) : print_data(reach_results_summary)
         exit 0

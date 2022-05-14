@@ -5,232 +5,176 @@ require 'rake/clean'
 require 'json'
 require 'httpclient'
 
-CONFIGS_DIR = ENV['MDDO_CONFIGS_DIR'] || 'configs'
-MODELS_DIR = ENV['MDDO_MODELS_DIR'] || 'models'
-NETOVIZ_DIR = ENV['MDDO_NETOVIZ_MODEL_DIR'] || 'netoviz_model'
+CONFIGS_DIR = ENV.fetch('MDDO_CONFIGS_DIR', 'configs')
+MODELS_DIR = ENV.fetch('MDDO_MODELS_DIR', 'models')
+NETOVIZ_DIR = ENV.fetch('MDDO_NETOVIZ_MODEL_DIR', 'netoviz_model')
 MODEL_DEFS_DIR = 'model_defs'
-BATFISH_HOST = ENV['BATFISH_HOST'] || 'localhost'
-BATFISH_WRAPPER_HOST = ENV['BATFISH_WRAPPER_HOST'] || 'localhost:5000'
+BATFISH_WRAPPER_HOST = ENV.fetch('BATFISH_WRAPPER_HOST', 'localhost:5000')
 BFW_CLIENT = HTTPClient.new
+BFW_CLIENT.receive_timeout = 300
 
 MODEL_INFO = [
   {
-    name: 'mddo',
-    type: :standalone,
-    script: "#{MODEL_DEFS_DIR}/mddo.rb",
-    file: 'mddo.json',
-    label: 'OOL-MDDO PJ Trial (1)'
+    network: 'batfish-test-topology',
+    type: :fixed,
+    label: 'Test network'
   },
   {
-    name: 'batfish-test-topology',
-    type: :mddo_trial,
-    label: 'OOL-MDDO PJ Trial (2)'
-  },
-  {
-    name: 'pushed_configs',
-    type: :mddo_trial,
-    label: 'OOL-MDDO Network'
-  },
-  {
-    name: 'pushed_configs_linkdown',
-    type: :mddo_trial_linkdown,
-    src_config_name: 'pushed_configs_drawoff',
-    label: 'OOL-MDDO Network (LINKDOWN)'
-  },
-  {
-    name: 'pushed_configs_drawoff',
-    type: :mddo_trial_drawoff,
-    src_config_name: 'pushed_configs',
-    diff_config_name: 'pushed_configs',
-    label: 'OOL-MDDO Network (DRAWOFF)'
+    network: 'pushed_configs',
+    snapshot: 'mddo_network',
+    type: :simulation_target,
+    label: 'OOL-MDDO PJ network'
   }
 ].freeze
 
-task default: %i[make_dirs drawoff_snapshot linkdown_snapshots bf_snapshots snapshot_to_model
-                 netoviz_index netoviz_models netomox_diff netoviz_layouts]
+task default: %i[model_dirs simulation_pattern snapshot_to_model netoviz_index netoviz_model netoviz_layout
+                 netomox_diff]
 
 desc 'Make directories for models and netoviz'
-task :make_dirs do
-  # sh 'docker-compose up -d'
+task :model_dirs do
+  puts '# Make directories'
   sh "mkdir -p #{NETOVIZ_DIR}"
   sh "mkdir -p #{MODELS_DIR}"
+  # clean models directory
+  sh "rm -rf #{MODELS_DIR}/*"
 end
 
-def post_bfq(api, data)
+def post_bfw(api_path, data)
   header = { 'Content-Type' => 'application/json' }
   body = JSON.generate(data)
-  BFW_CLIENT.post "http://#{BATFISH_WRAPPER_HOST}/#{api}", body: body, header: header
+  url = "http://#{BATFISH_WRAPPER_HOST}/#{api_path}"
+  puts "- POST: #{url}, data=#{data}"
+  BFW_CLIENT.post url, body: body, header: header
 end
 
-def model_info_list(*types)
-  list = MODEL_INFO
-  list = MODEL_INFO.find_all { |mi| mi[:name] == ENV['MODEL_NAME'] } if ENV['MODEL_NAME']
-  list = list.find_all { |mi| types.include?(mi[:type]) } unless types.empty?
-  list
+def find_model_info_by_network(network)
+  MODEL_INFO.find { |mi| mi[:network] == network }
 end
 
-def src_model_info(model_info)
-  # NOTICE: Use unfiltered MODEL_INFO to find src_config_name
-  MODEL_INFO.find { |m| m[:name] == model_info[:src_config_name] }
+def find_all_model_info_by_network(network)
+  MODEL_INFO.find_all { |mi| mi[:network] == network }
 end
 
-def src_config_name(model_info)
-  src_model_info(model_info)[:name]
+def find_all_model_info_by_type(*model_info_type)
+  model_info = ENV['NETWORK'] ? find_all_model_info_by_network(ENV.fetch('NETWORK')) : MODEL_INFO
+  model_info.find_all { |mi| model_info_type.include?(mi[:type]) }
 end
 
-def snapshot_path(src_base, src, dst_base, dst)
-  src_dir = File.join(src_base, src)
-  dst_dir = File.join(dst_base, dst)
-  [src_dir, dst_dir]
-end
-
-desc 'Generate drawoff snapshot'
-task :drawoff_snapshot do
-  model_info_list(:mddo_trial_drawoff).each do |mi|
-    src_dir, dst_dir = snapshot_path(CONFIGS_DIR, src_config_name(mi), CONFIGS_DIR, mi[:name])
-    opt = {
-      'input_snapshot_base' => src_dir,
-      'output_snapshot_base' => dst_dir
-    }
-    opt['node'] = ENV['OFF_NODE'] || 'NO-OPERATION'
-    opt['link_regexp'] = ENV['OFF_LINK_RE'] if ENV['OFF_LINK_RE']
-    post_bfq('api/linkdown_snapshots', opt)
+desc 'Generate snapshot patterns of simulation target networks'
+task :simulation_pattern do
+  puts '# Generate snapshot patterns'
+  opt = {}
+  if ENV['OFF_NODE']
+    opt['node'] = ENV.fetch('OFF_NODE', nil)
+    opt['interface_regexp'] = ENV.fetch('OFF_INTF_RE', nil) if ENV['OFF_INTF_RE']
   end
-end
-
-desc 'Generate linkdown snapshots'
-task :linkdown_snapshots do
-  model_info_list(:mddo_trial_linkdown).each do |mi|
-    src_dir, dst_dir = snapshot_path(CONFIGS_DIR, src_config_name(mi), CONFIGS_DIR, mi[:name])
-    opt = {
-      'input_snapshot_base' => src_dir,
-      'output_snapshot_base' => dst_dir
-    }
-    post_bfq('api/linkdown_snapshots', opt)
-  end
-end
-
-desc 'Register snapshots to batfish'
-task :bf_snapshots do
-  model_info_list(:mddo_trial, :mddo_trial_drawoff, :mddo_trial_linkdown).each do |mi|
-    src_dir = File.join(CONFIGS_DIR, mi[:name])
-    opt = { 'input_snapshot_base' => src_dir }
-    post_bfq("api/networks/#{mi[:name]}", opt)
+  find_all_model_info_by_type(:simulation_target).each do |model_info|
+    post_bfw("api/networks/#{model_info[:network]}/snapshots/#{model_info[:snapshot]}/patterns", opt)
   end
 end
 
 desc 'Generate model data (csv) from snapshots'
 task :snapshot_to_model do
-  model_info_list(:mddo_trial, :mddo_trial_drawoff, :mddo_trial_linkdown).each do |mi|
-    opt = {
-      'configs_dir' => CONFIGS_DIR,
-      'models_dir' => MODELS_DIR
-    }
-    post_bfq("api/networks/#{mi[:name]}/queries", opt)
+  puts '# Generate model data'
+  find_all_model_info_by_type(:fixed, :simulation_target).each do |model_info|
+    post_bfw("api/networks/#{model_info[:network]}/queries", {})
   end
 end
 
-def snapshot_dir_name(file, dir)
-  File.dirname(file).gsub(dir, '').gsub(%r{^/}, '')
+# rubocop:disable Metrics/AbcSize
+def models_list
+  Dir.glob("#{MODELS_DIR}/**/*/*.csv")
+     .map { |csv| File.dirname(csv) }
+     .sort
+     .uniq
+     .map { |dir| dir.gsub(%r{^#{MODELS_DIR}/}, '') }
+     .map { |dir| dir.split('/') }
+     .map { |names| [names[0], names[1..].join('/')] } # unsafe snapshot name (snapshot path)
+     .reject { |pair| pair[1].empty? }
+end
+# rubocop:enable Metrics/AbcSize
+
+def topology_file_name(network, snapshot)
+  "#{network}_#{snapshot.gsub('/', '_')}.json" # convert to safe snapshot name
 end
 
-def topology_file_name(name, file, dir)
-  "#{name}_#{snapshot_dir_name(file, dir).gsub('/', '_')}.json"
-end
-
-def model_dir_files(model_info, src_dir)
-  file_name = if %i[mddo_trial_drawoff
-                    mddo_trial_linkdown].include?(model_info[:type])
-                'snapshot_info.json'
-              else
-                'edges_layer1.csv'
-              end
-  Dir.glob("#{src_dir}/**/#{file_name}").sort
-end
-
-# @param [Hash] model_info An element of MODEL_INFO
-# @param [String] src_dir Base directory of csv data
-# @param [String] file Files in snapshot directory (to specify model dir for a snapshot)
-# @return [Hash] netoviz index datum
-def netoviz_index_datum(model_info, src_dir, file)
-  if model_info[:type] == :mddo_trial
-    sdir = snapshot_dir_name(file, src_dir)
-    topo_file = topology_file_name(model_info[:name], file, src_dir)
-    label = "#{model_info[:label]}: #{sdir}"
-    return { 'file' => topo_file, 'label' => label }
+def index_label(network, snapshot, model_info)
+  models_snapshot_dir = File.join(MODELS_DIR, network, snapshot)
+  snapshot_pattern = File.join(models_snapshot_dir, 'snapshot_pattern.json')
+  if File.exist?(snapshot_pattern)
+    data = JSON.parse(File.read(snapshot_pattern))
+    "#{model_info[:label]} #{data['description']}"
+  else
+    "#{model_info[:label]} [#{network}/#{snapshot}]"
   end
-  # when model_info[:type] == :mddo_trial_linkdown
-  topo_file = topology_file_name(model_info[:name], file, src_dir)
-  info = JSON.parse(File.read(file))
-  label = "#{model_info[:label]}: #{info['description']}"
-  { 'file' => topo_file, 'label' => label }
 end
 
 desc 'Generate netoviz index file'
 task :netoviz_index do
-  # Use unfiltered MODEL_INFO (make full-size index always)
-  index_data = MODEL_INFO.map do |mi|
-    case mi[:type]
-    when :standalone
-      { 'file' => mi[:file], 'label' => mi[:label] }
-    when :mddo_trial, :mddo_trial_drawoff, :mddo_trial_linkdown
-      src_dir = File.join(MODELS_DIR, mi[:name])
-      model_dir_files(mi, src_dir).map { |file| netoviz_index_datum(mi, src_dir, file) }
-    else
-      warn "Error: Unknown model-info type: #{mi[:type]}"
-      exit 1
-    end
+  puts '# Generate netoviz index file'
+  index_data = models_list.map do |network_snapshot_pair|
+    network, snapshot = network_snapshot_pair
+    model_info = find_model_info_by_network(network)
+    {
+      'file' => topology_file_name(network, snapshot),
+      'label' => index_label(network, snapshot, model_info)
+    }
   end
-  File.write("#{NETOVIZ_DIR}/_index.json", JSON.pretty_generate(index_data.flatten))
+  File.write("#{NETOVIZ_DIR}/_index.json", JSON.pretty_generate(index_data))
 end
 
-desc 'Generate topology file (for netoviz)'
-task :netoviz_models do
+desc 'Generate topology files (for netoviz)'
+task :netoviz_model do
+  puts '# Generate topology files'
   # clean
   sh "rm -f #{NETOVIZ_DIR}/*linkdown*.json"
+  sh "rm -f #{NETOVIZ_DIR}/*drawoff*.json"
 
-  model_info_list.each do |mi|
-    case mi[:type]
-    when :standalone
-      sh "bundle exec ruby #{mi[:script]} > #{NETOVIZ_DIR}/#{mi[:file]}"
-    when :mddo_trial, :mddo_trial_drawoff, :mddo_trial_linkdown
-      src_dir = File.join(MODELS_DIR, mi[:name])
-      model_dir_files(mi, src_dir).map do |file|
-        topo_file = File.join(NETOVIZ_DIR, topology_file_name(mi[:name], file, src_dir))
-        sh "bundle exec ruby #{MODEL_DEFS_DIR}/mddo_trial.rb -i #{File.dirname(file)} > #{topo_file}"
-      end
-    else
-      warn "Error: Unknown model-info type: #{mi[:type]}"
-      exit 1
-    end
+  models_list.each do |network_snapshot_pair|
+    network, snapshot = network_snapshot_pair
+    topo_file = File.join(NETOVIZ_DIR, topology_file_name(network, snapshot))
+    sh "bundle exec ruby #{MODEL_DEFS_DIR}/mddo_trial.rb -i #{File.join(MODELS_DIR, network, snapshot)} > #{topo_file}"
   end
 end
 
 desc 'Copy netoviz layout files'
-task :netoviz_layouts do
+task :netoviz_layout do
+  puts '# Copy netoviz layout files'
   sh "cp #{MODEL_DEFS_DIR}/layout/*.json #{NETOVIZ_DIR}"
+end
+
+def make_topology_diff(src_topology, dst_topology)
+  topology_diff = File.join(NETOVIZ_DIR, "#{File.basename(dst_topology)}.diff")
+  sh "bundle exec netomox diff -o #{topology_diff} #{src_topology} #{dst_topology}"
 end
 
 desc 'Generate diff data of linkdown snapshots and overwrite'
 task :netomox_diff do
-  model_info_list(:mddo_trial_linkdown, :mddo_trial_drawoff).each do |dst_mi|
-    # clean
-    sh "rm -f #{NETOVIZ_DIR}/*.diff"
+  puts '# Generate diff data'
+  # clean
+  sh "rm -f #{NETOVIZ_DIR}/*.diff"
 
-    src_mi = src_model_info(dst_mi)
-    src_dir = File.join(MODELS_DIR, src_mi[:name])
-    # NOTE: choice one snapshot (head)
-    csv_file = Dir.glob("#{src_dir}/**/edges_layer1.csv").shift
-    src_file = File.join(NETOVIZ_DIR, topology_file_name(src_mi[:name], csv_file, src_dir))
+  find_all_model_info_by_type(:simulation_target).each do |model_info|
+    network = model_info[:network]
+    orig_snapshot = model_info[:snapshot]
+    orig_topology = File.join(NETOVIZ_DIR, "#{network}_#{orig_snapshot}.json")
+    src_topology = orig_topology
 
-    dst_dir = File.join(MODELS_DIR, dst_mi[:name])
-    model_dir_files(dst_mi, dst_dir).map do |file|
-      dst_file = File.join(NETOVIZ_DIR, topology_file_name(dst_mi[:name], file, dst_dir))
-      dst_file_tmp = "#{dst_file}.diff"
-      # warn "# src file: #{src_file}"
-      # warn "# dst file: #{dst_file}"
-      sh "bundle exec netomox diff -o #{dst_file_tmp} #{src_file} #{dst_file}"
-      sh "mv #{dst_file_tmp} #{dst_file}" # overwrite
+    # drawoff if exists
+    drawoff_topology = File.join(NETOVIZ_DIR, "#{network}_#{orig_snapshot}_drawoff.json")
+    if File.exist?(drawoff_topology)
+      make_topology_diff(orig_topology, drawoff_topology)
+      src_topology = drawoff_topology
+    end
+
+    # linkdown
+    Dir.glob("#{NETOVIZ_DIR}/#{network}_#{orig_snapshot}_linkdown*.json").each do |linkdown_topology|
+      make_topology_diff(src_topology, linkdown_topology)
+    end
+
+    # overwrite diff files
+    Dir.glob("#{NETOVIZ_DIR}/*.diff").each do |topology_diff|
+      sh "mv #{topology_diff} #{topology_diff.gsub(File.extname(topology_diff), '')}"
     end
   end
 end
