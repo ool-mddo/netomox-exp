@@ -12,7 +12,7 @@ NETOVIZ_DIR = ENV.fetch('MDDO_NETOVIZ_MODEL_DIR', 'netoviz_model')
 MODEL_DEFS_DIR = 'model_defs'
 BATFISH_WRAPPER_HOST = ENV.fetch('BATFISH_WRAPPER_HOST', 'localhost:5000')
 BFW_CLIENT = HTTPClient.new
-BFW_CLIENT.receive_timeout = 3000
+BFW_CLIENT.receive_timeout = 60 * 60 * 4 # 60sec * 60min * 4h
 
 MODEL_INFO = [
   {
