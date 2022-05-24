@@ -92,11 +92,15 @@ docker-compose exec netomox-exp bash
 
 ```text
 bundle exec rake [NETWORK=<network-name>]
+                 [PHY_SS_ONLY=1]
                  [OFF_NODE=<draw-off-node> [OFF_INTF_RE=<draw-off-link>]]
 ```
 
 Arguments of the rake tasks (Environment Values):
 * `NETWORK`: A target network name to analyze and data-generate
+* `PHY_SS_ONLY` : Physical snapshot only (without logical(link-down/draw-off) snapshots) [for debugging]
+  * With `OFF_NODE`/`OFF_INTF_RE`, these `OFF_` options are ignored
+  * e.g. `bundle exec rake PHY_SS_ONLY=1` (non-nil)
 * `OFF_NODE`: A node name to draw-off
   * Without `OFF_INTF_RE`, it assumes node-down case (draw-off all links of the node)
   * e.g. `bundle exec rake OFF_NODE=regiona-ce01`

@@ -30,6 +30,7 @@ MODEL_INFO = [
 
 task default: %i[model_dirs simulation_pattern snapshot_to_model netoviz_index netoviz_model netoviz_layout
                  netomox_diff]
+# task default: %i[model_dirs simulation_pattern]
 
 desc 'Make directories for models and netoviz'
 task :model_dirs do
@@ -63,6 +64,16 @@ end
 
 desc 'Generate snapshot patterns of simulation target networks'
 task :simulation_pattern do
+  if ENV['PHY_SS_ONLY']
+    puts '# Pass snapshot pattern generation'
+    find_all_model_info_by_type(:simulation_target).each do |model_info|
+      snapshot_dir = File.join(CONFIGS_DIR, model_info[:network], model_info[:snapshot])
+      pattern_file = File.join(snapshot_dir, 'snapshot_patterns.json')
+      File.delete(pattern_file) if File.exist?(pattern_file)
+    end
+    next
+  end
+
   puts '# Generate snapshot patterns'
   opt = {}
   if ENV['OFF_NODE']
