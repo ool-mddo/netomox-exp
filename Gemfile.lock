@@ -1,12 +1,12 @@
 GIT
   remote: https://github.com/corestate55/netomox
-  revision: 66a7a3296613f80fc7b5d66806703dfb1806193d
-  branch: develop
+  revision: 7feb3817bd7a72df4aa1b3ee5dd70b6187c7e969
+  branch: package-update
   specs:
     netomox (0.1.0)
       neography (~> 1.8.0)
       termcolor (~> 1.2.2)
-      thor (~> 1.0.1)
+      thor (~> 1.2.1)
 
 GEM
   remote: https://rubygems.org/
@@ -17,7 +17,7 @@ GEM
     highline (2.0.3)
     httpclient (2.8.3)
     ipaddress (0.8.3)
-    json (2.6.1)
+    json (2.6.2)
     multi_json (1.15.0)
     neography (1.8.0)
       excon (>= 0.33.0)
@@ -33,18 +33,18 @@ GEM
     power_assert (2.0.1)
     rainbow (3.1.1)
     rake (13.0.6)
-    regexp_parser (2.3.1)
+    regexp_parser (2.5.0)
     rexml (3.2.5)
-    rubocop (1.28.2)
+    rubocop (1.30.0)
       parallel (~> 1.10)
       parser (>= 3.1.0.0)
       rainbow (>= 2.2.2, < 4.0)
       regexp_parser (>= 1.8, < 3.0)
-      rexml
-      rubocop-ast (>= 1.17.0, < 2.0)
+      rexml (>= 3.2.5, < 4.0)
+      rubocop-ast (>= 1.18.0, < 2.0)
       ruby-progressbar (~> 1.7)
       unicode-display_width (>= 1.4.0, < 3.0)
-    rubocop-ast (1.17.0)
+    rubocop-ast (1.18.0)
       parser (>= 3.1.1.0)
     rubocop-rake (0.6.0)
       rubocop (~> 1.0)
@@ -54,7 +54,7 @@ GEM
       highline (>= 1.5.0)
     test-unit (3.5.3)
       power_assert
-    thor (1.0.1)
+    thor (1.2.1)
     unicode-display_width (2.1.0)
     webrick (1.7.0)
     yard (0.9.27)
@@ -73,7 +73,7 @@ DEPENDENCIES
   rubocop (>= 0.80)
   rubocop-rake
   test-unit (>= 3.5.3)
-  thor (~> 1.0.1)
+  thor (~> 1.2.1)
   yard (>= 0.9.20)
 
 BUNDLED WITH

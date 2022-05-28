@@ -10,8 +10,9 @@ COPY . /netomox-exp
 
 # install required packages
 # bsdextrautils: `column` command
+# gcc/make: to build native extensions (json)
 RUN apt-get update \
-    && apt-get install -y --no-install-recommends git curl jq less csvtool bsdextrautils \
+    && apt-get install -y --no-install-recommends gcc make git curl jq less csvtool bsdextrautils \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 # ruby tools
