@@ -53,6 +53,7 @@ see. [Rakefile](./Rakefile), [.env](./.env) and [docker-compose.yml](./docker-co
     * [pushed_configs](https://github.com/ool-mddo/pushed_configs) (project network)
 * `MDDO_MODELS_DIR`: query result directory (default: `./models`)
 * `MDDO_NETOVIZ_MODEL_DIR`: topology data directory (for netoviz; defualt: `./netoviz_model`)
+* `MDDO_USE_PARALLEL` : use parallel processing for topology data generation with rake (fast but cannot read log message, default: unset)
 
 Optional environment variables:
 
