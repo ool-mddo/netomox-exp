@@ -41,6 +41,9 @@ module TopologyOperator
 
     private
 
+    # @param [String] network Network name to analyze (in batfish)
+    # @param [String] snapshot Snapshot name in bf_network
+    # @return [String] Description of the snapshot
     def fetch_snapshot_description(network, snapshot)
       snapshot_pattern = fetch_snapshot_pattern(network, snapshot)
       return 'Origin snapshot?' if snapshot_pattern.nil?
@@ -59,7 +62,7 @@ module TopologyOperator
 
     # @param [Hash] test_case Expanded test case
     # @param [String] network Network name to analyze (in batfish)
-    # @param [String] snapshot Snapshot names in bf_network
+    # @param [String] snapshot Snapshot name in bf_network
     # @return [Hash]
     def exec_traceroute_test(test_case, network, snapshot)
       warn "- traceroute: #{network}/#{snapshot} #{test_case_to_str(test_case)}"
