@@ -12,7 +12,7 @@ group :production do
   gem 'rake', '>= 13.0.6'
   gem 'rexml', '>= 3.2.5' # to resolve dependency of termcolor in netomox/diff_view
   gem 'test-unit', '>= 3.5.3'
-  gem 'thor', '~> 1.0.1'
+  gem 'thor', '~> 1.2.1'
 end
 
 group :development do
