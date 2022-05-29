@@ -4,14 +4,16 @@ require 'rake'
 require 'rake/clean'
 require 'json'
 require 'httpclient'
+require 'parallel'
 
 CONFIGS_DIR = ENV.fetch('MDDO_CONFIGS_DIR', 'configs')
 MODELS_DIR = ENV.fetch('MDDO_MODELS_DIR', 'models')
 NETOVIZ_DIR = ENV.fetch('MDDO_NETOVIZ_MODEL_DIR', 'netoviz_model')
+USE_PARALLEL = ENV.fetch('MDDO_USE_PARALLEL', nil)
 MODEL_DEFS_DIR = 'model_defs'
 BATFISH_WRAPPER_HOST = ENV.fetch('BATFISH_WRAPPER_HOST', 'localhost:5000')
 BFW_CLIENT = HTTPClient.new
-BFW_CLIENT.receive_timeout = 300
+BFW_CLIENT.receive_timeout = 60 * 60 * 4 # 60sec * 60min * 4h
 
 MODEL_INFO = [
   {
@@ -62,6 +64,16 @@ end
 
 desc 'Generate snapshot patterns of simulation target networks'
 task :simulation_pattern do
+  if ENV['PHY_SS_ONLY']
+    puts '# Pass snapshot pattern generation'
+    find_all_model_info_by_type(:simulation_target).each do |model_info|
+      snapshot_dir = File.join(CONFIGS_DIR, model_info[:network], model_info[:snapshot])
+      pattern_file = File.join(snapshot_dir, 'snapshot_patterns.json')
+      File.delete(pattern_file) if File.exist?(pattern_file)
+    end
+    next
+  end
+
   puts '# Generate snapshot patterns'
   opt = {}
   if ENV['OFF_NODE']
@@ -76,6 +88,7 @@ end
 desc 'Generate model data (csv) from snapshots'
 task :snapshot_to_model do
   puts '# Generate model data'
+  # NOTICE: CANNOT parallel: because batfish-wrapper does not correspond multiple access
   find_all_model_info_by_type(:fixed, :simulation_target).each do |model_info|
     post_bfw("api/networks/#{model_info[:network]}/queries", {})
   end
@@ -123,6 +136,17 @@ task :netoviz_index do
   File.write("#{NETOVIZ_DIR}/_index.json", JSON.pretty_generate(index_data))
 end
 
+# @param [Array<Object>] target_data Target data to operate
+# @yield [datum] instructions for each datum
+# @yieldparam [Object] datum A datum in target_data
+def parallel_executables(target_data, &block)
+  if USE_PARALLEL
+    Parallel.each(target_data, &block)
+  else
+    target_data.each(&block)
+  end
+end
+
 desc 'Generate topology files (for netoviz)'
 task :netoviz_model do
   puts '# Generate topology files'
@@ -130,10 +154,11 @@ task :netoviz_model do
   sh "rm -f #{NETOVIZ_DIR}/*linkdown*.json"
   sh "rm -f #{NETOVIZ_DIR}/*drawoff*.json"
 
-  models_list.each do |network_snapshot_pair|
+  parallel_executables(models_list) do |network_snapshot_pair|
     network, snapshot = network_snapshot_pair
+    models_snapshot_dir = File.join(MODELS_DIR, network, snapshot)
     topo_file = File.join(NETOVIZ_DIR, topology_file_name(network, snapshot))
-    sh "bundle exec ruby #{MODEL_DEFS_DIR}/mddo_trial.rb -i #{File.join(MODELS_DIR, network, snapshot)} > #{topo_file}"
+    sh "bundle exec ruby #{MODEL_DEFS_DIR}/mddo_trial.rb -i #{models_snapshot_dir} > #{topo_file}"
   end
 end
 
@@ -168,12 +193,14 @@ task :netomox_diff do
     end
 
     # linkdown
-    Dir.glob("#{NETOVIZ_DIR}/#{network}_#{orig_snapshot}_linkdown*.json").each do |linkdown_topology|
+    linkdown_topologies = Dir.glob("#{NETOVIZ_DIR}/#{network}_#{orig_snapshot}_linkdown*.json")
+    parallel_executables(linkdown_topologies) do |linkdown_topology|
       make_topology_diff(src_topology, linkdown_topology)
     end
 
     # overwrite diff files
-    Dir.glob("#{NETOVIZ_DIR}/*.diff").each do |topology_diff|
+    topology_diffs = Dir.glob("#{NETOVIZ_DIR}/*.diff")
+    parallel_executables(topology_diffs) do |topology_diff|
       sh "mv #{topology_diff} #{topology_diff.gsub(File.extname(topology_diff), '')}"
     end
   end

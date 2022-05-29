@@ -53,6 +53,7 @@ see. [Rakefile](./Rakefile), [.env](./.env) and [docker-compose.yml](./docker-co
     * [pushed_configs](https://github.com/ool-mddo/pushed_configs) (project network)
 * `MDDO_MODELS_DIR`: query result directory (default: `./models`)
 * `MDDO_NETOVIZ_MODEL_DIR`: topology data directory (for netoviz; defualt: `./netoviz_model`)
+* `MDDO_USE_PARALLEL` : use parallel processing for topology data generation with rake (fast but cannot read log message, default: unset)
 
 Optional environment variables:
 
@@ -92,11 +93,15 @@ docker-compose exec netomox-exp bash
 
 ```text
 bundle exec rake [NETWORK=<network-name>]
+                 [PHY_SS_ONLY=1]
                  [OFF_NODE=<draw-off-node> [OFF_INTF_RE=<draw-off-link>]]
 ```
 
 Arguments of the rake tasks (Environment Values):
 * `NETWORK`: A target network name to analyze and data-generate
+* `PHY_SS_ONLY` : Physical snapshot only (without logical(link-down/draw-off) snapshots) [for debugging]
+  * With `OFF_NODE`/`OFF_INTF_RE`, these `OFF_` options are ignored
+  * e.g. `bundle exec rake PHY_SS_ONLY=1` (non-nil)
 * `OFF_NODE`: A node name to draw-off
   * Without `OFF_INTF_RE`, it assumes node-down case (draw-off all links of the node)
   * e.g. `bundle exec rake OFF_NODE=regiona-ce01`

@@ -9,6 +9,7 @@ group :production do
   gem 'httpclient', '>= 2.8.3'
   gem 'ipaddress', '~> 0.8.3'
   gem 'netomox', github: 'corestate55/netomox', branch: 'develop'
+  gem 'parallel', '>= 1.22.1'
   gem 'rake', '>= 13.0.6'
   gem 'rexml', '>= 3.2.5' # to resolve dependency of termcolor in netomox/diff_view
   gem 'test-unit', '>= 3.5.3'
