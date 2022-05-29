@@ -31,7 +31,6 @@ MODEL_INFO = [
 
 task default: %i[model_dirs simulation_pattern snapshot_to_model netoviz_index netoviz_model netoviz_layout
                  netomox_diff]
-# task default: %i[model_dirs simulation_pattern]
 
 desc 'Make directories for models and netoviz'
 task :model_dirs do
