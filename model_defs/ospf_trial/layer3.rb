@@ -16,7 +16,9 @@ def register_layer3(nws)
         end
       end
       node 'Seg_203.0.113.0/24' do
+        support %w[ospf_trial_l2 svr1_eth1]
         support %w[ospf_trial_l2 sw1_vlan]
+        support %w[ospf_trial_l2 rt1_eth1]
         term_point 'sw1_vlan_eth1' do
           support %w[ospf_trial_l2 sw1_vlan eth1]
         end
@@ -79,7 +81,10 @@ def register_layer3(nws)
         end
       end
       node 'Seg_10.1.0.0/24' do
+        support %w[ospf_trial_l2 rt2_eth2]
+        support %w[ospf_trial_l2 rt3_eth2]
         support %w[ospf_trial_l2 sw2_vlan]
+        support %w[ospf_trial_l2 rt4_eth1]
         term_point 'sw2_vlan_eth1' do
           support %w[ospf_trial_l2 sw2_vlan eth1]
         end
@@ -101,7 +106,9 @@ def register_layer3(nws)
         end
       end
       node 'Seg_192.168.0.0/24' do
+        support %w[ospf_trial_l2 rt4_eth2]
         support %w[ospf_trial_l2 sw3_vlan]
+        support %w[ospf_trial_l2 svr2_eth1]
         term_point 'sw3_vlan_eth1' do
           support %w[ospf_trial_l2 sw3_vlan eth1]
         end
