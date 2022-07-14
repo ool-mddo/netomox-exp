@@ -6,7 +6,7 @@ require 'netomox'
 def register_ospf1(nws)
   # rfc8346 ospf-extend based
   nws.register do
-    network 'ospf_trial_ospf' do
+    network 'ospf_area0' do
       type Netomox::NWTYPE_MDDO_L3
       support 'ospf_trial_l3'
 
