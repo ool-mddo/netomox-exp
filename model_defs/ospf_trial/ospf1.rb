@@ -11,13 +11,6 @@ def register_ospf1(nws)
       support 'ospf_trial_l3'
       attribute({ identifier: '0.0.0.0' })
 
-      node 'Seg_203.0.113.0/24' do
-        support %w[ospf_trial_l3 Seg_203.0.113.0/24]
-        attribute({ node_type: 'segment' })
-        term_point 'sw1_vlan_eth2' do
-          support %w[ospf_trial_l3 Seg_203.0.113.0/24 sw1_vlan_eth2]
-        end
-      end
       node 'rt1' do
         support %w[ospf_trial_l3 rt1]
         attr = {
@@ -131,8 +124,6 @@ def register_ospf1(nws)
           attribute({ passive: true })
         end
       end
-
-      bdlink %w[Seg_203.0.113.0/24 sw1_vlan_eth2 rt1 eth1]
 
       bdlink %w[rt1 eth2 Seg_10.0.0.0/30 rt2_eth1]
       bdlink %w[Seg_10.0.0.0/30 rt1_eth2 rt2 eth1]
