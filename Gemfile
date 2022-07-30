@@ -8,7 +8,7 @@ group :production do
   gem 'hashie', '>= 4.1.0'
   gem 'httpclient', '>= 2.8.3'
   gem 'ipaddress', '~> 0.8.3'
-  gem 'netomox', github: 'corestate55/netomox', branch: 'develop'
+  gem 'netomox', github: 'corestate55/netomox', branch: 'ospf-model'
   gem 'parallel', '>= 1.22.1'
   gem 'rake', '>= 13.0.6'
   gem 'rexml', '>= 3.2.5' # to resolve dependency of termcolor in netomox/diff_view

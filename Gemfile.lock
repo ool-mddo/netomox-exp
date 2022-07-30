@@ -1,7 +1,7 @@
 GIT
   remote: https://github.com/corestate55/netomox
-  revision: b43f523d0f29a92bd121ca7175281a1f3fc206e9
-  branch: develop
+  revision: 43e1e3c18b1a72726adb4440aa4a0ad94c0f6ca5
+  branch: ospf-model
   specs:
     netomox (0.1.0)
       neography (~> 1.8.0)
@@ -12,7 +12,7 @@ GEM
   remote: https://rubygems.org/
   specs:
     ast (2.4.2)
-    excon (0.92.3)
+    excon (0.92.4)
     hashie (5.0.0)
     highline (2.0.3)
     httpclient (2.8.3)
@@ -35,16 +35,17 @@ GEM
     rake (13.0.6)
     regexp_parser (2.5.0)
     rexml (3.2.5)
-    rubocop (1.30.0)
+    rubocop (1.32.0)
+      json (~> 2.3)
       parallel (~> 1.10)
       parser (>= 3.1.0.0)
       rainbow (>= 2.2.2, < 4.0)
       regexp_parser (>= 1.8, < 3.0)
       rexml (>= 3.2.5, < 4.0)
-      rubocop-ast (>= 1.18.0, < 2.0)
+      rubocop-ast (>= 1.19.1, < 2.0)
       ruby-progressbar (~> 1.7)
       unicode-display_width (>= 1.4.0, < 3.0)
-    rubocop-ast (1.18.0)
+    rubocop-ast (1.19.1)
       parser (>= 3.1.1.0)
     rubocop-rake (0.6.0)
       rubocop (~> 1.0)
@@ -55,9 +56,9 @@ GEM
     test-unit (3.5.3)
       power_assert
     thor (1.2.1)
-    unicode-display_width (2.1.0)
+    unicode-display_width (2.2.0)
     webrick (1.7.0)
-    yard (0.9.27)
+    yard (0.9.28)
       webrick (~> 1.7.0)
 
 PLATFORMS

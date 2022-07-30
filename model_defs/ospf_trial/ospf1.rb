@@ -7,47 +7,69 @@ def register_ospf1(nws)
   # rfc8346 ospf-extend based
   nws.register do
     network 'ospf_area0' do
-      type Netomox::NWTYPE_MDDO_L3
+      type Netomox::NWTYPE_MDDO_OSPF_AREA
       support 'ospf_trial_l3'
+      attribute({ identifier: '0.0.0.0' })
 
       node 'Seg_203.0.113.0/24' do
         support %w[ospf_trial_l3 Seg_203.0.113.0/24]
+        attribute({ node_type: 'segment' })
         term_point 'sw1_vlan_eth2' do
           support %w[ospf_trial_l3 Seg_203.0.113.0/24 sw1_vlan_eth2]
         end
       end
       node 'rt1' do
         support %w[ospf_trial_l3 rt1]
-        term_point 'eth1' do
-          support %w[ospf_trial_l3 rt1 eth1]
-        end
+        attr = {
+          node_type: 'ospf_proc',
+          router_id: '172.16.0.1',
+          log_adjacency_change: true,
+          redistribute: [
+            { protocol: 'connected' },
+            { protocol: 'static' }
+          ]
+        }
+        attribute(attr)
         term_point 'eth2' do
           support %w[ospf_trial_l3 rt1 eth2]
+          attribute({ metric: 10 })
         end
         term_point 'eth3' do
           support %w[ospf_trial_l3 rt1 eth2]
+          attribute({ metric: 20 })
         end
       end
       node 'Seg_10.0.0.0/30' do
         support %w[ospf_trial_l3 Seg_10.0.0.0/30]
+        attribute({ node_type: 'segment' })
         term_point 'rt1_eth2' do
           support %w[ospf_trial_l3 Seg_10.0.0.0/30 rt1_eth2]
         end
         term_point 'rt2_eth1' do
           support %w[ospf_trial_l3 Seg_10.0.0.0/30 rt2_eth1]
+          attribute({ priority: 1 })
         end
       end
       node 'Seg_10.0.1.0/30' do
         support %w[ospf_trial_l3 Seg_10.0.1.0/30]
+        attribute({ node_type: 'segment' })
         term_point 'rt1_eth3' do
           support %w[ospf_trial_l3 Seg_10.0.1.0/30 rt1_eth3]
         end
         term_point 'rt3_eth1' do
           support %w[ospf_trial_l3 Seg_10.0.1.0/30 rt3_eth1]
+          attribute({ priority: 10 })
         end
       end
       node 'rt2' do
         support %w[ospf_trial_l3 rt2]
+        attr = {
+          node_type: 'ospf_proc',
+          router_id: '172.16.0.2',
+          log_adjacency_change: true,
+          redistribute: [{ protocol: 'connected' }]
+        }
+        attribute(attr)
         term_point 'eth1' do
           support %w[ospf_trial_l3 rt2 eth1]
         end
@@ -57,6 +79,13 @@ def register_ospf1(nws)
       end
       node 'rt3' do
         support %w[ospf_trial_l3 rt3]
+        attr = {
+          node_type: 'ospf_proc',
+          router_id: '172.16.0.3',
+          log_adjacency_change: true,
+          redistribute: [{ protocol: 'connected' }]
+        }
+        attribute(attr)
         term_point 'eth1' do
           support %w[ospf_trial_l3 rt3 eth1]
         end
@@ -66,6 +95,7 @@ def register_ospf1(nws)
       end
       node 'Seg_10.1.0.0/24' do
         support %w[ospf_trial_l3 Seg_10.1.0.0/24]
+        attribute({ node_type: 'segment' })
         term_point 'sw2_vlan_eth1' do
           support %w[ospf_trial_l3 Seg_10.1.0.0/24 sw2_vlan_eth1]
         end
@@ -78,8 +108,16 @@ def register_ospf1(nws)
       end
       node 'rt4' do
         support %w[ospf_trial_l3 rt4]
+        attr = {
+          node_type: 'ospf_proc',
+          router_id: '172.16.0.4',
+          log_adjacency_change: true,
+          redistribute: [{ protocol: 'connected' }]
+        }
+        attribute(attr)
         term_point 'eth1' do
           support %w[ospf_trial_l3 rt4 eth1]
+          attribute({ priority: 0 })
         end
         term_point 'eth2' do
           support %w[ospf_trial_l3 rt4 eth2]
@@ -87,8 +125,10 @@ def register_ospf1(nws)
       end
       node 'Seg_192.168.0.0/24' do
         support %w[ospf_trial_l3 Seg_192.168.0.0/24]
+        attribute({ node_type: 'segment' })
         term_point 'sw3_vlan_eth1' do
           support %w[ospf_trial_l3 Seg_192.168.0.0/24 sw3_vlan_eth1]
+          attribute({ passive: true })
         end
       end
 

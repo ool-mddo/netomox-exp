@@ -11,14 +11,17 @@ def register_layer3(nws)
 
       node 'svr1' do
         support %w[ospf_trial_l2 svr1_eth1]
+        attribute({ node_type: 'node' })
         term_point 'eth1' do
           support %w[ospf_trial_l2 svr1_eth1 eth1]
+          attribute({ ip_addrs: %w[203.0.113.2/24], description: 'pseudo internet gateway' })
         end
       end
       node 'Seg_203.0.113.0/24' do
         support %w[ospf_trial_l2 svr1_eth1]
         support %w[ospf_trial_l2 sw1_vlan]
         support %w[ospf_trial_l2 rt1_eth1]
+        attribute({ node_type: 'segment' })
         term_point 'sw1_vlan_eth1' do
           support %w[ospf_trial_l2 sw1_vlan eth1]
         end
@@ -30,19 +33,28 @@ def register_layer3(nws)
         support %w[ospf_trial_l2 rt1_eth1]
         support %w[ospf_trial_l2 rt1_eth2]
         support %w[ospf_trial_l2 rt1_eth3]
+        attr = {
+          node_type: 'node',
+          static_routes: [{ prefix: '0.0.0.0/0', next_hop: '203.0.113.2', description: 'default route' }]
+        }
+        attribute(attr)
         term_point 'eth1' do
           support %w[ospf_trial_l2 rt1_eth1 eth1]
+          attribute({ ip_addrs: %w[203.0.113.1/24], description: 'pseudo internet' })
         end
         term_point 'eth2' do
           support %w[ospf_trial_l2 rt1_eth2 eth2]
+          attribute({ ip_addrs: %w[10.0.0.1/30] })
         end
         term_point 'eth3' do
           support %w[ospf_trial_l2 rt1_eth2 eth2]
+          attribute({ ip_addrs: %w[10.0.1.1/30] })
         end
       end
       node 'Seg_10.0.0.0/30' do
         support %w[ospf_trial_l2 rt1_eth2]
         support %w[ospf_trial_l2 rt2_eth1]
+        attribute({ node_type: 'segment' })
         term_point 'rt1_eth2' do
           support %w[ospf_trial_l2 rt1_eth2 eth2]
         end
@@ -53,6 +65,7 @@ def register_layer3(nws)
       node 'Seg_10.0.1.0/30' do
         support %w[ospf_trial_l2 rt1_eth3]
         support %w[ospf_trial_l2 rt3_eth1]
+        attribute({ node_type: 'segment' })
         term_point 'rt1_eth3' do
           support %w[ospf_trial_l2 rt1_eth3 eth3]
         end
@@ -63,21 +76,27 @@ def register_layer3(nws)
       node 'rt2' do
         support %w[ospf_trial_l2 rt2_eth1]
         support %w[ospf_trial_l2 rt2_eth2]
+        attribute({ node_type: 'node' })
         term_point 'eth1' do
           support %w[ospf_trial_l2 rt2_eth1 eth1]
+          attribute({ ip_addrs: %w[10.0.0.2/30] })
         end
         term_point 'eth2' do
           support %w[ospf_trial_l2 rt2_eth2 eth2]
+          attribute({ ip_addrs: %w[10.1.0.1/24] })
         end
       end
       node 'rt3' do
         support %w[ospf_trial_l2 rt3_eth1]
         support %w[ospf_trial_l2 rt3_eth2]
+        attribute({ node_type: 'node' })
         term_point 'eth1' do
           support %w[ospf_trial_l2 rt3_eth1 eth1]
+          attribute({ ip_addrs: %w[10.0.1.2/30] })
         end
         term_point 'eth2' do
           support %w[ospf_trial_l2 rt3_eth2 eth2]
+          attribute({ ip_addrs: %w[10.1.0.2/24] })
         end
       end
       node 'Seg_10.1.0.0/24' do
@@ -85,6 +104,7 @@ def register_layer3(nws)
         support %w[ospf_trial_l2 rt3_eth2]
         support %w[ospf_trial_l2 sw2_vlan]
         support %w[ospf_trial_l2 rt4_eth1]
+        attribute({ node_type: 'segment' })
         term_point 'sw2_vlan_eth1' do
           support %w[ospf_trial_l2 sw2_vlan eth1]
         end
@@ -98,17 +118,21 @@ def register_layer3(nws)
       node 'rt4' do
         support %w[ospf_trial_l2 rt4_eth1]
         support %w[ospf_trial_l2 rt4_eth2]
+        attribute({ node_type: 'node' })
         term_point 'eth1' do
           support %w[ospf_trial_l2 rt4_eth1 eth1]
+          attribute({ ip_addrs: %w[10.1.0.3/24] })
         end
         term_point 'eth2' do
           support %w[ospf_trial_l2 rt4_eth2 eth2]
+          attribute({ ip_addrs: %w[192.168.0.1/24] })
         end
       end
       node 'Seg_192.168.0.0/24' do
         support %w[ospf_trial_l2 rt4_eth2]
         support %w[ospf_trial_l2 sw3_vlan]
         support %w[ospf_trial_l2 svr2_eth1]
+        attribute({ node_type: 'segment' })
         term_point 'sw3_vlan_eth1' do
           support %w[ospf_trial_l2 sw3_vlan eth1]
         end
@@ -118,8 +142,10 @@ def register_layer3(nws)
       end
       node 'svr2' do
         support %w[ospf_trial_l2 svr2_eth1]
+        attribute({ node_type: 'node' })
         term_point 'eth1' do
           support %w[ospf_trial_l2 svr2_eth1 eth1]
+          attribute({ ip_addrs: %w[192.168.0.2/24] })
         end
       end
 
