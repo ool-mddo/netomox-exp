@@ -26,6 +26,12 @@ MODEL_INFO = [
     snapshot: 'mddo_network',
     type: :simulation_target,
     label: 'OOL-MDDO PJ network'
+  },
+  {
+    network: 'mddo-ospf',
+    snapshot: 'test-topo',
+    type: :simulation_target,
+    label: 'OOL-MDDO OSPF Model Trial'
   }
 ].freeze
 
