@@ -5,6 +5,7 @@ require 'rake/clean'
 require 'json'
 require 'httpclient'
 require 'parallel'
+require 'fileutils'
 
 CONFIGS_DIR = ENV.fetch('MDDO_CONFIGS_DIR', 'configs')
 MODELS_DIR = ENV.fetch('MDDO_MODELS_DIR', 'models')
@@ -75,7 +76,7 @@ task :simulation_pattern do
     find_all_model_info_by_type(:simulation_target).each do |model_info|
       snapshot_dir = File.join(CONFIGS_DIR, model_info[:network], model_info[:snapshot])
       pattern_file = File.join(snapshot_dir, 'snapshot_patterns.json')
-      File.delete(pattern_file) if File.exist?(pattern_file)
+      FileUtils.rm(pattern_file)
     end
     next
   end
