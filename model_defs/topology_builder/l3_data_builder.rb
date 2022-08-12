@@ -3,6 +3,7 @@
 require_relative 'l3_data_checker'
 require_relative 'csv_mapper/ip_owners_table'
 require_relative 'csv_mapper/interface_prop_table'
+require_relative 'csv_mapper/routes_table'
 require 'ipaddress'
 
 # rubocop:disable Metrics/ClassLength
@@ -16,6 +17,7 @@ module TopologyBuilder
       super(layer2p: layer2p, debug: debug)
       @ip_owners = CSVMapper::IPOwnersTable.new(target)
       @intf_props = CSVMapper::InterfacePropertiesTable.new(target)
+      @routes = CSVMapper::RoutesTable.new(target)
       # NOTE: use object_id for hash key
       #   e.g. `@segment_prefixes[seg]` means `@segment_prefixes[seg.object_id]`
       #   ref. https://www.rubydoc.info/gems/rubocop/RuboCop/Cop/Lint/HashCompareByIdentity
@@ -29,6 +31,7 @@ module TopologyBuilder
       explore_l3_segment
       setup_segment_to_prefixes_table
       add_l3_node_tp_link
+      add_l3_loopback_tps
       update_node_attribute
       @networks
     end
@@ -219,6 +222,14 @@ module TopologyBuilder
     end
     # rubocop:enable Metrics/MethodLength, Metrics/AbcSize
 
+    def add_l3_loopback_tps
+      @ip_owners.find_all_records_of_loopback.each do |rec|
+        l3_node = @network.node(rec.node)
+        l3_tp = l3_node.term_point(rec.interface)
+        l3_tp.attribute = { ip_addrs: ["#{rec.ip}/#{rec.mask}"], flags: %w[loopback] }
+      end
+    end
+
     # @return [Array<PNode>] Found nodes
     def find_all_node_type_nodes
       @network.nodes.filter { |n| %w[node endpoint].include?(n.attribute[:node_type]) }
@@ -231,12 +242,35 @@ module TopologyBuilder
     end
 
     # @param [PNode] l3_node Layer3 node
-    # @return [Array<Hash>] A list of layer3 node prefix (directly connected routes)
+    # @return [Array<Hash>] A list of layer3 node prefix (connected routes)
     def node_prefixes_at_l3_node(l3_node)
       find_all_l3_tps_has_ipaddr(l3_node).map do |tp|
         ip = IPAddress::IPv4.new(tp.attribute[:ip_addrs][0])
-        { prefix: "#{ip.network}/#{ip.prefix}", metric: 0, flags: %w[directly-connected] }
+        { prefix: "#{ip.network}/#{ip.prefix}", metric: 0, flags: %w[connected] }
       end
+    end
+
+    def update_node_prefix_attr(l3_node)
+      prefixes = node_prefixes_at_l3_node(l3_node)
+      debug_print "- node: #{l3_node.name}, prefixes: #{prefixes}"
+      l3_node.attribute[:prefixes] = prefixes
+    end
+
+    def node_static_routes_at_l3_node(l3_node)
+      @routes.find_all_records_by_node_proto(l3_node.name, 'static').map do |route|
+        {
+          prefix: route.network,
+          next_hop: route.next_hop_ip,
+          interface: route.next_hop_interface,
+          metric: route.metric,
+          preference: route.admin_distance
+        }
+      end
+    end
+
+    def update_node_static_route_attr(l3_node)
+      static_routes = node_static_routes_at_l3_node(l3_node)
+      l3_node.attribute[:static_routes] = static_routes
     end
 
     # Set layer3 node attribute (prefixes) according to its term-point
@@ -244,9 +278,8 @@ module TopologyBuilder
     def update_node_attribute
       debug_print '# update node attribute'
       find_all_node_type_nodes.each do |l3_node|
-        prefixes = node_prefixes_at_l3_node(l3_node)
-        debug_print "- node: #{l3_node.name}, prefixes: #{prefixes}"
-        l3_node.attribute[:prefixes] = prefixes
+        update_node_prefix_attr(l3_node)
+        update_node_static_route_attr(l3_node)
       end
     end
   end

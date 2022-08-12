@@ -31,6 +31,10 @@ module TopologyBuilder
         @active = record[:active]
       end
 
+      def loopback_interface?
+        @interface =~ /^lo(?:opback)?/i
+      end
+
       # @return [String]
       def to_s
         [@node, @vrf, @interface, @ip, @mask].map(&:to_s).join(', ')
@@ -56,6 +60,11 @@ module TopologyBuilder
       # @return [Array<IPOwnersTableRecord>] Found records
       def find_all_records_by_node(node_name)
         @records.find_all { |r| r.node == node_name }
+      end
+
+      # @return [Array<IPOwnersTableRecord>] Found records
+      def find_all_records_of_loopback
+        @records.find_all(&:loopback_interface?)
       end
 
       # @param [String] node_name Node name
