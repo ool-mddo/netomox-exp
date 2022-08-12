@@ -55,13 +55,13 @@ module TopologyBuilder
 
       # @return [Boolean] true if ospf is enabled in the interface
       def ospf_enabled?
-        !!(@ospf_enabled =~ /true/i)
+        true_string?(@ospf_enabled)
       end
       alias ospf_enabled ospf_enabled?
 
       # @return [Boolean] true if the interface is passive-interface
       def ospf_passive?
-        !!(@ospf_passive =~ /true/i)
+        true_string?(@ospf_passive)
       end
       alias ospf_passive ospf_passive?
     end

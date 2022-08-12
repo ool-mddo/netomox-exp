@@ -26,6 +26,14 @@ module TopologyBuilder
       def values(attrs)
         attrs.map { |attr| send(attr) }
       end
+
+      protected
+
+      # @param [String] value String value (boolean, "True, False" like string)
+      # @return [Boolean] converted boolean value
+      def true_string?(value)
+        value.downcase == 'true'
+      end
     end
 
     # Base class of edges-table endpoint

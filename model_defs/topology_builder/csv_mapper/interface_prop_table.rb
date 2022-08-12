@@ -64,23 +64,24 @@ module TopologyBuilder
 
       # @return [Boolean] true if the interface is active
       def active?
-        !!(@active =~ /true/i)
+        true_string?(@active)
       end
       alias active active?
 
       # @return [Boolean] true if the interface is switchport
       def switchport?
-        !!(@switchport =~ /true/i)
+        true_string?(@switchport)
       end
+      # DO NOT alias #switchport/#switchport? to keep #switchport writable.
 
       # @return [Boolean] true if the interface is routed port
       def routed_port?
-        !!(!switchport? && @switchport_mode =~ /NONE/i && @primary_address)
+        !switchport? && @switchport_mode.downcase == 'none' && !@primary_address.nil? && !@primary_address.empty?
       end
 
       # @return [Boolean] true if the interface is switchport-access
       def swp_access?
-        !!(switchport? && @switchport_mode =~ /ACCESS/i)
+        switchport? && @switchport_mode.downcase == 'access'
       end
 
       # @return [Boolean] true if the interface is not switchport-trunk
@@ -90,7 +91,7 @@ module TopologyBuilder
 
       # @return [Boolean] true if the interface is switchport-trunk
       def swp_trunk?
-        !!(switchport? && @switchport_mode =~ /TRUNK/i)
+        switchport? && @switchport_mode.downcase == 'trunk'
       end
 
       # @return [Boolean] true if LAG (parent) port
