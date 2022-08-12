@@ -63,6 +63,10 @@ module TopologyBuilder
         super(target, 'ospf_proc_conf.csv')
         @records = @orig_table.map { |r| OspfProcessConfigurationTableRecord.new(r) }
       end
+
+      def find_record_by_node(node_name)
+        @records.find { |r| r.node == node_name }
+      end
     end
   end
 end

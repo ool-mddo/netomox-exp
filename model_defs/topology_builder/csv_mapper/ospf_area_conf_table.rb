@@ -34,6 +34,11 @@ module TopologyBuilder
         @passive_interfaces = parse_interfaces(record[:passive_interfaces])
       end
 
+      # @return [String]
+      def to_s
+        [@node, @process_id, @area].map(&:to_s).join(', ')
+      end
+
       private
 
       # rubocop:disable Security/Eval
@@ -52,6 +57,12 @@ module TopologyBuilder
       def initialize(target)
         super(target, 'ospf_area_conf.csv')
         @records = @orig_table.map { |r| OspfAreaConfigurationTableRecord.new(r) }
+      end
+
+      # @return [Array<Integer> Areas in the network]
+      # TODO: vrf based search. Current: search default vrf ospf
+      def all_areas
+        @records.find_all { |r| r.vrf == 'default' }.map(&:area).sort.uniq
       end
     end
   end

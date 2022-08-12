@@ -39,7 +39,7 @@ module TopologyBuilder
         @vrf = record[:vrf]
         @process_id = record[:process_id]
         @ospf_area_name = record[:ospf_area_name]
-        @ospf_enabled = record[:ospf_area_name]
+        @ospf_enabled = record[:ospf_enabled]
         @ospf_passive = record[:ospf_passive]
         @ospf_cost = record[:ospf_cost]
         @ospf_network_type = record[:ospf_network_type]
@@ -47,6 +47,11 @@ module TopologyBuilder
         @ospf_dead_interval = record[:ospf_dead_interval]
       end
       # rubocop:enable Metrics/MethodLength, Metrics/AbcSize
+
+      # @return [String]
+      def to_s
+        [@node, @interface, @process_id, @ospf_area_name, @ospf_enabled].map(&:to_s).join(', ')
+      end
 
       # @return [Boolean] true if ospf is enabled in the interface
       def ospf_enabled?
@@ -67,6 +72,10 @@ module TopologyBuilder
       def initialize(target)
         super(target, 'ospf_intf_conf.csv')
         @records = @orig_table.map { |r| OspfInterfaceConfigurationTableRecord.new(r) }
+      end
+
+      def find_record_by_name(node, intf)
+        @records.find { |r| r.node == node && r.interface == intf}
       end
     end
   end

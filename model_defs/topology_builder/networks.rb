@@ -6,6 +6,7 @@ require_relative 'l1_data_builder'
 require_relative 'l2_data_builder'
 require_relative 'l3_data_builder'
 require_relative 'expanded_l3_data_builder'
+require_relative 'ospf_data_builder'
 
 # Topology data builder
 module TopologyBuilder
@@ -95,6 +96,16 @@ module TopologyBuilder
     layer3exp_nws = l3exp_builder.make_networks
     layer3exp_nws.dump if l3exp_debug
     to_json([layer3exp_nws, layer3_nws, layer2_nws, layer1_nws])
+
+    ospf_debug = debug_layer?(debug, layer, 'ospf')
+    ospf_builder = OspfDataBuilder.new(
+      target: target,
+      layer3: layer3_nws.find_network_by_name('layer3'),
+      debug: ospf_debug
+    )
+    ospf_nws = ospf_builder.make_networks
+    ospf_nws.dump if ospf_debug
+    to_json([ospf_nws, layer3_nws, layer2_nws, layer1_nws])
   end
   # rubocop:enable Metrics/AbcSize, Metrics/MethodLength
 end

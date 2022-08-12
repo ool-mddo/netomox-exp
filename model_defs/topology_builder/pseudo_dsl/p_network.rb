@@ -85,10 +85,15 @@ module TopologyBuilder
       end
 
       # @param [String] node_name Source node name
+      # @return [Array<PLink>] Links connected with the node
+      def find_all_links_by_src_name(node_name)
+        @links.find_all { |link| link.src.node == node_name }
+      end
+
+      # @param [String] node_name Source node name
       # @return [Array<PLinkEdge>] Facing (destination) edges connected with the node
       def find_all_edges_by_src_name(node_name)
-        @links.find_all { |link| link.src.node == node_name }
-              .map(&:dst)
+        find_all_links_by_src_name(node_name).map(&:dst)
       end
 
       # @param [PLinkEdge] edge Link-edge to find
