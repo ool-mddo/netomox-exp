@@ -38,6 +38,12 @@ module TopologyBuilder
       end
       alias area_border_router area_border_router?
 
+      # @param [String] policy Policy name
+      # @return [Boolean] true if this record contains the policy
+      def export_policy?(policy)
+        @export_policy_sources.include?(policy)
+      end
+
       private
 
       # rubocop:disable Securty/Eval
@@ -64,6 +70,8 @@ module TopologyBuilder
         @records = @orig_table.map { |r| OspfProcessConfigurationTableRecord.new(r) }
       end
 
+      # @param [String] node_name Node name to find
+      # @return [OspfProcessConfigurationTableRecords] Found record
       def find_record_by_node(node_name)
         @records.find { |r| r.node == node_name }
       end

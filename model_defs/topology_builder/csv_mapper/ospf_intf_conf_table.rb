@@ -75,7 +75,7 @@ module TopologyBuilder
       end
 
       def find_record_by_name(node, intf)
-        @records.find { |r| r.node == node && r.interface == intf}
+        @records.find { |r| r.node == node && r.interface == intf }
       end
     end
   end
