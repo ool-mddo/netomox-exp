@@ -46,7 +46,7 @@ module TopologyBuilder
 
       private
 
-      # rubocop:disable Securty/Eval
+      # rubocop:disable Security/Eval
 
       # @param [String] areas_str A string of ospf-area array
       # @return [Array<Integer>] Area number array
@@ -59,7 +59,7 @@ module TopologyBuilder
       def parse_policy_sources(sources_str)
         eval(sources_str)
       end
-      # rubocop:enable Securty/Eval
+      # rubocop:enable Security/Eval
     end
 
     # ospf process configuration table
@@ -71,7 +71,7 @@ module TopologyBuilder
       end
 
       # @param [String] node_name Node name to find
-      # @return [OspfProcessConfigurationTableRecords] Found record
+      # @return [OspfProcessConfigurationTableRecords,nil] Found record
       def find_record_by_node(node_name)
         @records.find { |r| r.node == node_name }
       end

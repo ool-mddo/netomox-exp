@@ -79,6 +79,9 @@ module TopologyBuilder
         @records = @orig_table.map { |r| OspfInterfaceConfigurationTableRecord.new(r) }
       end
 
+      # @param [String] node Node name to find
+      # @param [String] intf interface name to find
+      # @return [OspfInterfaceConfigurationTableRecord,nil] Found record
       def find_record_by_node_intf(node, intf)
         @records.find { |r| r.node == node && r.interface == intf }
       end

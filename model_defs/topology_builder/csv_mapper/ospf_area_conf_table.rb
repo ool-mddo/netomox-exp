@@ -59,7 +59,7 @@ module TopologyBuilder
         @records = @orig_table.map { |r| OspfAreaConfigurationTableRecord.new(r) }
       end
 
-      # @return [Array<Integer> Areas in the network]
+      # @return [Array<Integer>] Areas in the network
       # TODO: vrf based search. Current: search default vrf ospf
       def all_areas
         @records.find_all { |r| r.vrf == 'default' }.map(&:area).sort.uniq

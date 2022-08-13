@@ -250,12 +250,16 @@ module TopologyBuilder
       end
     end
 
+    # @param [PNode] l3_node Update target node
+    # @return [void]
     def update_node_prefix_attr(l3_node)
       prefixes = node_prefixes_at_l3_node(l3_node)
       debug_print "- node: #{l3_node.name}, prefixes: #{prefixes}"
       l3_node.attribute[:prefixes] = prefixes
     end
 
+    # @param [PNode] l3_node Update target node
+    # @return [void]
     def node_static_routes_at_l3_node(l3_node)
       @routes.find_all_records_by_node_proto(l3_node.name, 'static').map do |route|
         {
@@ -268,6 +272,8 @@ module TopologyBuilder
       end
     end
 
+    # @param [PNode] l3_node Update target node
+    # @return [void]
     def update_node_static_route_attr(l3_node)
       static_routes = node_static_routes_at_l3_node(l3_node)
       l3_node.attribute[:static_routes] = static_routes
