@@ -6,6 +6,8 @@ require_relative 'csv_mapper/ospf_intf_conf_table'
 require_relative 'csv_mapper/ospf_proc_conf_table'
 
 module TopologyBuilder
+  # rubocop:disable Metrics/ClassLength
+
   # OSPF data builder
   class OspfDataBuilder < PseudoDSL::DataBuilderBase
     # @param [String] target Target network (config) data name
@@ -25,6 +27,7 @@ module TopologyBuilder
         @network = @networks.network("ospf_area#{@area_id}")
         @network.type = Netomox::NWTYPE_MDDO_OSPF_AREA
         setup_ospf_topology
+        update_ospf_neighbor_attr
       end
       @networks
     end
@@ -32,8 +35,13 @@ module TopologyBuilder
     private
 
     # @return [Array<PNode>] Layer3 segment nodes
-    def find_all_segment_type_nodes
+    def find_all_l3_segment_type_nodes
       @layer3.nodes.find_all { |node| node.attribute[:node_type] == 'segment' }
+    end
+
+    # @return [Array<PNode>] ospf-area segment node
+    def find_all_ospf_segment_type_nodes
+      @network.nodes.find_all { |node| node.attribute[:node_type] == 'segment' }
     end
 
     # @param [PNode] l3node Layer3 node
@@ -60,7 +68,7 @@ module TopologyBuilder
     # @param l3tp [PTermPoint] l3tp Layer3 term-point
     # @return [Hash] attribute
     def ospf_tp_attr(l3node, l3tp)
-      ospf_intf_conf_rec = @ospf_intf_conf.find_record_by_name(l3node.name, l3tp.name)
+      ospf_intf_conf_rec = @ospf_intf_conf.find_record_by_node_intf(l3node.name, l3tp.name)
       l3node_is_seg_node = l3node.attribute[:node_type] == 'segment'
       return {} if l3node_is_seg_node
 
@@ -111,7 +119,7 @@ module TopologyBuilder
     # @param [Array<PLink>] l3links Layer3 links sourced a segment-node
     def add_ospf_node_tp_link(l3links)
       l3links.each do |l3link|
-        dst_intf_conf = @ospf_intf_conf.find_record_by_name(l3link.dst.node, l3link.dst.tp)
+        dst_intf_conf = @ospf_intf_conf.find_record_by_node_intf(l3link.dst.node, l3link.dst.tp)
         next if dst_intf_conf.nil? || !dst_intf_conf.ospf_enabled?
 
         n1, tp1 = add_ospf_node_tp(l3link.src) # segment node
@@ -123,11 +131,68 @@ module TopologyBuilder
 
     # @return [void]
     def setup_ospf_topology
-      segment_nodes = find_all_segment_type_nodes
+      segment_nodes = find_all_l3_segment_type_nodes
       segment_nodes.each do |seg_node|
         links = @layer3.find_all_links_by_src_name(seg_node.name)
         add_ospf_node_tp_link(links)
       end
     end
+
+    # @param [PNodeEdge] edge Link edge
+    # @return [Array<PNode, PTermPoint, OspfProcessConfigurationTableRecord>]
+    def find_ospf_node_tp_conf(edge)
+      node, tp = @network.find_node_tp_by_edge(edge)
+      return [nil, nil, nil] if node.nil? || tp.nil?
+
+      conf = @ospf_intf_conf.find_record_by_node_intf(node.name, tp.name)
+      [node, tp, conf]
+    end
+
+    # rubocop:disable Metrics/AbcSize
+
+    # @param [PTermPoint] target_tp Update target term-point
+    # @param [PNode] other_node Neighbor node of target
+    # @param [PTermPoint] other_tp Neighbor term-point of target
+    # @return [void]
+    def update_tp_neighbor_attr(target_tp, other_node, other_tp)
+      stp = other_tp.supports.find { |s| s[0] == @layer3.name } # support-tp element is [nw, node, tp] array
+      _, other_stp = @layer3.find_node_tp_by_name(stp[1], stp[2])
+      neighbor = {
+        router_id: other_node.attribute[:router_id],
+        ip_addr: other_stp.attribute[:ip_addrs][0]
+      }
+      if !target_tp.attribute.key?(:neighbors) || target_tp.attribute[:neighbors].nil?
+        target_tp.attribute[:neighbors] = []
+      end
+      target_tp.attribute[:neighbors].push(neighbor)
+    end
+    # rubocop:enable Metrics/AbcSize
+
+    # @param [PTermPoint] target_tp Update target term-point
+    # @param [Array<PLinkEdge>] other_edges neighbor candidate term-points (edges)
+    # @return [void]
+    def listing_neighbors_and_update(target_tp, other_edges)
+      other_edges.each do |other_edge|
+        other_node, other_tp, other_conf = find_ospf_node_tp_conf(other_edge)
+        next if other_conf.nil? || !other_conf.ospf_active?
+
+        update_tp_neighbor_attr(target_tp, other_node, other_tp)
+      end
+    end
+
+    # @return [void]
+    def update_ospf_neighbor_attr
+      segment_nodes = find_all_ospf_segment_type_nodes
+      segment_nodes.each do |seg_node|
+        edges = @network.find_all_edges_by_src_name(seg_node.name)
+        edges.each do |target_edge|
+          _, target_tp, target_conf = find_ospf_node_tp_conf(target_edge)
+          next if target_conf.nil? || !target_conf.ospf_active?
+
+          listing_neighbors_and_update(target_tp, edges - [target_edge])
+        end
+      end
+    end
   end
+  # rubocop:enable Metrics/ClassLength
 end

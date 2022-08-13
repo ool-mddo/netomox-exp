@@ -53,6 +53,11 @@ module TopologyBuilder
         [@node, @interface, @process_id, @ospf_area_name, @ospf_enabled].map(&:to_s).join(', ')
       end
 
+      # @return [Boolean] true if ospf enabled and not passive
+      def ospf_active?
+        ospf_enabled? && !ospf_passive?
+      end
+
       # @return [Boolean] true if ospf is enabled in the interface
       def ospf_enabled?
         true_string?(@ospf_enabled)
@@ -74,7 +79,7 @@ module TopologyBuilder
         @records = @orig_table.map { |r| OspfInterfaceConfigurationTableRecord.new(r) }
       end
 
-      def find_record_by_name(node, intf)
+      def find_record_by_node_intf(node, intf)
         @records.find { |r| r.node == node && r.interface == intf }
       end
     end

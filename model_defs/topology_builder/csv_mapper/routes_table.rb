@@ -66,7 +66,7 @@ module TopologyBuilder
       # @param [String] proto_name Protocol name to find
       # @return [Array<RoutesTableRecord>] Found records
       def find_all_records_by_node_proto(node_name, proto_name)
-        find_all_records_by_node(node_name).find_all { |r| r.protocol?(proto_name)}
+        find_all_records_by_node(node_name).find_all { |r| r.protocol?(proto_name) }
       end
     end
   end

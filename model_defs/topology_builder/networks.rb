@@ -46,7 +46,7 @@ module TopologyBuilder
   # @param [String, Integer] layer_id Layer number
   # @return [Boolean]
   def debug_layer?(debug, layer, layer_id)
-    debug && !!(layer =~ /^l(?:ayer)?#{layer_id}$/i)
+    debug && !!(layer =~ /^l(?:ayer)?_?#{layer_id}$/i)
   end
 
   # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
