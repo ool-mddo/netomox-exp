@@ -16,6 +16,7 @@ module TopologyBuilder
     def make_networks
       @network = @networks.network('layer3exp')
       @network.type = Netomox::NWTYPE_MDDO_L3
+      @network.supports = @layer3p.supports
       expand_segment_to_p2p
       @networks
     end

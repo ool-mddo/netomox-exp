@@ -28,6 +28,7 @@ module TopologyBuilder
     def make_networks
       @network = @networks.network('layer3')
       @network.type = Netomox::NWTYPE_MDDO_L3
+      @network.supports.push(@layer2p.name)
       explore_l3_segment
       setup_segment_to_prefixes_table
       add_l3_node_tp_link

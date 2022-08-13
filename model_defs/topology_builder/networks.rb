@@ -94,13 +94,15 @@ module TopologyBuilder
       debug: l3exp_debug
     )
     layer3exp_nws = l3exp_builder.make_networks
-    layer3exp_nws.dump if l3exp_debug
-    to_json([layer3exp_nws, layer3_nws, layer2_nws, layer1_nws])
+    if l3exp_debug
+      layer3exp_nws.dump
+      to_json([layer3exp_nws, layer3_nws, layer2_nws, layer1_nws])
+    end
 
     ospf_debug = debug_layer?(debug, layer, 'ospf')
     ospf_builder = OspfDataBuilder.new(
       target: target,
-      layer3: layer3_nws.find_network_by_name('layer3'),
+      layer3p: layer3_nws.find_network_by_name('layer3'),
       debug: ospf_debug
     )
     ospf_nws = ospf_builder.make_networks

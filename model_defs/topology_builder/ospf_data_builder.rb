@@ -11,10 +11,10 @@ module TopologyBuilder
   # OSPF data builder
   class OspfDataBuilder < PseudoDSL::DataBuilderBase
     # @param [String] target Target network (config) data name
-    # @param [PNetwork] layer3 Layer3 network topology
-    def initialize(target:, layer3:, debug: false)
+    # @param [PNetwork] layer3p Layer3 network topology
+    def initialize(target:, layer3p:, debug: false)
       super(debug: debug)
-      @layer3 = layer3
+      @layer3p = layer3p
       @ospf_area_conf = CSVMapper::OspfAreaConfigurationTable.new(target)
       @ospf_intf_conf = CSVMapper::OspfInterfaceConfigurationTable.new(target)
       @ospf_proc_conf = CSVMapper::OspfProcessConfigurationTable.new(target)
@@ -26,6 +26,7 @@ module TopologyBuilder
         @area_id = area_id
         @network = @networks.network("ospf_area#{@area_id}")
         @network.type = Netomox::NWTYPE_MDDO_OSPF_AREA
+        @network.supports.push(@layer3p.name)
         setup_ospf_topology
         update_ospf_neighbor_attr
       end
@@ -36,7 +37,7 @@ module TopologyBuilder
 
     # @return [Array<PNode>] Layer3 segment nodes
     def find_all_l3_segment_type_nodes
-      @layer3.nodes.find_all { |node| node.attribute[:node_type] == 'segment' }
+      @layer3p.nodes.find_all { |node| node.attribute[:node_type] == 'segment' }
     end
 
     # @return [Array<PNode>] ospf-area segment node
@@ -44,18 +45,25 @@ module TopologyBuilder
       @network.nodes.find_all { |node| node.attribute[:node_type] == 'segment' }
     end
 
+    # @param [PNode] l3_node L3 node to check
+    # @return [Boolean] true if the node type is segment
+    def segment_type_l3_node?(l3_node)
+      l3_node.attribute[:node_type] == 'segment'
+    end
+
     # @param [PNode] l3_node Layer3 node
     # @return [Hash] attribute
     def ospf_node_attr(l3_node)
-      l3_node_is_seg_node = l3_node.attribute[:node_type] == 'segment'
       ospf_proc_conf_rec = @ospf_proc_conf.find_record_by_node(l3_node.name)
-      return { node_type: 'segment' } if l3_node_is_seg_node
+      # default attribute for segment-type ospf-node
+      return { node_type: 'segment' } if segment_type_l3_node?(l3_node)
 
+      # attribute for ospf-proc type ospf-node
       # TODO: ospf proc conf doesn't contains redistribute connected info?
       redistribute_attrs = [{ protocol: 'connected' }]
       redistribute_attrs.push({ protocol: 'static' }) if ospf_proc_conf_rec&.export_policy?('ospf-default')
       {
-        node_type: l3_node_is_seg_node ? 'segment' : 'ospf_proc',
+        node_type: 'ospf_proc',
         router_id: ospf_proc_conf_rec&.router_id || '',
         redistribute: redistribute_attrs
         # NOTE: log-adjacency-changes : No information in ospf-proc conf table
@@ -68,17 +76,18 @@ module TopologyBuilder
     # @param l3_tp [PTermPoint] l3tp Layer3 term-point
     # @return [Hash] attribute
     def ospf_tp_attr(l3_node, l3_tp)
-      ospf_intf_conf_rec = @ospf_intf_conf.find_record_by_node_intf(l3_node.name, l3_tp.name)
-      l3_node_is_seg_node = l3_node.attribute[:node_type] == 'segment'
-      return {} if l3_node_is_seg_node
+      ospf_intf_conf = @ospf_intf_conf.find_record_by_node_intf(l3_node.name, l3_tp.name)
+      # empty (default) term-point attribute for segment-type ospf-node
+      return {} if segment_type_l3_node?(l3_node)
 
+      # attribute for a term-point in ospf-proc type ospf-node
       {
-        network_type: ospf_intf_conf_rec&.ospf_network_type || '',
-        metric: ospf_intf_conf_rec&.ospf_cost || 10,
-        passive: ospf_intf_conf_rec&.ospf_passive? || false,
+        network_type: ospf_intf_conf&.ospf_network_type || '',
+        metric: ospf_intf_conf&.ospf_cost || 10,
+        passive: ospf_intf_conf&.ospf_passive? || false,
         timer: {
-          hello_interval: ospf_intf_conf_rec&.ospf_hello_interval || 10,
-          dead_interval: ospf_intf_conf_rec&.ospf_dead_interval || 40
+          hello_interval: ospf_intf_conf&.ospf_hello_interval || 10,
+          dead_interval: ospf_intf_conf&.ospf_dead_interval || 40
         }
       }
     end
@@ -89,15 +98,15 @@ module TopologyBuilder
     # @param [PLinkEdge] l3_edge A edge of L3 link
     # @return [Array<PNode, PTermPoint>] A pair of added ospf node and term-point
     def add_ospf_node_tp(l3_edge)
-      l3_node, l3_tp = @layer3.find_node_tp_by_edge(l3_edge)
-      throw StandardError "Node #{l3_edge.node} not found in #{@layer3.name}" if l3_node.nil?
+      l3_node, l3_tp = @layer3p.find_node_tp_by_edge(l3_edge)
+      throw StandardError "Node #{l3_edge.node} not found in #{@layer3p.name}" if l3_node.nil?
 
       ospf_node = @network.node(l3_node.name)
-      ospf_node.supports.push([@layer3.name, l3_node.name])
+      ospf_node.supports.push([@layer3p.name, l3_node.name])
       ospf_node.attribute = ospf_node_attr(l3_node)
 
       ospf_tp = ospf_node.term_point(l3_tp.name)
-      ospf_tp.supports.push([@layer3.name, l3_node.name, l3_tp.name])
+      ospf_tp.supports.push([@layer3p.name, l3_node.name, l3_tp.name])
       ospf_tp.attribute = ospf_tp_attr(l3_node, l3_tp)
 
       [ospf_node, ospf_tp]
@@ -120,10 +129,12 @@ module TopologyBuilder
     def add_ospf_node_tp_link(l3_links)
       l3_links.each do |l3_link|
         dst_intf_conf = @ospf_intf_conf.find_record_by_node_intf(l3_link.dst.node, l3_link.dst.tp)
+        # ignore destination if it is NOT ospf-enabled node
         next if dst_intf_conf.nil? || !dst_intf_conf.ospf_enabled?
 
+        # add destination node as ospf node (ospf-proc) and connect it to segment node
         n1, tp1 = add_ospf_node_tp(l3_link.src) # segment node
-        n2, tp2 = add_ospf_node_tp(l3_link.dst)
+        n2, tp2 = add_ospf_node_tp(l3_link.dst) # ospf-proc node
         add_ospf_link(n1.name, tp1.name, n2.name, tp2.name)
       end
     end
@@ -133,7 +144,7 @@ module TopologyBuilder
     def setup_ospf_topology
       segment_nodes = find_all_l3_segment_type_nodes
       segment_nodes.each do |seg_node|
-        links = @layer3.find_all_links_by_src_name(seg_node.name)
+        links = @layer3p.find_all_links_by_src_name(seg_node.name)
         add_ospf_node_tp_link(links)
       end
     end
@@ -155,8 +166,8 @@ module TopologyBuilder
     # @param [PTermPoint] other_tp Neighbor term-point of target
     # @return [void]
     def update_tp_neighbor_attr(target_tp, other_node, other_tp)
-      stp = other_tp.supports.find { |s| s[0] == @layer3.name } # support-tp element is [nw, node, tp] array
-      _, other_stp = @layer3.find_node_tp_by_name(stp[1], stp[2])
+      stp = other_tp.supports.find { |s| s[0] == @layer3p.name } # support-tp element is [nw, node, tp] array
+      _, other_stp = @layer3p.find_node_tp_by_name(stp[1], stp[2])
       neighbor = {
         router_id: other_node.attribute[:router_id],
         ip_addr: other_stp.attribute[:ip_addrs][0]

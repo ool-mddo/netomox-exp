@@ -76,7 +76,7 @@ task :simulation_pattern do
     find_all_model_info_by_type(:simulation_target).each do |model_info|
       snapshot_dir = File.join(CONFIGS_DIR, model_info[:network], model_info[:snapshot])
       pattern_file = File.join(snapshot_dir, 'snapshot_patterns.json')
-      FileUtils.rm(pattern_file)
+      FileUtils.rm_f(pattern_file)
     end
     next
   end
