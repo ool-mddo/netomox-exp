@@ -25,11 +25,19 @@ def register_ospf1(nws)
         attribute(attr)
         term_point 'eth2' do
           support %w[ospf_trial_l3 rt1 eth2]
-          attribute({ metric: 10 })
+          attr = {
+            metric: 10,
+            neighbors: [{ router_id: '172.16.0.2', ip_addr: '10.0.0.2' }]
+          }
+          attribute(attr)
         end
         term_point 'eth3' do
           support %w[ospf_trial_l3 rt1 eth2]
-          attribute({ metric: 20 })
+          attr = {
+            metric: 20,
+            neighbors: [{ router_id: '172.16.0.3', ip_addr: '10.0.1.2' }]
+          }
+          attribute(attr)
         end
       end
       node 'Seg_10.0.0.0/30' do
