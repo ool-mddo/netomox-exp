@@ -4,6 +4,7 @@ require_relative 'pseudo_dsl/pseudo_model'
 require_relative 'csv_mapper/ospf_area_conf_table'
 require_relative 'csv_mapper/ospf_intf_conf_table'
 require_relative 'csv_mapper/ospf_proc_conf_table'
+require 'ipaddress'
 
 module TopologyBuilder
   # rubocop:disable Metrics/ClassLength
@@ -27,6 +28,7 @@ module TopologyBuilder
         @network = @networks.network("ospf_area#{@area_id}")
         @network.type = Netomox::NWTYPE_MDDO_OSPF_AREA
         @network.supports.push(@layer3p.name)
+        @network.attribute = { identifier: dotted_quad_area_id }
         setup_ospf_topology
         update_ospf_neighbor_attr
       end
@@ -34,6 +36,11 @@ module TopologyBuilder
     end
 
     private
+
+    # @return [String] Dotted-quad format area id
+    def dotted_quad_area_id
+      IPAddress::IPv4.parse_u32(@area_id).address
+    end
 
     # @return [Array<PNode>] Layer3 segment nodes
     def find_all_l3_segment_type_nodes

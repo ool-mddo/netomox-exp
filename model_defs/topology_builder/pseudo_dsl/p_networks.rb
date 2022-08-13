@@ -72,6 +72,7 @@ module TopologyBuilder
       # @return [void]
       def interpret_network(network)
         nmx_network = make_nmx_network(network)
+        nmx_network.attribute(network.attribute) if network.attribute
         network.supports.each { |s| nmx_network.support(s) }
         network.nodes.each { |node| interpret_node(node, nmx_network) }
         network.links.each { |link| interpret_link(link, nmx_network) }
