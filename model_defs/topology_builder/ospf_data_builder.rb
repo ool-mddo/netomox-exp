@@ -23,33 +23,47 @@ module TopologyBuilder
 
     # @return [PNetworks] Networks contains ospf area topology
     def make_networks
+      # NOTE: ospf layer is defined for each ospf-area
       @ospf_area_conf.all_areas.each do |area_id|
+        # set context
         @area_id = area_id
         @network = @networks.network("ospf_area#{@area_id}")
-        @network.type = Netomox::NWTYPE_MDDO_OSPF_AREA
-        @network.supports.push(@layer3p.name)
-        @network.attribute = { identifier: dotted_quad_area_id }
+        # setup network (per ospf-area) data
+        setup_ospf_network_attr
         setup_ospf_topology
         update_ospf_neighbor_attr
       end
+      # the `networks` contains multiple ospf-area network
       @networks
     end
 
     private
+
+    def setup_ospf_network_attr
+      @network.type = Netomox::NWTYPE_MDDO_OSPF_AREA
+      @network.supports.push(@layer3p.name)
+      @network.attribute = { identifier: dotted_quad_area_id }
+    end
 
     # @return [String] Dotted-quad format area id
     def dotted_quad_area_id
       IPAddress::IPv4.parse_u32(@area_id).address
     end
 
+    # @param [PNetwork] target_network Network to search
+    # @return [Array<PNode>] Layer3 segment nodes
+    def find_all_segment_type_nodes(target_network)
+      target_network.nodes.find_all { |node| node.attribute[:node_type] == 'segment' }
+    end
+
     # @return [Array<PNode>] Layer3 segment nodes
     def find_all_l3_segment_type_nodes
-      @layer3p.nodes.find_all { |node| node.attribute[:node_type] == 'segment' }
+      find_all_segment_type_nodes(@layer3p)
     end
 
     # @return [Array<PNode>] ospf-area segment node
     def find_all_ospf_segment_type_nodes
-      @network.nodes.find_all { |node| node.attribute[:node_type] == 'segment' }
+      find_all_segment_type_nodes(@network)
     end
 
     # @param [PNode] l3_node L3 node to check
@@ -104,9 +118,10 @@ module TopologyBuilder
 
     # @param [PLinkEdge] l3_edge A edge of L3 link
     # @return [Array<PNode, PTermPoint>] A pair of added ospf node and term-point
+    # @raise [StandardError] Node is not found in layer3 network
     def add_ospf_node_tp(l3_edge)
       l3_node, l3_tp = @layer3p.find_node_tp_by_edge(l3_edge)
-      throw StandardError "Node #{l3_edge.node} not found in #{@layer3p.name}" if l3_node.nil?
+      raise StandardError "Node #{l3_edge.node} not found in #{@layer3p.name}" if l3_node.nil?
 
       ospf_node = @network.node(l3_node.name)
       ospf_node.supports.push([@layer3p.name, l3_node.name])
@@ -166,35 +181,43 @@ module TopologyBuilder
       [node, tp, conf]
     end
 
-    # rubocop:disable Metrics/AbcSize
+    # @param [PNode] other_node Neighbor ospf node of target
+    # @param [PTermPoint] other_tp Neighbor ospf term-point of target
+    # @return [Hash] neighbor attribute of ospf term-point
+    def tp_neighbor_attr(other_node, other_tp)
+      # NOTE: support-tp element is [network, node, tp] array
+      stp = other_tp.supports.find { |s| s[0] == @layer3p.name }
+      ip_addr = if stp.nil?
+                  msg = "Supporting term-point of #{other_node}#{other_tp} for ospf neighbor attribute is not found"
+                  TopologyBuilder.logger.error(msg)
+                  ''
+                else
+                  _, other_stp = @layer3p.find_node_tp_by_name(stp[1], stp[2])
+                  other_stp.attribute[:ip_addrs][0]
+                end
 
-    # @param [PTermPoint] target_tp Update target term-point
-    # @param [PNode] other_node Neighbor node of target
-    # @param [PTermPoint] other_tp Neighbor term-point of target
+      { router_id: other_node.attribute[:router_id], ip_addr: ip_addr }
+    end
+
+    # @param [PTermPoint] target_tp target ospf term-point to add a neighbor attribute
+    # @param [Hash] neighbor_attr Neighbor attribute
     # @return [void]
-    def update_tp_neighbor_attr(target_tp, other_node, other_tp)
-      stp = other_tp.supports.find { |s| s[0] == @layer3p.name } # support-tp element is [nw, node, tp] array
-      _, other_stp = @layer3p.find_node_tp_by_name(stp[1], stp[2])
-      neighbor = {
-        router_id: other_node.attribute[:router_id],
-        ip_addr: other_stp.attribute[:ip_addrs][0]
-      }
+    def add_tp_neighbor_attr(target_tp, neighbor_attr)
       if !target_tp.attribute.key?(:neighbors) || target_tp.attribute[:neighbors].nil?
         target_tp.attribute[:neighbors] = []
       end
-      target_tp.attribute[:neighbors].push(neighbor)
+      target_tp.attribute[:neighbors].push(neighbor_attr)
     end
-    # rubocop:enable Metrics/AbcSize
 
-    # @param [PTermPoint] target_tp Update target term-point
-    # @param [Array<PLinkEdge>] other_edges neighbor candidate term-points (edges)
+    # @param [PTermPoint] target_tp Update target ospf term-point
+    # @param [Array<PLinkEdge>] other_edges neighbor candidate ospf term-points
     # @return [void]
     def listing_neighbors_and_update(target_tp, other_edges)
       other_edges.each do |other_edge|
         other_node, other_tp, other_conf = find_ospf_node_tp_conf(other_edge)
         next if other_conf.nil? || !other_conf.ospf_active?
 
-        update_tp_neighbor_attr(target_tp, other_node, other_tp)
+        add_tp_neighbor_attr(target_tp, tp_neighbor_attr(other_node, other_tp))
       end
     end
 
