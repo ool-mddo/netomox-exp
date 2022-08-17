@@ -1,6 +1,6 @@
 GIT
   remote: https://github.com/corestate55/netomox
-  revision: 2c895d5958bbb3cf5a82e90d71dbc9c037367d77
+  revision: 32b44fd4f30a01ec487d815856ff70f96c5c8534
   branch: ospf-model
   specs:
     netomox (0.1.0)
