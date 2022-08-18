@@ -39,6 +39,7 @@ module TopologyBuilder
 
     private
 
+    # @return [void]
     def setup_ospf_network_attr
       @network.type = Netomox::NWTYPE_MDDO_OSPF_AREA
       @network.supports.push(@layer3p.name)
@@ -117,7 +118,7 @@ module TopologyBuilder
     # rubocop:disable Metrics/AbcSize
 
     # @param [PLinkEdge] l3_edge A edge of L3 link
-    # @return [Array<PNode, PTermPoint>] A pair of added ospf node and term-point
+    # @return [Array(PNode, PTermPoint)] A pair of added ospf node and term-point
     # @raise [StandardError] Node is not found in layer3 network
     def add_ospf_node_tp(l3_edge)
       l3_node, l3_tp = @layer3p.find_node_tp_by_edge(l3_edge)
@@ -148,6 +149,7 @@ module TopologyBuilder
     # rubocop:disable Metrics/AbcSize
 
     # @param [Array<PLink>] l3_links Layer3 links sourced a segment-node
+    # @return [void]
     def add_ospf_node_tp_link(l3_links)
       l3_links.each do |l3_link|
         dst_intf_conf = @ospf_intf_conf.find_record_by_node_intf(l3_link.dst.node, l3_link.dst.tp)
@@ -172,7 +174,7 @@ module TopologyBuilder
     end
 
     # @param [PNodeEdge] edge Link edge
-    # @return [Array<PNode, PTermPoint, OspfProcessConfigurationTableRecord>]
+    # @return [Array(PNode, PTermPoint, OspfProcessConfigurationTableRecord)]
     def find_ospf_node_tp_conf(edge)
       node, tp = @network.find_node_tp_by_edge(edge)
       return [nil, nil, nil] if node.nil? || tp.nil?

@@ -87,7 +87,7 @@ module TopologyBuilder
     end
 
     # @param [PLinkEdge] l2_edge A Link-edge in layer2 topology (in segment)
-    # @return [Array<(PNode, PTermPoint)>] Added L3-Node and term-point pair
+    # @return [Array(PNode, PTermPoint)] Added L3-Node and term-point pair
     def add_l3_node_tp(l2_edge)
       rec, l2_node = ip_rec_by_l2_edge(l2_edge)
 
@@ -223,6 +223,7 @@ module TopologyBuilder
     end
     # rubocop:enable Metrics/MethodLength, Metrics/AbcSize
 
+    # @return [void]
     def add_l3_loopback_tps
       @ip_owners.find_all_records_of_loopback.each do |rec|
         l3_node = @network.node(rec.node)
