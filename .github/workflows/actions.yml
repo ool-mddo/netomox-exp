@@ -6,7 +6,10 @@ jobs:
   build_and_push:
     runs-on: ubuntu-latest
     env:
-      IMAGE_NAME: netomox-exp 
+      IMAGE_NAME: netomox-exp
+    permissions:
+      contents: read
+      packages: write
     steps:
       - name: checkout
         uses: actions/checkout@v2
@@ -19,7 +22,7 @@ jobs:
         with:
           registry: ghcr.io
           username: ${{ github.repository_owner }}
-          password: ${{ secrets.CR_PAT }}
+          password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Build and Push
         uses: docker/build-push-action@v2
