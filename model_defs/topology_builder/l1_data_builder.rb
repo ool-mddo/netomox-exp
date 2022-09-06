@@ -28,7 +28,7 @@ module TopologyBuilder
 
     private
 
-    # @param [CSVMapper:EdgeBase] edge Source/Destination of layer1 edge
+    # @param [CSVMapper::EdgeBase] edge Source/Destination of layer1 edge
     # @return [Boolean]
     def valid_edge_in_intf_props?(edge)
       props = @intf_props.find_all_records_by_node(edge.node)
@@ -39,7 +39,7 @@ module TopologyBuilder
 
       return true if props.find { |p| p.interface == edge.interface }
 
-      TopologyBuilder.logger.error("L1 edges have invalid interface name: #{edge.node}[#{edge.node}]")
+      TopologyBuilder.logger.error("L1 edges have invalid interface name: #{edge.node}[#{edge.interface}]")
       false
     end
 
