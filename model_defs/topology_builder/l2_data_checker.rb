@@ -36,8 +36,10 @@ module TopologyBuilder
       end
 
       if operative_access_port?(target_src_tp_prop, target_dst_tp_prop)
+        debug_print "  operative access port: src_tpp:#{target_src_tp_prop}, dst_tpp:#{target_dst_tp_prop}"
         port_l2_config_access(target_src_tp_prop, target_dst_tp_prop)
       elsif operative_trunk_port?(target_src_tp_prop, target_dst_tp_prop)
+        debug_print "  operative trunk port: src_tpp:#{target_src_tp_prop}, dst_tpp:#{target_dst_tp_prop}"
         port_l2_config_trunk(src_node, target_src_tp_prop, dst_node, target_dst_tp_prop)
       else
         {
@@ -61,7 +63,9 @@ module TopologyBuilder
     def junos_trunk_port_as_subif(phy_prop, unit_props)
       # NOTICE: L3 sub-interface : batfish cannot handle sub-interface vlan configuration
       #   here, it assumes that unit-number is vlan-id
+      debug_print "    unit_props: #{unit_props}"
       phy_prop.allowed_vlans = unit_props.map(&:unit_number).map(&:to_i)
+      debug_print "    junos trunk port subif: phy:#{phy_prop}, allowed_vlans:#{phy_prop.allowed_vlans}"
       phy_prop.switchport = 'True'
       phy_prop.switchport_mode = 'TRUNK'
       phy_prop
