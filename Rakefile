@@ -206,6 +206,8 @@ task :netomox_diff do
     end
 
     # overwrite diff files
+    next if ENV.fetch('DISABLE_DIFF_OVERWRITE', nil)
+
     topology_diffs = Dir.glob("#{NETOVIZ_DIR}/*.diff")
     parallel_executables(topology_diffs) do |topology_diff|
       sh "mv #{topology_diff} #{topology_diff.gsub(File.extname(topology_diff), '')}"

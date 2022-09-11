@@ -93,7 +93,7 @@ docker-compose exec netomox-exp bash
 
 ```text
 bundle exec rake [NETWORK=<network-name>]
-                 [PHY_SS_ONLY=1]
+                 [PHY_SS_ONLY=1] [DISABLE_DIFF_OVERWRITE=1]
                  [OFF_NODE=<draw-off-node> [OFF_INTF_RE=<draw-off-link>]]
 ```
 
@@ -102,6 +102,7 @@ Arguments of the rake tasks (Environment Values):
 * `PHY_SS_ONLY` : Physical snapshot only (without logical(link-down/draw-off) snapshots) [for debugging]
   * With `OFF_NODE`/`OFF_INTF_RE`, these `OFF_` options are ignored
   * e.g. `bundle exec rake PHY_SS_ONLY=1` (non-nil)
+* `DISABLE_DIFF_OVERWRITE` : Do not add diff-state to (link-down/draw-off) topology data (disable overwriting .diff to .json)
 * `OFF_NODE`: A node name to draw-off
   * Without `OFF_INTF_RE`, it assumes node-down case (draw-off all links of the node)
   * e.g. `bundle exec rake OFF_NODE=regiona-ce01`
