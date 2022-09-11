@@ -63,8 +63,8 @@ module TopologyBuilder
       end
 
       # @return [Array<IPOwnersTableRecord>] Found records
-      def find_all_records_of_loopback
-        @records.find_all(&:loopback_interface?)
+      def find_all_loopbacks_by_node(node_name)
+        find_all_records_by_node(node_name).find_all(&:loopback_interface?)
       end
 
       # @param [String] node_name Node name
