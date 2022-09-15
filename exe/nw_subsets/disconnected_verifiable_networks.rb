@@ -23,6 +23,8 @@ module Netomox
       end
     end
 
+    # rubocop:disable Metrics/ClassLength
+
     # Network class to find disconnected sub-graph
     class DisconnectedVerifiableNetwork < Network
       # rubocop:disable Metrics/MethodLength, Metrics/AbcSize
@@ -62,12 +64,10 @@ module Netomox
 
       private
 
+      # @note For layer3 network
       # @param [TopologyOperator::NetworkSet] network_set
       # @return [TopologyOperator::NetworkSet]
-      def other_policy_check(network_set)
-        return network_set unless network_set.network_name =~ /layer3/
-
-        # add flags for layer3
+      def l3_additional_policy_check(network_set)
         network_set.subsets.each do |subset|
           mp_seg_nodes = subset.find_all_multiple_prefix_seg_nodes
           subset.flag[:multiple_prefix_segments] = mp_seg_nodes.length unless mp_seg_nodes.empty?
@@ -75,6 +75,108 @@ module Netomox
           subset.flag[:duplicated_prefix_segments] = dp_seg_nodes.length unless dp_seg_nodes.empty?
         end
         network_set
+      end
+
+      # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
+
+      # @note For layer3 or ospf-area network
+      # @param [TopologyOperator::NetworkSubset] subset
+      # @return [Hash] segment connected term-points in the subnet
+      def find_segment_connected_tps(subset)
+        seg_table = {}
+        subset.elements.each do |target_element|
+          target_path_array = target_element.split('__')
+          # select node element
+          next if target_path_array.length != 2
+
+          src_node = find_node_by_name(target_path_array[1])
+          # select segment-type element as source of a link
+          next if src_node.nil? || src_node.attribute.node_type != 'segment'
+
+          # all node-type nodes (in layer3 or upper) are connected via a segment-type node
+          # either L3 P2P(/30 link)
+          src_node.termination_points.each do |src_tp|
+            link = find_link_by_source(src_node.name, src_tp.name)
+            seg_table[src_node.name] = [] unless seg_table.key?(src_node.name)
+            seg_table[src_node.name].push(link.destination.ref_path)
+          end
+        end
+        seg_table
+      end
+      # rubocop:enable Metrics/AbcSize, Metrics/MethodLength
+
+      # @param [Array<String>] elements Array of term-point paths (value of a seg_table)
+      # @return [Array<Netomox::Topology::TermPoint>] Term-point objects
+      def seg_table_to_tps(elements)
+        elements.map do |path|
+          refs = path.split('__')
+          node = find_node_by_name(refs[1])
+          node.find_tp_by_name(refs[2])
+        end
+      end
+
+      # @note For ospf-area network
+      # @param [TopologyOperator::NetworkSubset] subset
+      # @param [String] seg_name
+      # @param [Array<Netomox::Topology::TermPoint>] tps
+      # @return [void]
+      def check_ospf_params_passive(subset, seg_name, tps)
+        # passive interface check
+        passive_list = tps.map { |tp| tp.attribute.passive }
+        if passive_list.count(true) == passive_list.length
+          subset.countup_flag(:passive_only_segments)
+          Netomox.logger.warn "ospf-area check: passive-only segment: #{seg_name}"
+        elsif passive_list.count(false) == 1
+          subset.countup_flag(:lonely_ospf_speaker)
+          Netomox.logger.error "ospf-area check: found only one ospf-speaker in segment: #{seg_name}"
+        end
+      end
+
+      # @note For ospf-area network
+      # @param [TopologyOperator::NetworkSubset] subset
+      # @param [String] seg_name
+      # @param [Array<Netomox::Topology::TermPoint>] tps
+      # @return [void]
+      def check_ospf_params_timer(subset, seg_name, tps)
+        # ospf timer check
+        timer_list = tps.map { |tp| tp.attribute.timer }
+                        .map { |tmr| [tmr.hello_interval, tmr.dead_interval, tmr.retransmission_interval] }
+                        .uniq
+        return unless timer_list.length > 1
+
+        subset.countup_flag(:segment_has_mixed_timer)
+        Netomox.logger.error "ospf-area check: mixed timers #{timer_list} in seg: #{seg_name}"
+      end
+
+      # @note For ospf-area network
+      # @param [TopologyOperator::NetworkSet] network_set
+      # @return [TopologyOperator::NetworkSet]
+      def ospf_additional_policy_check(network_set)
+        network_set.subsets.each do |subset|
+          subset_seg_table = find_segment_connected_tps(subset)
+          subset_seg_table.each_key do |seg|
+            tps = seg_table_to_tps(subset_seg_table[seg])
+            check_ospf_params_passive(subset, seg, tps)
+            check_ospf_params_timer(subset, seg, tps)
+          end
+        end
+        network_set
+      end
+
+      # @note For layer3 or ospf-area network
+      # @param [TopologyOperator::NetworkSet] network_set
+      # @return [TopologyOperator::NetworkSet]
+      def other_policy_check(network_set)
+        case network_set.network_name
+        when /layer3$/i
+          # add flags for layer3
+          l3_additional_policy_check(network_set)
+        when /ospf_area\d+/i
+          # add flags for ospf-area
+          ospf_additional_policy_check(network_set)
+        else
+          network_set
+        end
       end
 
       # Remove node/tp, link which has "deleted" diff_state
@@ -126,5 +228,6 @@ module Netomox
       end
       # rubocop:enable Metrics/MethodLength, Metrics/AbcSize, Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity
     end
+    # rubocop:enable Metrics/ClassLength
   end
 end
