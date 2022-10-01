@@ -115,26 +115,61 @@ module TopologyBuilder
     end
     # rubocop:enable Metrics/CyclomaticComplexity, Metrics/MethodLength
 
-    # rubocop:disable Metrics/AbcSize
+    # @param [PLinkEdge] l3_edge A edge of L3 link
+    # @return [Array(PNode, PTermPoint)] pair of node/tp
+    def l3_edge_to_object(l3_edge)
+      l3_node, l3_tp = @layer3p.find_node_tp_by_edge(l3_edge)
+      raise StandardError "Node #{l3_edge.node} not found in #{@layer3p.name}" if l3_node.nil?
+
+      [l3_node, l3_tp]
+    end
+
+    # @param [PNode] l3_node Layer3 node
+    # @param [String] flag A string in flags
+    # @return [Array<PTermPoint>] Term-points in l3_node that has flag in its attribute.flags
+    def find_all_l3_tps_by_flags(l3_node, flag)
+      l3_node.tps.find_all do |tp|
+        tp.attribute&.key?(:flags) && tp.attribute[:flags].include?(flag)
+      end
+    end
+
+    # add loopback term-point to ospf-are anode if origin (layer3) node has loopback
+    # @param [PLinkEdge] l3_edge A edge of L3 link
+    # @return [void]
+    def add_ospf_node_loopback_tp(l3_edge)
+      l3_node, = l3_edge_to_object(l3_edge)
+      ospf_node = @network.node(l3_node.name)
+      debug_print "  # Add loopback interface to #{ospf_node.name} from #{l3_node.name}"
+
+      find_all_l3_tps_by_flags(l3_node, 'loopback').each do |l3_tp_lo|
+        debug_print "    - add: #{l3_tp_lo.name} to #{ospf_node.name}"
+        add_tp_to_ospf_node(l3_node, l3_tp_lo, ospf_node)
+      end
+    end
+
+    # @param [PNode] l3_node Layer3 node
+    # @param [PTermPoint] l3_tp Layer3 term-point of l3_node
+    # @param [PNode] ospf_node OSPF-layer node (add target)
+    # @return [PTermPoint] added term-point (in ospf_node)
+    def add_tp_to_ospf_node(l3_node, l3_tp, ospf_node)
+      ospf_tp = ospf_node.term_point(l3_tp.name)
+      ospf_tp.supports.push([@layer3p.name, l3_node.name, l3_tp.name])
+      ospf_tp.attribute = ospf_tp_attr(l3_node, l3_tp)
+      ospf_tp
+    end
 
     # @param [PLinkEdge] l3_edge A edge of L3 link
     # @return [Array(PNode, PTermPoint)] A pair of added ospf node and term-point
     # @raise [StandardError] Node is not found in layer3 network
     def add_ospf_node_tp(l3_edge)
-      l3_node, l3_tp = @layer3p.find_node_tp_by_edge(l3_edge)
-      raise StandardError "Node #{l3_edge.node} not found in #{@layer3p.name}" if l3_node.nil?
-
+      debug_print "# add ospf node/tp: L3edge: #{l3_edge}"
+      l3_node, l3_tp = l3_edge_to_object(l3_edge)
       ospf_node = @network.node(l3_node.name)
       ospf_node.supports.push([@layer3p.name, l3_node.name])
       ospf_node.attribute = ospf_node_attr(l3_node)
-
-      ospf_tp = ospf_node.term_point(l3_tp.name)
-      ospf_tp.supports.push([@layer3p.name, l3_node.name, l3_tp.name])
-      ospf_tp.attribute = ospf_tp_attr(l3_node, l3_tp)
-
+      ospf_tp = add_tp_to_ospf_node(l3_node, l3_tp, ospf_node)
       [ospf_node, ospf_tp]
     end
-    # rubocop:enable Metrics/AbcSize
 
     # @param [PNode] node1 Source ospf node
     # @param [PTermPoint] tp1 Source ospf term-point
@@ -159,6 +194,7 @@ module TopologyBuilder
         # add destination node as ospf node (ospf-proc) and connect it to segment node
         n1, tp1 = add_ospf_node_tp(l3_link.src) # segment node
         n2, tp2 = add_ospf_node_tp(l3_link.dst) # ospf-proc node
+        add_ospf_node_loopback_tp(l3_link.dst) # segment node doesn't have loopback
         add_ospf_link(n1.name, tp1.name, n2.name, tp2.name)
       end
     end

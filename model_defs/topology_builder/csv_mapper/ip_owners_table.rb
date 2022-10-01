@@ -31,8 +31,9 @@ module TopologyBuilder
         @active = record[:active]
       end
 
+      # @return [Boolean] true if interface name seems loopback interface
       def loopback_interface?
-        @interface =~ /^lo(?:opback)?/i
+        %r{^lo(?:opback)?[\-\d./:]*$}i.match?(@interface)
       end
 
       # @return [String]

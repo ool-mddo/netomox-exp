@@ -225,8 +225,11 @@ module TopologyBuilder
 
     # @return [void]
     def add_l3_loopback_tps
+      debug_print('# Add L3 loopback tps')
       find_all_node_type_nodes.each do |l3_node|
-        @ip_owners.find_all_loopbacks_by_node(l3_node.name) do |rec|
+        debug_print("- node:#{l3_node.name}")
+        @ip_owners.find_all_loopbacks_by_node(l3_node.name).each do |rec|
+          debug_print("  - interface: #{rec.interface}")
           l3_tp = l3_node.term_point(rec.interface)
           l3_tp.attribute = { ip_addrs: ["#{rec.ip}/#{rec.mask}"], flags: %w[loopback] }
         end
