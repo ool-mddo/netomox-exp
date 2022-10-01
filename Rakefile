@@ -5,7 +5,6 @@ require 'rake/clean'
 require 'json'
 require 'httpclient'
 require 'parallel'
-require 'fileutils'
 
 CONFIGS_DIR = ENV.fetch('MDDO_CONFIGS_DIR', 'configs')
 MODELS_DIR = ENV.fetch('MDDO_MODELS_DIR', 'models')
@@ -44,7 +43,7 @@ task :model_dirs do
   puts '# Make directories'
   sh "mkdir -p #{NETOVIZ_DIR}"
   sh "mkdir -p #{MODELS_DIR}"
-  # clean models directory
+  puts '# Clean models dir'
   sh "rm -rf #{MODELS_DIR}/*"
 end
 
@@ -76,7 +75,7 @@ task :simulation_pattern do
     find_all_model_info_by_type(:simulation_target).each do |model_info|
       snapshot_dir = File.join(CONFIGS_DIR, model_info[:network], model_info[:snapshot])
       pattern_file = File.join(snapshot_dir, 'snapshot_patterns.json')
-      FileUtils.rm_f(pattern_file)
+      sh "rm -f #{pattern_file}"
     end
     next
   end
@@ -114,10 +113,6 @@ def models_list
 end
 # rubocop:enable Metrics/AbcSize
 
-def topology_file_name(network, snapshot)
-  "#{network}_#{snapshot.gsub('/', '_')}.json" # convert to safe snapshot name
-end
-
 def index_label(network, snapshot, model_info)
   models_snapshot_dir = File.join(MODELS_DIR, network, snapshot)
   snapshot_pattern = File.join(models_snapshot_dir, 'snapshot_pattern.json')
@@ -136,7 +131,9 @@ task :netoviz_index do
     network, snapshot = network_snapshot_pair
     model_info = find_model_info_by_network(network)
     {
-      'file' => topology_file_name(network, snapshot),
+      'network' => network,
+      'snapshot' => snapshot,
+      'file' => 'topology.json',
       'label' => index_label(network, snapshot, model_info)
     }
   end
@@ -161,10 +158,11 @@ task :netoviz_model do
   sh "rm -f #{NETOVIZ_DIR}/*linkdown*.json"
   sh "rm -f #{NETOVIZ_DIR}/*drawoff*.json"
 
-  parallel_executables(models_list) do |network_snapshot_pair|
-    network, snapshot = network_snapshot_pair
+  parallel_executables(models_list) do |network, snapshot|
     models_snapshot_dir = File.join(MODELS_DIR, network, snapshot)
-    topo_file = File.join(NETOVIZ_DIR, topology_file_name(network, snapshot))
+    netoviz_snapshot_dir = File.join(NETOVIZ_DIR, network, snapshot)
+    sh "mkdir -p #{netoviz_snapshot_dir}"
+    topo_file = File.join(netoviz_snapshot_dir, 'topology.json')
     sh "bundle exec ruby #{MODEL_DEFS_DIR}/mddo_trial.rb -i #{models_snapshot_dir} > #{topo_file}"
   end
 end
@@ -172,7 +170,11 @@ end
 desc 'Copy netoviz layout files'
 task :netoviz_layout do
   puts '# Copy netoviz layout files'
-  sh "cp #{MODEL_DEFS_DIR}/layout/*.json #{NETOVIZ_DIR}"
+  parallel_executables(models_list) do |network, snapshot|
+    netoviz_snapshot_dir = File.join(NETOVIZ_DIR, network, snapshot)
+    layout_file = File.join(MODEL_DEFS_DIR, 'layout', network, snapshot, 'layout.json')
+    sh "cp #{layout_file} #{netoviz_snapshot_dir}" if File.exist?(layout_file)
+  end
 end
 
 def make_topology_diff(src_topology, dst_topology)
