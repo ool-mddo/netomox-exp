@@ -155,8 +155,8 @@ desc 'Generate topology files (for netoviz)'
 task :netoviz_model do
   puts '# Generate topology files'
   # clean
-  sh "rm -f #{NETOVIZ_DIR}/*linkdown*.json"
-  sh "rm -f #{NETOVIZ_DIR}/*drawoff*.json"
+  sh "find #{NETOVIZ_DIR} -type d -name '*_linkdown_*' | rm -rf"
+  sh "find #{NETOVIZ_DIR} -type d -name '*_drawoff' | rm -rf"
 
   parallel_executables(models_list) do |network, snapshot|
     models_snapshot_dir = File.join(MODELS_DIR, network, snapshot)
@@ -178,7 +178,7 @@ task :netoviz_layout do
 end
 
 def make_topology_diff(src_topology, dst_topology)
-  topology_diff = File.join(NETOVIZ_DIR, "#{File.basename(dst_topology)}.diff")
+  topology_diff = File.join(File.dirname(dst_topology), "#{File.basename(dst_topology)}.diff")
   sh "bundle exec netomox diff -o #{topology_diff} #{src_topology} #{dst_topology}"
 end
 
@@ -186,23 +186,24 @@ desc 'Generate diff data of linkdown snapshots and overwrite'
 task :netomox_diff do
   puts '# Generate diff data'
   # clean
-  sh "rm -f #{NETOVIZ_DIR}/*.diff"
+  sh "find #{NETOVIZ_DIR} -name '*.diff' | xargs rm -f"
 
   find_all_model_info_by_type(:simulation_target).each do |model_info|
     network = model_info[:network]
     orig_snapshot = model_info[:snapshot]
-    orig_topology = File.join(NETOVIZ_DIR, "#{network}_#{orig_snapshot}.json")
+    orig_topology = File.join(NETOVIZ_DIR, network, orig_snapshot, 'topology.json')
     src_topology = orig_topology
 
     # drawoff if exists
-    drawoff_topology = File.join(NETOVIZ_DIR, "#{network}_#{orig_snapshot}_drawoff.json")
+    drawoff_topology = File.join(NETOVIZ_DIR, network, "#{orig_snapshot}_drawoff", 'topology.json')
     if File.exist?(drawoff_topology)
       make_topology_diff(orig_topology, drawoff_topology)
       src_topology = drawoff_topology
     end
 
     # linkdown
-    linkdown_topologies = Dir.glob("#{NETOVIZ_DIR}/#{network}_#{orig_snapshot}_linkdown*.json")
+    linkdown_topologies_glob = File.join(NETOVIZ_DIR, network, "#{orig_snapshot}_linkdown_*", 'topology.json')
+    linkdown_topologies = Dir.glob(linkdown_topologies_glob)
     parallel_executables(linkdown_topologies) do |linkdown_topology|
       make_topology_diff(src_topology, linkdown_topology)
     end
@@ -210,7 +211,8 @@ task :netomox_diff do
     # overwrite diff files
     next if ENV.fetch('DISABLE_DIFF_OVERWRITE', nil)
 
-    topology_diffs = Dir.glob("#{NETOVIZ_DIR}/*.diff")
+    topology_diffs_glob = File.join(NETOVIZ_DIR, network, "#{orig_snapshot}_*", '*.diff')
+    topology_diffs = Dir.glob(topology_diffs_glob)
     parallel_executables(topology_diffs) do |topology_diff|
       sh "mv #{topology_diff} #{topology_diff.gsub(File.extname(topology_diff), '')}"
     end
