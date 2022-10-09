@@ -18,6 +18,8 @@ module TopologyBuilder
       #   @return [Integer]
       # @!attribute [rw] allowed_vlans
       #   @return [Array<Integer>]
+      # @!attribute [rw] encapsulation_vlan
+      #   @return [Integer]
       # @!attribute [rw] switchport
       #   @return [String]
       # @!attribute [rw] switchport_mode
@@ -31,7 +33,7 @@ module TopologyBuilder
       # @!attribute [rw] description
       #   @return [String]
       attr_accessor :node, :interface, :vrf, :primary_address,
-                    :access_vlan, :allowed_vlans,
+                    :access_vlan, :allowed_vlans, :encapsulation_vlan,
                     :switchport, :switchport_mode, :switchport_trunk_encapsulation,
                     :channel_group, :channel_group_members, :description
 
@@ -49,8 +51,9 @@ module TopologyBuilder
         @interface = interface.interface
 
         @active = record[:active]
-        @access_vlan = record[:access_vlan]
+        @access_vlan = record[:access_vlan].to_i
         @allowed_vlans = parse_allowed_vlans(record[:allowed_vlans])
+        @encapsulation_vlan = record[:encapsulation_vlan].to_i
         @primary_address = record[:primary_address]
         @switchport = record[:switchport]
         @switchport_mode = record[:switchport_mode]
@@ -102,6 +105,12 @@ module TopologyBuilder
       # @return [Boolean] true if LAG member port (physical port)
       def lag_member?
         !@channel_group.nil?
+      end
+
+      # L3 sub-interface detection (for junos interface)
+      # @return [Boolean] true if L3 sub-interface
+      def l3_subif?
+        @encapsulation_vlan.positive? && !(@primary_address.nil? || @primary_address.empty?)
       end
 
       # Unit interface number (for junos interface)

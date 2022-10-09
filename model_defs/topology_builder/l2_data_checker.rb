@@ -60,11 +60,10 @@ module TopologyBuilder
     # @param [InterfacePropertiesTableRecord] phy_prop Intf property of physical intf
     # @param [Array<InterfacePropertiesTableRecord>] unit_props Unit interface properties of phy_intf
     # @return [InterfacePropertiesTableRecord] Phy. interface property (as trunk port)
-    def junos_trunk_port_as_subif(phy_prop, unit_props)
-      # NOTICE: L3 sub-interface : batfish cannot handle sub-interface vlan configuration
-      #   here, it assumes that unit-number is vlan-id
+    def change_property_as_trunk(phy_prop, unit_props)
       debug_print "    unit_props: #{unit_props}"
-      phy_prop.allowed_vlans = unit_props.map(&:unit_number).map(&:to_i)
+      # NOTICE: L3 sub-interface : use encapsulation_vlan as vlan-id of the unit-interface
+      phy_prop.allowed_vlans = unit_props.map(&:encapsulation_vlan)
       debug_print "    junos trunk port subif: phy:#{phy_prop}, allowed_vlans:#{phy_prop.allowed_vlans}"
       phy_prop.switchport = 'True'
       phy_prop.switchport_mode = 'TRUNK'
@@ -76,14 +75,16 @@ module TopologyBuilder
     # @return [nil, InterfacePropertiesTableRecord] interface unit property
     def find_unit_prop_by_phy_prop(phy_prop)
       unit_props = @intf_props.find_all_unit_records_by_node_intf(phy_prop.node, phy_prop.interface)
-      debug_print "find_unit_props (junos) #{phy_prop.node}[#{phy_prop.interface}]: #{unit_props.map(&:interface)}"
+      debug_print "  find_unit_props (junos) #{phy_prop.node}[#{phy_prop.interface}]: #{unit_props.map(&:interface)}"
 
-      if unit_props.length == 1 && unit_props[0].interface =~ /\.0$/
-        # interface if it have only unit.0
+      if unit_props.length == 1 && !unit_props[0].l3_subif?
+        # (only) one unit of L3 interface: usually unit:0
         unit_props[0]
+      elsif unit_props.all?(&:l3_subif?)
+        # it seems layer3-sub-interface:
+        change_property_as_trunk(phy_prop, unit_props)
       else
-        # NOTE: it seems layer3-sub-interface (assume unit numbers = allowed vlans config)
-        junos_trunk_port_as_subif(phy_prop, unit_props)
+        raise StandardError, "Unknown unit interface type: #{phy_prop.node}[#{phy_prop.interface}]"
       end
     end
 
@@ -108,8 +109,7 @@ module TopologyBuilder
     # @return [Array<Integer>] List of vlan-id
     def sw_vlans(l1_node, tp_prop)
       vlans = @sw_vlan_props.find_all_records_by_node_intf(l1_node.name, tp_prop.interface).map(&:vlan_id).uniq
-      # NOTICE: Batfish cannot handle vlan information with vlan sub-interface (for junos, probably ios...)
-      #   So, then it assumes that switch vlans = trunk allowed vlans
+      # NOTICE: junos L3 sub-interface vlan is used `encapsulation_vlan` column
       vlans = tp_prop.allowed_vlans if vlans.empty? && juniper_node?(l1_node)
       vlans
     end

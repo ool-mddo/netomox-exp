@@ -29,10 +29,10 @@ module TopologyBuilder
     private
 
     # @param [PNode] l1_node A node under the new layer2 node
-    # @param [Integer] vlan_id VLAN id (if used)
     # @param [InterfacePropertiesTableRecord] tp_prop Layer1 (phy) or unit interface property
+    # @param [Integer] vlan_id VLAN id (if used)
     # @return [String] Suffix string for Layer2 node name
-    def l2_node_name_suffix(l1_node, vlan_id, tp_prop)
+    def l2_node_name_suffix(l1_node, tp_prop, vlan_id)
       return tp_prop.interface unless vlan_id.positive?
       # Junos-style sub-interface
       # NOTICE: "unit number = vlan-id" assumption
@@ -42,40 +42,49 @@ module TopologyBuilder
     end
 
     # @param [PNode] l1_node A node under the new layer2 node
-    # @param [Integer] vlan_id VLAN id (if used)
     # @param [InterfacePropertiesTableRecord] tp_prop Layer1 (phy) or unit interface property
+    # @param [Integer] vlan_id VLAN id (if used)
     # @return [String] Name of layer2 node
-    def l2_node_name(l1_node, vlan_id, tp_prop)
-      "#{l1_node.name}_#{l2_node_name_suffix(l1_node, vlan_id, tp_prop)}"
+    def l2_node_name(l1_node, tp_prop, vlan_id)
+      "#{l1_node.name}_#{l2_node_name_suffix(l1_node, tp_prop, vlan_id)}"
     end
 
     # @param [PNode] l1_node A node under the new layer2 node
+    # @param [InterfacePropertiesTableRecord] l1_tp_prop Layer1 (phy) or unit interface property
     # @param [Integer] vlan_id VLAN id (if used)
-    # @param [InterfacePropertiesTableRecord] tp_prop Layer1 (phy) or unit interface property
     # @return [PNode] Added layer2 node
-    def add_l2_node(l1_node, vlan_id, tp_prop)
-      new_node = @network.node(l2_node_name(l1_node, vlan_id, tp_prop))
+    def add_l2_node(l1_node, l1_tp_prop, vlan_id)
+      new_node = @network.node(l2_node_name(l1_node, l1_tp_prop, vlan_id))
       new_node.attribute = { name: l1_node.name, vlan_id: vlan_id }
       # same supports are pushed when vlan bridge node (uniq)
       new_node.supports.push([@layer1p.name, l1_node.name]).uniq!
       new_node
     end
 
+    # for junos: the term-point owns l3-sub-interface(s)
     # @param [PNode] l1_node A node under the new layer2 node
-    # @param [Integer] vlan_id VLAN id (if used)
+    # @param [PTermPoint] l1_tp layer1 term-point under the new layer2 term-point
     # @return [Boolean] True if L3 sub-intf of junos
-    def junos_l3_sub_interface?(l1_node, vlan_id)
-      vlan_id.positive? && juniper_node?(l1_node)
+    def owns_l3_sub_interface?(l1_node, l1_tp)
+      return false unless juniper_node?(l1_node)
+
+      @intf_props.find_all_unit_records_by_node_intf(l1_node.name, l1_tp.name)
+                 .all?(&:l3_subif?)
     end
 
     # @param [PNode] l1_node A node under the new layer2 node
-    # @param [Integer] vlan_id VLAN id (if used)
+    # @param [PTermPoint] l1_tp layer1 term-point under the new layer2 term-point
     # @param [InterfacePropertiesTableRecord] tp_prop Layer1 (phy) or unit interface property
+    # @param [Integer] vlan_id VLAN id (if used)
     # @return [String] Name of layer2 term-point
-    def l2_tp_name(l1_node, vlan_id, tp_prop)
-      if junos_l3_sub_interface?(l1_node, vlan_id)
-        # for Junos L3 sub-interface (unit number = vlan-id rule)
-        tp_prop.interface + ".#{vlan_id}"
+    def l2_tp_name(l1_node, l1_tp, tp_prop, vlan_id)
+      if owns_l3_sub_interface?(l1_node, l1_tp)
+        found_rec = @intf_props.find_all_records_by_node(l1_node.name).find do |rec|
+          rec.interface =~ /#{l1_tp.name}/ && rec.encapsulation_vlan == vlan_id
+        end
+        raise StandardError, "Subif not found of #{l1_node.name}[#{l1_tp.name}]" if found_rec.nil?
+
+        found_rec.interface
       else
         tp_prop.interface
       end
@@ -94,58 +103,61 @@ module TopologyBuilder
     end
 
     # @param [PNode] l1_node layer1 node under l2_node
-    # @param [Integer] vlan_id
-    # @param [InterfacePropertiesTableRecord] tp_prop Layer1 (phy) or unit interface property
-    def l2_tp_attribute(l1_node, vlan_id, tp_prop)
-      swp_mode = junos_l3_sub_interface?(l1_node, vlan_id) ? 'trunk' : tp_prop.switchport_mode.downcase
+    # @param [PTermPoint] l1_tp layer1 term-point under the new layer2 term-point
+    # @param [InterfacePropertiesTableRecord] l1_tp_prop Layer1 (phy) or unit interface property
+    def l2_tp_attribute(l1_node, l1_tp, l1_tp_prop)
+      # for junos sub-interface: it assumes trunk, @see: L2DataChecker#change_property_as_trunk
+      debug_print "  l2_tp_attr: #{l1_node.name}[#{l1_tp.name}], swp_mode: #{l1_tp_prop.switchport_mode}"
+      swp_mode = l1_tp_prop.switchport_mode.downcase
       {
-        description: tp_prop.description,
+        description: l1_tp_prop.description,
         switchport_mode: swp_mode,
-        encapsulation: swp_mode == 'trunk' ? tp_prop.switchport_trunk_encapsulation.downcase : ''
+        encapsulation: swp_mode == 'trunk' ? l1_tp_prop.switchport_trunk_encapsulation.downcase : ''
       }
     end
 
     # @param [PNode] l2_node Layer2 node to add new term-point
     # @param [PNode] l1_node layer1 node under l2_node
     # @param [PTermPoint] l1_tp layer1 term-point under the new layer2 term-point
-    # @param [Integer] vlan_id VLAN id (if used)
-    # @param [InterfacePropertiesTableRecord] tp_prop Layer1 (phy) or unit interface property
+    # @param [InterfacePropertiesTableRecord] l1_tp_prop Layer1 (phy) or unit interface property
     # @return [PTermPoint] Added layer2 term-point
     # @raise [StandardError] if layer1 term-point property is not found
-    def add_l2_tp(l2_node, l1_node, l1_tp, vlan_id, tp_prop)
-      new_tp = l2_node.term_point(l2_tp_name(l1_node, vlan_id, tp_prop))
+    def add_l2_tp(l2_node, l1_node, l1_tp, l1_tp_prop, vlan_id)
+      new_tp = l2_node.term_point(l2_tp_name(l1_node, l1_tp, l1_tp_prop, vlan_id))
       l1_tp_prop = @intf_props.find_record_by_node_intf(l1_node.name, l1_tp.name)
       raise StandardError, "Layer1 term-point property not found: #{l1_node.name}[#{l1_tp.name}]" unless l1_tp_prop
 
       # same supports are added for LAG
       new_tp.supports.push(*l2_tp_supports(l1_node, l1_tp, l1_tp_prop)).uniq!
-      new_tp.attribute = l2_tp_attribute(l1_node, vlan_id, tp_prop)
+      new_tp.attribute = l2_tp_attribute(l1_node, l1_tp, l1_tp_prop)
       new_tp
     end
 
     # @param [PNode] l1_node A node under the new layer2 node
     # @param [PTermPoint] l1_tp Layer1 term-point under the new layer2 term-point
+    # @param [InterfacePropertiesTableRecord] l1_tp_prop Layer1 (phy) or unit interface property
     # @param [Integer] vlan_id vlan_id VLAN id (if used)
-    # @param [InterfacePropertiesTableRecord] tp_prop Layer1 (phy) or unit interface property
     # @return [Array(PNode, PTermPoint)] A pair of added node name and tp name
-    def add_l2_node_tp(l1_node, l1_tp, vlan_id, tp_prop)
-      new_node = add_l2_node(l1_node, vlan_id, tp_prop)
-      new_tp = add_l2_tp(new_node, l1_node, l1_tp, vlan_id, tp_prop)
+    def add_l2_node_tp(l1_node, l1_tp, l1_tp_prop, vlan_id)
+      new_node = add_l2_node(l1_node, l1_tp_prop, vlan_id)
+      new_tp = add_l2_tp(new_node, l1_node, l1_tp, l1_tp_prop, vlan_id)
       [new_node, new_tp]
     end
 
     # rubocop:disable Metrics/ParameterLists
 
-    # @param [PNode] src_node Link source node
-    # @param [PTermPoint] src_tp Link source tp (on src_node)
+    # @param [PNode] src_node L1 link source node
+    # @param [PTermPoint] src_tp L1 link source tp (on src_node)
+    # @param [InterfacePropertiesTableRecord] src_tp_prop L1 term-point property of src_tp
     # @param [Integer] src_vlan_id VLAN id of src_tp
-    # @param [PNode] dst_node Link destination node
-    # @param [PTermPoint] dst_tp link destination port (on dst_node)
+    # @param [PNode] dst_node L1 link destination node
+    # @param [PTermPoint] dst_tp L1 link destination port (on dst_node)
+    # @param [InterfacePropertiesTableRecord] dst_tp_prop L1 term-point property of dst_tp
     # @param [Integer] dst_vlan_id VLAN id of dst_tp
     # @return [void]
-    def add_l2_node_tp_link(src_node, src_tp, src_vlan_id, src_tp_prop, dst_node, dst_tp, dst_vlan_id, dst_tp_prop)
-      src_l2_node, src_l2_tp = add_l2_node_tp(src_node, src_tp, src_vlan_id, src_tp_prop).map(&:name)
-      dst_l2_node, dst_l2_tp = add_l2_node_tp(dst_node, dst_tp, dst_vlan_id, dst_tp_prop).map(&:name)
+    def add_l2_node_tp_link(src_node, src_tp, src_tp_prop, src_vlan_id, dst_node, dst_tp, dst_tp_prop, dst_vlan_id)
+      src_l2_node, src_l2_tp = add_l2_node_tp(src_node, src_tp, src_tp_prop, src_vlan_id).map(&:name)
+      dst_l2_node, dst_l2_tp = add_l2_node_tp(dst_node, dst_tp, dst_tp_prop, dst_vlan_id).map(&:name)
       # NOTE: Layer2 link is added according to layer1 link.
       # Therefore, layer1 link is bidirectional, layer2 is same
       debug_print "  Add L2 link: #{src_l2_node}[#{src_l2_tp}] > #{dst_l2_node}[#{dst_l2_tp}]"
@@ -155,28 +167,28 @@ module TopologyBuilder
 
     # rubocop:disable Metrics/MethodLength, Metrics/AbcSize
 
-    # @param [PNode] src_node Link source node
-    # @param [PTermPoint] src_tp Link source tp (on src_node)
-    # @param [PNode] dst_node Link destination node
-    # @param [PTermPoint] dst_tp link destination port (on dst_node)
+    # @param [PNode] src_node L1 link source node
+    # @param [PTermPoint] src_tp L1 link source tp (on src_node)
+    # @param [PNode] dst_node L1 link destination node
+    # @param [PTermPoint] dst_tp L1 link destination port (on dst_node)
     # @param [Hash] check_result L2 config check result (@see: port_l2_config_check)
     # @return [void]
     def add_l2_node_tp_link_by_config(src_node, src_tp, dst_node, dst_tp, check_result)
       case check_result[:type]
       when :access
         add_l2_node_tp_link(
-          src_node, src_tp, check_result[:src_vlan_id], check_result[:src_tp_prop],
-          dst_node, dst_tp, check_result[:dst_vlan_id], check_result[:dst_tp_prop]
+          src_node, src_tp, check_result[:src_tp_prop], check_result[:src_vlan_id],
+          dst_node, dst_tp, check_result[:dst_tp_prop], check_result[:dst_vlan_id]
         )
       when :trunk
         check_result[:vlan_ids].each do |vlan_id|
-          add_l2_node_tp_link(src_node, src_tp, vlan_id, check_result[:src_tp_prop],
-                              dst_node, dst_tp, vlan_id, check_result[:dst_tp_prop])
+          add_l2_node_tp_link(src_node, src_tp, check_result[:src_tp_prop], vlan_id,
+                              dst_node, dst_tp, check_result[:dst_tp_prop], vlan_id)
         end
       else
         # type: :error
-        add_l2_node_tp(src_node, src_tp, 0, check_result[:src_tp_prop])
-        add_l2_node_tp(dst_node, dst_tp, 0, check_result[:dst_tp_prop])
+        add_l2_node_tp(src_node, src_tp, check_result[:src_tp_prop], 0)
+        add_l2_node_tp(dst_node, dst_tp, check_result[:dst_tp_prop], 0)
         TopologyBuilder.logger.error "L2 term-point check error: #{check_result[:message]}"
       end
     end
