@@ -154,9 +154,9 @@ end
 desc 'Generate topology files (for netoviz)'
 task :netoviz_model do
   puts '# Generate topology files'
-  # clean
-  sh "find #{NETOVIZ_DIR} -type d -name '*_linkdown_*' | rm -rf"
-  sh "find #{NETOVIZ_DIR} -type d -name '*_drawoff' | rm -rf"
+  # clean logical snapshot data
+  sh "find #{NETOVIZ_DIR} -type d -name '*_linkdown_*' | xargs rm -rf"
+  sh "find #{NETOVIZ_DIR} -type d -name '*_drawoff' | xargs rm -rf"
 
   parallel_executables(models_list) do |network, snapshot|
     models_snapshot_dir = File.join(MODELS_DIR, network, snapshot)
