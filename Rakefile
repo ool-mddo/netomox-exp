@@ -100,18 +100,18 @@ task :snapshot_to_model do
   end
 end
 
-# rubocop:disable Metrics/AbcSize
+# @return [Array(Array(String, String))] Pairs of network and snapshot of models csv
+#   e.g. [[network, snapshot], [network, snapshot/snapshot], ...]
 def models_list
   Dir.glob("#{MODELS_DIR}/**/*/*.csv")
      .map { |csv| File.dirname(csv) }
      .sort
      .uniq
-     .map { |dir| dir.gsub(%r{^#{MODELS_DIR}/}, '') }
+     .map { |dir| dir.gsub(%r{^#{MODELS_DIR}/?}, '') }
      .map { |dir| dir.split('/') }
+     .reject { |names| names.length < 2 } # reject except `network/snapshot(/snapshot)` format dir
      .map { |names| [names[0], names[1..].join('/')] } # unsafe snapshot name (snapshot path)
-     .reject { |pair| pair[1].empty? }
 end
-# rubocop:enable Metrics/AbcSize
 
 def index_label(network, snapshot, model_info)
   models_snapshot_dir = File.join(MODELS_DIR, network, snapshot)
