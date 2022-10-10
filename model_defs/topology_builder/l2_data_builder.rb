@@ -29,32 +29,33 @@ module TopologyBuilder
     private
 
     # @param [PNode] l1_node A node under the new layer2 node
-    # @param [InterfacePropertiesTableRecord] tp_prop Layer1 (phy) or unit interface property
+    # @param [PTermPoint] l1_tp Layer1 term-point under the new layer2 term-point
+    # @param [InterfacePropertiesTableRecord] l1_tp_prop Layer1 (phy) or unit interface property
     # @param [Integer] vlan_id VLAN id (if used)
     # @return [String] Suffix string for Layer2 node name
-    def l2_node_name_suffix(l1_node, tp_prop, vlan_id)
-      return tp_prop.interface unless vlan_id.positive?
-      # Junos-style sub-interface
-      # NOTICE: "unit number = vlan-id" assumption
-      return "#{tp_prop.interface}.#{vlan_id}" if juniper_node?(l1_node)
+    def l2_node_name_suffix(l1_node, l1_tp, l1_tp_prop, vlan_id)
+      return l1_tp_prop.interface unless vlan_id.positive?
+      return l2_tp_name(l1_node, l1_tp, l1_tp_prop, vlan_id) if juniper_node?(l1_node)
 
       "Vlan#{vlan_id}" # Cisco-IOS-style (SVI)
     end
 
     # @param [PNode] l1_node A node under the new layer2 node
-    # @param [InterfacePropertiesTableRecord] tp_prop Layer1 (phy) or unit interface property
+    # @param [PTermPoint] l1_tp Layer1 term-point under the new layer2 term-point
+    # @param [InterfacePropertiesTableRecord] l1_tp_prop Layer1 (phy) or unit interface property
     # @param [Integer] vlan_id VLAN id (if used)
     # @return [String] Name of layer2 node
-    def l2_node_name(l1_node, tp_prop, vlan_id)
-      "#{l1_node.name}_#{l2_node_name_suffix(l1_node, tp_prop, vlan_id)}"
+    def l2_node_name(l1_node, l1_tp, l1_tp_prop, vlan_id)
+      "#{l1_node.name}_#{l2_node_name_suffix(l1_node, l1_tp, l1_tp_prop, vlan_id)}"
     end
 
     # @param [PNode] l1_node A node under the new layer2 node
+    # @param [PTermPoint] l1_tp Layer1 term-point under the new layer2 term-point
     # @param [InterfacePropertiesTableRecord] l1_tp_prop Layer1 (phy) or unit interface property
     # @param [Integer] vlan_id VLAN id (if used)
     # @return [PNode] Added layer2 node
-    def add_l2_node(l1_node, l1_tp_prop, vlan_id)
-      new_node = @network.node(l2_node_name(l1_node, l1_tp_prop, vlan_id))
+    def add_l2_node(l1_node, l1_tp, l1_tp_prop, vlan_id)
+      new_node = @network.node(l2_node_name(l1_node, l1_tp, l1_tp_prop, vlan_id))
       new_node.attribute = { name: l1_node.name, vlan_id: vlan_id }
       # same supports are pushed when vlan bridge node (uniq)
       new_node.supports.push([@layer1p.name, l1_node.name]).uniq!
@@ -66,18 +67,16 @@ module TopologyBuilder
     # @param [PTermPoint] l1_tp layer1 term-point under the new layer2 term-point
     # @return [Boolean] True if L3 sub-intf of junos
     def owns_l3_sub_interface?(l1_node, l1_tp)
-      return false unless juniper_node?(l1_node)
-
-      @intf_props.find_all_unit_records_by_node_intf(l1_node.name, l1_tp.name)
-                 .all?(&:l3_subif?)
+      juniper_node?(l1_node) && @intf_props.find_all_unit_records_by_node_intf(l1_node.name, l1_tp.name)
+                                           .all?(&:l3_subif?)
     end
 
     # @param [PNode] l1_node A node under the new layer2 node
     # @param [PTermPoint] l1_tp layer1 term-point under the new layer2 term-point
-    # @param [InterfacePropertiesTableRecord] tp_prop Layer1 (phy) or unit interface property
+    # @param [InterfacePropertiesTableRecord] l1_tp_prop Layer1 (phy) or unit interface property
     # @param [Integer] vlan_id VLAN id (if used)
     # @return [String] Name of layer2 term-point
-    def l2_tp_name(l1_node, l1_tp, tp_prop, vlan_id)
+    def l2_tp_name(l1_node, l1_tp, l1_tp_prop, vlan_id)
       if owns_l3_sub_interface?(l1_node, l1_tp)
         found_rec = @intf_props.find_all_records_by_node(l1_node.name).find do |rec|
           rec.interface =~ /#{l1_tp.name}/ && rec.encapsulation_vlan == vlan_id
@@ -86,7 +85,7 @@ module TopologyBuilder
 
         found_rec.interface
       else
-        tp_prop.interface
+        l1_tp_prop.interface
       end
     end
 
@@ -139,7 +138,7 @@ module TopologyBuilder
     # @param [Integer] vlan_id vlan_id VLAN id (if used)
     # @return [Array(PNode, PTermPoint)] A pair of added node name and tp name
     def add_l2_node_tp(l1_node, l1_tp, l1_tp_prop, vlan_id)
-      new_node = add_l2_node(l1_node, l1_tp_prop, vlan_id)
+      new_node = add_l2_node(l1_node, l1_tp, l1_tp_prop, vlan_id)
       new_tp = add_l2_tp(new_node, l1_node, l1_tp, l1_tp_prop, vlan_id)
       [new_node, new_tp]
     end
