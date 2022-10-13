@@ -31,7 +31,13 @@ MODEL_INFO = [
     network: 'mddo-ospf',
     snapshot: 'test-topo',
     type: :simulation_target,
-    label: 'OOL-MDDO OSPF Model Trial'
+    label: 'OOL-MDDO OSPF Model Trial (original)'
+  },
+  {
+    network: 'mddo-ospf',
+    snapshot: 'modified',
+    type: :simulation_target,
+    label: 'OOL-MDDO OSPF Model Trial (modified)'
   }
 ].freeze
 
@@ -55,16 +61,16 @@ def post_bfw(api_path, data)
   BFW_CLIENT.post url, body: body, header: header
 end
 
-def find_model_info_by_network(network)
-  MODEL_INFO.find { |mi| mi[:network] == network }
+def find_model_info_by_nw_ss(network, snapshot)
+  MODEL_INFO.find { |mi| mi[:network] == network && mi[:snapshot] == snapshot }
 end
 
-def find_all_model_info_by_network(network)
+def find_all_model_info_by_nw(network)
   MODEL_INFO.find_all { |mi| mi[:network] == network }
 end
 
 def find_all_model_info_by_type(*model_info_type)
-  model_info = ENV['NETWORK'] ? find_all_model_info_by_network(ENV.fetch('NETWORK')) : MODEL_INFO
+  model_info = ENV['NETWORK'] ? find_all_model_info_by_nw(ENV.fetch('NETWORK')) : MODEL_INFO
   model_info.find_all { |mi| model_info_type.include?(mi[:type]) }
 end
 
@@ -95,9 +101,9 @@ desc 'Generate model data (csv) from snapshots'
 task :snapshot_to_model do
   puts '# Generate model data'
   # NOTICE: CANNOT parallel: because batfish-wrapper does not correspond multiple access
-  find_all_model_info_by_type(:fixed, :simulation_target).each do |model_info|
-    post_bfw("api/networks/#{model_info[:network]}/queries", {})
-  end
+  find_all_model_info_by_type(:fixed, :simulation_target)
+    .uniq { |mi| mi[:network] } # batfish-wrapper queries for all snapshots in the network dir.
+    .each { |model_info| post_bfw("api/networks/#{model_info[:network]}/queries", {}) }
 end
 
 # @return [Array(Array(String, String))] Pairs of network and snapshot of models csv
@@ -113,13 +119,15 @@ def models_list
      .map { |names| [names[0], names[1..].join('/')] } # unsafe snapshot name (snapshot path)
 end
 
-def index_label(network, snapshot, model_info)
+def index_label(network, snapshot)
   models_snapshot_dir = File.join(MODELS_DIR, network, snapshot)
   snapshot_pattern = File.join(models_snapshot_dir, 'snapshot_pattern.json')
   if File.exist?(snapshot_pattern)
-    data = JSON.parse(File.read(snapshot_pattern))
-    "#{model_info[:label]} #{data['description']}"
+    data = JSON.parse(File.read(snapshot_pattern), { symbolize_names: true })
+    model_info = find_model_info_by_nw_ss(network, data[:orig_snapshot_name])
+    "#{model_info[:label]} #{data[:description]}"
   else
+    model_info = find_model_info_by_nw_ss(network, snapshot)
     "#{model_info[:label]} [#{network}/#{snapshot}]"
   end
 end
@@ -129,12 +137,11 @@ task :netoviz_index do
   puts '# Generate netoviz index file'
   index_data = models_list.map do |network_snapshot_pair|
     network, snapshot = network_snapshot_pair
-    model_info = find_model_info_by_network(network)
     {
       'network' => network,
       'snapshot' => snapshot,
       'file' => 'topology.json',
-      'label' => index_label(network, snapshot, model_info)
+      'label' => index_label(network, snapshot)
     }
   end
   File.write("#{NETOVIZ_DIR}/_index.json", JSON.pretty_generate(index_data))
