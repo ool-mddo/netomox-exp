@@ -15,34 +15,17 @@ BATFISH_WRAPPER_HOST = ENV.fetch('BATFISH_WRAPPER_HOST', 'localhost:5000')
 BFW_CLIENT = HTTPClient.new
 BFW_CLIENT.receive_timeout = 60 * 60 * 4 # 60sec * 60min * 4h
 
-MODEL_INFO = [
-  {
-    network: 'batfish-test-topology',
-    type: :fixed,
-    label: 'Test network'
-  },
-  {
-    network: 'pushed_configs',
-    snapshot: 'mddo_network',
-    type: :simulation_target,
-    label: 'OOL-MDDO PJ network'
-  },
-  {
-    network: 'mddo-ospf',
-    snapshot: 'test-topo',
-    type: :simulation_target,
-    label: 'OOL-MDDO OSPF Model Trial (original)'
-  },
-  {
-    network: 'mddo-ospf',
-    snapshot: 'modified',
-    type: :simulation_target,
-    label: 'OOL-MDDO OSPF Model Trial (modified)'
-  }
-].freeze
+# netoviz index file
+NETOVIZ_INDEX = File.join(NETOVIZ_DIR, '_index.json')
+
+# Load model info data
+MODEL_INFO = JSON.parse(File.read('./model_info.json'), { symbolize_names: true })
+MODEL_INFO.each do |mi|
+  mi[:type] = mi[:type].intern # change value of :type key to symbol
+end
 
 task default: %i[model_dirs simulation_pattern snapshot_to_model netoviz_index netoviz_model netoviz_layout
-                 netomox_diff]
+                 logical_ss_diff]
 
 desc 'Make directories for models and netoviz'
 task :model_dirs do
@@ -128,15 +111,14 @@ def index_label(network, snapshot)
     "#{model_info[:label]} #{data[:description]}"
   else
     model_info = find_model_info_by_nw_ss(network, snapshot)
-    "#{model_info[:label]} [#{network}/#{snapshot}]"
+    model_info[:label]
   end
 end
 
 desc 'Generate netoviz index file'
 task :netoviz_index do
   puts '# Generate netoviz index file'
-  index_data = models_list.map do |network_snapshot_pair|
-    network, snapshot = network_snapshot_pair
+  index_data = models_list.map do |network, snapshot|
     {
       'network' => network,
       'snapshot' => snapshot,
@@ -144,7 +126,7 @@ task :netoviz_index do
       'label' => index_label(network, snapshot)
     }
   end
-  File.write("#{NETOVIZ_DIR}/_index.json", JSON.pretty_generate(index_data))
+  File.write(NETOVIZ_INDEX, JSON.pretty_generate(index_data))
 end
 
 # @param [Array<Object>] target_data Target data to operate
@@ -190,7 +172,7 @@ def make_topology_diff(src_topology, dst_topology)
 end
 
 desc 'Generate diff data of linkdown snapshots and overwrite'
-task :netomox_diff do
+task :logical_ss_diff do
   puts '# Generate diff data'
   # clean
   sh "find #{NETOVIZ_DIR} -name '*.diff' | xargs rm -f"
@@ -224,6 +206,33 @@ task :netomox_diff do
       sh "mv #{topology_diff} #{topology_diff.gsub(File.extname(topology_diff), '')}"
     end
   end
+end
+
+desc 'Generate diff data between emulated-asis/tobe snapshot'
+task :emulated_ss_diff do
+  puts '# Generate diff data between emulated-asis/tobe snapshot'
+  # clean logical snapshot data
+  sh "find #{NETOVIZ_DIR} -type d -name 'emulated_diff' | xargs rm -rf "
+
+  index_diffs = find_all_model_info_by_type(:simulation_target).uniq { |mi| mi[:network] }.map do |model_info|
+    src_topo_file = File.join(NETOVIZ_DIR, model_info[:network], 'emulated_asis', 'topology.json')
+    dst_topo_file = File.join(NETOVIZ_DIR, model_info[:network], 'emulated_tobe', 'topology.json')
+    next unless File.exist?(src_topo_file) && File.exist?(dst_topo_file)
+
+    diff_dir = File.join(NETOVIZ_DIR, model_info[:network], 'emulated_diff')
+    diff_file = File.join(diff_dir, 'topology.json')
+    sh "mkdir -p #{diff_dir}"
+    sh "bundle exec netomox diff -o #{diff_file} #{src_topo_file} #{dst_topo_file}"
+
+    {
+      'network' => model_info[:network],
+      'snapshot' => 'emulated_diff',
+      'file' => 'topology.json',
+      'label' => "Topoology diff of #{model_info[:network]} emulated_asis/tobe"
+    }
+  end
+  netoviz_index_data = JSON.parse(File.read(NETOVIZ_INDEX))
+  File.write(NETOVIZ_INDEX, JSON.pretty_generate(netoviz_index_data.concat(index_diffs)))
 end
 
 #######################
