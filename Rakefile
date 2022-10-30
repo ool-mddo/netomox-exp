@@ -45,7 +45,12 @@ def post_bfw(api_path, data)
 end
 
 def find_model_info_by_nw_ss(network, snapshot)
-  MODEL_INFO.find { |mi| mi[:network] == network && mi[:snapshot] == snapshot }
+  # search 'simulation_target' network data
+  found = MODEL_INFO.find { |mi| mi[:network] == network && mi[:snapshot] == snapshot }
+  return found if found
+
+  # else: search 'fixed' type network-info (it does not have snapshot key)
+  MODEL_INFO.find { |mi| mi[:network] == network }
 end
 
 def find_all_model_info_by_nw(network)
@@ -262,5 +267,5 @@ rescue LoadError
   end
 end
 
-CLOBBER.include("#{NETOVIZ_DIR}/*linkdown*.json")
+CLOBBER.include("#{NETOVIZ_DIR}/**/*.cache")
 CLEAN.include('**/*~')
