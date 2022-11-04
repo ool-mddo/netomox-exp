@@ -9,20 +9,20 @@ def register_target_layer2(nws)
 
       # RegionA Nodes
       node 'RegionA-CE01-GRT' do
-        (0..1).each { |i| term_point "p#{i}" }
+        2.times { |i| term_point "p#{i}" }
         support %w[layer15 RegionA-CE01]
       end
       node 'RegionA-CE01-VRF' do
-        (0..1).each { |i| term_point "p#{i}" }
+        2.times { |i| term_point "p#{i}" }
         support %w[layer15 RegionA-CE01]
       end
 
       node 'RegionA-CE02-GRT' do
-        (0..1).each { |i| term_point "p#{i}" }
+        2.times { |i| term_point "p#{i}" }
         support %w[layer15 RegionA-CE02]
       end
       node 'RegionA-CE02-VRF' do
-        (0..1).each { |i| term_point "p#{i}" }
+        2.times { |i| term_point "p#{i}" }
         support %w[layer15 RegionA-CE02]
       end
 
@@ -128,7 +128,7 @@ def register_target_layer2(nws)
       end
 
       node 'RegionA-Svr01' do
-        (0..1).each do |i|
+        2.times do |i|
           term_point "eno#{i}" do
             support %W[layer1 RegionA-Svr01 eno#{i}]
           end
@@ -136,7 +136,7 @@ def register_target_layer2(nws)
         support %w[layer1 RegionA-Svr01]
       end
       node 'RegionA-Svr02' do
-        (0..1).each do |i|
+        2.times do |i|
           term_point "eno#{i}" do
             support %W[layer1 RegionA-Svr02 eno#{i}]
           end
@@ -175,20 +175,20 @@ def register_target_layer2(nws)
 
       # RegionB Nodes
       node 'RegionB-CE01-GRT' do
-        (0..1).each { |i| term_point "p#{i}" }
+        2.times { |i| term_point "p#{i}" }
         support %w[layer15 RegionB-CE01]
       end
       node 'RegionB-CE01-VRF' do
-        (0..1).each { |i| term_point "p#{i}" }
+        2.times { |i| term_point "p#{i}" }
         support %w[layer15 RegionB-CE01]
       end
 
       node 'RegionB-CE02-GRT' do
-        (0..1).each { |i| term_point "p#{i}" }
+        2.times { |i| term_point "p#{i}" }
         support %w[layer15 RegionB-CE02]
       end
       node 'RegionB-CE02-VRF' do
-        (0..1).each { |i| term_point "p#{i}" }
+        2.times { |i| term_point "p#{i}" }
         support %w[layer15 RegionB-CE02]
       end
 
@@ -319,7 +319,7 @@ def register_target_layer2(nws)
       end
 
       node 'RegionB-Svr01' do
-        (0..1).each do |i|
+        2.times do |i|
           term_point "eno#{i}" do
             support %W[layer1 RegionB-Svr01 eno#{i}]
           end
@@ -327,7 +327,7 @@ def register_target_layer2(nws)
         support %w[layer1 RegionB-Svr01]
       end
       node 'RegionB-Svr02' do
-        (0..1).each do |i|
+        2.times do |i|
           term_point "eno#{i}" do
             support %W[layer1 RegionB-Svr02 eno#{i}]
           end

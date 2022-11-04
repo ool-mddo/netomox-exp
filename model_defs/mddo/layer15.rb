@@ -11,7 +11,7 @@ def register_target_layer15(nws)
       node 'RegionA-CE01' do
         support %w[layer1 RegionA-CE01]
         term_point 'p01' do
-          (0..1).each { |i| support %W[layer1 RegionA-CE01 p#{i}] }
+          2.times { |i| support %W[layer1 RegionA-CE01 p#{i}] }
         end
         term_point 'p45' do
           (4..5).each { |i| support %W[layer1 RegionA-CE01 p#{i}] }
@@ -20,7 +20,7 @@ def register_target_layer15(nws)
       node 'RegionA-CE02' do
         support %w[layer1 RegionA-CE02]
         term_point 'p01' do
-          (0..1).each { |i| support %W[layer1 RegionA-CE02 p#{i}] }
+          2.times { |i| support %W[layer1 RegionA-CE02 p#{i}] }
         end
         term_point 'p45' do
           (4..5).each { |i| support %W[layer1 RegionA-CE02 p#{i}] }
@@ -30,7 +30,7 @@ def register_target_layer15(nws)
       node 'RegionA-Acc01' do
         support %w[layer1 RegionA-Acc01]
         term_point 'p01' do
-          (0..1).each { |i| support %W[layer1 RegionA-Acc01 p#{i}] }
+          2.times { |i| support %W[layer1 RegionA-Acc01 p#{i}] }
         end
         term_point 'p23' do
           (2..3).each { |i| support %W[layer1 RegionA-Acc01 p#{i}] }
@@ -46,7 +46,7 @@ def register_target_layer15(nws)
       node 'RegionB-CE01' do
         support %w[layer1 RegionB-CE01]
         term_point 'p01' do
-          (0..1).each { |i| support %W[layer1 RegionB-CE01 p#{i}] }
+          2.times { |i| support %W[layer1 RegionB-CE01 p#{i}] }
         end
         term_point 'p45' do
           (4..5).each { |i| support %W[layer1 RegionB-CE01 p#{i}] }
@@ -58,7 +58,7 @@ def register_target_layer15(nws)
       node 'RegionB-CE02' do
         support %w[layer1 RegionB-CE02]
         term_point 'p01' do
-          (0..1).each { |i| support %W[layer1 RegionB-CE02 p#{i}] }
+          2.times { |i| support %W[layer1 RegionB-CE02 p#{i}] }
         end
         term_point 'p45' do
           (4..5).each { |i| support %W[layer1 RegionB-CE02 p#{i}] }
@@ -71,7 +71,7 @@ def register_target_layer15(nws)
       node 'RegionB-Acc01' do
         support %w[layer1 RegionB-Acc01]
         term_point 'p01' do
-          (0..1).each { |i| support %W[layer1 RegionB-Acc01 p#{i}] }
+          2.times { |i| support %W[layer1 RegionB-Acc01 p#{i}] }
         end
         term_point 'p23' do
           (2..3).each { |i| support %W[layer1 RegionB-Acc01 p#{i}] }
@@ -80,7 +80,7 @@ def register_target_layer15(nws)
       node 'RegionB-Acc02' do
         support %w[layer1 RegionB-Acc02]
         term_point 'p01' do
-          (0..1).each { |i| support %W[layer1 RegionB-Acc02 p#{i}] }
+          2.times { |i| support %W[layer1 RegionB-Acc02 p#{i}] }
         end
         term_point 'p23' do
           (2..3).each { |i| support %W[layer1 RegionB-Acc02 p#{i}] }

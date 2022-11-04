@@ -1,6 +1,6 @@
 GIT
   remote: https://github.com/ool-mddo/netomox
-  revision: f05f2567ba35f97e28867e5262e0d5b35825bb51
+  revision: 5cf52bea69deacda1454b567315a957063236311
   branch: ospf-model
   specs:
     netomox (0.1.0)

@@ -9,7 +9,7 @@ def register_target_bgp_proc(nws)
 
       # RegionA Nodes
       node 'RegionA-PE01' do
-        (0..1).each do |i|
+        2.times do |i|
           term_point "p#{i}" do
             support %W[layer3 RegionA-PE01-GRT p#{i}]
           end
@@ -18,7 +18,7 @@ def register_target_bgp_proc(nws)
       end
 
       node 'RegionA-PE02' do
-        (0..1).each do |i|
+        2.times do |i|
           term_point "p#{i}" do
             support %W[layer3 RegionA-PE02-GRT p#{i}]
           end
@@ -28,7 +28,7 @@ def register_target_bgp_proc(nws)
 
       # RegionB Nodes
       node 'RegionB-PE01' do
-        (0..1).each do |i|
+        2.times do |i|
           term_point "p#{i}" do
             support %W[layer3 RegionB-PE01-GRT p#{i}]
           end
@@ -37,7 +37,7 @@ def register_target_bgp_proc(nws)
       end
 
       node 'RegionB-PE02' do
-        (0..1).each do |i|
+        2.times do |i|
           term_point "p#{i}" do
             support %W[layer3 RegionB-PE02-GRT p#{i}]
           end

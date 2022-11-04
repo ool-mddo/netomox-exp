@@ -7,28 +7,28 @@ def register_target_layer1(nws)
     network 'layer1' do
       # RegionA Nodes
       node 'RegionA-PE01' do
-        (0..3).each { |i| term_point "p#{i}" }
+        4.times { |i| term_point "p#{i}" }
       end
       node 'RegionA-PE02' do
-        (0..3).each { |i| term_point "p#{i}" }
+        4.times { |i| term_point "p#{i}" }
       end
 
       node 'RegionA-CE01' do
-        (0..5).each { |i| term_point "p#{i}" }
+        6.times { |i| term_point "p#{i}" }
       end
       node 'RegionA-CE02' do
-        (0..5).each { |i| term_point "p#{i}" }
+        6.times { |i| term_point "p#{i}" }
       end
 
       node 'RegionA-Acc01' do
-        (0..7).each { |i| term_point "p#{i}" }
+        8.times { |i| term_point "p#{i}" }
       end
 
       node 'RegionA-Svr01' do
-        (0..1).each { |i| term_point "eno#{i}" }
+        2.times { |i| term_point "eno#{i}" }
       end
       node 'RegionA-Svr02' do
-        (0..1).each { |i| term_point "eno#{i}" }
+        2.times { |i| term_point "eno#{i}" }
       end
 
       # RegionA Links
@@ -55,31 +55,31 @@ def register_target_layer1(nws)
 
       # RegionB Nodes
       node 'RegionB-PE01' do
-        (0..3).each { |i| term_point "p#{i}" }
+        4.times { |i| term_point "p#{i}" }
       end
       node 'RegionB-PE02' do
-        (0..3).each { |i| term_point "p#{i}" }
+        4.times { |i| term_point "p#{i}" }
       end
 
       node 'RegionB-CE01' do
-        (0..7).each { |i| term_point "p#{i}" }
+        8.times { |i| term_point "p#{i}" }
       end
       node 'RegionB-CE02' do
-        (0..7).each { |i| term_point "p#{i}" }
+        8.times { |i| term_point "p#{i}" }
       end
 
       node 'RegionB-Acc01' do
-        (0..5).each { |i| term_point "p#{i}" }
+        6.times { |i| term_point "p#{i}" }
       end
       node 'RegionB-Acc02' do
-        (0..5).each { |i| term_point "p#{i}" }
+        6.times { |i| term_point "p#{i}" }
       end
 
       node 'RegionB-Svr01' do
-        (0..1).each { |i| term_point "eno#{i}" }
+        2.times { |i| term_point "eno#{i}" }
       end
       node 'RegionB-Svr02' do
-        (0..1).each { |i| term_point "eno#{i}" }
+        2.times { |i| term_point "eno#{i}" }
       end
 
       # RegionB Links
