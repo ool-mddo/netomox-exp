@@ -1,6 +1,6 @@
 GIT
   remote: https://github.com/ool-mddo/netomox
-  revision: 94322e14461b1fc9b55b333abf9dc86567b499eb
+  revision: abe756cef76f70f48982fb1b1c150ca33d451f00
   branch: ospf-model
   specs:
     netomox (0.1.0)
@@ -40,7 +40,7 @@ GEM
     rake (13.0.6)
     regexp_parser (2.6.0)
     rexml (3.2.5)
-    rubocop (1.37.1)
+    rubocop (1.38.0)
       json (~> 2.3)
       parallel (~> 1.10)
       parser (>= 3.1.2.1)
