@@ -223,18 +223,45 @@ module TopologyBuilder
     end
     # rubocop:enable Metrics/MethodLength, Metrics/AbcSize
 
+    # @param [String] l3_node_name L3 node name
+    # @param [String] l3_tp_name L3 term-point name (in the L3 node)
+    # @return [String, nil] VRF of the term-point (nil if error),
+    #   "default" means GRT (Global Routing Table)
+    def vrf_of_l3_intf(l3_node_name, l3_tp_name)
+      prop = @intf_props.find_record_by_node_intf(l3_node_name, l3_tp_name)
+      prop&.vrf
+    end
+
+    # @param [PNode] l3_node L3 node name
+    # @return [String] vrf name of L3 interfaces
+    # @raise [StandardError] The node is NOT single vrf
+    def detect_l3_node_vrf(l3_node)
+      vrf_list = l3_node.tps.map { |l3_tp| vrf_of_l3_intf(l3_node.name, l3_tp.name) }
+      vrf_list.uniq!
+      return vrf_list[0] if vrf_list.length == 1
+
+      raise StandardError, "Error: vrf of term-points in L3 node #{l3_node.name} is not unique."
+    end
+
+    # rubocop:disable Metrics/MethodLength, Metrics/AbcSize
+
     # @return [void]
     def add_l3_loopback_tps
       debug_print('# Add L3 loopback tps')
       find_all_node_type_nodes.each do |l3_node|
-        debug_print("- node:#{l3_node.name}")
-        @ip_owners.find_all_loopbacks_by_node(l3_node.name).each do |rec|
-          debug_print("  - interface: #{rec.interface}")
-          l3_tp = l3_node.term_point(rec.interface)
-          l3_tp.attribute = { ip_addrs: ["#{rec.ip}/#{rec.mask}"], flags: %w[loopback] }
+        l3_node_vrf = detect_l3_node_vrf(l3_node)
+        debug_print("- node:#{l3_node.name}, vrf=#{l3_node_vrf}")
+        @ip_owners.find_all_loopbacks_by_node(l3_node.name).each do |lo|
+          # ignore different vrf loopback
+          next if vrf_of_l3_intf(l3_node.name, lo.interface) != l3_node_vrf
+
+          debug_print("  - interface: #{lo.interface}")
+          l3_tp = l3_node.term_point(lo.interface)
+          l3_tp.attribute = { ip_addrs: ["#{lo.ip}/#{lo.mask}"], flags: %w[loopback] }
         end
       end
     end
+    # rubocop:enable Metrics/MethodLength, Metrics/AbcSize
 
     # @return [Array<PNode>] Found nodes
     def find_all_node_type_nodes
