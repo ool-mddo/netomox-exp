@@ -1,12 +1,26 @@
-docs
+# auto generated documents
+doc
+figs
+# mddo project data
 configs
 models
 netoviz_model
+# local configs
 .env
+.rubocop.yml
+.yardoc
+.yardopts
+# docker
+.dockerignore
+Dockerfile
 docker-compose.yml
-vendor
-**/venv
-.bundle
+# git
 .git
+.github
+.gitignore
+# editor
 **/.idea
 **/.vscode
+# ruby
+vendor
+.bundle

@@ -23,8 +23,8 @@ ENV NETOMOX_LOG_LEVEL=warn
 ENV TOPOLOGY_BUILDER_LOG_LEVEL=warn
 
 WORKDIR /netomox-exp
-COPY . /netomox-exp
-
+# copy netomox-exp (including Gemfiles.lock)
+COPY --from=build /netomox-exp /netomox-exp
 # copy installed gems (with native extensions)
 COPY --from=build /usr/local /usr/local
 
