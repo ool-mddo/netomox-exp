@@ -4,6 +4,7 @@ require_relative 'pseudo_dsl/pseudo_model'
 require_relative 'csv_mapper/ospf_area_conf_table'
 require_relative 'csv_mapper/ospf_intf_conf_table'
 require_relative 'csv_mapper/ospf_proc_conf_table'
+require_relative 'csv_mapper/named_structures_table'
 require 'ipaddress'
 
 module TopologyBuilder
@@ -19,6 +20,7 @@ module TopologyBuilder
       @ospf_area_conf = CSVMapper::OspfAreaConfigurationTable.new(target)
       @ospf_intf_conf = CSVMapper::OspfInterfaceConfigurationTable.new(target)
       @ospf_proc_conf = CSVMapper::OspfProcessConfigurationTable.new(target)
+      @named_structures = CSVMapper::NamedStructureTable.new(target)
     end
 
     # @return [PNetworks] Networks contains ospf area topology
@@ -73,6 +75,18 @@ module TopologyBuilder
       l3_node.attribute[:node_type] == 'segment'
     end
 
+    # @param [OspfProcessConfigurationTableRecord] ospf_proc_conf_rec
+    # @return [Array<Hash>] ospf redistribute attribute data
+    def ospf_node_redistribute_attrs(ospf_proc_conf_rec)
+      debug_print "  # ospf-export: #{ospf_proc_conf_rec&.export_policy_sources}"
+      redistribute_protocols = ospf_proc_conf_rec&.export_policy_sources&.map do |policy_source|
+        rec = @named_structures.find_record_by_node_structure(ospf_proc_conf_rec.node, policy_source)
+        rec&.ospf_redistribute_protocols
+      end
+      debug_print "  # ospf-redistribute: #{redistribute_protocols.flatten}"
+      redistribute_protocols.flatten.map { |proto| { protocol: proto } }
+    end
+
     # @param [PNode] l3_node Layer3 node
     # @return [Hash] attribute
     def ospf_node_attr(l3_node)
@@ -80,14 +94,10 @@ module TopologyBuilder
       # default attribute for segment-type ospf-node
       return { node_type: 'segment' } if segment_type_l3_node?(l3_node)
 
-      # attribute for ospf-proc type ospf-node
-      # TODO: ospf proc conf doesn't contains redistribute connected info?
-      redistribute_attrs = [{ protocol: 'connected' }]
-      redistribute_attrs.push({ protocol: 'static' }) if ospf_proc_conf_rec&.export_policy?('ospf-default')
       {
         node_type: 'ospf_proc',
-        router_id: ospf_proc_conf_rec&.router_id || '',
-        redistribute: redistribute_attrs
+        router_id: ospf_proc_conf_rec ? ospf_proc_conf_rec.router_id : '',
+        redistribute: ospf_proc_conf_rec ? ospf_node_redistribute_attrs(ospf_proc_conf_rec) : []
         # NOTE: log-adjacency-changes : No information in ospf-proc conf table
       }
     end

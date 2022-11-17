@@ -38,12 +38,6 @@ module TopologyBuilder
       end
       alias area_border_router area_border_router?
 
-      # @param [String] policy Policy name
-      # @return [Boolean] true if this record contains the policy
-      def export_policy?(policy)
-        @export_policy_sources.include?(policy)
-      end
-
       private
 
       # rubocop:disable Security/Eval
