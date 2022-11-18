@@ -20,7 +20,7 @@ module TopologyBuilder
       @ospf_area_conf = CSVMapper::OspfAreaConfigurationTable.new(target)
       @ospf_intf_conf = CSVMapper::OspfInterfaceConfigurationTable.new(target)
       @ospf_proc_conf = CSVMapper::OspfProcessConfigurationTable.new(target)
-      @named_structures = CSVMapper::NamedStructureTable.new(target)
+      @named_structures = CSVMapper::NamedStructuresTable.new(target)
     end
 
     # @return [PNetworks] Networks contains ospf area topology
@@ -78,10 +78,10 @@ module TopologyBuilder
     # @param [OspfProcessConfigurationTableRecord] ospf_proc_conf_rec
     # @return [Array<Hash>] ospf redistribute attribute data
     def ospf_node_redistribute_attrs(ospf_proc_conf_rec)
-      debug_print "  # ospf-export: #{ospf_proc_conf_rec&.export_policy_sources}"
-      redistribute_protocols = ospf_proc_conf_rec&.export_policy_sources&.map do |policy_source|
+      debug_print "  # ospf-export: #{ospf_proc_conf_rec.export_policy_sources}"
+      redistribute_protocols = ospf_proc_conf_rec.export_policy_sources.map do |policy_source|
         rec = @named_structures.find_record_by_node_structure(ospf_proc_conf_rec.node, policy_source)
-        rec&.ospf_redistribute_protocols
+        rec ? rec.ospf_redistribute_protocols : []
       end
       debug_print "  # ospf-redistribute: #{redistribute_protocols.flatten}"
       redistribute_protocols.flatten.map { |proto| { protocol: proto } }
