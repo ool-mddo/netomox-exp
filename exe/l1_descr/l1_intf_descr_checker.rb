@@ -45,10 +45,10 @@ module TopologyOperator
     # @return [Hash]
     def descr_check_result(type, term_point, link, message)
       {
-        type: type,
+        type:,
         term_point: term_point.path,
         link: link.path,
-        message: message
+        message:
       }
     end
 

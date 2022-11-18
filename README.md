@@ -20,7 +20,7 @@ A trial of network model construction. (original: https://github.com/corestate55
 
 ### Requirements
 
-- Ruby >2.7 (development under ruby/3.1 and bundler/2.3.4)
+- Ruby >3.1.0 (development under ruby/3.1.0 and bundler/2.3.5)
 
 ### Optional: Install ruby gems
 
@@ -215,6 +215,7 @@ bundle exec ruby exe/mddo_toolbox.rb test_reachability [options] <test-pattern-d
 
 ```shell
 docker build -t netomox-exp .
+
 ```
 
 ### Generate YARD documents

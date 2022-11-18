@@ -116,7 +116,7 @@ module TopologyBuilder
       # Unit interface number (for junos interface)
       # @return [nil, String] unit number string
       def unit_number
-        %r{[\w\-/]+\d+(?::\d+)?\.(\d+)}.match(interface).to_a[1]
+        %r{[-/\w]+\d+(?::\d+)?\.(\d+)}.match(interface).to_a[1]
       end
 
       # @return [String]

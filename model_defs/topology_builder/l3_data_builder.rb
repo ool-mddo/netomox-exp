@@ -14,7 +14,7 @@ module TopologyBuilder
     # @param [String] target Target network (config) data name
     # @param [PNetwork] layer2p Layer2 network topology
     def initialize(target:, layer2p:, debug: false)
-      super(layer2p: layer2p, debug: debug)
+      super(layer2p:, debug:)
       @ip_owners = CSVMapper::IPOwnersTable.new(target)
       @intf_props = CSVMapper::InterfacePropertiesTable.new(target)
       @routes = CSVMapper::RoutesTable.new(target)
@@ -137,7 +137,7 @@ module TopologyBuilder
         rec && IPAddress::IPv4.new("#{rec.ip}/#{rec.mask}")
       end
       prefixes.compact.map { |ip| "#{ip.network}/#{ip.prefix}" }.uniq.map do |prefix|
-        { prefix: prefix, metric: 0 } # metric = 0 : default metric of connected route
+        { prefix:, metric: 0 } # metric = 0 : default metric of connected route
       end
     end
 

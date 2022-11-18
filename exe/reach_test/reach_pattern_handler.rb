@@ -51,8 +51,8 @@ module TopologyOperator
     def intf_path_to_hash(intf_path)
       node, intf = intf_path_to_names(intf_path)
       {
-        node: node,
-        intf: intf,
+        node:,
+        intf:,
         intf_ip: find_intf_ip(node, intf)
       }
     end

@@ -10,7 +10,7 @@ module TopologyBuilder
   class L2DataChecker < PseudoDSL::DataBuilderBase
     # @param [String] target Target network (config) data name
     def initialize(target:, debug: false)
-      super(debug: debug)
+      super(debug:)
       @sw_vlan_props = CSVMapper::SwitchVlanPropsTable.new(target)
     end
 
@@ -183,8 +183,8 @@ module TopologyBuilder
         type: :access,
         src_vlan_id: access_port_vlan_id(src_tp_prop),
         dst_vlan_id: access_port_vlan_id(dst_tp_prop),
-        src_tp_prop: src_tp_prop,
-        dst_tp_prop: dst_tp_prop
+        src_tp_prop:,
+        dst_tp_prop:
       }
     end
 
@@ -198,8 +198,8 @@ module TopologyBuilder
         type: :trunk,
         # common vlan_ids in allowed vlans of src/dst port and src/dst switch vlans
         vlan_ids: operative_trunk_vlans(src_node, src_tp_prop, dst_node, dst_tp_prop),
-        src_tp_prop: src_tp_prop,
-        dst_tp_prop: dst_tp_prop
+        src_tp_prop:,
+        dst_tp_prop:
       }
     end
   end

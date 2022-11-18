@@ -15,7 +15,7 @@ module TopologyBuilder
     # @param [String] target Target network (config) data name
     # @param [PNetwork] layer3p Layer3 network topology
     def initialize(target:, layer3p:, debug: false)
-      super(debug: debug)
+      super(debug:)
       @layer3p = layer3p
       @ospf_area_conf = CSVMapper::OspfAreaConfigurationTable.new(target)
       @ospf_intf_conf = CSVMapper::OspfInterfaceConfigurationTable.new(target)
@@ -245,7 +245,7 @@ module TopologyBuilder
                   other_stp.attribute[:ip_addrs][0]
                 end
 
-      { router_id: other_node.attribute[:router_id], ip_addr: ip_addr }
+      { router_id: other_node.attribute[:router_id], ip_addr: }
     end
 
     # @param [PTermPoint] target_tp target ospf term-point to add a neighbor attribute

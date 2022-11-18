@@ -10,7 +10,7 @@ module TopologyBuilder
   class L1DataBuilder < PseudoDSL::DataBuilderBase
     # @param [String] target Target network (config) data name
     def initialize(target:, debug: false)
-      super(debug: debug)
+      super(debug:)
       @l1_edges = CSVMapper::EdgesLayer1Table.new(target)
       @intf_props = CSVMapper::InterfacePropertiesTable.new(target)
       @node_props = CSVMapper::NodePropsTable.new(target)

@@ -12,7 +12,7 @@ module TopologyBuilder
 
     # @param [PNetwork] layer2p Layer2 network topology
     def initialize(layer2p:, debug: false)
-      super(debug: debug)
+      super(debug:)
       @segments = L3SegmentLedger.new
       @layer2p = layer2p
     end

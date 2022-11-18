@@ -42,7 +42,7 @@ module TopologyOperator
         {
           network: set.network_name,
           subsets_count: subsets.length,
-          subsets: subsets
+          subsets:
         }
       end
     end
@@ -58,7 +58,7 @@ module TopologyOperator
       elements_diff = lost | found
       {
         subsets_diff_count: (orig_set.subsets.length - target_set.subsets.length).abs,
-        elements_diff: { lost: lost, found: found },
+        elements_diff: { lost:, found: },
         elements_diff_count: elements_diff.length,
         flag_diff_count: orig_set.flag_diff(target_set).abs
       }

@@ -41,7 +41,7 @@ def post_bfw(api_path, data)
   body = JSON.generate(data)
   url = "http://#{BATFISH_WRAPPER_HOST}/#{api_path}"
   puts "- POST: #{url}, data=#{data}"
-  BFW_CLIENT.post url, body: body, header: header
+  BFW_CLIENT.post url, body:, header:
 end
 
 def find_model_info_by_nw_ss(network, snapshot)
@@ -137,11 +137,11 @@ end
 # @param [Array<Object>] target_data Target data to operate
 # @yield [datum] instructions for each datum
 # @yieldparam [Object] datum A datum in target_data
-def parallel_executables(target_data, &block)
+def parallel_executables(target_data, &)
   if USE_PARALLEL
-    Parallel.each(target_data, &block)
+    Parallel.each(target_data, &)
   else
-    target_data.each(&block)
+    target_data.each(&)
   end
 end
 

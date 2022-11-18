@@ -8,7 +8,7 @@ module TopologyBuilder
   class ExpandedL3DataBuilder < PseudoDSL::DataBuilderBase
     # @param [PNetwork] layer3p Layer3 network topology
     def initialize(layer3p:, debug: false)
-      super(debug: debug)
+      super(debug:)
       @layer3p = layer3p
     end
 

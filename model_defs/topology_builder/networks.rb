@@ -57,7 +57,7 @@ module TopologyBuilder
   # @return [String] RFC8345-structure json string
   def generate_json(target, layer: 'layer1', debug: false)
     l1_debug = debug_layer?(debug, layer, 1)
-    l1_builder = L1DataBuilder.new(target: target, debug: l1_debug)
+    l1_builder = L1DataBuilder.new(target:, debug: l1_debug)
     layer1_nws = l1_builder.make_networks
     if l1_debug
       layer1_nws.dump
@@ -66,7 +66,7 @@ module TopologyBuilder
 
     l2_debug = debug_layer?(debug, layer, 2)
     l2_builder = L2DataBuilder.new(
-      target: target,
+      target:,
       layer1p: layer1_nws.find_network_by_name('layer1'),
       debug: l2_debug
     )
@@ -78,7 +78,7 @@ module TopologyBuilder
 
     l3_debug = debug_layer?(debug, layer, 3)
     l3_builder = L3DataBuilder.new(
-      target: target,
+      target:,
       layer2p: layer2_nws.find_network_by_name('layer2'),
       debug: l3_debug
     )
@@ -101,7 +101,7 @@ module TopologyBuilder
 
     ospf_debug = debug_layer?(debug, layer, 'ospf')
     ospf_builder = OspfDataBuilder.new(
-      target: target,
+      target:,
       layer3p: layer3_nws.find_network_by_name('layer3'),
       debug: ospf_debug
     )

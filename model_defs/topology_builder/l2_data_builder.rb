@@ -11,7 +11,7 @@ module TopologyBuilder
     # @param [String] target Target network (config) data name
     # @param [PNetwork] layer1p Layer1 network topology
     def initialize(target:, layer1p:, debug: false)
-      super(target: target, debug: debug)
+      super(target:, debug:)
       @layer1p = layer1p
       @intf_props = CSVMapper::InterfacePropertiesTable.new(target)
     end
@@ -56,7 +56,7 @@ module TopologyBuilder
     # @return [PNode] Added layer2 node
     def add_l2_node(l1_node, l1_tp, l1_tp_prop, vlan_id)
       new_node = @network.node(l2_node_name(l1_node, l1_tp, l1_tp_prop, vlan_id))
-      new_node.attribute = { name: l1_node.name, vlan_id: vlan_id }
+      new_node.attribute = { name: l1_node.name, vlan_id: }
       # same supports are pushed when vlan bridge node (uniq)
       new_node.supports.push([@layer1p.name, l1_node.name]).uniq!
       new_node
