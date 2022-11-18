@@ -1,6 +1,6 @@
 GIT
   remote: https://github.com/ool-mddo/netomox
-  revision: 5cf52bea69deacda1454b567315a957063236311
+  revision: 600dd31224e04224dd4443d0f892215ee564bdad
   branch: ospf-model
   specs:
     netomox (0.1.0)
@@ -14,7 +14,7 @@ GEM
   remote: https://rubygems.org/
   specs:
     ast (2.4.2)
-    excon (0.93.1)
+    excon (0.94.0)
     hashdiff (1.0.1)
     hashie (5.0.0)
     highline (2.0.3)
@@ -38,9 +38,9 @@ GEM
     power_assert (2.0.2)
     rainbow (3.1.1)
     rake (13.0.6)
-    regexp_parser (2.6.0)
+    regexp_parser (2.6.1)
     rexml (3.2.5)
-    rubocop (1.38.0)
+    rubocop (1.39.0)
       json (~> 2.3)
       parallel (~> 1.10)
       parser (>= 3.1.2.1)
