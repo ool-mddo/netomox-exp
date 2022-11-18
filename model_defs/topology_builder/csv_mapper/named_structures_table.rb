@@ -33,7 +33,9 @@ module TopologyBuilder
         definition = JSON.parse(@structure_definition.gsub(/"/, '\"').gsub(/'/, '"'))
         return [] unless definition
 
-        protocols = definition['statements'].map { |s| extract_protocols_in_statement(s) }
+        protocols = definition['statements']
+                    .filter { |s| s['class'] == 'org.batfish.datamodel.routing_policy.statement.If' }
+                    .map { |s| extract_protocols_in_statement(s) }
         protocols.reject(&:empty?).flatten
       end
 
