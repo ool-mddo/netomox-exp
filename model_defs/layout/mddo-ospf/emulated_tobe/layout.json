@@ -1,0 +1,50 @@
+{
+  "standard": {
+    "grid": {
+      "x": [50, 350, 650, 950, 1250],
+      "y": [50, 200, 350, 500, 650, 800, 950]
+    },
+    "layout": {
+      "ospf_area0__Seg_172.16.0.0/30": {"i": 1, "j": 0},
+      "ospf_area0__Seg_172.16.1.0/30": {"i": 2, "j": 0},
+      "ospf_area0__Seg_172.16.2.0/30": {"i": 3, "j": 0},
+      "ospf_area0__regiona-rt1": {"i": 0, "j": 1},
+      "ospf_area0__Seg_192.168.0.0/30": {"i": 0, "j": 2},
+      "layer3__regiona-rt2": {"i": 0, "j": 3},
+      "ospf_area0__regionb-rt1": {"i": 2, "j": 1},
+      "ospf_area0__Seg_192.168.1.0/30": {"i": 2, "j": 2},
+      "ospf_area0__regionb-rt2": {"i": 2, "j": 3},
+      "ospf_area0__Seg_192.168.254.0/24": {"i": 2, "j": 4},
+      "layer3__regionb-svr01": {"i": 2, "j": 5},
+      "ospf_area0__regionc-rt1": {"i": 4, "j": 1},
+      "ospf_area0__Seg_192.168.2.0/30": {"i": 4, "j": 2},
+      "layer3__regionc-rt2": {"i": 4, "j": 3},
+      "layer3__Seg_192.168.100.0/25": {"i": 4, "j": 4},
+      "layer3__regionc-svr01": {"i": 4, "j": 5}
+    }
+  },
+  "reverse": {
+    "grid": {
+      "x": [50, 350, 650, 950, 1250],
+      "y": [50, 200, 350, 500, 650, 800, 950]
+    },
+    "layout": {
+      "layer1__seg-172.16.0.0-30": {"i": 1, "j": 0},
+      "layer1__seg-172.16.1.0-30": {"i": 2, "j": 0},
+      "layer1__seg-172.16.2.0-30": {"i": 3, "j": 0},
+      "layer1__regiona-rt1": {"i": 0, "j": 1},
+      "layer1__seg-192.168.0.0-30": {"i": 0, "j": 2},
+      "layer1__regiona-rt2": {"i": 0, "j": 3},
+      "layer1__regionb-rt1": {"i": 2, "j": 1},
+      "layer1__seg-192.168.1.0-30": {"i": 2, "j": 2},
+      "layer1__regionb-rt2": {"i": 2, "j": 3},
+      "layer1__seg-192.168.254.0-24": {"i": 2, "j": 4},
+      "layer1__regionb-svr01": {"i": 2, "j": 5},
+      "layer1__regionc-rt1": {"i": 4, "j": 1},
+      "layer1__seg-192.168.2.0-30": {"i": 4, "j": 2},
+      "layer1__regionc-rt2": {"i": 4, "j": 3},
+      "layer1__seg-192.168.100.0-25": {"i": 4, "j": 4},
+      "layer1__regionc-svr01": {"i": 4, "j": 5}
+    }
+  }
+}
