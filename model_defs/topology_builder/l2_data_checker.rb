@@ -75,7 +75,7 @@ module TopologyBuilder
     # for junos: physical-interface <> its unit matching
     # @param [InterfacePropertiesTableRecord] phy_prop Physical interface property
     # @return [nil, InterfacePropertiesTableRecord] interface unit property
-    # @raise StandardError
+    # @raise [StandardError]
     def find_unit_prop_by_phy_prop(phy_prop)
       unit_props = @intf_props.find_all_unit_records_by_node_intf(phy_prop.node, phy_prop.interface)
       debug_print "  find_unit_props (junos) #{phy_prop.node}[#{phy_prop.interface}]: #{unit_props.map(&:interface)}"
