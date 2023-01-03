@@ -10,6 +10,7 @@ require_relative 'l1_descr/l1_intf_descr_maker'
 require_relative 'nw_subsets/network_sets_diff'
 require_relative 'reach_test/reach_tester'
 require_relative 'reach_test/reach_result_converter'
+require_relative 'ns_convert/ns_converter'
 
 module TopologyOperator
   # Tools to operate topology data (CLI frontend)
@@ -91,6 +92,13 @@ module TopologyOperator
       exec("bundle exec ruby #{__dir__}/reach_test/test_traceroute_result.rb -v silent")
     end
     # rubocop:enable Metrics/AbcSize, Metrics/MethodLength
+
+    desc 'ns_convert PATTERN_FILE', 'Convert namespace of topology file (L3+)'
+    method_option :format, aliases: :f, default: 'yaml', type: :string, enum: %w[yaml json], desc: 'Output format (to stdout)'
+    def ns_convert(file)
+      converter = NamespaceConverter.new(file)
+      print_data(converter.to_data)
+    end
 
     private
 
