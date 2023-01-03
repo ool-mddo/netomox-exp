@@ -11,7 +11,6 @@ module TopologyOperator
       @src_nws = read_networks(file)
       @node_name_table = {}
       @tp_name_table = {}
-      make_convert_table
     end
 
     # @param [String] src_node_name Source node name
@@ -49,13 +48,26 @@ module TopologyOperator
       @tp_name_table.key?(node_name) && @tp_name_table[node_name].key?(tp_name)
     end
 
-    private
+    # @return [Hash]
+    def convert_table
+      { 'node_name_table' => @node_name_table, 'tp_name_table' => @tp_name_table }
+    end
 
     # @return [void]
     def make_convert_table
       make_node_name_table
       make_tp_name_table
     end
+
+    # @param [String] file Path of convert table file (json)
+    # @return [void]
+    def reload_convert_table(file)
+      table_data = JSON.parse(File.read(file))
+      @node_name_table = table_data['node_name_table']
+      @tp_name_table = table_data['tp_name_table']
+    end
+
+    private
 
     # @param [Netomox::Topology::Node] src_node Source node (L3)
     # @param [Integer] index Term-point index

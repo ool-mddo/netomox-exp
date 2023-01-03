@@ -9,20 +9,22 @@ module TopologyOperator
   class NamespaceConverter < NamespaceConvertTable
     TARGET_NW_REGEXP_LIST = [/ospf_area\d+/, /layer3/].freeze
 
-    # @param [String] file Topology file path
-    def initialize(file)
-      super(file)
-      rewrite_networks
-    end
-
     # @return [Hash]
-    def to_data
+    def topo_data
       @dst_nws.interpret.topo_data
     end
 
     # @return [void]
     def dump
       @dst_nws.dump
+    end
+
+    # @return [void]
+    def rewrite_networks
+      @dst_nws = TopologyBuilder::PseudoDSL::PNetworks.new
+      @dst_nws.networks = @src_nws.networks
+                                  .filter { |nw| TARGET_NW_REGEXP_LIST.any? { |nw_re| nw.name =~ nw_re } }
+                                  .map { |src_nw| rewrite_network(src_nw) }
     end
 
     private
@@ -37,7 +39,17 @@ module TopologyOperator
       ref_node
     end
 
-    # rubocop:disable Metrics/AbcSize
+    # @param [Netomox::Topology::TermPoint] src_tp Source term-point (L3+)
+    # @return [Array<Array<String>>] Array of term-point supports
+    def rewrite_tp_supports(src_tp)
+      # NOTE: if include support info to non-existent network (L3 -> L2): comment out `filter`
+      src_tp.supports
+            .filter { |s| TARGET_NW_REGEXP_LIST.any? { |re| s.ref_network =~ re } }
+            .map do |tp_sup|
+        ref_node = support_node_name(tp_sup.ref_network, tp_sup.ref_node)
+        [tp_sup.ref_network, convert_node_name(ref_node), convert_tp_name(ref_node, tp_sup.ref_tp)]
+      end
+    end
 
     # @param [Netomox::Topology::Node] src_node Source node (L3+)
     # @param [Netomox::Topology::TermPoint] src_tp Source term-point (L3+)
@@ -45,32 +57,31 @@ module TopologyOperator
     def rewrite_term_point(src_node, src_tp)
       dst_tp = TopologyBuilder::PseudoDSL::PTermPoint.new(convert_tp_name(src_node.name, src_tp.name))
       dst_tp.attribute = convert_all_hash_keys(src_tp.attribute.to_data)
-      dst_tp.supports = src_tp.supports.map do |tp_sup|
-        ref_node = support_node_name(tp_sup.ref_network, tp_sup.ref_node)
-        [tp_sup.ref_network, convert_node_name(ref_node), convert_tp_name(ref_node, tp_sup.ref_tp)]
-      end
+      dst_tp.supports = rewrite_tp_supports(src_tp)
       dst_tp
     end
-    # rubocop:enable Metrics/AbcSize
 
-    # rubocop:disable Metrics/AbcSize
+    # @param [Netomox::Topology::Node] src_node Source node (L3+)
+    # @return [Array<Array<String>>] Array of node supports
+    def rewrite_node_support(src_node)
+      # NOTE: if include support info to non-existent network (L3 -> L2): comment out `filter`
+      src_node.supports
+              .filter { |s| TARGET_NW_REGEXP_LIST.any? { |re| s.ref_network =~ re } }
+              .map do |node_sup|
+        ref_node = support_node_name(node_sup.ref_network, node_sup.ref_node)
+        [node_sup.ref_network, convert_node_name(ref_node)]
+      end
+    end
 
     # @param [Netomox::Topology::Node] src_node Source node (L3+)
     # @return [TopologyBuilder::PseudoDSL::PNode]
     def rewrite_node(src_node)
-      src_node.termination_points.each do |src_tp|
-        rewrite_term_point(src_node, src_tp)
-      end
-
       dst_node = TopologyBuilder::PseudoDSL::PNode.new(convert_node_name(src_node.name))
+      dst_node.tps = src_node.termination_points.map { |src_tp| rewrite_term_point(src_node, src_tp) }
       dst_node.attribute = convert_all_hash_keys(src_node.attribute.to_data)
-      dst_node.supports = src_node.supports.map do |node_sup|
-        ref_node = support_node_name(node_sup.ref_network, node_sup.ref_node)
-        [node_sup.ref_network, convert_node_name(ref_node)]
-      end
+      dst_node.supports = rewrite_node_support(src_node)
       dst_node
     end
-    # rubocop:enable Metrics/AbcSize
 
     # rubocop:disable Metrics/AbcSize
 
@@ -104,13 +115,5 @@ module TopologyOperator
       dst_nw
     end
     # rubocop:enable Metrics/AbcSize
-
-    # @return [void]
-    def rewrite_networks
-      @dst_nws = TopologyBuilder::PseudoDSL::PNetworks.new
-      @dst_nws.networks = @src_nws.networks
-                                  .filter { |nw| TARGET_NW_REGEXP_LIST.any? { |nw_re| nw.name =~ nw_re } }
-                                  .map { |src_nw| rewrite_network(src_nw) }
-    end
   end
 end
