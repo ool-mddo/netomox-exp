@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 require 'json'
-require 'yaml'
 require 'netomox'
 
 module TopologyOperator
@@ -56,8 +55,6 @@ module TopologyOperator
     def make_convert_table
       make_node_name_table
       make_tp_name_table
-      # DEBUG
-      warn YAML.dump({ 'node_name_table' => @node_name_table, 'tp_name_table' => @tp_name_table })
     end
 
     # @param [Netomox::Topology::Node] src_node Source node (L3)
@@ -68,6 +65,8 @@ module TopologyOperator
 
       "eth#{index}.0"
     end
+
+    # rubocop:disable Metrics/AbcSize, Metrics/CyclomaticComplexity, Metrics/MethodLength
 
     # @return [void]
     def make_tp_name_table
@@ -90,6 +89,7 @@ module TopologyOperator
         end
       end
     end
+    # rubocop:enable Metrics/AbcSize, Metrics/CyclomaticComplexity, Metrics/MethodLength
 
     # @param [Netomox::Topology::Node] src_node Source node
     # @return [String] Converted node name

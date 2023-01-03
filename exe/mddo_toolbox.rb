@@ -94,7 +94,8 @@ module TopologyOperator
     # rubocop:enable Metrics/AbcSize, Metrics/MethodLength
 
     desc 'ns_convert PATTERN_FILE', 'Convert namespace of topology file (L3+)'
-    method_option :format, aliases: :f, default: 'yaml', type: :string, enum: %w[yaml json], desc: 'Output format (to stdout)'
+    method_option :format, aliases: :f, default: 'yaml', type: :string, enum: %w[yaml json],
+                           desc: 'Output format (to stdout)'
     def ns_convert(file)
       converter = NamespaceConverter.new(file)
       print_data(converter.to_data)

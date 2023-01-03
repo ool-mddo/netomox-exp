@@ -11,7 +11,6 @@ module TopologyOperator
       flag: :flags
     }.freeze
 
-
     # @param [Symbol] key Key to convert
     # @param [Array, Object] value
     # @return [Symbol] Converted key
