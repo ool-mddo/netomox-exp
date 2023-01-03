@@ -23,11 +23,16 @@ module TopologyOperator
     def rewrite_networks
       @dst_nws = TopologyBuilder::PseudoDSL::PNetworks.new
       @dst_nws.networks = @src_nws.networks
-                                  .filter { |nw| TARGET_NW_REGEXP_LIST.any? { |nw_re| nw.name =~ nw_re } }
+                                  .filter { |nw| target_network?(nw.name) }
                                   .map { |src_nw| rewrite_network(src_nw) }
     end
 
     private
+
+    # @return [Boolean] True if the network_name matches one of TARGET_NW_REGEXP_LIST
+    def target_network?(network_name)
+      TARGET_NW_REGEXP_LIST.any? { |nw_re| network_name =~ nw_re }
+    end
 
     # @param [String] ref_network Support network (network name)
     # @param [String] ref_node Support node (node name)
@@ -44,7 +49,7 @@ module TopologyOperator
     def rewrite_tp_supports(src_tp)
       # NOTE: if include support info to non-existent network (L3 -> L2): comment out `filter`
       src_tp.supports
-            .filter { |s| TARGET_NW_REGEXP_LIST.any? { |re| s.ref_network =~ re } }
+            .filter { |s| target_network?(s.ref_network) }
             .map do |tp_sup|
         ref_node = support_node_name(tp_sup.ref_network, tp_sup.ref_node)
         [tp_sup.ref_network, convert_node_name(ref_node), convert_tp_name(ref_node, tp_sup.ref_tp)]
@@ -66,7 +71,7 @@ module TopologyOperator
     def rewrite_node_support(src_node)
       # NOTE: if include support info to non-existent network (L3 -> L2): comment out `filter`
       src_node.supports
-              .filter { |s| TARGET_NW_REGEXP_LIST.any? { |re| s.ref_network =~ re } }
+              .filter { |s| target_network?(s.ref_network) }
               .map do |node_sup|
         ref_node = support_node_name(node_sup.ref_network, node_sup.ref_node)
         [node_sup.ref_network, convert_node_name(ref_node)]
