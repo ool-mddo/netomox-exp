@@ -10,7 +10,7 @@ require_relative 'l1_descr/l1_intf_descr_maker'
 require_relative 'nw_subsets/network_sets_diff'
 require_relative 'reach_test/reach_tester'
 require_relative 'reach_test/reach_result_converter'
-require_relative 'ns_convert/ns_converter'
+require_relative 'ns_convert/converter'
 
 module TopologyOperator
   # Tools to operate topology data (CLI frontend)
