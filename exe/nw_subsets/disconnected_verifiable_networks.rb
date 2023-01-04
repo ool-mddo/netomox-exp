@@ -41,7 +41,7 @@ module Netomox
         @nodes.each do |node|
           # if the node doesn't have any interface,
           # it assumes that a standalone node is a single subset.
-          if node.termination_points.length.zero?
+          if node.termination_points.empty?
             network_set.subsets.push(TopologyOperator::NetworkSubset.new(node.path))
             next
           end

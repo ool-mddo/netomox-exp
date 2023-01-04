@@ -120,7 +120,7 @@ module TopologyOperator
       # NOTE: network type is iterable hash
       dst_nw.type = src_nw.network_types.keys[0]
       dst_nw.attribute = convert_all_hash_keys(src_nw.attribute.to_data) if src_nw.attribute
-      dst_nw.supports = src_nw.supports.map { |nw_sup| nw_sup.ref_network } if src_nw.supports
+      dst_nw.supports = src_nw.supports.map(&:ref_network) if src_nw.supports
       dst_nw.nodes = src_nw.nodes.map { |src_node| rewrite_node(src_node) }
       dst_nw.links = src_nw.links.map { |src_link| rewrite_link(src_link) }
       dst_nw

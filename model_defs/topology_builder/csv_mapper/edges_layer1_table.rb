@@ -52,7 +52,7 @@ module TopologyBuilder
       # @return [nil, EdgeBase] Destination link-edge connected with the node/interface, or nil if not found
       def find_pair(node_name, interface_name)
         rec = find_link_by_src_node_intf(node_name, interface_name)
-        rec ? rec.dst : nil
+        rec&.dst
       end
     end
   end
