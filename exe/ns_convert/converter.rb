@@ -36,23 +36,27 @@ module TopologyOperator
 
     # @param [String] ref_network Support network (network name)
     # @param [String] ref_node Support node (node name)
-    # @return [String] node name to support
+    # @return [Array<String>] node name to support
     def support_node_name(ref_network, ref_node)
-      # in layer2 node: "bridge(node)_interface" format
-      return ref_node.split('_')[0] if ref_network == 'layer2'
+      return [ref_node] if ref_network != 'layer2'
 
-      ref_node
+      # in layer2 node: "bridge(node)_interface" format
+      ref_node.split('_')
     end
 
     # @param [Netomox::Topology::TermPoint] src_tp Source term-point (L3+)
     # @return [Array<Array<String>>] Array of term-point supports
     def rewrite_tp_supports(src_tp)
-      # NOTE: if include support info to non-existent network (L3 -> L2): comment out `filter`
       src_tp.supports
-            .filter { |s| target_network?(s.ref_network) }
             .map do |tp_sup|
-        ref_node = support_node_name(tp_sup.ref_network, tp_sup.ref_node)
-        [tp_sup.ref_network, convert_node_name(ref_node), convert_tp_name(ref_node, tp_sup.ref_tp)]
+        n_node, n_tp = support_node_name(tp_sup.ref_network, tp_sup.ref_node)
+
+        converted_tp = convert_tp_name(n_node, tp_sup.ref_tp)
+        if n_tp.nil?
+          [tp_sup.ref_network, convert_node_name(n_node), converted_tp]
+        else
+          [tp_sup.ref_network, [convert_node_name(n_node), convert_tp_name(n_node, n_tp)].join('_'), converted_tp]
+        end
       end
     end
 
@@ -69,12 +73,14 @@ module TopologyOperator
     # @param [Netomox::Topology::Node] src_node Source node (L3+)
     # @return [Array<Array<String>>] Array of node supports
     def rewrite_node_support(src_node)
-      # NOTE: if include support info to non-existent network (L3 -> L2): comment out `filter`
       src_node.supports
-              .filter { |s| target_network?(s.ref_network) }
               .map do |node_sup|
-        ref_node = support_node_name(node_sup.ref_network, node_sup.ref_node)
-        [node_sup.ref_network, convert_node_name(ref_node)]
+        n_node, n_tp = support_node_name(node_sup.ref_network, node_sup.ref_node)
+        if n_tp.nil?
+          [node_sup.ref_network, convert_node_name(n_node)]
+        else
+          [node_sup.ref_network, [convert_node_name(n_node), convert_tp_name(n_node, n_tp)].join('_')]
+        end
       end
     end
 
@@ -114,7 +120,7 @@ module TopologyOperator
       # NOTE: network type is iterable hash
       dst_nw.type = src_nw.network_types.keys[0]
       dst_nw.attribute = convert_all_hash_keys(src_nw.attribute.to_data) if src_nw.attribute
-      dst_nw.supports = src_nw.supports.map { |nw_sup| [nw_sup.ref_network] } if src_nw.supports
+      dst_nw.supports = src_nw.supports.map { |nw_sup| nw_sup.ref_network } if src_nw.supports
       dst_nw.nodes = src_nw.nodes.map { |src_node| rewrite_node(src_node) }
       dst_nw.links = src_nw.links.map { |src_link| rewrite_link(src_link) }
       dst_nw

@@ -78,7 +78,7 @@ module TopologyOperator
       "eth#{index}.0"
     end
 
-    # rubocop:disable Metrics/AbcSize, Metrics/CyclomaticComplexity, Metrics/MethodLength
+    # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
 
     # @return [void]
     def make_tp_name_table
@@ -91,7 +91,7 @@ module TopologyOperator
         # reverse
         @tp_name_table[dst_node_name] = {} unless key_node_tp?(dst_node_name)
 
-        src_node.termination_points.sort { |tp1, tp2| tp1.name <=> tp2.name }.each_with_index do |src_tp, index|
+        src_node.termination_points.each_with_index do |src_tp, index|
           dst_tp_name = forward_convert_tp_name(src_node, index + 1)
 
           # forward
@@ -101,7 +101,7 @@ module TopologyOperator
         end
       end
     end
-    # rubocop:enable Metrics/AbcSize, Metrics/CyclomaticComplexity, Metrics/MethodLength
+    # rubocop:enable Metrics/AbcSize, Metrics/MethodLength
 
     # @param [Netomox::Topology::Node] src_node Source node
     # @return [String] Converted node name
