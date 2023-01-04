@@ -94,7 +94,7 @@ module TopologyOperator
     # rubocop:enable Metrics/AbcSize, Metrics/MethodLength
 
     # rubocop:disable Metrics/AbcSize
-    desc 'ns_convert PATTERN_FILE', 'Convert namespace of topology file (L3+)'
+    desc 'ns_convert TOPOLOGY', 'Convert namespace of topology file (L3+)'
     method_option :table, aliases: :t, type: :string, desc: 'convert table file'
     method_option :overwrite, aliases: :o, type: :boolean, default: false, desc: 'Overwrite convert table'
     method_option :format, aliases: :f, default: 'yaml', type: :string, enum: %w[yaml json],
