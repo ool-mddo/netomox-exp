@@ -9,7 +9,7 @@ module TopologyOperator
   class NamespaceConverter < NamespaceConvertTable
     TARGET_NW_REGEXP_LIST = [/ospf_area\d+/, /layer3/].freeze
 
-    # @return [Hash]
+    # @return [Hash] Converted topology data
     def topo_data
       @dst_nws.interpret.topo_data
     end
@@ -29,6 +29,7 @@ module TopologyOperator
 
     private
 
+    # @param [String] network_name Network (layer) name
     # @return [Boolean] True if the network_name matches one of TARGET_NW_REGEXP_LIST
     def target_network?(network_name)
       TARGET_NW_REGEXP_LIST.any? { |nw_re| network_name =~ nw_re }
@@ -47,14 +48,14 @@ module TopologyOperator
     # @param [Netomox::Topology::TermPoint] src_tp Source term-point (L3+)
     # @return [Array<Array<String>>] Array of term-point supports
     def rewrite_tp_supports(src_tp)
-      src_tp.supports
-            .map do |tp_sup|
+      src_tp.supports.map do |tp_sup|
         n_node, n_tp = support_node_name(tp_sup.ref_network, tp_sup.ref_node)
 
         converted_tp = convert_tp_name(n_node, tp_sup.ref_tp)
         if n_tp.nil?
           [tp_sup.ref_network, convert_node_name(n_node), converted_tp]
         else
+          # in layer2 node: "bridge(node)_interface" format
           [tp_sup.ref_network, [convert_node_name(n_node), convert_tp_name(n_node, n_tp)].join('_'), converted_tp]
         end
       end
@@ -73,12 +74,12 @@ module TopologyOperator
     # @param [Netomox::Topology::Node] src_node Source node (L3+)
     # @return [Array<Array<String>>] Array of node supports
     def rewrite_node_support(src_node)
-      src_node.supports
-              .map do |node_sup|
+      src_node.supports.map do |node_sup|
         n_node, n_tp = support_node_name(node_sup.ref_network, node_sup.ref_node)
         if n_tp.nil?
           [node_sup.ref_network, convert_node_name(n_node)]
         else
+          # in layer2 node: "bridge(node)_interface" format
           [node_sup.ref_network, [convert_node_name(n_node), convert_tp_name(n_node, n_tp)].join('_')]
         end
       end
@@ -94,22 +95,21 @@ module TopologyOperator
       dst_node
     end
 
-    # rubocop:disable Metrics/AbcSize
+    # @param [Netomox::Topology::TpRef] orig_edge Original link edge
+    # @return [TopologyBuilder::PseudoDSL::PLinkEdge]
+    def rewrite_link_edge(orig_edge)
+      node = convert_node_name(orig_edge.node_ref)
+      tp = convert_tp_name(orig_edge.node_ref, orig_edge.tp_ref)
+      TopologyBuilder::PseudoDSL::PLinkEdge.new(node, tp)
+    end
 
     # @param [Netomox::Topology::Link] src_link Source link (L3+)
     # @return [TopologyBuilder::PseudoDSL::PLink]
     def rewrite_link(src_link)
-      ss_node = convert_node_name(src_link.source.node_ref)
-      ss_tp = convert_tp_name(src_link.source.node_ref, src_link.source.tp_ref)
-      dst_link_dst = TopologyBuilder::PseudoDSL::PLinkEdge.new(ss_node, ss_tp)
-
-      sd_node = convert_node_name(src_link.destination.node_ref)
-      sd_tp = convert_tp_name(src_link.destination.node_ref, src_link.destination.tp_ref)
-      dst_link_src = TopologyBuilder::PseudoDSL::PLinkEdge.new(sd_node, sd_tp)
-
+      dst_link_dst = rewrite_link_edge(src_link.source)
+      dst_link_src = rewrite_link_edge(src_link.destination)
       TopologyBuilder::PseudoDSL::PLink.new(dst_link_dst, dst_link_src)
     end
-    # rubocop:enable Metrics/AbcSize
 
     # rubocop:disable Metrics/AbcSize
 
