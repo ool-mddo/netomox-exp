@@ -109,8 +109,7 @@ module TopologyOperator
         converter.make_convert_table
         print_json_data_to_file(converter.convert_table, table_file)
       end
-      converter.rewrite_networks
-      print_data(converter.topo_data)
+      print_data(converter.convert)
     end
     # rubocop:enable Metrics/AbcSize
 

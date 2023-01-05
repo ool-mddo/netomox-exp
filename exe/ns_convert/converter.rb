@@ -9,22 +9,19 @@ module TopologyOperator
   class NamespaceConverter < NamespaceConvertTable
     TARGET_NW_REGEXP_LIST = [/ospf_area\d+/, /layer3/].freeze
 
-    # @return [Hash] Converted topology data
-    def topo_data
-      @dst_nws.interpret.topo_data
-    end
-
     # @return [void]
     def dump
       @dst_nws.dump
     end
 
-    # @return [void]
-    def rewrite_networks
+    # Rewrite all networks using convert table
+    # @return [Hash] Converted topology data
+    def convert
       @dst_nws = TopologyBuilder::PseudoDSL::PNetworks.new
       @dst_nws.networks = @src_nws.networks
                                   .filter { |nw| target_network?(nw.name) }
                                   .map { |src_nw| rewrite_network(src_nw) }
+      @dst_nws.interpret.topo_data
     end
 
     private
