@@ -7,6 +7,7 @@ require_relative '../../model_defs/topology_builder/pseudo_dsl/pseudo_model'
 module TopologyOperator
   # namespace converter
   class NamespaceConverter < NamespaceConvertTable
+    # Target network (layer) names (regexp match)
     TARGET_NW_REGEXP_LIST = [/ospf_area\d+/, /layer3/].freeze
 
     # @return [void]

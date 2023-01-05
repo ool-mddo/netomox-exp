@@ -15,7 +15,6 @@ module TopologyOperator
     # @param [Netomox::Topology::TpRef] edge Link edge
     # @return [Hash]
     def edge_to_hash(edge)
-      # NOTE: batfish layer1_topology.json needs bidirectional link data
       # NOTE: interface (tp) name is unsafe
       {
         'hostname' => safe_node_name(edge.node_ref),
@@ -23,9 +22,10 @@ module TopologyOperator
       }
     end
 
-    # @return [Hash]
+    # @return [Array<Hash>] link data
     def link_data
       @src_network.links.map do |link|
+        # NOTE: batfish layer1_topology.json needs bidirectional link data
         {
           'node1' => edge_to_hash(link.source),
           'node2' => edge_to_hash(link.destination)

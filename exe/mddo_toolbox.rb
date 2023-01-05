@@ -103,6 +103,8 @@ module TopologyOperator
     method_option :overwrite, aliases: :o, type: :boolean, default: false, desc: 'Overwrite convert table'
     method_option :format, aliases: :f, default: 'yaml', type: :string, enum: %w[yaml json],
                            desc: 'Output format (to stdout)'
+    # @param [String] file Target topology file path
+    # @return [void]
     def convert_namespace(file)
       converter = NamespaceConverter.new(file)
       table_file = options.key?(:table) ? options[:table] : File.join(Dir.pwd, 'ns_table.json')
@@ -123,6 +125,8 @@ module TopologyOperator
     method_option :format, aliases: :f, default: 'yaml', type: :string, enum: %w[yaml json], desc: 'Output format'
     method_option :source, aliases: :s, type: :string, required: true, desc: 'Source network (layer) name'
     method_option :env_name, aliases: :e, type: :string, default: 'emulated', desc: 'Environment name (for clab)'
+    # @param [String] file Target topology file path
+    # @return [void]
     def convert_topology(file)
       converter = if options[:target] == 'bf'
                     BatfishConverter.new(file, options[:source])

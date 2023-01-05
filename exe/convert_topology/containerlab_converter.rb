@@ -3,7 +3,7 @@
 module TopologyOperator
   # topology data converter for container-lab
   class ContainerLabConverter < ConverterBase
-    # @return [Hash]topology data for clab
+    # @return [Hash] topology data for clab
     def convert
       check_network_type
       {
@@ -28,7 +28,7 @@ module TopologyOperator
       links
     end
 
-    # @param [Netomox::Topology::TpRef]
+    # @param [Netomox::Topology::TpRef] edge Link edge
     # @return [String]
     def link_edge_to_str(edge)
       # NOTE: interface (tp) name is unsafe
@@ -43,6 +43,10 @@ module TopologyOperator
       end
     end
 
+    # @param [String] image Container image name
+    # @param [String] kind Container type
+    # @param [String] config Startup-config file name
+    # @return [Hash]
     def define_node_data(image, kind, config)
       {
         'image' => image,
@@ -53,6 +57,7 @@ module TopologyOperator
 
     # @param [Netomox::Topology::Node] node
     # @return [Hash]
+    # @raise [StandardError] if found unknown node-type
     def make_node_data(node)
       node_name = safe_node_name(node.name)
       case node.attribute.node_type
@@ -65,7 +70,7 @@ module TopologyOperator
       end
     end
 
-    # @return [Hash<Hash] node data
+    # @return [Hash<Hash>] node data
     def node_data
       node_table = {}
       @src_network.nodes.each { |node| node_table[safe_node_name(node.name)] = make_node_data(node) }

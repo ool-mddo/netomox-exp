@@ -3,6 +3,9 @@
 module TopologyOperator
   # namespace converter
   class NamespaceConverter < NamespaceConvertTable
+    # Table of the keys which can not convert standard way (exceptional keys in L3/OSPF network)
+    # Netomox::Topology attribute (object) -> TopologyBuilder::PseudoDSL attribute (Simple Hash)
+    # NOTE: these keys are a list excepting `ip_addr`/`ip_address`
     ATTR_KEY_TABLE = {
       static_route: :static_routes,
       neighbor: :neighbors,
