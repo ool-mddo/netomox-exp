@@ -9,14 +9,14 @@ module TopologyBuilder
   # L2 data builder
   class L2DataBuilder < L2DataChecker
     # @param [String] target Target network (config) data name
-    # @param [PNetwork] layer1p Layer1 network topology
+    # @param [Netomox::PseudoDSL::PNetwork] layer1p Layer1 network topology
     def initialize(target:, layer1p:, debug: false)
       super(target:, debug:)
       @layer1p = layer1p
       @intf_props = CSVMapper::InterfacePropertiesTable.new(target)
     end
 
-    # @return [PNetworks] Networks contains only layer2 network topology
+    # @return [Netomox::PseudoDSL::PNetworks] Networks contains only layer2 network topology
     def make_networks
       @network = @networks.network('layer2')
       @network.type = Netomox::NWTYPE_MDDO_L2
@@ -28,8 +28,8 @@ module TopologyBuilder
 
     private
 
-    # @param [PNode] l1_node A node under the new layer2 node
-    # @param [PTermPoint] l1_tp Layer1 term-point under the new layer2 term-point
+    # @param [Netomox::PseudoDSL::PNode] l1_node A node under the new layer2 node
+    # @param [Netomox::PseudoDSL::PTermPoint] l1_tp Layer1 term-point under the new layer2 term-point
     # @param [InterfacePropertiesTableRecord] l1_tp_prop Layer1 (phy) or unit interface property
     # @param [Integer] vlan_id VLAN id (if used)
     # @return [String] Suffix string for Layer2 node name
@@ -40,8 +40,8 @@ module TopologyBuilder
       "Vlan#{vlan_id}" # Cisco-IOS-style (SVI)
     end
 
-    # @param [PNode] l1_node A node under the new layer2 node
-    # @param [PTermPoint] l1_tp Layer1 term-point under the new layer2 term-point
+    # @param [Netomox::PseudoDSL::PNode] l1_node A node under the new layer2 node
+    # @param [Netomox::PseudoDSL::PTermPoint] l1_tp Layer1 term-point under the new layer2 term-point
     # @param [InterfacePropertiesTableRecord] l1_tp_prop Layer1 (phy) or unit interface property
     # @param [Integer] vlan_id VLAN id (if used)
     # @return [String] Name of layer2 node
@@ -49,11 +49,11 @@ module TopologyBuilder
       "#{l1_node.name}_#{l2_node_name_suffix(l1_node, l1_tp, l1_tp_prop, vlan_id)}"
     end
 
-    # @param [PNode] l1_node A node under the new layer2 node
-    # @param [PTermPoint] l1_tp Layer1 term-point under the new layer2 term-point
+    # @param [Netomox::PseudoDSL::PNode] l1_node A node under the new layer2 node
+    # @param [Netomox::PseudoDSL::PTermPoint] l1_tp Layer1 term-point under the new layer2 term-point
     # @param [InterfacePropertiesTableRecord] l1_tp_prop Layer1 (phy) or unit interface property
     # @param [Integer] vlan_id VLAN id (if used)
-    # @return [PNode] Added layer2 node
+    # @return [Netomox::PseudoDSL::PNode] Added layer2 node
     def add_l2_node(l1_node, l1_tp, l1_tp_prop, vlan_id)
       new_node = @network.node(l2_node_name(l1_node, l1_tp, l1_tp_prop, vlan_id))
       new_node.attribute = { name: l1_node.name, vlan_id: }
@@ -63,16 +63,16 @@ module TopologyBuilder
     end
 
     # for junos: the term-point owns l3-sub-interface(s)
-    # @param [PNode] l1_node A node under the new layer2 node
-    # @param [PTermPoint] l1_tp layer1 term-point under the new layer2 term-point
+    # @param [Netomox::PseudoDSL::PNode] l1_node A node under the new layer2 node
+    # @param [Netomox::PseudoDSL::PTermPoint] l1_tp layer1 term-point under the new layer2 term-point
     # @return [Boolean] True if L3 sub-intf of junos
     def owns_l3_sub_interface?(l1_node, l1_tp)
       juniper_node?(l1_node) && @intf_props.find_all_unit_records_by_node_intf(l1_node.name, l1_tp.name)
                                            .all?(&:l3_subif?)
     end
 
-    # @param [PNode] l1_node A node under the new layer2 node
-    # @param [PTermPoint] l1_tp layer1 term-point under the new layer2 term-point
+    # @param [Netomox::PseudoDSL::PNode] l1_node A node under the new layer2 node
+    # @param [Netomox::PseudoDSL::PTermPoint] l1_tp layer1 term-point under the new layer2 term-point
     # @param [InterfacePropertiesTableRecord] l1_tp_prop Layer1 (phy) or unit interface property
     # @param [Integer] vlan_id VLAN id (if used)
     # @return [String] Name of layer2 term-point
@@ -89,8 +89,8 @@ module TopologyBuilder
       end
     end
 
-    # @param [PNode] l1_node layer1 node under l2_node
-    # @param [PTermPoint] l1_tp layer1 term-point under the new layer2 term-point
+    # @param [Netomox::PseudoDSL::PNode] l1_node layer1 node under l2_node
+    # @param [Netomox::PseudoDSL::PTermPoint] l1_tp layer1 term-point under the new layer2 term-point
     # @param [InterfacePropertiesTableRecord] l1_tp_prop Layer1 (phy) interface property
     # return [Array<Array<String>>] Support node/tp data
     def l2_tp_supports(l1_node, l1_tp, l1_tp_prop)
@@ -101,8 +101,8 @@ module TopologyBuilder
       end
     end
 
-    # @param [PNode] l1_node layer1 node under l2_node
-    # @param [PTermPoint] l1_tp layer1 term-point under the new layer2 term-point
+    # @param [Netomox::PseudoDSL::PNode] l1_node layer1 node under l2_node
+    # @param [Netomox::PseudoDSL::PTermPoint] l1_tp layer1 term-point under the new layer2 term-point
     # @param [InterfacePropertiesTableRecord] l1_tp_prop Layer1 (phy) or unit interface property
     def l2_tp_attribute(l1_node, l1_tp, l1_tp_prop)
       # for junos sub-interface: it assumes trunk, @see: L2DataChecker#change_property_as_trunk
@@ -115,11 +115,11 @@ module TopologyBuilder
       }
     end
 
-    # @param [PNode] l2_node Layer2 node to add new term-point
-    # @param [PNode] l1_node layer1 node under l2_node
-    # @param [PTermPoint] l1_tp layer1 term-point under the new layer2 term-point
+    # @param [Netomox::PseudoDSL::PNode] l2_node Layer2 node to add new term-point
+    # @param [Netomox::PseudoDSL::PNode] l1_node layer1 node under l2_node
+    # @param [Netomox::PseudoDSL::PTermPoint] l1_tp layer1 term-point under the new layer2 term-point
     # @param [InterfacePropertiesTableRecord] l1_tp_prop Layer1 (phy) or unit interface property
-    # @return [PTermPoint] Added layer2 term-point
+    # @return [Netomox::PseudoDSL::PTermPoint] Added layer2 term-point
     # @raise [StandardError] if layer1 term-point property is not found
     def add_l2_tp(l2_node, l1_node, l1_tp, l1_tp_prop, vlan_id)
       new_tp = l2_node.term_point(l2_tp_name(l1_node, l1_tp, l1_tp_prop, vlan_id))
@@ -132,11 +132,11 @@ module TopologyBuilder
       new_tp
     end
 
-    # @param [PNode] l1_node A node under the new layer2 node
-    # @param [PTermPoint] l1_tp Layer1 term-point under the new layer2 term-point
+    # @param [Netomox::PseudoDSL::PNode] l1_node A node under the new layer2 node
+    # @param [Netomox::PseudoDSL::PTermPoint] l1_tp Layer1 term-point under the new layer2 term-point
     # @param [InterfacePropertiesTableRecord] l1_tp_prop Layer1 (phy) or unit interface property
     # @param [Integer] vlan_id vlan_id VLAN id (if used)
-    # @return [Array(PNode, PTermPoint)] A pair of added node name and tp name
+    # @return [Array(Netomox::PseudoDSL::PNode, Netomox::PseudoDSL::PTermPoint)] A pair of added node name and tp name
     def add_l2_node_tp(l1_node, l1_tp, l1_tp_prop, vlan_id)
       new_node = add_l2_node(l1_node, l1_tp, l1_tp_prop, vlan_id)
       new_tp = add_l2_tp(new_node, l1_node, l1_tp, l1_tp_prop, vlan_id)
@@ -145,12 +145,12 @@ module TopologyBuilder
 
     # rubocop:disable Metrics/ParameterLists
 
-    # @param [PNode] src_node L1 link source node
-    # @param [PTermPoint] src_tp L1 link source tp (on src_node)
+    # @param [Netomox::PseudoDSL::PNode] src_node L1 link source node
+    # @param [Netomox::PseudoDSL::PTermPoint] src_tp L1 link source tp (on src_node)
     # @param [InterfacePropertiesTableRecord] src_tp_prop L1 term-point property of src_tp
     # @param [Integer] src_vlan_id VLAN id of src_tp
-    # @param [PNode] dst_node L1 link destination node
-    # @param [PTermPoint] dst_tp L1 link destination port (on dst_node)
+    # @param [Netomox::PseudoDSL::PNode] dst_node L1 link destination node
+    # @param [Netomox::PseudoDSL::PTermPoint] dst_tp L1 link destination port (on dst_node)
     # @param [InterfacePropertiesTableRecord] dst_tp_prop L1 term-point property of dst_tp
     # @param [Integer] dst_vlan_id VLAN id of dst_tp
     # @return [void]
@@ -166,10 +166,10 @@ module TopologyBuilder
 
     # rubocop:disable Metrics/MethodLength, Metrics/AbcSize
 
-    # @param [PNode] src_node L1 link source node
-    # @param [PTermPoint] src_tp L1 link source tp (on src_node)
-    # @param [PNode] dst_node L1 link destination node
-    # @param [PTermPoint] dst_tp L1 link destination port (on dst_node)
+    # @param [Netomox::PseudoDSL::PNode] src_node L1 link source node
+    # @param [Netomox::PseudoDSL::PTermPoint] src_tp L1 link source tp (on src_node)
+    # @param [Netomox::PseudoDSL::PNode] dst_node L1 link destination node
+    # @param [Netomox::PseudoDSL::PTermPoint] dst_tp L1 link destination port (on dst_node)
     # @param [Hash] check_result L2 config check result (@see: port_l2_config_check)
     # @return [void]
     def add_l2_node_tp_link_by_config(src_node, src_tp, dst_node, dst_tp, check_result)
@@ -194,17 +194,17 @@ module TopologyBuilder
     # rubocop:enable Metrics/MethodLength, Metrics/AbcSize
 
     # @param [String] lag_tp_name Layer1 LAG (parent) term-point name
-    # @param [PTermPoint] member_tp Layer1 LAG member term-point name
-    # @return [PTermPoint] LAG (parent) term-point
+    # @param [Netomox::PseudoDSL::PTermPoint] member_tp Layer1 LAG member term-point name
+    # @return [Netomox::PseudoDSL::PTermPoint] LAG (parent) term-point
     def make_l1_lag_tp(lag_tp_name, member_tp)
-      l1_lag_tp = PseudoDSL::PTermPoint.new(lag_tp_name)
+      l1_lag_tp = Netomox::PseudoDSL::PTermPoint.new(lag_tp_name)
       l1_lag_tp.attribute = member_tp.attribute
       l1_lag_tp.supports = member_tp.supports
       l1_lag_tp
     end
 
-    # @param [PLinkEdge] link_edge A Link-edge to get interface property
-    # @return [Array(PNode, PTermPoint, InterfacePropertiesTableRecord)]
+    # @param [Netomox::PseudoDSL::PLinkEdge] link_edge A Link-edge to get interface property
+    # @return [Array(Netomox::PseudoDSL::PNode, Netomox::PseudoDSL::PTermPoint, InterfacePropertiesTableRecord)]
     # @raise [StandardError] if term-point props of the link-edge is not found
     def l1_link_edge_to_node_tp(link_edge)
       node = @layer1p.find_node_by_name(link_edge.node)
@@ -215,8 +215,8 @@ module TopologyBuilder
       [node, tp, tp_prop]
     end
 
-    # @param [PLinkEdge] link_edge A Link-edge to get interface property
-    # @return [Array(PNode, PTermPoint, InterfacePropertiesTableRecord)]
+    # @param [Netomox::PseudoDSL::PLinkEdge] link_edge A Link-edge to get interface property
+    # @return [Array(Netomox::PseudoDSL::PNode, Netomox::PseudoDSL::PTermPoint, InterfacePropertiesTableRecord)]
     #   Node, interface, interface property of the edge
     def tp_prop_by_link_edge(link_edge)
       node, tp, tp_prop = l1_link_edge_to_node_tp(link_edge)
@@ -227,16 +227,17 @@ module TopologyBuilder
       ]
     end
 
-    # @param [PLinkEdge] link_edge
-    # @return [Array(PNode, PTermPoint)]
+    # @param [Netomox::PseudoDSL::PLinkEdge] link_edge
+    # @return [Array(Netomox::PseudoDSL::PNode, Netomox::PseudoDSL::PTermPoint)]
     def l2_link_edge_to_node_tp(link_edge)
       node = @network.find_node_by_name(link_edge.node)
       tp = node.find_tp_by_name(link_edge.tp)
       [node, tp]
     end
 
-    # @param [PNode] l2_tp
-    # @return [Array(PNode, PTermPoint)] layer1 node, term-point under l2_node/l2_tp
+    # @param [Netomox::PseudoDSL::PNode] l2_tp
+    # @return [Array(Netomox::PseudoDSL::PNode, Netomox::PseudoDSL::PTermPoint)]
+    #   layer1 node, term-point under l2_node/l2_tp
     def l1_supported_node_tp_list(l2_tp)
       # NOTE: usually, l2_node and l2_tp (in l2_node) has same support path (network__node)
       l2_tp_l1sups = l2_tp.supports.find_all { |s| s[0] == @layer1p.name }

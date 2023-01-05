@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require_relative 'pseudo_dsl/pseudo_model'
+require_relative 'pseudo_model'
 require_relative 'csv_mapper/ospf_area_conf_table'
 require_relative 'csv_mapper/ospf_intf_conf_table'
 require_relative 'csv_mapper/ospf_proc_conf_table'
@@ -11,9 +11,9 @@ module TopologyBuilder
   # rubocop:disable Metrics/ClassLength
 
   # OSPF data builder
-  class OspfDataBuilder < PseudoDSL::DataBuilderBase
+  class OspfDataBuilder < DataBuilderBase
     # @param [String] target Target network (config) data name
-    # @param [PNetwork] layer3p Layer3 network topology
+    # @param [Netomox::PseudoDSL::PNetwork] layer3p Layer3 network topology
     def initialize(target:, layer3p:, debug: false)
       super(debug:)
       @layer3p = layer3p
@@ -23,7 +23,7 @@ module TopologyBuilder
       @named_structures = CSVMapper::NamedStructuresTable.new(target)
     end
 
-    # @return [PNetworks] Networks contains ospf area topology
+    # @return [Netomox::PseudoDSL::PNetworks] Networks contains ospf area topology
     def make_networks
       # NOTE: ospf layer is defined for each ospf-area
       @ospf_area_conf.all_areas.each do |area_id|
@@ -53,23 +53,23 @@ module TopologyBuilder
       IPAddress::IPv4.parse_u32(@area_id).address
     end
 
-    # @param [PNetwork] target_network Network to search
-    # @return [Array<PNode>] Layer3 segment nodes
+    # @param [Netomox::PseudoDSL::PNetwork] target_network Network to search
+    # @return [Array<Netomox::PseudoDSL::PNode>] Layer3 segment nodes
     def find_all_segment_type_nodes(target_network)
       target_network.nodes.find_all { |node| node.attribute[:node_type] == 'segment' }
     end
 
-    # @return [Array<PNode>] Layer3 segment nodes
+    # @return [Array<Netomox::PseudoDSL::PNode>] Layer3 segment nodes
     def find_all_l3_segment_type_nodes
       find_all_segment_type_nodes(@layer3p)
     end
 
-    # @return [Array<PNode>] ospf-area segment node
+    # @return [Array<Netomox::PseudoDSL::PNode>] ospf-area segment node
     def find_all_ospf_segment_type_nodes
       find_all_segment_type_nodes(@network)
     end
 
-    # @param [PNode] l3_node L3 node to check
+    # @param [Netomox::PseudoDSL::PNode] l3_node L3 node to check
     # @return [Boolean] true if the node type is segment
     def segment_type_l3_node?(l3_node)
       l3_node.attribute[:node_type] == 'segment'
@@ -87,7 +87,7 @@ module TopologyBuilder
       redistribute_protocols.flatten.map { |proto| { protocol: proto } }
     end
 
-    # @param [PNode] l3_node Layer3 node
+    # @param [Netomox::PseudoDSL::PNode] l3_node Layer3 node
     # @return [Hash] attribute
     def ospf_node_attr(l3_node)
       ospf_proc_conf_rec = @ospf_proc_conf.find_record_by_node(l3_node.name)
@@ -105,8 +105,8 @@ module TopologyBuilder
 
     # rubocop:disable Metrics/CyclomaticComplexity, Metrics/MethodLength
 
-    # @param l3_node [PNode] l3node Layer3 node
-    # @param l3_tp [PTermPoint] l3tp Layer3 term-point
+    # @param l3_node [Netomox::PseudoDSL::PNode] l3node Layer3 node
+    # @param l3_tp [Netomox::PseudoDSL::PTermPoint] l3tp Layer3 term-point
     # @return [Hash] attribute
     def ospf_tp_attr(l3_node, l3_tp)
       ospf_intf_conf = @ospf_intf_conf.find_record_by_node_intf(l3_node.name, l3_tp.name)
@@ -126,8 +126,8 @@ module TopologyBuilder
     end
     # rubocop:enable Metrics/CyclomaticComplexity, Metrics/MethodLength
 
-    # @param [PLinkEdge] l3_edge A edge of L3 link
-    # @return [Array(PNode, PTermPoint)] pair of node/tp
+    # @param [Netomox::PseudoDSL::PLinkEdge] l3_edge A edge of L3 link
+    # @return [Array(Netomox::PseudoDSL::PNode, Netomox::PseudoDSL::PTermPoint)] pair of node/tp
     def l3_edge_to_object(l3_edge)
       l3_node, l3_tp = @layer3p.find_node_tp_by_edge(l3_edge)
       raise StandardError "Node #{l3_edge.node} not found in #{@layer3p.name}" if l3_node.nil?
@@ -135,9 +135,10 @@ module TopologyBuilder
       [l3_node, l3_tp]
     end
 
-    # @param [PNode] l3_node Layer3 node
+    # @param [Netomox::PseudoDSL::PNode] l3_node Layer3 node
     # @param [String] flag A string in flags
-    # @return [Array<PTermPoint>] Term-points in l3_node that has flag in its attribute.flags
+    # @return [Array<Netomox::PseudoDSL::PTermPoint>]
+    #   Term-points in l3_node that has flag in its attribute.flags
     def find_all_l3_tps_by_flags(l3_node, flag)
       l3_node.tps.find_all do |tp|
         tp.attribute&.key?(:flags) && tp.attribute[:flags].include?(flag)
@@ -145,7 +146,7 @@ module TopologyBuilder
     end
 
     # add loopback term-point to ospf-are anode if origin (layer3) node has loopback
-    # @param [PLinkEdge] l3_edge A edge of L3 link
+    # @param [Netomox::PseudoDSL::PLinkEdge] l3_edge A edge of L3 link
     # @return [void]
     def add_ospf_node_loopback_tp(l3_edge)
       l3_node, = l3_edge_to_object(l3_edge)
@@ -158,10 +159,10 @@ module TopologyBuilder
       end
     end
 
-    # @param [PNode] l3_node Layer3 node
-    # @param [PTermPoint] l3_tp Layer3 term-point of l3_node
-    # @param [PNode] ospf_node OSPF-layer node (add target)
-    # @return [PTermPoint] added term-point (in ospf_node)
+    # @param [Netomox::PseudoDSL::PNode] l3_node Layer3 node
+    # @param [Netomox::PseudoDSL::PTermPoint] l3_tp Layer3 term-point of l3_node
+    # @param [Netomox::PseudoDSL::PNode] ospf_node OSPF-layer node (add target)
+    # @return [Netomox::PseudoDSL::PTermPoint] added term-point (in ospf_node)
     def add_tp_to_ospf_node(l3_node, l3_tp, ospf_node)
       ospf_tp = ospf_node.term_point(l3_tp.name)
       ospf_tp.supports.push([@layer3p.name, l3_node.name, l3_tp.name])
@@ -169,8 +170,9 @@ module TopologyBuilder
       ospf_tp
     end
 
-    # @param [PLinkEdge] l3_edge A edge of L3 link
-    # @return [Array(PNode, PTermPoint)] A pair of added ospf node and term-point
+    # @param [Netomox::PseudoDSL::PLinkEdge] l3_edge A edge of L3 link
+    # @return [Array(Netomox::PseudoDSL::PNode, Netomox::PseudoDSL::PTermPoint)]
+    #   A pair of added ospf node and term-point
     # @raise [StandardError] Node is not found in layer3 network
     def add_ospf_node_tp(l3_edge)
       debug_print "# add ospf node/tp: L3edge: #{l3_edge}"
@@ -182,10 +184,10 @@ module TopologyBuilder
       [ospf_node, ospf_tp]
     end
 
-    # @param [PNode] node1 Source ospf node
-    # @param [PTermPoint] tp1 Source ospf term-point
-    # @param [PNode] node2 Source ospf node
-    # @param [PTermPoint] tp2 Source ospf term-point
+    # @param [Netomox::PseudoDSL::PNode] node1 Source ospf node
+    # @param [Netomox::PseudoDSL::PTermPoint] tp1 Source ospf term-point
+    # @param [Netomox::PseudoDSL::PNode] node2 Source ospf node
+    # @param [Netomox::PseudoDSL::PTermPoint] tp2 Source ospf term-point
     # @return [void]
     def add_ospf_link(node1, tp1, node2, tp2)
       @network.link(node1, tp1, node2, tp2)
@@ -194,7 +196,7 @@ module TopologyBuilder
 
     # rubocop:disable Metrics/AbcSize
 
-    # @param [Array<PLink>] l3_links Layer3 links sourced a segment-node
+    # @param [Array<Netomox::PseudoDSL::PLink>] l3_links Layer3 links sourced a segment-node
     # @return [void]
     def add_ospf_node_tp_link(l3_links)
       l3_links.each do |l3_link|
@@ -220,8 +222,8 @@ module TopologyBuilder
       end
     end
 
-    # @param [PNodeEdge] edge Link edge
-    # @return [Array(PNode, PTermPoint, OspfProcessConfigurationTableRecord)]
+    # @param [Netomox::PseudoDSL::PNodeEdge] edge Link edge
+    # @return [Array(Netomox::PseudoDSL::PNode, Netomox::PseudoDSL::PTermPoint, OspfProcessConfigurationTableRecord)]
     def find_ospf_node_tp_conf(edge)
       node, tp = @network.find_node_tp_by_edge(edge)
       return [nil, nil, nil] if node.nil? || tp.nil?
@@ -230,8 +232,8 @@ module TopologyBuilder
       [node, tp, conf]
     end
 
-    # @param [PNode] other_node Neighbor ospf node of target
-    # @param [PTermPoint] other_tp Neighbor ospf term-point of target
+    # @param [Netomox::PseudoDSL::PNode] other_node Neighbor ospf node of target
+    # @param [Netomox::PseudoDSL::PTermPoint] other_tp Neighbor ospf term-point of target
     # @return [Hash] neighbor attribute of ospf term-point
     def tp_neighbor_attr(other_node, other_tp)
       # NOTE: support-tp element is [network, node, tp] array
@@ -248,7 +250,7 @@ module TopologyBuilder
       { router_id: other_node.attribute[:router_id], ip_addr: }
     end
 
-    # @param [PTermPoint] target_tp target ospf term-point to add a neighbor attribute
+    # @param [Netomox::PseudoDSL::PTermPoint] target_tp target ospf term-point to add a neighbor attribute
     # @param [Hash] neighbor_attr Neighbor attribute
     # @return [void]
     def add_tp_neighbor_attr(target_tp, neighbor_attr)
@@ -258,8 +260,8 @@ module TopologyBuilder
       target_tp.attribute[:neighbors].push(neighbor_attr)
     end
 
-    # @param [PTermPoint] target_tp Update target ospf term-point
-    # @param [Array<PLinkEdge>] other_edges neighbor candidate ospf term-points
+    # @param [Netomox::PseudoDSL::PTermPoint] target_tp Update target ospf term-point
+    # @param [Array<Netomox::PseudoDSL::PLinkEdge>] other_edges neighbor candidate ospf term-points
     # @return [void]
     def listing_neighbors_and_update(target_tp, other_edges)
       other_edges.each do |other_edge|

@@ -1,13 +1,13 @@
 # frozen_string_literal: true
 
-require_relative 'pseudo_dsl/pseudo_model'
+require_relative 'pseudo_model'
 require_relative 'csv_mapper/edges_layer1_table'
 require_relative 'csv_mapper/interface_prop_table'
 require_relative 'csv_mapper/node_props_table'
 
 module TopologyBuilder
   # L1 data builder
-  class L1DataBuilder < PseudoDSL::DataBuilderBase
+  class L1DataBuilder < DataBuilderBase
     # @param [String] target Target network (config) data name
     def initialize(target:, debug: false)
       super(debug:)
@@ -17,7 +17,7 @@ module TopologyBuilder
       validate_l1_edges
     end
 
-    # @return [PNetworks] Networks contains only layer1 network topology
+    # @return [Netomox::PseudoDSL::PNetworks] Networks contains only layer1 network topology
     def make_networks
       @network = @networks.network('layer1')
       @network.type = Netomox::NWTYPE_MDDO_L1
@@ -72,7 +72,7 @@ module TopologyBuilder
       exit 1
     end
 
-    # @param [PLink] l1_link Layer1 link
+    # @param [Netomox::PseudoDSL::PLink] l1_link Layer1 link
     # @return [Boolean] true if the link is LAG link
     def lag_link?(l1_link)
       src_intf_props = @intf_props.find_record_by_node_intf(l1_link.src.node, l1_link.src.interface)
@@ -104,7 +104,7 @@ module TopologyBuilder
     end
 
     # @param [String] node_name Node name
-    # @return [PNode] added node
+    # @return [Netomox::PseudoDSL::PNode] added node
     def add_node(node_name)
       node = @network.node(node_name)
       node.attribute = { os_type: @node_props.find_record_by_node(node_name)&.config_format&.downcase }

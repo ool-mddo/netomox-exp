@@ -12,7 +12,7 @@ module TopologyBuilder
   # L3 data builder
   class L3DataBuilder < L3DataChecker
     # @param [String] target Target network (config) data name
-    # @param [PNetwork] layer2p Layer2 network topology
+    # @param [Netomox::PseudoDSL::PNetwork] layer2p Layer2 network topology
     def initialize(target:, layer2p:, debug: false)
       super(layer2p:, debug:)
       @ip_owners = CSVMapper::IPOwnersTable.new(target)
@@ -24,7 +24,7 @@ module TopologyBuilder
       @segment_prefixes = {}.compare_by_identity
     end
 
-    # @return [PNetworks] Networks contains only layer3 network topology
+    # @return [Netomox::PseudoDSL::PNetworks] Networks contains only layer3 network topology
     def make_networks
       @network = @networks.network('layer3')
       @network.type = Netomox::NWTYPE_MDDO_L3
@@ -46,8 +46,8 @@ module TopologyBuilder
     end
 
     # @param [IPOwnersTableRecord] rec A record of IP-Owners table
-    # @param [PNode] l2_node A layer2 node
-    # @return [PNode] Added layer3 node
+    # @param [Netomox::PseudoDSL::PNode] l2_node A layer2 node
+    # @return [Netomox::PseudoDSL::PNode] Added layer3 node
     def add_l3_node(rec, l2_node)
       node_name = l3_node_name(rec)
       l3_node = @network.node(node_name)
@@ -59,9 +59,9 @@ module TopologyBuilder
     end
 
     # @param [IPOwnersTableRecord] rec A record of IP-Owners table
-    # @param [PNode] l3_node layer3 node to add term-point
-    # @param [PLinkEdge] l2_edge A Link-edge in layer2 topology (in segment)
-    # @return [PTermPoint] Added layer3 term-point
+    # @param [Netomox::PseudoDSL::PNode] l3_node layer3 node to add term-point
+    # @param [Netomox::PseudoDSL::PLinkEdge] l2_edge A Link-edge in layer2 topology (in segment)
+    # @return [Netomox::PseudoDSL::PTermPoint] Added layer3 term-point
     def add_l3_tp(rec, l3_node, l2_edge)
       l3_tp = l3_node.term_point(rec.interface)
       l3_tp.supports.push([@layer2p.name, l2_edge.node, l2_edge.tp])
@@ -73,8 +73,9 @@ module TopologyBuilder
       l3_tp
     end
 
-    # @param [PLinkEdge] l2_edge Layer2 link edge
-    # @return [Array(IPOwnersTableRecord, PNode)] L3 (IPOwners) record and corresponding L2 node
+    # @param [Netomox::PseudoDSL::PLinkEdge] l2_edge Layer2 link edge
+    # @return [Array(Netomox::PseudoDSL::IPOwnersTableRecord, Netomox::PseudoDSL::PNode)]
+    #   L3 (IPOwners) record and corresponding L2 node
     def ip_rec_by_l2_edge(l2_edge)
       l2_node = @layer2p.node(l2_edge.node)
       rec = @ip_owners.find_record_by_node_intf(l2_node.attribute[:name], l2_edge.tp)
@@ -86,8 +87,8 @@ module TopologyBuilder
       [rec, l2_node]
     end
 
-    # @param [PLinkEdge] l2_edge A Link-edge in layer2 topology (in segment)
-    # @return [Array(PNode, PTermPoint)] Added L3-Node and term-point pair
+    # @param [Netomox::PseudoDSL::PLinkEdge] l2_edge A Link-edge in layer2 topology (in segment)
+    # @return [Array(Netomox::PseudoDSL::PNode, Netomox::PseudoDSL::PTermPoint)] Added L3-Node and term-point pair
     def add_l3_node_tp(l2_edge)
       rec, l2_node = ip_rec_by_l2_edge(l2_edge)
 
@@ -98,10 +99,10 @@ module TopologyBuilder
       [l3_node, l3_tp]
     end
 
-    # @param [PNode] l3_seg_node Layer3 segment-node
-    # @param [PLink] l2_link Layer2 link
-    # @param [PNode] l3_node Layer3 node
-    # @param [PTermPoint] l3_tp Layer3 term-point
+    # @param [Netomox::PseudoDSL::PNode] l3_seg_node Layer3 segment-node
+    # @param [Netomox::PseudoDSL::PLink] l2_link Layer2 link
+    # @param [Netomox::PseudoDSL::PNode] l3_node Layer3 node
+    # @param [Netomox::PseudoDSL::PTermPoint] l3_tp Layer3 term-point
     # @return [String] Term-point name
     def l3_seg_tp_name(l3_seg_node, l2_link, l3_node, l3_tp)
       l2_dst_node = @layer2p.node(l2_link.dst.node)
@@ -113,10 +114,10 @@ module TopologyBuilder
     # rubocop:disable Metrics/AbcSize
 
     # Connect L3 segment-node and host-node
-    # @param [PNode] l3_seg_node Layer3 segment-node
-    # @param [PNode] l3_node Layer3 (host) node
-    # @param [PTermPoint] l3_tp Layer3 (host) port on l3_node
-    # @param [PLinkEdge] l2_edge A Link-edge in layer2 topology (in segment)
+    # @param [Netomox::PseudoDSL::PNode] l3_seg_node Layer3 segment-node
+    # @param [Netomox::PseudoDSL::PNode] l3_node Layer3 (host) node
+    # @param [Netomox::PseudoDSL::PTermPoint] l3_tp Layer3 (host) port on l3_node
+    # @param [Netomox::PseudoDSL::PLinkEdge] l2_edge A Link-edge in layer2 topology (in segment)
     # @return [void]
     def add_l3_link(l3_seg_node, l3_node, l3_tp, l2_edge)
       l2_link = @layer2p.find_link_by_src_edge(l2_edge)
@@ -128,7 +129,7 @@ module TopologyBuilder
     end
     # rubocop:enable Metrics/AbcSize
 
-    # @param [Array<PLinkEdge>] segment Edge list in same segment
+    # @param [Array<Netomox::PseudoDSL::PLinkEdge>] segment Edge list in same segment
     # @return [Array<Hash>] A list of 'prefix' attribute
     def collect_segment_prefixes(segment)
       prefixes = segment.map do |l2_edge|
@@ -147,7 +148,7 @@ module TopologyBuilder
       @segments.each { |seg| @segment_prefixes[seg] = collect_segment_prefixes(seg) }
     end
 
-    # @param [Array<PLinkEdge>] segment Edge list in same segment
+    # @param [Array<Netomox::PseudoDSL::PLinkEdge>] segment Edge list in same segment
     # @return [String] Segment node suffix string
     def segment_node_suffix(segment)
       prefixes = @segment_prefixes[segment]
@@ -162,7 +163,7 @@ module TopologyBuilder
       end
     end
 
-    # @param [Array<PLinkEdge>] segment Edge list in same segment
+    # @param [Array<Netomox::PseudoDSL::PLinkEdge>] segment Edge list in same segment
     # @return [Integer] -1 if unique prefix segment, >=0 index number of same prefix segment
     def index_of_same_prefix_segment(segment)
       seg_node_suffix = segment_node_suffix(segment)
@@ -179,7 +180,7 @@ module TopologyBuilder
       same_prefix_segment_ids.length <= 1 ? -1 : same_prefix_segment_ids.index(segment.object_id)
     end
 
-    # @param [Array<PLinkEdge>] segment Edge list in same segment
+    # @param [Array<Netomox::PseudoDSL::PLinkEdge>] segment Edge list in same segment
     # @return [String] Layer3 segment node name
     def segment_node_name(segment)
       seg_index = index_of_same_prefix_segment(segment)
@@ -189,8 +190,8 @@ module TopologyBuilder
       name
     end
 
-    # @param [Array<PLinkEdge>] segment Edge list in same segment
-    # @return [PNode] Layer3 segment node
+    # @param [Array<Netomox::PseudoDSL::PLinkEdge>] segment Edge list in same segment
+    # @return [Netomox::PseudoDSL::PNode] Layer3 segment node
     def add_l3_seg_node(segment)
       # NOTICE: countermeasure of ip address block duplication
       #   If there are segments which are different but have same network prefix,
@@ -206,7 +207,7 @@ module TopologyBuilder
     # @return [void]
     def add_l3_node_tp_link
       @segments.each_with_index do |segment, i|
-        # segment: Array(PLinkEdge)
+        # segment: Array(Netomox::PseudoDSL::PLinkEdge)
         debug_print("# Segment#{i}: suffix = #{segment_node_suffix(segment)}")
         l3_seg_node = add_l3_seg_node(segment)
         segment.each do |l2_edge|
@@ -232,7 +233,7 @@ module TopologyBuilder
       prop&.vrf
     end
 
-    # @param [PNode] l3_node L3 node name
+    # @param [Netomox::PseudoDSL::PNode] l3_node L3 node name
     # @return [String] vrf name of L3 interfaces
     # @raise [StandardError] The node is NOT single vrf
     def detect_l3_node_vrf(l3_node)
@@ -263,18 +264,18 @@ module TopologyBuilder
     end
     # rubocop:enable Metrics/MethodLength, Metrics/AbcSize
 
-    # @return [Array<PNode>] Found nodes
+    # @return [Array<Netomox::PseudoDSL::PNode>] Found nodes
     def find_all_node_type_nodes
       @network.nodes.filter { |n| %w[node endpoint].include?(n.attribute[:node_type]) }
     end
 
-    # @param [PNode] l3_node Layer3 node
-    # @return [Array<PTermPoint>] Found term-points
+    # @param [Netomox::PseudoDSL::PNode] l3_node Layer3 node
+    # @return [Array<Netomox::PseudoDSL::PTermPoint>] Found term-points
     def find_all_l3_tps_has_ipaddr(l3_node)
       l3_node.tps.filter { |tp| tp.attribute[:ip_addrs]&.length&.positive? }
     end
 
-    # @param [PNode] l3_node Layer3 node
+    # @param [Netomox::PseudoDSL::PNode] l3_node Layer3 node
     # @return [Array<Hash>] A list of layer3 node prefix (connected routes)
     def node_prefixes_at_l3_node(l3_node)
       find_all_l3_tps_has_ipaddr(l3_node).map do |tp|
@@ -283,7 +284,7 @@ module TopologyBuilder
       end
     end
 
-    # @param [PNode] l3_node Update target node
+    # @param [Netomox::PseudoDSL::PNode] l3_node Update target node
     # @return [void]
     def update_node_prefix_attr(l3_node)
       prefixes = node_prefixes_at_l3_node(l3_node)
@@ -291,7 +292,7 @@ module TopologyBuilder
       l3_node.attribute[:prefixes] = prefixes
     end
 
-    # @param [PNode] l3_node Update target node
+    # @param [Netomox::PseudoDSL::PNode] l3_node Update target node
     # @return [void]
     def node_static_routes_at_l3_node(l3_node)
       @routes.find_all_records_by_node_proto(l3_node.name, 'static').map do |route|
@@ -305,7 +306,7 @@ module TopologyBuilder
       end
     end
 
-    # @param [PNode] l3_node Update target node
+    # @param [Netomox::PseudoDSL::PNode] l3_node Update target node
     # @return [void]
     def update_node_static_route_attr(l3_node)
       static_routes = node_static_routes_at_l3_node(l3_node)

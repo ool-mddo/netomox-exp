@@ -1,7 +1,7 @@
 GIT
   remote: https://github.com/ool-mddo/netomox
-  revision: e8235f1c12ebe3fc96b12117af3492db5e406e48
-  branch: ospf-model
+  revision: f24ceddf58ff4303fd38fb5e8cff9b5d4af4aa39
+  branch: ospf-model-add-pseudodsl
   specs:
     netomox (0.1.0)
       hashdiff (~> 1.0.1)
@@ -14,7 +14,7 @@ GEM
   remote: https://rubygems.org/
   specs:
     ast (2.4.2)
-    excon (0.95.0)
+    excon (0.96.0)
     hashdiff (1.0.1)
     hashie (5.0.0)
     highline (2.1.0)
@@ -61,7 +61,7 @@ GEM
     test-unit (3.5.7)
       power_assert
     thor (1.2.1)
-    unicode-display_width (2.4.1)
+    unicode-display_width (2.4.2)
     webrick (1.7.0)
     yard (0.9.28)
       webrick (~> 1.7.0)

@@ -33,7 +33,7 @@ module TopologyBuilder
     @logger
   end
 
-  # @param [Array<PNetworks>] nws Networks
+  # @param [Array<Netomox::PseudoDSL::PNetworks>] nws Networks
   # @return [String] RFC8345-structure json string
   def to_json(nws)
     nmx_nws = Netomox::DSL::Networks.new

@@ -4,7 +4,7 @@ module TopologyOperator
   # namespace converter
   class NamespaceConverter < NamespaceConvertTable
     # Table of the keys which can not convert standard way (exceptional keys in L3/OSPF network)
-    # Netomox::Topology attribute (object) -> TopologyBuilder::PseudoDSL attribute (Simple Hash)
+    # Netomox::Topology attribute (object) -> Netomox::PseudoDSL attribute (Simple Hash)
     # NOTE: these keys are a list excepting `ip_addr`/`ip_address`
     ATTR_KEY_TABLE = {
       static_route: :static_routes,
@@ -27,7 +27,7 @@ module TopologyOperator
       converted_key
     end
 
-    # Convert attributes in Netomox::Topology object to TopologyBuilder::PseudoDSL object
+    # Convert attributes in Netomox::Topology object to Netomox::PseudoDSL object
     # @param [Hash,Array,Object] value Hash data to convert its key symbol
     # @return [Hash,Array,Object] converted hash
     def convert_all_hash_keys(value)

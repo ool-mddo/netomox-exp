@@ -1,13 +1,13 @@
 # frozen_string_literal: true
 
-require_relative 'pseudo_dsl/pseudo_model'
+require_relative 'pseudo_model'
 require_relative 'csv_mapper/sw_vlan_props_table'
 
 module TopologyBuilder
   # rubocop:disable Metrics/ClassLength
 
   # L2 data builder for L1-edge config check
-  class L2DataChecker < PseudoDSL::DataBuilderBase
+  class L2DataChecker < DataBuilderBase
     # @param [String] target Target network (config) data name
     def initialize(target:, debug: false)
       super(debug:)
@@ -18,9 +18,9 @@ module TopologyBuilder
 
     # rubocop:disable Metrics/MethodLength
 
-    # @param [PNode] src_node Source layer1 node
+    # @param [Netomox::PseudoDSL::PNode] src_node Source layer1 node
     # @param [InterfacePropertiesTableRecord] src_tp_prop Term-point properties of source
-    # @param [PNode] dst_node Destination layer1 node
+    # @param [Netomox::PseudoDSL::PNode] dst_node Destination layer1 node
     # @param [InterfacePropertiesTableRecord] dst_tp_prop Term-point properties of destination
     # @return [Hash] L2 config data for trunk-port
     def port_l2_config_check(src_node, src_tp_prop, dst_node, dst_tp_prop)
@@ -92,13 +92,13 @@ module TopologyBuilder
     end
     # rubocop:enable Metrics/AbcSize
 
-    # @param [PNode] l1_node Layer1 node
+    # @param [Netomox::PseudoDSL::PNode] l1_node Layer1 node
     # @return [Boolean] True if the node os-type is juniper
     def juniper_node?(l1_node)
       l1_node.attribute[:os_type].downcase == 'juniper'
     end
 
-    # @param [PNode] l1_node Layer1 node
+    # @param [Netomox::PseudoDSL::PNode] l1_node Layer1 node
     # @param [InterfacePropertiesTableRecord] tp_prop Term-point property
     # @return [nil, InterfacePropertiesTableRecord] Term-point property
     def choose_tp_prop(l1_node, tp_prop)
@@ -108,7 +108,7 @@ module TopologyBuilder
     end
 
     # Vlan-id list in switch (it has interface of tp_prop)
-    # @param [PNode] l1_node Layer1 node
+    # @param [Netomox::PseudoDSL::PNode] l1_node Layer1 node
     # @param [InterfacePropertiesTableRecord] tp_prop A record of term-point properties table
     # @return [Array<Integer>] List of vlan-id
     def sw_vlans(l1_node, tp_prop)
@@ -119,9 +119,9 @@ module TopologyBuilder
     end
 
     # Check port vlan config and switch vlan config to determine it is operative.
-    # @param [PNode] src_node Source layer1 node
+    # @param [Netomox::PseudoDSL::PNode] src_node Source layer1 node
     # @param [InterfacePropertiesTableRecord] src_tp_prop Term-point properties of source
-    # @param [PNode] dst_node Destination layer1 node
+    # @param [Netomox::PseudoDSL::PNode] dst_node Destination layer1 node
     # @param [InterfacePropertiesTableRecord] dst_tp_prop Term-point properties of destination
     # @return [Array<Integer>] A list of vlan-id (common-set of each port/node)
     def operative_trunk_vlans(src_node, src_tp_prop, dst_node, dst_tp_prop)
@@ -188,9 +188,9 @@ module TopologyBuilder
       }
     end
 
-    # @param [PNode] src_node Source layer1 node
+    # @param [Netomox::PseudoDSL::PNode] src_node Source layer1 node
     # @param [InterfacePropertiesTableRecord] src_tp_prop Term-point properties of source
-    # @param [PNode] dst_node Destination layer1 node
+    # @param [Netomox::PseudoDSL::PNode] dst_node Destination layer1 node
     # @param [InterfacePropertiesTableRecord] dst_tp_prop Term-point properties of destination
     # @return [Hash] L2 config data for trunk-port
     def port_l2_config_trunk(src_node, src_tp_prop, dst_node, dst_tp_prop)

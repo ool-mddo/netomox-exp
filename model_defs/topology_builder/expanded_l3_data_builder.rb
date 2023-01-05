@@ -1,18 +1,18 @@
 # frozen_string_literal: true
 
-require_relative 'pseudo_dsl/pseudo_model'
+require_relative 'pseudo_model'
 require 'ipaddress'
 
 module TopologyBuilder
   # Expanded L3 data builder
-  class ExpandedL3DataBuilder < PseudoDSL::DataBuilderBase
-    # @param [PNetwork] layer3p Layer3 network topology
+  class ExpandedL3DataBuilder < DataBuilderBase
+    # @param [Netomox::PseudoDSL::PNetwork] layer3p Layer3 network topology
     def initialize(layer3p:, debug: false)
       super(debug:)
       @layer3p = layer3p
     end
 
-    # @return [PNetworks] Networks contains only layer3 network topology
+    # @return [Netomox::PseudoDSL::PNetworks] Networks contains only layer3 network topology
     def make_networks
       @network = @networks.network('layer3exp')
       @network.type = Netomox::NWTYPE_MDDO_L3
@@ -23,13 +23,13 @@ module TopologyBuilder
 
     private
 
-    # @return [Array<PNode>] Layer3 segment nodes
+    # @return [Array<Netomox::PseudoDSL::PNode>] Layer3 segment nodes
     def find_all_segment_type_nodes
       @layer3p.nodes.find_all { |node| node.attribute[:node_type] == 'segment' }
     end
 
-    # @param [PNode] orig_l3_node Layer3 node (copy source)
-    # @return [PNode] expanded-layer3 node
+    # @param [Netomox::PseudoDSL::PNode] orig_l3_node Layer3 node (copy source)
+    # @return [Netomox::PseudoDSL::PNode] expanded-layer3 node
     def add_node(orig_l3_node)
       # copy except tps
       new_src_node = @network.node(orig_l3_node.name)
@@ -39,9 +39,9 @@ module TopologyBuilder
     end
 
     # @param [Integer] index Index number of new term-point
-    # @param [PNode] node Node to add new term-point
-    # @param [PTermPoint] orig_l3_tp Layer3 term-point (copy source)
-    # @return [PTermPoint] expanded-layer3 term-point
+    # @param [Netomox::PseudoDSL::PNode] node Node to add new term-point
+    # @param [Netomox::PseudoDSL::PTermPoint] orig_l3_tp Layer3 term-point (copy source)
+    # @return [Netomox::PseudoDSL::PTermPoint] expanded-layer3 term-point
     def add_tp(index, node, orig_l3_tp)
       # copy with indexed-name
       new_tp = node.term_point(orig_l3_tp.name + "##{index}")
@@ -54,10 +54,10 @@ module TopologyBuilder
 
     # @param [Integer] src_edge_index Index number of source edge
     # @param [Integer] dst_edge_index Index number of destination edge
-    # @param [PNode] src_node Source layer3 node (copy source)
-    # @param [PTermPoint] src_tp Source layer3 term-point (copy source)
-    # @param [PNode] dst_node Destination layer3 node (copy source)
-    # @param [PTermPoint] dst_tp Destination layer3 term-point (copy-source)
+    # @param [Netomox::PseudoDSL::PNode] src_node Source layer3 node (copy source)
+    # @param [Netomox::PseudoDSL::PTermPoint] src_tp Source layer3 term-point (copy source)
+    # @param [Netomox::PseudoDSL::PNode] dst_node Destination layer3 node (copy source)
+    # @param [Netomox::PseudoDSL::PTermPoint] dst_tp Destination layer3 term-point (copy-source)
     # @return [Array<String>] Source/destination node/tp names (to create link)
     def add_node_tp(src_edge_index, dst_edge_index, src_node, src_tp, dst_node, dst_tp)
       new_src_node = add_node(src_node) # redundant
@@ -68,6 +68,9 @@ module TopologyBuilder
     end
     # rubocop:enable Metrics/ParameterLists
 
+    # @param [Netomox::PseudoDSL::PTermPoint] src_tp Source term-point
+    # @param [Netomox::PseudoDSL::PTermPoint] dst_tp Destination term-point
+    # @return [Boolean]
     def same_subnet?(src_tp, dst_tp)
       # NOTE: cannot handle if there is a term-point that has multiple ip address.
       src_ip = IPAddress::IPv4.new(src_tp.attribute[:ip_addrs][0])
@@ -78,7 +81,7 @@ module TopologyBuilder
 
     # rubocop:disable Metrics/MethodLength
 
-    # @param [Array<PLinkEdge>] seg_connected_edges Edges connected a segment node
+    # @param [Array<Netomox::PseudoDSL::PLinkEdge>] seg_connected_edges Edges connected a segment node
     # @return [void]
     def add_node_tp_links(seg_connected_edges)
       seg_connected_edges.each_with_index do |src_edge, si|

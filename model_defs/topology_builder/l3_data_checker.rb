@@ -1,16 +1,16 @@
 # frozen_string_literal: true
 
 require_relative 'l3_segment_ledger'
-require_relative 'pseudo_dsl/pseudo_model'
+require_relative 'pseudo_model'
 
 module TopologyBuilder
   # Explore L2 segment and construct segment-connected node information
-  class L3DataChecker < PseudoDSL::DataBuilderBase
+  class L3DataChecker < DataBuilderBase
     # @!attribute [r] segments
     #   @return [L3SegmentLedger]
     attr_reader :segments
 
-    # @param [PNetwork] layer2p Layer2 network topology
+    # @param [Netomox::PseudoDSL::PNetwork] layer2p Layer2 network topology
     def initialize(layer2p:, debug: false)
       super(debug:)
       @segments = L3SegmentLedger.new
@@ -41,8 +41,8 @@ module TopologyBuilder
 
     private
 
-    # @param [PLinkEdge] src_edge A link-edge (source)
-    # @return [PLinkEdge] Destination link-edge layer2 connected with src_edge
+    # @param [Netomox::PseudoDSL::PLinkEdge] src_edge A link-edge (source)
+    # @return [Netomox::PseudoDSL::PLinkEdge] Destination link-edge layer2 connected with src_edge
     def dst_edge_connected_with(src_edge)
       return if @segments.exist_segment_includes?(src_edge)
 
@@ -55,14 +55,14 @@ module TopologyBuilder
     # rubocop:disable Metrics/AbcSize
 
     # Recursive exploration: layer2-connected objects
-    # @param [PLinkEdge] src_edge A link-edge to specify start point
+    # @param [Netomox::PseudoDSL::PLinkEdge] src_edge A link-edge to specify start point
     # @return [void]
     def recursively_explore_l3_segment(src_edge)
       @segments.current_segment.push(src_edge)
       src_node = @layer2p.find_node_by_name(src_edge.node)
 
       src_node.tps_without(src_edge.tp).each do |src_tp|
-        src_edge = PseudoDSL::PLinkEdge.new(src_node.name, src_tp.name)
+        src_edge = Netomox::PseudoDSL::PLinkEdge.new(src_node.name, src_tp.name)
         link = @layer2p.find_link_by_src_edge(src_edge)
         next if !link || @segments.current_segment.include?(link.dst) # loop avoidance
 
@@ -73,11 +73,12 @@ module TopologyBuilder
     # rubocop:enable Metrics/AbcSize
 
     # Convert a link edge (source) to source-destination link-edge pair
-    # @param [PNode] src_node Source node
-    # @param [PTermPoint] src_tp Source tp
-    # @return [Array(PLinkEdge, PLinkEdge)] Source/destination link-edge pair (layer2 link edge pair)
+    # @param [Netomox::PseudoDSL::PNode] src_node Source node
+    # @param [Netomox::PseudoDSL::PTermPoint] src_tp Source tp
+    # @return [Array(Netomox::PseudoDSL::PLinkEdge, Netomox::PseudoDSL::PLinkEdge)]
+    #   Source/destination link-edge pair (layer2 link edge pair)
     def link_edges_by_src(src_node, src_tp)
-      src_edge = PseudoDSL::PLinkEdge.new(src_node.name, src_tp.name)
+      src_edge = Netomox::PseudoDSL::PLinkEdge.new(src_node.name, src_tp.name)
       dst_edge = dst_edge_connected_with(src_edge)
       [src_edge, dst_edge]
     end
