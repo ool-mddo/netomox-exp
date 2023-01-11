@@ -33,29 +33,15 @@ module TopologyOperator
       TARGET_NW_REGEXP_LIST.any? { |nw_re| network_name =~ nw_re }
     end
 
-    # @param [String] ref_network Support network (network name)
-    # @param [String] ref_node Support node (node name)
-    # @return [Array<String>] node name to support
-    def support_node_name(ref_network, ref_node)
-      return [ref_node] if ref_network != 'layer2'
-
-      # in layer2 node: "bridge(node)_interface" format
-      ref_node.split('_')
-    end
-
     # @param [Netomox::Topology::TermPoint] src_tp Source term-point (L3+)
     # @return [Array<Array<String>>] Array of term-point supports
     def rewrite_tp_supports(src_tp)
-      src_tp.supports.map do |tp_sup|
-        n_node, n_tp = support_node_name(tp_sup.ref_network, tp_sup.ref_node)
-
-        converted_tp = convert_tp_name(n_node, tp_sup.ref_tp)
-        if n_tp.nil?
-          [tp_sup.ref_network, convert_node_name(n_node), converted_tp]
-        else
-          # in layer2 node: "bridge(node)_interface" format
-          [tp_sup.ref_network, [convert_node_name(n_node), convert_tp_name(n_node, n_tp)].join('_'), converted_tp]
-        end
+      # ignore layer3 -> layer2 support info: these are not used in emulated env
+      src_tp.supports
+            .find_all { |tp_sup| target_network?(tp_sup.ref_network) }
+            .map do |tp_sup|
+        converted_tp = convert_tp_name(tp_sup.ref_node, tp_sup.ref_tp)
+        [tp_sup.ref_network, convert_node_name(tp_sup.ref_node), converted_tp]
       end
     end
 
@@ -72,14 +58,11 @@ module TopologyOperator
     # @param [Netomox::Topology::Node] src_node Source node (L3+)
     # @return [Array<Array<String>>] Array of node supports
     def rewrite_node_support(src_node)
-      src_node.supports.map do |node_sup|
-        n_node, n_tp = support_node_name(node_sup.ref_network, node_sup.ref_node)
-        if n_tp.nil?
-          [node_sup.ref_network, convert_node_name(n_node)]
-        else
-          # in layer2 node: "bridge(node)_interface" format
-          [node_sup.ref_network, [convert_node_name(n_node), convert_tp_name(n_node, n_tp)].join('_')]
-        end
+      # ignore layer3 -> layer2 support info: these are not used in emulated env
+      src_node.supports
+              .find_all { |node_sup| target_network?(node_sup.ref_network) }
+              .map do |node_sup|
+        [node_sup.ref_network, convert_node_name(node_sup.ref_node)]
       end
     end
 
