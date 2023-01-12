@@ -61,9 +61,7 @@ module TopologyOperator
       # ignore layer3 -> layer2 support info: these are not used in emulated env
       src_node.supports
               .find_all { |node_sup| target_network?(node_sup.ref_network) }
-              .map do |node_sup|
-        [node_sup.ref_network, convert_node_name(node_sup.ref_node)]
-      end
+              .map { |node_sup| [node_sup.ref_network, convert_node_name(node_sup.ref_node)] }
     end
 
     # @param [Netomox::Topology::Node] src_node Source node (L3+)

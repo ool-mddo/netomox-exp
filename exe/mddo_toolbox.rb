@@ -11,6 +11,7 @@ require_relative 'nw_subsets/network_sets_diff'
 require_relative 'reach_test/reach_tester'
 require_relative 'reach_test/reach_result_converter'
 require_relative 'convert_namespace/converter'
+require_relative 'convert_namespace/layer_filter'
 require_relative 'convert_topology/batfish_converter'
 require_relative 'convert_topology/containerlab_converter'
 
@@ -118,6 +119,16 @@ module TopologyOperator
       print_data(converter.convert)
     end
     # rubocop:enable Metrics/AbcSize
+
+    desc 'filter_low_layers TOPOLOGY', 'Filter (omit) L1/L2 info'
+    method_option :format, aliases: :f, default: 'yaml', type: :string, enum: %w[yaml json],
+                           desc: 'Output format (to stdout)'
+    # @param [String] file Target topology file path
+    # @return [void]
+    def filter_low_layers(file)
+      layer_filter = LayerFilter.new(file)
+      print_data(layer_filter.filter)
+    end
 
     desc 'convert_topology TOPOLOGY', 'Convert topology for container-lab/batfish'
     method_option :target, aliases: :t, type: :string, enum: %w[clab bf], required: true,
