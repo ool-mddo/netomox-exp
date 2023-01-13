@@ -1,5 +1,8 @@
 # frozen_string_literal: true
 
+require 'json'
+require 'netomox'
+
 module TopologyOperator
   # namespace converter
   class NamespaceConverterBase

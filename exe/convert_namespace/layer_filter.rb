@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-require 'json'
 require 'netomox'
 require_relative 'namespace_converter_base'
 
