@@ -1,7 +1,7 @@
 GIT
   remote: https://github.com/ool-mddo/netomox
-  revision: f24ceddf58ff4303fd38fb5e8cff9b5d4af4aa39
-  branch: ospf-model-add-pseudodsl
+  revision: d2de1e1e508da0753f469f7523ca96ed90d46629
+  branch: ospf-model
   specs:
     netomox (0.1.0)
       hashdiff (~> 1.0.1)
@@ -14,7 +14,7 @@ GEM
   remote: https://rubygems.org/
   specs:
     ast (2.4.2)
-    excon (0.96.0)
+    excon (0.97.1)
     hashdiff (1.0.1)
     hashie (5.0.0)
     highline (2.1.0)
@@ -40,16 +40,16 @@ GEM
     rake (13.0.6)
     regexp_parser (2.6.1)
     rexml (3.2.5)
-    rubocop (1.42.0)
+    rubocop (1.43.0)
       json (~> 2.3)
       parallel (~> 1.10)
-      parser (>= 3.1.2.1)
+      parser (>= 3.2.0.0)
       rainbow (>= 2.2.2, < 4.0)
       regexp_parser (>= 1.8, < 3.0)
       rexml (>= 3.2.5, < 4.0)
       rubocop-ast (>= 1.24.1, < 2.0)
       ruby-progressbar (~> 1.7)
-      unicode-display_width (>= 1.4.0, < 3.0)
+      unicode-display_width (>= 2.4.0, < 3.0)
     rubocop-ast (1.24.1)
       parser (>= 3.1.1.0)
     rubocop-rake (0.6.0)
