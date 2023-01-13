@@ -25,6 +25,13 @@ module TopologyOperator
       @dst_nws.interpret.topo_data
     end
 
+    protected
+
+    # @param [Netomox::Topology::Node] node
+    def ospf_node?(node)
+      node.attribute.is_a?(Netomox::Topology::MddoOspfAreaNodeAttribute)
+    end
+
     private
 
     # @param [String] network_name Network (layer) name
@@ -64,15 +71,21 @@ module TopologyOperator
               .map { |node_sup| [node_sup.ref_network, convert_node_name(node_sup.ref_node)] }
     end
 
+    # rubocop:disable Metrics/AbcSize
+
     # @param [Netomox::Topology::Node] src_node Source node (L3+)
     # @return [Netomox::PseudoDSL::PNode]
     def rewrite_node(src_node)
       dst_node = Netomox::PseudoDSL::PNode.new(convert_node_name(src_node.name))
       dst_node.tps = src_node.termination_points.map { |src_tp| rewrite_term_point(src_node, src_tp) }
       dst_node.attribute = convert_all_hash_keys(src_node.attribute.to_data)
+      if ospf_node?(src_node) && !segment_node?(src_node)
+        dst_node.attribute[:process_id] = @ospf_proc_id_table[src_node.name][src_node.attribute.process_id]
+      end
       dst_node.supports = rewrite_node_support(src_node)
       dst_node
     end
+    # rubocop:enable Metrics/AbcSize
 
     # @param [Netomox::Topology::TpRef] orig_edge Original link edge
     # @return [Netomox::PseudoDSL::PLinkEdge]

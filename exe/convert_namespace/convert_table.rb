@@ -4,6 +4,8 @@ require 'json'
 require 'netomox'
 
 module TopologyOperator
+  # rubocop:disable Metrics/ClassLength
+
   # convert table
   class NamespaceConvertTable
     # @param [String] file Topology file path
@@ -11,6 +13,7 @@ module TopologyOperator
       @src_nws = read_networks(file)
       @node_name_table = {}
       @tp_name_table = {}
+      @ospf_proc_id_table = {}
     end
 
     # @param [String] src_node_name Source node name
@@ -50,13 +53,18 @@ module TopologyOperator
 
     # @return [Hash]
     def convert_table
-      { 'node_name_table' => @node_name_table, 'tp_name_table' => @tp_name_table }
+      {
+        'node_name_table' => @node_name_table,
+        'tp_name_table' => @tp_name_table,
+        'ospf_proc_id_table' => @ospf_proc_id_table
+      }
     end
 
     # @return [void]
     def make_convert_table
       make_node_name_table
       make_tp_name_table
+      make_ospf_proc_id_table
     end
 
     # @param [String] file Path of convert table file (json)
@@ -65,15 +73,41 @@ module TopologyOperator
       table_data = JSON.parse(File.read(file))
       @node_name_table = table_data['node_name_table']
       @tp_name_table = table_data['tp_name_table']
+      @ospf_proc_id_table = table_data['ospf_proc_id_table']
+    end
+
+    protected
+
+    # @param [Netomox::Topology::Node] node
+    def segment_node?(node)
+      node.attribute.node_type == 'segment'
     end
 
     private
+
+    # rubocop:disable Metrics/AbcSize
+    # @return [void]
+    def make_ospf_proc_id_table
+      src_nw = @src_nws.find_network('ospf_area0')
+      src_nw.nodes.each do |src_node|
+        dst_node_name = convert_node_name(src_node.name)
+        src_proc_id = src_node.attribute.process_id
+        dst_proc_id = 'default' # to cRPD ospf (fixed)
+        # forward
+        @ospf_proc_id_table[src_node.name] = {} unless @ospf_proc_id_table.key?(src_node.name)
+        @ospf_proc_id_table[src_node.name][src_proc_id] = dst_proc_id
+        # reverse
+        @ospf_proc_id_table[dst_node_name] = {} unless @ospf_proc_id_table.key?(dst_node_name)
+        @ospf_proc_id_table[dst_node_name][dst_proc_id] = src_proc_id
+      end
+    end
+    # rubocop:enable Metrics/AbcSize
 
     # @param [Netomox::Topology::Node] src_node Source node (L3)
     # @param [Integer] index Term-point index
     # @return [String] Converted term-point name
     def forward_convert_tp_name(src_node, index)
-      return "#{src_node.name.tr('_/', '-').downcase}_Ethernet#{index}" if src_node.attribute.node_type == 'segment'
+      return "#{src_node.name.tr('_/', '-').downcase}_Ethernet#{index}" if segment_node?(src_node)
 
       "eth#{index}.0"
     end
@@ -154,4 +188,5 @@ module TopologyOperator
       Netomox::Topology::Networks.new(raw_data)
     end
   end
+  # rubocop:enable Metrics/ClassLength
 end
