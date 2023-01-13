@@ -1,15 +1,11 @@
 # frozen_string_literal: true
 
 require 'netomox'
-require_relative 'convert_table'
-require_relative 'util'
+require_relative 'namespace_convert_table'
 
 module TopologyOperator
   # namespace converter
   class NamespaceConverter < NamespaceConvertTable
-    # Target network (layer) names (regexp match)
-    TARGET_NW_REGEXP_LIST = [/ospf_area\d+/, /layer3/].freeze
-
     # @return [void]
     def dump
       @dst_nws.dump
@@ -33,12 +29,6 @@ module TopologyOperator
     end
 
     private
-
-    # @param [String] network_name Network (layer) name
-    # @return [Boolean] True if the network_name matches one of TARGET_NW_REGEXP_LIST
-    def target_network?(network_name)
-      TARGET_NW_REGEXP_LIST.any? { |nw_re| network_name =~ nw_re }
-    end
 
     # @param [Netomox::Topology::TermPoint] src_tp Source term-point (L3+)
     # @return [Array<Array<String>>] Array of term-point supports

@@ -2,12 +2,12 @@
 
 require 'json'
 require 'netomox'
-require_relative 'converter'
+require_relative 'namespace_converter_base'
 
 module TopologyOperator
   # filter L3+ (over layer3...layer3 + OSPF area0)
   # NOTE: it requires inherit NamespaceConverter to use convert_all_hash_keys
-  class LayerFilter < NamespaceConverter
+  class LayerFilter < NamespaceConverterBase
     # @return [Hash]
     def filter
       @dst_nws = Netomox::PseudoDSL::PNetworks.new
@@ -17,12 +17,6 @@ module TopologyOperator
     end
 
     private
-
-    # @param [String] network_name Network (layer) name
-    # @return [Boolean] True if the network_name matches one of TARGET_NW_REGEXP_LIST
-    def target_network?(network_name)
-      TARGET_NW_REGEXP_LIST.any? { |nw_re| network_name =~ nw_re }
-    end
 
     # @param [Netomox::Topology::TermPoint] src_tp Source term-point (L3+)
     # @return [Array<Array<String>>] Array of term-point supports

@@ -1,10 +1,10 @@
 # frozen_string_literal: true
 
-require_relative 'converter_base'
+require_relative 'topology_converter_base'
 
 module TopologyOperator
   # topology dat converter for batfish
-  class BatfishConverter < ConverterBase
+  class BatfishConverter < TopologyConverterBase
     # @return [Hash] layer1-topology data for batfish
     def convert
       { 'edges' => link_data }

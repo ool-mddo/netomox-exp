@@ -2,15 +2,16 @@
 
 require 'json'
 require 'netomox'
+require_relative 'namespace_converter_base'
 
 module TopologyOperator
   # rubocop:disable Metrics/ClassLength
 
   # convert table
-  class NamespaceConvertTable
+  class NamespaceConvertTable < NamespaceConverterBase
     # @param [String] file Topology file path
     def initialize(file)
-      @src_nws = read_networks(file)
+      super(file)
       @node_name_table = {}
       @tp_name_table = {}
       @ospf_proc_id_table = {}
@@ -85,7 +86,15 @@ module TopologyOperator
 
     private
 
-    # rubocop:disable Metrics/AbcSize
+    # @param [String] src_node Source node name
+    # @param [String, Integer] src_proc_id OSPF process id of the source node ("default" or integer)
+    # @param [String, Integer] dst_proc_id OSPF process id of the destination node ("default" or integer)
+    # @return [void]
+    def add_ospf_proc_id_entry(src_node, src_proc_id, dst_proc_id)
+      @ospf_proc_id_table[src_node] = {} unless @ospf_proc_id_table.key?(src_node)
+      @ospf_proc_id_table[src_node][src_proc_id] = dst_proc_id
+    end
+
     # @return [void]
     def make_ospf_proc_id_table
       src_nw = @src_nws.find_network('ospf_area0')
@@ -94,14 +103,11 @@ module TopologyOperator
         src_proc_id = src_node.attribute.process_id
         dst_proc_id = 'default' # to cRPD ospf (fixed)
         # forward
-        @ospf_proc_id_table[src_node.name] = {} unless @ospf_proc_id_table.key?(src_node.name)
-        @ospf_proc_id_table[src_node.name][src_proc_id] = dst_proc_id
+        add_ospf_proc_id_entry(src_node.name, src_proc_id, dst_proc_id)
         # reverse
-        @ospf_proc_id_table[dst_node_name] = {} unless @ospf_proc_id_table.key?(dst_node_name)
-        @ospf_proc_id_table[dst_node_name][dst_proc_id] = src_proc_id
+        add_ospf_proc_id_entry(dst_node_name, dst_proc_id, src_proc_id)
       end
     end
-    # rubocop:enable Metrics/AbcSize
 
     # @param [Netomox::Topology::Node] src_node Source node (L3)
     # @param [Integer] index Term-point index
@@ -135,7 +141,7 @@ module TopologyOperator
     # @param [String] src_node_name Source (original) node name
     # @param [String] dst_node_name Destination (converted) node name
     # @return [void]
-    def add_tp_name_table_hash(src_node_name, dst_node_name)
+    def add_tp_name_hash(src_node_name, dst_node_name)
       # forward
       @tp_name_table[src_node_name] = {} unless key_node_tp?(src_node_name)
       # reverse
@@ -147,7 +153,7 @@ module TopologyOperator
       src_nw = @src_nws.find_network('layer3')
       src_nw.nodes.each do |src_node|
         dst_node_name = convert_node_name(src_node.name)
-        add_tp_name_table_hash(src_node.name, dst_node_name)
+        add_tp_name_hash(src_node.name, dst_node_name)
 
         src_node.termination_points.find_all { |src_tp| loopback?(src_tp) }.each_with_index do |src_tp, index|
           # to cRPD: lo.X
@@ -179,13 +185,6 @@ module TopologyOperator
         # reverse
         @node_name_table[dst_node_name] = src_node.name unless key_node?(dst_node_name)
       end
-    end
-
-    # @param [String] file Topology file path
-    # @return [Netomox::Topology::Networks]
-    def read_networks(file)
-      raw_data = JSON.parse(File.read(file))
-      Netomox::Topology::Networks.new(raw_data)
     end
   end
   # rubocop:enable Metrics/ClassLength

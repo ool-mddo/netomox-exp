@@ -2,7 +2,10 @@
 
 module TopologyOperator
   # namespace converter
-  class NamespaceConverter < NamespaceConvertTable
+  class NamespaceConverterBase
+    # Target network (layer) names (regexp match)
+    TARGET_NW_REGEXP_LIST = [/ospf_area\d+/, /layer3/].freeze
+
     # Table of the keys which can not convert standard way (exceptional keys in L3/OSPF network)
     # Netomox::Topology attribute (object) -> Netomox::PseudoDSL attribute (Simple Hash)
     # NOTE: these keys are a list excepting `ip_addr`/`ip_address`
@@ -13,6 +16,26 @@ module TopologyOperator
       ip_address: :ip_addrs,
       flag: :flags
     }.freeze
+
+    # @param [String] file Topology file path
+    def initialize(file)
+      @src_nws = read_networks(file)
+    end
+
+    protected
+
+    # @param [String] network_name Network (layer) name
+    # @return [Boolean] True if the network_name matches one of TARGET_NW_REGEXP_LIST
+    def target_network?(network_name)
+      TARGET_NW_REGEXP_LIST.any? { |nw_re| network_name =~ nw_re }
+    end
+
+    # @param [String] file Topology file path
+    # @return [Netomox::Topology::Networks]
+    def read_networks(file)
+      raw_data = JSON.parse(File.read(file))
+      Netomox::Topology::Networks.new(raw_data)
+    end
 
     # @param [Symbol] key Key to convert
     # @param [Array, Object] value

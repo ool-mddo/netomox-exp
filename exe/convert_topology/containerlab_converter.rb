@@ -1,8 +1,10 @@
 # frozen_string_literal: true
 
+require_relative 'topology_converter_base'
+
 module TopologyOperator
   # topology data converter for container-lab
-  class ContainerLabConverter < ConverterBase
+  class ContainerLabConverter < TopologyConverterBase
     # @return [Hash] topology data for clab
     def convert
       check_network_type

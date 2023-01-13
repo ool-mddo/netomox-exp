@@ -5,7 +5,7 @@ require 'netomox'
 
 module TopologyOperator
   # base class of topology converter
-  class ConverterBase
+  class TopologyConverterBase
     # @param [String] file Topology file base
     # @param [String] src_network Source network name (input of converter)
     # @param [Hash] options Other options
