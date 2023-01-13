@@ -80,24 +80,49 @@ module TopologyOperator
 
     # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
 
+    # @param [Netomox::Topology::TermPoint] term_point Term-point (L3)
+    # @return [Boolean] True if the tp name is loopback
+    def loopback?(term_point)
+      !term_point.attribute.empty? && term_point.attribute.flags.include?('loopback')
+    end
+
+    # @param [String] src_node_name Source (original) node name
+    # @param [String] src_tp_name Source (original) term-point name
+    # @param [String] dst_node_name Destination (converted) node name
+    # @param [String] dst_tp_name Destination (converted) term-point name
+    # @return [void]
+    def add_tp_name_entry(src_node_name, src_tp_name, dst_node_name, dst_tp_name)
+      # forward
+      @tp_name_table[src_node_name][src_tp_name] = dst_tp_name unless key_node_tp?(src_node_name, src_tp_name)
+      # reverse
+      @tp_name_table[dst_node_name][dst_tp_name] = src_tp_name unless key_node_tp?(dst_node_name, dst_tp_name)
+    end
+
+    # @param [String] src_node_name Source (original) node name
+    # @param [String] dst_node_name Destination (converted) node name
+    # @return [void]
+    def add_tp_name_table_hash(src_node_name, dst_node_name)
+      # forward
+      @tp_name_table[src_node_name] = {} unless key_node_tp?(src_node_name)
+      # reverse
+      @tp_name_table[dst_node_name] = {} unless key_node_tp?(dst_node_name)
+    end
+
     # @return [void]
     def make_tp_name_table
       src_nw = @src_nws.find_network('layer3')
       src_nw.nodes.each do |src_node|
         dst_node_name = convert_node_name(src_node.name)
+        add_tp_name_table_hash(src_node.name, dst_node_name)
 
-        # forward
-        @tp_name_table[src_node.name] = {} unless key_node_tp?(src_node.name)
-        # reverse
-        @tp_name_table[dst_node_name] = {} unless key_node_tp?(dst_node_name)
-
-        src_node.termination_points.each_with_index do |src_tp, index|
+        src_node.termination_points.find_all { |src_tp| loopback?(src_tp) }.each_with_index do |src_tp, index|
+          # to cRPD: lo.X
+          dst_tp_name = "lo.#{index}"
+          add_tp_name_entry(src_node.name, src_tp.name, dst_node_name, dst_tp_name)
+        end
+        src_node.termination_points.reject { |src_tp| loopback?(src_tp) }.each_with_index do |src_tp, index|
           dst_tp_name = forward_convert_tp_name(src_node, index + 1)
-
-          # forward
-          @tp_name_table[src_node.name][src_tp.name] = dst_tp_name unless key_node_tp?(src_node.name, src_tp.name)
-          # reverse
-          @tp_name_table[dst_node_name][dst_tp_name] = src_tp.name unless key_node_tp?(dst_node_name, dst_tp_name)
+          add_tp_name_entry(src_node.name, src_tp.name, dst_node_name, dst_tp_name)
         end
       end
     end
