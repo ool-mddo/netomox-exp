@@ -37,6 +37,16 @@ module TopologyOperator
       @tp_name_table[src_node_name][src_tp_name]
     end
 
+    # @return [String, Integer] Converted OSPF process id
+    # @raise [StandardError]
+    def convert_ospf_proc_id(src_node_name, proc_id)
+      raise StandardError, "Node: #{src_node_name} is not in ospf-proc-id-table" unless key_ospf_proc_id?(src_node_name)
+      raise StandardError, "Proc-ID: #{proc_id} is not in ospf-proc-id-table" unless key_ospf_proc_id?(src_node_name,
+                                                                                                       proc_id)
+
+      @ospf_proc_id_table[src_node_name][proc_id]
+    end
+
     # @param [String] node_name Node name
     # @return [Boolean] True if the node name is in node table key
     def key_node?(node_name)
@@ -52,6 +62,15 @@ module TopologyOperator
       @tp_name_table.key?(node_name) && @tp_name_table[node_name].key?(tp_name)
     end
 
+    # @param [String] node_name Node name (OSPF)
+    # @param [String, Integer] proc_id OSPF process id
+    # @return [Boolean] True if the node and proc_id are in ospf process id table key
+    def key_ospf_proc_id?(node_name, proc_id = nil)
+      return @ospf_proc_id_table.key?(node_name) if proc_id.nil?
+
+      @ospf_proc_id_table.key?(node_name) && @ospf_proc_id_table[node_name].key?(proc_id)
+    end
+
     # @return [Hash]
     def convert_table
       {
@@ -63,7 +82,7 @@ module TopologyOperator
 
     # @return [void]
     def make_convert_table
-      make_node_name_table
+      make_node_name_table # MUST at first (in use making other tables)
       make_tp_name_table
       make_ospf_proc_id_table
     end
@@ -84,15 +103,26 @@ module TopologyOperator
       node.attribute.node_type == 'segment'
     end
 
+    # @param [Netomox::Topology::TermPoint] term_point Term-point (L3)
+    # @return [Boolean] True if the tp name is loopback
+    def loopback?(term_point)
+      !term_point.attribute.empty? && term_point.attribute.flags.include?('loopback')
+    end
+
     private
 
-    # @param [String] src_node Source node name
+    # @param [String] src_node Source (original) node name
     # @param [String, Integer] src_proc_id OSPF process id of the source node ("default" or integer)
+    # @param [String] dst_node Destination (emulated) node name
     # @param [String, Integer] dst_proc_id OSPF process id of the destination node ("default" or integer)
     # @return [void]
-    def add_ospf_proc_id_entry(src_node, src_proc_id, dst_proc_id)
-      @ospf_proc_id_table[src_node] = {} unless @ospf_proc_id_table.key?(src_node)
-      @ospf_proc_id_table[src_node][src_proc_id] = dst_proc_id
+    def add_ospf_proc_id_entry(src_node, src_proc_id, dst_node, dst_proc_id)
+      # forward
+      @ospf_proc_id_table[src_node] = {} unless key_ospf_proc_id?(src_node)
+      @ospf_proc_id_table[src_node][src_proc_id] = dst_proc_id unless key_ospf_proc_id?(src_node, src_proc_id)
+      # reverse
+      @ospf_proc_id_table[dst_node] = {} unless key_ospf_proc_id?(dst_node)
+      @ospf_proc_id_table[dst_node][dst_proc_id] = src_proc_id unless key_ospf_proc_id?(dst_node, dst_proc_id)
     end
 
     # @return [void]
@@ -102,10 +132,7 @@ module TopologyOperator
         dst_node_name = convert_node_name(src_node.name)
         src_proc_id = src_node.attribute.process_id
         dst_proc_id = 'default' # to cRPD ospf (fixed)
-        # forward
-        add_ospf_proc_id_entry(src_node.name, src_proc_id, dst_proc_id)
-        # reverse
-        add_ospf_proc_id_entry(dst_node_name, dst_proc_id, src_proc_id)
+        add_ospf_proc_id_entry(src_node.name, src_proc_id, dst_node_name, dst_proc_id)
       end
     end
 
@@ -119,12 +146,6 @@ module TopologyOperator
     end
 
     # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
-
-    # @param [Netomox::Topology::TermPoint] term_point Term-point (L3)
-    # @return [Boolean] True if the tp name is loopback
-    def loopback?(term_point)
-      !term_point.attribute.empty? && term_point.attribute.flags.include?('loopback')
-    end
 
     # @param [String] src_node_name Source (original) node name
     # @param [String] src_tp_name Source (original) term-point name

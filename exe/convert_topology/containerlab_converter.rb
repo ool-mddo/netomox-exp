@@ -74,9 +74,7 @@ module TopologyOperator
 
     # @return [Hash<Hash>] node data
     def node_data
-      node_table = {}
-      @src_network.nodes.each { |node| node_table[safe_node_name(node.name)] = make_node_data(node) }
-      node_table
+      @src_network.nodes.to_h { |node| [safe_node_name(node.name), make_node_data(node)] }
     end
 
     # @return [void]
