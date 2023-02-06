@@ -25,8 +25,8 @@ module TopologyOperator
 
       snapshots.grep(Regexp.new(snapshot_re)).map do |snapshot|
         {
-          network: network,
-          snapshot: snapshot,
+          network:,
+          snapshot:,
           description: fetch_snapshot_description(network, snapshot),
           patterns: @patterns.map do |pattern|
             {

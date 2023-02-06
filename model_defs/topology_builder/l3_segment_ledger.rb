@@ -21,10 +21,10 @@ module TopologyBuilder
     def_delegators :@segments, :push, :each, :each_with_index, :to_s, :find_all, :map
 
     def initialize
-      @segments = [] # Array(Array(PLinkEdge))
+      @segments = [] # Array(Array(Netomox::PseudoDSL::PLinkEdge))
     end
 
-    # @param [PLinkEdge] edge Link-edge
+    # @param [Netomox::PseudoDSL::PLinkEdge] edge Link-edge
     # @return [Boolean] true if there is a segment includes the link-edge
     def exist_segment_includes?(edge)
       @segments.each do |seg|
@@ -33,7 +33,7 @@ module TopologyBuilder
       false
     end
 
-    # @return [Array<PLinkEdge>] Appended link-edge array
+    # @return [Array<Netomox::PseudoDSL::PLinkEdge>] Appended link-edge array
     def append_new_segment
       seg = [] # Array<PlinkEdge>
       @segments.push(seg)
@@ -46,7 +46,7 @@ module TopologyBuilder
       @segments.reject!(&:empty?)
     end
 
-    # @return [Array<PLinkEdge>] current segment to push link-edge
+    # @return [Array<Netomox::PseudoDSL::PLinkEdge>] current segment to push link-edge
     def current_segment
       @segments[-1]
     end

@@ -39,5 +39,12 @@ module TopologyOperator
     def find_all_duplicated_prefix_seg_nodes
       @elements.grep(/.+__Seg.+#\d+$/)
     end
+
+    # @param [Symbol] key Key in flag
+    # @return [Integer] Count of the flag
+    def countup_flag(key)
+      @flag[key] = 0 unless @flag.key?(key)
+      @flag[key] += 1
+    end
   end
 end

@@ -18,6 +18,8 @@ module TopologyBuilder
       #   @return [Integer]
       # @!attribute [rw] allowed_vlans
       #   @return [Array<Integer>]
+      # @!attribute [rw] encapsulation_vlan
+      #   @return [Integer]
       # @!attribute [rw] switchport
       #   @return [String]
       # @!attribute [rw] switchport_mode
@@ -31,7 +33,7 @@ module TopologyBuilder
       # @!attribute [rw] description
       #   @return [String]
       attr_accessor :node, :interface, :vrf, :primary_address,
-                    :access_vlan, :allowed_vlans,
+                    :access_vlan, :allowed_vlans, :encapsulation_vlan,
                     :switchport, :switchport_mode, :switchport_trunk_encapsulation,
                     :channel_group, :channel_group_members, :description
 
@@ -49,8 +51,9 @@ module TopologyBuilder
         @interface = interface.interface
 
         @active = record[:active]
-        @access_vlan = record[:access_vlan]
+        @access_vlan = record[:access_vlan].to_i
         @allowed_vlans = parse_allowed_vlans(record[:allowed_vlans])
+        @encapsulation_vlan = record[:encapsulation_vlan].to_i
         @primary_address = record[:primary_address]
         @switchport = record[:switchport]
         @switchport_mode = record[:switchport_mode]
@@ -64,23 +67,24 @@ module TopologyBuilder
 
       # @return [Boolean] true if the interface is active
       def active?
-        !!(@active =~ /true/i)
+        true_string?(@active)
       end
       alias active active?
 
       # @return [Boolean] true if the interface is switchport
       def switchport?
-        !!(@switchport =~ /true/i)
+        true_string?(@switchport)
       end
+      # DO NOT alias #switchport/#switchport? to keep #switchport writable.
 
       # @return [Boolean] true if the interface is routed port
       def routed_port?
-        !!(!switchport? && @switchport_mode =~ /NONE/i && @primary_address)
+        !switchport? && @switchport_mode.downcase == 'none' && !@primary_address.nil? && !@primary_address.empty?
       end
 
       # @return [Boolean] true if the interface is switchport-access
       def swp_access?
-        !!(switchport? && @switchport_mode =~ /ACCESS/i)
+        switchport? && @switchport_mode.downcase == 'access'
       end
 
       # @return [Boolean] true if the interface is not switchport-trunk
@@ -90,7 +94,7 @@ module TopologyBuilder
 
       # @return [Boolean] true if the interface is switchport-trunk
       def swp_trunk?
-        !!(switchport? && @switchport_mode =~ /TRUNK/i)
+        switchport? && @switchport_mode.downcase == 'trunk'
       end
 
       # @return [Boolean] true if LAG (parent) port
@@ -103,10 +107,16 @@ module TopologyBuilder
         !@channel_group.nil?
       end
 
+      # L3 sub-interface detection (for junos interface)
+      # @return [Boolean] true if L3 sub-interface
+      def l3_subif?
+        @encapsulation_vlan.positive? && !(@primary_address.nil? || @primary_address.empty?)
+      end
+
       # Unit interface number (for junos interface)
       # @return [nil, String] unit number string
       def unit_number
-        %r{[\w\-/]+\d+\.(\d+)}.match(interface).to_a[1]
+        %r{[-/\w]+\d+(?::\d+)?\.(\d+)}.match(interface).to_a[1]
       end
 
       # @return [String]
