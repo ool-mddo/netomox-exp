@@ -1,7 +1,7 @@
 GIT
   remote: https://github.com/ool-mddo/netomox
-  revision: d2de1e1e508da0753f469f7523ca96ed90d46629
-  branch: ospf-model
+  revision: 1f8717ceb30faa89e952f78de8ea67afb8fd85a6
+  tag: v0.2.0
   specs:
     netomox (0.1.0)
       hashdiff (~> 1.0.1)
@@ -14,7 +14,7 @@ GEM
   remote: https://rubygems.org/
   specs:
     ast (2.4.2)
-    excon (0.97.1)
+    excon (0.99.0)
     hashdiff (1.0.1)
     hashie (5.0.0)
     highline (2.1.0)
