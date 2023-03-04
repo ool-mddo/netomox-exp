@@ -8,14 +8,18 @@ require 'netomox'
 require_relative 'model_defs/topology_builder/networks'
 
 # Directories
-QUERIES_DIR = ENV.fetch('MDDO_MODELS_DIR', 'models')
-TOPOLOGIES_DIR = ENV.fetch('MDDO_NETOVIZ_MODEL_DIR', 'netoviz_model')
+QUERIES_DIR = ENV.fetch('MDDO_QUERIES_DIR', 'queries')
+TOPOLOGIES_DIR = ENV.fetch('MDDO_TOPOLOGIES_DIR', 'topologies')
 
 # Netomox REST API definition
 class NetomoxRestApi < Grape::API
   format :json
 
   helpers do
+    def logger
+      NetomoxRestApi.logger
+    end
+
     # @param [String] file_path File path to read
     # @return [Hash,Array]
     def read_json_file(file_path)
@@ -26,7 +30,9 @@ class NetomoxRestApi < Grape::API
     # @param [String] file_path File path to save
     # @param [void]
     def save_json_file(file_path, data)
-      JSON.dump(data, File.open(file_path, 'w'))
+      logger.warn "[save_json_file] path=#{file_path}"
+      FileUtils.mkdir_p(File.dirname(file_path))
+      File.open(file_path, 'w') { |file| JSON.dump(data, file) }
     end
 
     # @param [String] network Network name
@@ -93,21 +99,23 @@ class NetomoxRestApi < Grape::API
           network = params[:network]
           snapshot = params[:snapshot]
 
-          query_snapshot_dir = File.join(QUERIES_DIR, network, snapshot)
-          topology_snapshot_dir = File.join(TOPOLOGIES_DIR, network, snapshot)
-          topology_data = if params.key?(:topology_data)
-                            params[:topology_data]
-                          else
-                            TopologyBuilder.generate_data(query_snapshot_dir)
-                          end
+          topology_data =
+            if params.key?(:topology_data)
+              params[:topology_data]
+            else
+              query_snapshot_dir = File.join(QUERIES_DIR, network, snapshot)
+              logger.debug("[post /topologies/#{network}/#{snapshot}] query_snapshot_dir: #{query_snapshot_dir}")
+              TopologyBuilder.generate_data(query_snapshot_dir)
+            end
+
+          # TODO: copy layout file if found
 
           # generate(overwrite) topology data
-          topology_file = File.join(topology_snapshot_dir, 'topology.json')
+          topology_file = File.join(TOPOLOGIES_DIR, network, snapshot, 'topology.json')
           save_json_file(topology_file, topology_data)
           {
             method: 'POST',
             path: "/topologies/#{network}/#{snapshot}",
-            message: 'Generate/Overwrite topology.json',
             topology_data:
           }
         end
@@ -117,8 +125,7 @@ class NetomoxRestApi < Grape::API
           network = params[:network]
           snapshot = params[:snapshot]
 
-          topology_snapshot_dir = File.join(TOPOLOGIES_DIR, network, snapshot)
-          topology_file = File.join(topology_snapshot_dir, 'topology.json')
+          topology_file = File.join(TOPOLOGIES_DIR, network, snapshot, 'topology.json')
           topology_data = read_json_file(topology_file)
           {
             method: 'GET',
