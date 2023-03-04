@@ -27,7 +27,7 @@ RUN apt-get update \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
-ENTRYPOINT ["rerun", "--force-polling", "rackup -s webrick -o 0.0.0.0 -p 9292"]
+ENTRYPOINT ["rerun", "--force-polling", "bundle exec rackup -s webrick -o 0.0.0.0 -p 9292"]
 
 FROM base as build
 

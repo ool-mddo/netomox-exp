@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-require 'json'
 require 'logger'
 require_relative 'l1_data_builder'
 require_relative 'l2_data_builder'
@@ -34,11 +33,11 @@ module TopologyBuilder
   end
 
   # @param [Array<Netomox::PseudoDSL::PNetworks>] nws Networks
-  # @return [String] RFC8345-structure json string
-  def to_json(nws)
+  # @return [Hash] RFC8345 topology data
+  def to_data(nws)
     nmx_nws = Netomox::DSL::Networks.new
     nmx_nws.networks = nws.map(&:interpret).map(&:networks).flatten
-    JSON.pretty_generate(nmx_nws.topo_data)
+    nmx_nws.topo_data
   end
 
   # @param [Boolean] debug Debug mode
@@ -54,14 +53,14 @@ module TopologyBuilder
   # @param [String] target Target source data (config file directory name)
   # @param [String] layer Layer name to debug
   # @param [Boolean] debug Debug mode (true if enable)
-  # @return [String] RFC8345-structure json string
-  def generate_json(target, layer: 'layer1', debug: false)
+  # @return [Hash] RFC8345 topology data
+  def generate_data(target, layer: 'layer1', debug: false)
     l1_debug = debug_layer?(debug, layer, 1)
     l1_builder = L1DataBuilder.new(target:, debug: l1_debug)
     layer1_nws = l1_builder.make_networks
     if l1_debug
       layer1_nws.dump
-      return to_json([layer1_nws])
+      return to_data([layer1_nws])
     end
 
     l2_debug = debug_layer?(debug, layer, 2)
@@ -73,7 +72,7 @@ module TopologyBuilder
     layer2_nws = l2_builder.make_networks
     if l2_debug
       layer2_nws.dump
-      return to_json([layer2_nws, layer1_nws])
+      return to_data([layer2_nws, layer1_nws])
     end
 
     l3_debug = debug_layer?(debug, layer, 3)
@@ -85,7 +84,7 @@ module TopologyBuilder
     layer3_nws = l3_builder.make_networks
     if l3_debug
       layer3_nws.dump
-      return to_json([layer3_nws, layer2_nws, layer1_nws])
+      return to_data([layer3_nws, layer2_nws, layer1_nws])
     end
 
     l3exp_debug = debug_layer?(debug, layer, '3p')
@@ -96,7 +95,7 @@ module TopologyBuilder
     layer3exp_nws = l3exp_builder.make_networks
     if l3exp_debug
       layer3exp_nws.dump
-      to_json([layer3exp_nws, layer3_nws, layer2_nws, layer1_nws])
+      to_data([layer3exp_nws, layer3_nws, layer2_nws, layer1_nws])
     end
 
     ospf_debug = debug_layer?(debug, layer, 'ospf')
@@ -107,7 +106,7 @@ module TopologyBuilder
     )
     ospf_nws = ospf_builder.make_networks
     ospf_nws.dump if ospf_debug
-    to_json([ospf_nws, layer3_nws, layer2_nws, layer1_nws])
+    to_data([ospf_nws, layer3_nws, layer2_nws, layer1_nws])
   end
   # rubocop:enable Metrics/AbcSize, Metrics/MethodLength
 end
