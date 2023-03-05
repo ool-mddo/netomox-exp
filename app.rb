@@ -2,7 +2,6 @@
 
 require 'fileutils'
 require 'grape'
-require 'httpclient'
 require 'json'
 require 'netomox'
 require_relative 'model_defs/topology_builder/networks'
