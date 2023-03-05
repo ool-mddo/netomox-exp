@@ -7,10 +7,8 @@ git_source(:github) { |repo_name| "https://github.com/#{repo_name}" }
 group :production do
   gem 'grape', '>= 1.7.0'
   gem 'hashie', '>= 4.1.0'
-  gem 'httpclient', '>= 2.8.3'
   gem 'ipaddress', '~> 0.8.3'
   gem 'netomox', github: 'ool-mddo/netomox', tag: 'v0.2.0'
-  gem 'parallel', '>= 1.22.1'
   gem 'rack', '>= 1.3.0', '< 3' # grape restriction
   gem 'rake', '>= 13.0.6'
   gem 'rexml', '>= 3.2.5' # to resolve dependency of termcolor in netomox/diff_view
