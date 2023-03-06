@@ -12,7 +12,6 @@ group :production do
   gem 'rack', '>= 1.3.0', '< 3' # grape restriction
   gem 'rake', '>= 13.0.6'
   gem 'rexml', '>= 3.2.5' # to resolve dependency of termcolor in netomox/diff_view
-  gem 'test-unit', '>= 3.5.3'
   gem 'thor', '~> 1.2.1'
   gem 'webrick', '~> 1.7.0' # yard restriction
 end

@@ -1,7 +1,5 @@
 .idea/
 *.swp
-*.test_summary.*
-*.test_detail.*
 
 *.gem
 *.rbc
