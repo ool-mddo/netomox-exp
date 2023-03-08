@@ -1,4 +1,4 @@
-name: Build netmox-exp image
+name: Build netomox-exp image
 
 on: push
 
