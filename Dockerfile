@@ -23,7 +23,7 @@ RUN gem install bundler \
 
 # install required packages
 RUN apt-get update \
-    && apt-get install -y --no-install-recommends curl jq less csvtool bsdextrautils \
+    && apt-get install -y --no-install-recommends curl jq less \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
@@ -49,12 +49,5 @@ WORKDIR /netomox-exp
 COPY --from=build /netomox-exp /netomox-exp
 # copy installed gems (with native extensions)
 COPY --from=build /usr/local /usr/local
-
-# install required packages
-#   bsdextrautils: for `column` command
-RUN apt-get update \
-    && apt-get install -y --no-install-recommends curl jq less csvtool bsdextrautils \
-    && apt-get clean \
-    && rm -rf /var/lib/apt/lists/*
 
 ENTRYPOINT ["rackup", "-s", "webrick", "-o", "0.0.0.0", "-p", "9292"]
