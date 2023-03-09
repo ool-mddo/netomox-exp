@@ -9,6 +9,9 @@ require_relative 'model_defs/topology_builder/networks'
 # Directories
 QUERIES_DIR = ENV.fetch('MDDO_QUERIES_DIR', 'queries')
 TOPOLOGIES_DIR = ENV.fetch('MDDO_TOPOLOGIES_DIR', 'topologies')
+MODEL_DEFS_DIR = './model_defs'
+
+# rubocop:disable Metrics/ClassLength
 
 # Netomox REST API definition
 class NetomoxRestApi < Grape::API
@@ -63,6 +66,17 @@ class NetomoxRestApi < Grape::API
     end
 
     resource ':network' do
+      desc 'Delete topologies data'
+      delete do
+        network_dir = File.join(TOPOLOGIES_DIR, params[:network])
+        FileUtils.rm_rf(network_dir)
+        {
+          method: 'DELETE',
+          path: "/topologies/#{params[:network]}",
+          dir: network_dir
+        }
+      end
+
       desc 'Get topology diff'
       params do
         requires :src_ss, type: String, desc: 'Source snapshot name'
@@ -97,21 +111,26 @@ class NetomoxRestApi < Grape::API
         post do
           network = params[:network]
           snapshot = params[:snapshot]
-
+          api_path = "/topologies/#{network}/#{snapshot}"
           topology_data =
             if params.key?(:topology_data)
+              logger.debug("[post #{api_path}] posted topology data")
               params[:topology_data]
             else
               query_snapshot_dir = File.join(QUERIES_DIR, network, snapshot)
-              logger.debug("[post /topologies/#{network}/#{snapshot}] query_snapshot_dir: #{query_snapshot_dir}")
+              logger.debug("[post #{api_path}] query_snapshot_dir: #{query_snapshot_dir}")
               TopologyBuilder.generate_data(query_snapshot_dir)
             end
 
-          # TODO: copy layout file if found
-
           # generate(overwrite) topology data
-          topology_file = File.join(TOPOLOGIES_DIR, network, snapshot, 'topology.json')
+          topology_dir = File.join(TOPOLOGIES_DIR, network, snapshot)
+          topology_file = File.join(topology_dir, 'topology.json')
           save_json_file(topology_file, topology_data)
+
+          # copy layout file if found
+          layout_file = File.join(MODEL_DEFS_DIR, network, snapshot, 'layout.json')
+          FileUtils.cp(layout_file, File.join(topology_dir, 'layout.json')) if File.exist?(layout_file)
+
           {
             method: 'POST',
             path: "/topologies/#{network}/#{snapshot}",
@@ -137,3 +156,4 @@ class NetomoxRestApi < Grape::API
     # rubocop:enable Metrics/BlockLength
   end
 end
+# rubocop:enable Metrics/ClassLength
