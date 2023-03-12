@@ -1,6 +1,6 @@
 # netomox-exp
 
-A trial of network model construction. (original: https://github.com/corestate55/netomox-examples)
+Backend api to operate topology data. (original: https://github.com/corestate55/netomox-examples)
 
 ## Directories
 
@@ -10,7 +10,7 @@ A trial of network model construction. (original: https://github.com/corestate55
   + exe/               # executable scripts
   + figs/              # design diagrams
   + model_defs/        # scripts to generate topology data
-  + yang               # yang schema to validate topology data (TODO)
+  + yang/              # yang schema to validate topology data (TODO)
 ```
 
 ## Setup
@@ -21,9 +21,6 @@ A trial of network model construction. (original: https://github.com/corestate55
 
 ### Optional: Install ruby gems
 
-It can work attaching netomox-exp container on localhost that doesn't have ruby environment.
-Local installation of gems is needed to exec tools or develop scripts in your localhost directly.
-
 ```shell
 # If you install gems into project local
 # bundle config set --local path 'vendor/bundle'
@@ -32,15 +29,13 @@ bundle install
 
 ## Environment variables
 
-* `MDDO_CONFIGS_DIR`: batfish snapshot directory (default: `./configs`).
+Data directory:
 * `MDDO_QUERIES_DIR`: query result directory (default: `./queries`)
 * `MDDO_TOPOLOGIES_DIR`: topology data directory (for netoviz; default: `./topologies`)
 
-Optional environment variables:
-
-- Log level variable
-  - `NETOMOX_LOG_LEVEL` (default `info`)
-  - `TOPOLOGY_BUILDER_LOG_LEVEL` (default `info`)
+Log level variable:
+- `NETOMOX_LOG_LEVEL` (default `info`)
+- `TOPOLOGY_BUILDER_LOG_LEVEL` (default `info`)
 - select a value from `fatal`, `error`, `warn`, `info` and `debug`
 
 ## Run REST API server
