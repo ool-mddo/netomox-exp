@@ -109,7 +109,7 @@ class NetomoxRestApi < Grape::API
         params do
           optional :topology_data, type: Hash, desc: 'RFC8345 topology data'
         end
-        post do
+        post 'topology' do
           network = params[:network]
           snapshot = params[:snapshot]
           api_path = "/topologies/#{network}/#{snapshot}"
@@ -134,7 +134,7 @@ class NetomoxRestApi < Grape::API
 
           {
             method: 'POST',
-            path: "/topologies/#{network}/#{snapshot}",
+            path: "/topologies/#{network}/#{snapshot}/topology",
             topology_data:
           }
         end
@@ -148,7 +148,7 @@ class NetomoxRestApi < Grape::API
           topology_data = read_json_file(topology_file)
           {
             method: 'GET',
-            path: "/topologies/#{network}/#{snapshot}",
+            path: "/topologies/#{network}/#{snapshot}/topology",
             topology_data:
           }
         end

@@ -90,22 +90,22 @@ curl http://localhost:9292/topologies/pushed_configs/snapshot_diff/mddo_network/
 
 Save (register) topology data
 
-* POST `/topologies/<network>/<snapshot>`
+* POST `/topologies/<network>/<snapshot>/topology`
   * `topology_data`: RFC8345 topology data
 
 ```shell
 # topology.json
 # -> { "topology_data": <RFC8345 topology data> }
 curl -X POST -H "Content-Type: application/json" -d @topology.json \
-  http://localhost:9292/topologies/pushed_configs/mddo_network
+  http://localhost:9292/topologies/pushed_configs/mddo_network/topology
 ```
 
 Fetch topology data
 
-* GET `/topologies/<network>/<snapshot>`
+* GET `/topologies/<network>/<snapshot>/topology`
 
 ```shell
-curl http://localhost:9292/topologies/pushed_configs/mddo_network
+curl http://localhost:9292/topologies/pushed_configs/mddo_network/topology
 ```
 
 ## Tools
