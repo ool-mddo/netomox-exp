@@ -33,13 +33,13 @@ module TopologyBuilder
     def valid_edge_in_intf_props?(edge)
       props = @intf_props.find_all_records_by_node(edge.node)
       if props.empty?
-        TopologyBuilder.logger.error("L1 edges have invalid node name: #{edge.node}")
+        @logger.error("L1 edges have invalid node name: #{edge.node}")
         return false
       end
 
       return true if props.find { |p| p.interface == edge.interface }
 
-      TopologyBuilder.logger.error("L1 edges have invalid interface name: #{edge.node}[#{edge.interface}]")
+      @logger.error("L1 edges have invalid interface name: #{edge.node}[#{edge.interface}]")
       false
     end
 
@@ -49,7 +49,7 @@ module TopologyBuilder
       rev_edge = @l1_edges.find_link_by_src_node_intf(edge.dst.node, edge.dst.interface)
       unless rev_edge
         # NOTE: netomox cannot support unidirectional link
-        TopologyBuilder.logger.error("Link #{edge} is unidirectional link")
+        @logger.error("Link #{edge} is unidirectional link")
         return false
       end
 
@@ -68,7 +68,7 @@ module TopologyBuilder
       bd_check_results = @l1_edges.records.map { |l1_edge| bidirectional_link?(l1_edge) }
       return unless (names_check_results + bd_check_results).include?(false)
 
-      TopologyBuilder.logger.fatal('Found invalid layer1 edges')
+      @logger.fatal('Found invalid layer1 edges')
       exit 1
     end
 
@@ -162,7 +162,7 @@ module TopologyBuilder
       standalone_nodes = whole_nodes - linked_nodes
       debug_print "diff? #{standalone_nodes}"
       standalone_nodes.each do |node_name|
-        TopologyBuilder.logger.error("Found standalone node: #{node_name}")
+        @logger.error("Found standalone node: #{node_name}")
         add_node(node_name)
       end
     end

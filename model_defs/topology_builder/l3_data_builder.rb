@@ -186,7 +186,7 @@ module TopologyBuilder
       seg_index = index_of_same_prefix_segment(segment)
       seg_suffix = segment_node_suffix(segment)
       name = seg_index.negative? ? "Seg#{seg_suffix}" : "Seg#{seg_suffix}##{seg_index}"
-      TopologyBuilder.logger.warn "Segment node #{name} is L2 closed segment? " if seg_suffix.empty?
+      @logger.warn "Segment node #{name} is L2 closed segment? " if seg_suffix.empty?
       name
     end
 
@@ -201,7 +201,7 @@ module TopologyBuilder
       l3_seg_node
     end
 
-    # rubocop:disable Metrics/MethodLength, Metrics/AbcSize
+    # rubocop:disable Metrics/MethodLength
 
     # Add all layer3 node, tp and link
     # @return [void]
@@ -214,7 +214,7 @@ module TopologyBuilder
           l3_seg_node.supports.push([@layer2p.name, l2_edge.node])
           l3_node, l3_tp = add_l3_node_tp(l2_edge)
           if l3_node.nil? || l3_tp.nil?
-            TopologyBuilder.logger.info "Can not link: #{l3_seg_node.name} > #{l2_edge}, (it seems L2 link)"
+            @logger.info "Can not link: #{l3_seg_node.name} > #{l2_edge}, (it seems L2 link)"
             next
           end
 
@@ -222,7 +222,7 @@ module TopologyBuilder
         end
       end
     end
-    # rubocop:enable Metrics/MethodLength, Metrics/AbcSize
+    # rubocop:enable Metrics/MethodLength
 
     # @param [String] l3_node_name L3 node name
     # @param [String] l3_tp_name L3 term-point name (in the L3 node)

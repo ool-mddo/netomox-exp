@@ -19,7 +19,8 @@ class NetomoxRestApi < Grape::API
 
   helpers do
     def logger
-      NetomoxRestApi.logger
+      # reuse topology-builder logger
+      TopologyBuilder.logger
     end
 
     # @param [String] file_path File path to read

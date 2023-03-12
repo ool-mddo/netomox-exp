@@ -14,6 +14,7 @@ module TopologyBuilder
     def initialize(debug: false)
       @networks = Netomox::PseudoDSL::PNetworks.new # PNetworks
       @use_debug = debug
+      @logger = TopologyBuilder.logger
       debug_print "# DEBUG MODE: #{@use_debug}"
     end
 

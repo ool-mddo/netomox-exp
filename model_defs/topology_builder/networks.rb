@@ -11,8 +11,8 @@ require_relative 'ospf_data_builder'
 module TopologyBuilder
   # logger for netomox
   @logger = Logger.new($stderr)
-  @logger.progname = 'TopologyBuilder'
-  @logger.level = case ENV.fetch('TOPOLOGY_BUILDER_LOG_LEVEL', nil)
+  @logger.progname = 'netomox-exp'
+  @logger.level = case ENV.fetch('NETOMOX_EXP_LOG_LEVEL', nil)
                   when /fatal/i
                     Logger::FATAL
                   when /error/i

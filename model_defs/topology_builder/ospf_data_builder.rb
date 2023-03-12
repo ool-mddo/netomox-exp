@@ -240,7 +240,7 @@ module TopologyBuilder
       stp = other_tp.supports.find { |s| s[0] == @layer3p.name }
       ip_addr = if stp.nil?
                   msg = "Supporting term-point of #{other_node}#{other_tp} for ospf neighbor attribute is not found"
-                  TopologyBuilder.logger.error(msg)
+                  @logger.error(msg)
                   ''
                 else
                   _, other_stp = @layer3p.find_node_tp_by_name(stp[1], stp[2])

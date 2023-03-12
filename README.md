@@ -30,12 +30,14 @@ bundle install
 ## Environment variables
 
 Data directory:
+
 * `MDDO_QUERIES_DIR`: query result directory (default: `./queries`)
 * `MDDO_TOPOLOGIES_DIR`: topology data directory (for netoviz; default: `./topologies`)
 
 Log level variable:
+
 - `NETOMOX_LOG_LEVEL` (default `info`)
-- `TOPOLOGY_BUILDER_LOG_LEVEL` (default `info`)
+- `NETOMOX_EXP_LOG_LEVEL` (default `info`)
 - select a value from `fatal`, `error`, `warn`, `info` and `debug`
 
 ## Run REST API server
@@ -45,6 +47,7 @@ bundle exec rackup -s webrick -o 0.0.0.0 -p 9292
 ```
 
 For development: `rerun` watches file update and reload the server.
+
 * `--force-polling` in container with volume mount
 
 ```shell
@@ -56,6 +59,7 @@ rerun [--force-polling] bundle exec rackup -s webrick -o 0.0.0.0 -p 9292
 ### Operate netoviz
 
 Save netoviz index
+
 * POST `/topologies/index`
   * `index_data`: netoviz index data
 
@@ -69,6 +73,7 @@ curl -X POST -H "Content-Type: application/json" -d @netoviz_index.json \
 ### Operate topology dat
 
 Delete all topology data in a network
+
 * DELETE `/topologies/<network>`
 
 ```shell
@@ -76,6 +81,7 @@ curl -X DELETE http://localhost:9292/topologies/pushed_configs
 ```
 
 Fetch topology diff between two snapshots in a network
+
 * GET `/topologies/<network>/snapshot_diff/<source_snapshot>/<destination_snapshot>`
 
 ```shell
@@ -83,6 +89,7 @@ curl http://localhost:9292/topologies/pushed_configs/snapshot_diff/mddo_network/
 ```
 
 Save (register) topology data
+
 * POST `/topologies/<network>/<snapshot>`
   * `topology_data`: RFC8345 topology data
 
@@ -94,6 +101,7 @@ curl -X POST -H "Content-Type: application/json" -d @topology.json \
 ```
 
 Fetch topology data
+
 * GET `/topologies/<network>/<snapshot>`
 
 ```shell

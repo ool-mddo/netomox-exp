@@ -188,7 +188,7 @@ module TopologyBuilder
         # type: :error
         add_l2_node_tp(src_node, src_tp, check_result[:src_tp_prop], 0)
         add_l2_node_tp(dst_node, dst_tp, check_result[:dst_tp_prop], 0)
-        TopologyBuilder.logger.error "L2 term-point check error: #{check_result[:message]}"
+        @logger.error "L2 term-point check error: #{check_result[:message]}"
       end
     end
     # rubocop:enable Metrics/MethodLength, Metrics/AbcSize
@@ -301,7 +301,7 @@ module TopologyBuilder
       disconnected_intfs = filtered_disconnected_intfs(whole_intfs, connected_intfs)
       debug_print "# disconnected_interfaces (rej) = #{disconnected_intfs}"
       disconnected_intfs.each do |intf|
-        TopologyBuilder.logger.warn "L3 interface #{intf[:node]}[#{intf[:intf]}] is inactive or disconnected (L1/L2)."
+        @logger.warn "L3 interface #{intf[:node]}[#{intf[:intf]}] is inactive or disconnected (L1/L2)."
       end
     end
 
