@@ -5,6 +5,10 @@ require 'grape'
 require 'json'
 require 'netomox'
 require_relative 'model_defs/topology_builder/networks'
+require_relative 'lib/convert_namespace/namespace_converter'
+require_relative 'lib/convert_namespace/layer_filter'
+require_relative 'lib/convert_topology/batfish_converter'
+require_relative 'lib/convert_topology/containerlab_converter'
 
 # Directories
 QUERIES_DIR = ENV.fetch('MDDO_QUERIES_DIR', 'queries')
@@ -26,7 +30,8 @@ class NetomoxRestApi < Grape::API
     # @param [String] file_path File path to read
     # @return [Object]
     def read_json_file(file_path)
-      error!(:not_found, 404) unless File.exist?(file_path)
+      error!("Not found: topology file: #{file_path}", 404) unless File.exist?(file_path)
+
       JSON.parse(File.read(file_path))
     end
 
@@ -44,14 +49,6 @@ class NetomoxRestApi < Grape::API
     def read_topology_file(network, snapshot)
       topology_file = File.join(TOPOLOGIES_DIR, network, snapshot, 'topology.json')
       read_json_file(topology_file)
-    end
-
-    # @param [String] network Network name
-    # @param [String] snapshot Snapshot name
-    # @return [Netomox::Topology::Networks] Networks instance
-    def read_topology_file_as_networks(network, snapshot)
-      nws_data = read_topology_file(network, snapshot)
-      Netomox::Topology::Networks.new(nws_data)
     end
   end
 
@@ -77,26 +74,6 @@ class NetomoxRestApi < Grape::API
       delete do
         network_dir = File.join(TOPOLOGIES_DIR, params[:network])
         FileUtils.rm_rf(network_dir)
-        # reply
-        {}
-      end
-
-      desc 'Get topology diff'
-      params do
-        requires :src_ss, type: String, desc: 'Source snapshot name'
-        requires :dst_ss, type: String, desc: 'Destination snapshot name'
-      end
-      get 'snapshot_diff/:src_ss/:dst_ss' do
-        # send diff data between src_ss and dst_ss
-        network = params[:network]
-        src_ss = params[:src_ss]
-        dst_ss = params[:dst_ss]
-
-        src_nws = read_topology_file_as_networks(network, src_ss)
-        dst_nws = read_topology_file_as_networks(network, dst_ss)
-        diff_nws = src_nws.diff(dst_nws)
-        # reply
-        diff_nws.to_data
       end
 
       params do
@@ -105,43 +82,92 @@ class NetomoxRestApi < Grape::API
 
       resource ':snapshot' do
         desc 'Post (register) topology data'
-        params do
-          optional :topology_data, type: Hash, desc: 'RFC8345 topology data'
-        end
-        post 'topology' do
-          network = params[:network]
-          snapshot = params[:snapshot]
-          api_path = "/topologies/#{network}/#{snapshot}"
-          topology_data =
-            if params.key?(:topology_data)
-              logger.debug("[post #{api_path}] posted topology data")
-              params[:topology_data]
-            else
-              query_snapshot_dir = File.join(QUERIES_DIR, network, snapshot)
-              logger.debug("[post #{api_path}] query_snapshot_dir: #{query_snapshot_dir}")
-              TopologyBuilder.generate_data(query_snapshot_dir)
+        resource 'topology' do
+          params do
+            optional :topology_data, type: Hash, desc: 'RFC8345 topology data'
+          end
+          post do
+            network = params[:network]
+            snapshot = params[:snapshot]
+            api_path = "/topologies/#{network}/#{snapshot}/topology"
+            topology_data =
+              if params.key?(:topology_data)
+                logger.debug("[post #{api_path}] posted topology data")
+                params[:topology_data]
+              else
+                query_snapshot_dir = File.join(QUERIES_DIR, network, snapshot)
+                logger.debug("[post #{api_path}] query_snapshot_dir: #{query_snapshot_dir}")
+                TopologyBuilder.generate_data(query_snapshot_dir)
+              end
+
+            # generate(overwrite) topology data
+            topology_dir = File.join(TOPOLOGIES_DIR, network, snapshot)
+            topology_file = File.join(topology_dir, 'topology.json')
+            save_json_file(topology_file, topology_data)
+
+            # copy layout file if found
+            layout_file = File.join(MODEL_DEFS_DIR, network, snapshot, 'layout.json')
+            FileUtils.cp(layout_file, File.join(topology_dir, 'layout.json')) if File.exist?(layout_file)
+
+            # reply
+            topology_data
+          end
+
+          desc 'Get topology data'
+          get do
+            # reply
+            read_topology_file(params[:network], params[:snapshot])
+          end
+
+          desc 'Get topology data (L3+ layers)'
+          get 'upper_layer3' do
+            layer_filter = LayerFilter.new(read_topology_file(params[:network], params[:snapshot]))
+            # reply
+            layer_filter.filter
+          end
+
+          params do
+            requires :layer, type: String, desc: 'Network layer'
+          end
+          resource ':layer' do
+            desc 'convert layer data to batfish layer1_topology.json'
+            get 'batfish_layer1_topology' do
+              topology_data = read_topology_file(params[:network], params[:snapshot])
+              converter = BatfishConverter.new(topology_data, params[:layer])
+              converter.convert
             end
 
-          # generate(overwrite) topology data
-          topology_dir = File.join(TOPOLOGIES_DIR, network, snapshot)
-          topology_file = File.join(topology_dir, 'topology.json')
-          save_json_file(topology_file, topology_data)
-
-          # copy layout file if found
-          layout_file = File.join(MODEL_DEFS_DIR, network, snapshot, 'layout.json')
-          FileUtils.cp(layout_file, File.join(topology_dir, 'layout.json')) if File.exist?(layout_file)
-
-          # reply
-          topology_data
+            desc 'convert layer data to containerl-lab topology json'
+            params do
+              optional :env_name, type: String, desc: 'Environment name (for container-lab)', default: 'emulated'
+            end
+            get 'containerlab_topology' do
+              topology_data = read_topology_file(params[:network], params[:snapshot])
+              opts = { env_name: params[:env_name] }
+              converter = ContainerLabConverter.new(topology_data, params[:layer], opts)
+              converter.convert
+            end
+          end
         end
 
-        desc 'Get topology data'
-        get 'topology' do
-          network = params[:network]
-          snapshot = params[:snapshot]
-
-          # reply
-          read_topology_file(network, snapshot)
+        resource 'converted_topology' do
+          desc 'Post namespace-convert-table to get converted topology'
+          params do
+            optional :convert_table, type: Hash, desc: 'Namespace convert table'
+          end
+          post do
+            converter = NamespaceConverter.new(read_topology_file(params[:network], params[:snapshot]))
+            if params.key?(:convert_table)
+              converter.reload_convert_table(params[:convert_table])
+            else
+              converter.make_convert_table
+            end
+            # reply
+            {
+              convert_table: converter.convert_table,
+              converted_topology_data: converter.convert
+            }
+          end
         end
       end
     end

@@ -7,10 +7,6 @@ require 'thor'
 require 'yaml'
 require_relative 'l1_descr/l1_intf_descr_checker'
 require_relative 'l1_descr/l1_intf_descr_maker'
-require_relative 'convert_namespace/namespace_converter'
-require_relative 'convert_namespace/layer_filter'
-require_relative 'convert_topology/batfish_converter'
-require_relative 'convert_topology/containerlab_converter'
 
 module TopologyOperator
   # Tools to operate topology data (CLI frontend)
@@ -34,55 +30,6 @@ module TopologyOperator
     def make_l1_descr(target_file)
       maker = L1InterfaceDescriptionMaker.new(target_file)
       print_csv(maker.full_table)
-    end
-
-    # rubocop:disable Metrics/AbcSize
-    desc 'convert_namespace TOPOLOGY', 'Convert namespace of topology file (L3+)'
-    method_option :table, aliases: :t, type: :string, desc: 'convert table file'
-    method_option :overwrite, aliases: :o, type: :boolean, default: false, desc: 'Overwrite convert table'
-    method_option :format, aliases: :f, default: 'yaml', type: :string, enum: %w[yaml json],
-                           desc: 'Output format (to stdout)'
-    # @param [String] file Target topology file path
-    # @return [void]
-    def convert_namespace(file)
-      converter = NamespaceConverter.new(file)
-      table_file = options.key?(:table) ? options[:table] : File.join(Dir.pwd, 'ns_table.json')
-
-      if !options[:overwrite] && File.exist?(table_file)
-        converter.reload_convert_table(table_file)
-      else
-        converter.make_convert_table
-        print_json_data_to_file(converter.convert_table, table_file)
-      end
-      print_data(converter.convert)
-    end
-    # rubocop:enable Metrics/AbcSize
-
-    desc 'filter_low_layers TOPOLOGY', 'Filter (omit) L1/L2 info'
-    method_option :format, aliases: :f, default: 'yaml', type: :string, enum: %w[yaml json],
-                           desc: 'Output format (to stdout)'
-    # @param [String] file Target topology file path
-    # @return [void]
-    def filter_low_layers(file)
-      layer_filter = LayerFilter.new(file)
-      print_data(layer_filter.filter)
-    end
-
-    desc 'convert_topology TOPOLOGY', 'Convert topology for container-lab/batfish'
-    method_option :target, aliases: :t, type: :string, enum: %w[clab bf], required: true,
-                           desc: 'Output target: container-lab/batfish'
-    method_option :format, aliases: :f, default: 'yaml', type: :string, enum: %w[yaml json], desc: 'Output format'
-    method_option :source, aliases: :s, type: :string, required: true, desc: 'Source network (layer) name'
-    method_option :env_name, aliases: :e, type: :string, default: 'emulated', desc: 'Environment name (for clab)'
-    # @param [String] file Target topology file path
-    # @return [void]
-    def convert_topology(file)
-      converter = if options[:target] == 'bf'
-                    BatfishConverter.new(file, options[:source])
-                  else
-                    ContainerLabConverter.new(file, options[:source], { env_name: options[:env_name] })
-                  end
-      print_data(converter.convert)
     end
 
     private
