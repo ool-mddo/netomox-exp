@@ -24,7 +24,7 @@ class NetomoxRestApi < Grape::API
     end
 
     # @param [String] file_path File path to read
-    # @return [Hash,Array]
+    # @return [Object]
     def read_json_file(file_path)
       error!(:not_found, 404) unless File.exist?(file_path)
       JSON.parse(File.read(file_path))
@@ -40,10 +40,18 @@ class NetomoxRestApi < Grape::API
 
     # @param [String] network Network name
     # @param [String] snapshot Snapshot name
-    # @return [Netomox::Topology::Networks] Networks instance
+    # @return [Object] Networks data
     def read_topology_file(network, snapshot)
       topology_file = File.join(TOPOLOGIES_DIR, network, snapshot, 'topology.json')
-      Netomox::Topology::Networks.new(read_json_file(topology_file))
+      read_json_file(topology_file)
+    end
+
+    # @param [String] network Network name
+    # @param [String] snapshot Snapshot name
+    # @return [Netomox::Topology::Networks] Networks instance
+    def read_topology_file_as_networks(network, snapshot)
+      nws_data = read_topology_file(network, snapshot)
+      Netomox::Topology::Networks.new(nws_data)
     end
   end
 
@@ -56,10 +64,8 @@ class NetomoxRestApi < Grape::API
     post 'index' do
       index_file = File.join(TOPOLOGIES_DIR, '_index.json')
       save_json_file(index_file, params[:index_data])
-      {
-        method: 'POST',
-        path: '/topologies/index'
-      }
+      # reply
+      {}
     end
 
     params do
@@ -71,11 +77,8 @@ class NetomoxRestApi < Grape::API
       delete do
         network_dir = File.join(TOPOLOGIES_DIR, params[:network])
         FileUtils.rm_rf(network_dir)
-        {
-          method: 'DELETE',
-          path: "/topologies/#{params[:network]}",
-          dir: network_dir
-        }
+        # reply
+        {}
       end
 
       desc 'Get topology diff'
@@ -89,15 +92,11 @@ class NetomoxRestApi < Grape::API
         src_ss = params[:src_ss]
         dst_ss = params[:dst_ss]
 
-        src_nws = read_topology_file(network, src_ss)
-        dst_nws = read_topology_file(network, dst_ss)
+        src_nws = read_topology_file_as_networks(network, src_ss)
+        dst_nws = read_topology_file_as_networks(network, dst_ss)
         diff_nws = src_nws.diff(dst_nws)
-        topology_data = diff_nws.to_data
-        {
-          method: 'GET',
-          path: "/topologies/snapshot_diff/#{src_ss}/#{dst_ss}",
-          topology_data:
-        }
+        # reply
+        diff_nws.to_data
       end
 
       params do
@@ -132,11 +131,8 @@ class NetomoxRestApi < Grape::API
           layout_file = File.join(MODEL_DEFS_DIR, network, snapshot, 'layout.json')
           FileUtils.cp(layout_file, File.join(topology_dir, 'layout.json')) if File.exist?(layout_file)
 
-          {
-            method: 'POST',
-            path: "/topologies/#{network}/#{snapshot}/topology",
-            topology_data:
-          }
+          # reply
+          topology_data
         end
 
         desc 'Get topology data'
@@ -144,13 +140,8 @@ class NetomoxRestApi < Grape::API
           network = params[:network]
           snapshot = params[:snapshot]
 
-          topology_file = File.join(TOPOLOGIES_DIR, network, snapshot, 'topology.json')
-          topology_data = read_json_file(topology_file)
-          {
-            method: 'GET',
-            path: "/topologies/#{network}/#{snapshot}/topology",
-            topology_data:
-          }
+          # reply
+          read_topology_file(network, snapshot)
         end
       end
     end
