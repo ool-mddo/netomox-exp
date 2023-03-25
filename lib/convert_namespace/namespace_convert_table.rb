@@ -36,6 +36,21 @@ class NamespaceConvertTable < NamespaceConverterBase
     @tp_name_table[src_node_name][src_tp_name]
   end
 
+  # @param [String] src_node_name Source node name
+  # @param [Regexp] src_tp_name_re Source term-point name (Regexp)
+  # @return [String]
+  # @raise [StandardError]
+  def convert_tp_name_match(src_node_name, src_tp_name_re)
+    raise StandardError, "Node: #{src_node_name} is not in tp-table" unless key_node_tp?(src_node_name)
+
+    matched_tp_names = @tp_name_table[src_node_name].keys.grep(src_tp_name_re)
+    converted_tp_names = matched_tp_names.map { |tp| @tp_name_table[src_node_name][tp] }
+    # return converted value if it was identified uniquely
+    return converted_tp_names[0] if converted_tp_names.length == 1
+
+    raise StandardError, "TP: Regexp #{src_tp_name_re} matches 0 or several term-point(s)"
+  end
+
   # @return [String, Integer] Converted OSPF process id
   # @raise [StandardError]
   def convert_ospf_proc_id(src_node_name, proc_id)

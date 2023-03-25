@@ -1,7 +1,10 @@
 # frozen_string_literal: true
 
 require 'netomox'
+require 'ipaddr'
 require_relative 'namespace_convert_table'
+
+# rubocop:disable Metrics/ClassLength
 
 # namespace converter (original/emulated)
 class NamespaceConverter < NamespaceConvertTable
@@ -28,7 +31,27 @@ class NamespaceConverter < NamespaceConvertTable
     node.attribute.is_a?(Netomox::Topology::MddoOspfAreaNodeAttribute)
   end
 
+  # @param [Netomox::Topology::Node] node Node
+  # @return [Boolean] True if the node is in layer3
+  def layer3_node?(node)
+    node.attribute.is_a?(Netomox::Topology::MddoL3NodeAttribute)
+  end
+
   private
+
+  # @param [Netomox::Topology::TermPoint] src_tp Source term-point (L3+)
+  # @param [Netomox::PseudoDSL::PTermPoint] dst_tp Destination term-point (L3+)
+  # return [void]
+  def rewrite_layer3_tp_attr(src_tp, dst_tp)
+    return if src_tp.attribute.description.empty?
+
+    # rewrite interface description
+    _, src_host_name, src_tp_name = src_tp.attribute.description.split('_') # "[to, <host>, <tp>]"
+    # NOTICE: host and interface(term-point) name in description is not normalized
+    dst_host_name = convert_node_name(src_host_name.downcase)
+    dst_tp_name = convert_tp_name_match(src_host_name.downcase, Regexp.new("#{src_tp_name}.*$")) # ignore unit number
+    dst_tp.attribute[:description] = ['to', dst_host_name, dst_tp_name].join('_')
+  end
 
   # @param [Netomox::Topology::TermPoint] src_tp Source term-point (L3+)
   # @return [Array<Array<String>>] Array of term-point supports
@@ -49,6 +72,7 @@ class NamespaceConverter < NamespaceConvertTable
     dst_tp = Netomox::PseudoDSL::PTermPoint.new(convert_tp_name(src_node.name, src_tp.name))
     dst_tp.attribute = convert_all_hash_keys(src_tp.attribute.to_data)
     dst_tp.supports = rewrite_tp_supports(src_tp)
+    rewrite_layer3_tp_attr(src_tp, dst_tp) if layer3_node?(src_node) && !segment_node?(src_node)
     dst_tp
   end
 
@@ -61,14 +85,58 @@ class NamespaceConverter < NamespaceConvertTable
             .map { |node_sup| [node_sup.ref_network, convert_node_name(node_sup.ref_node)] }
   end
 
+  # @param [Netomox::PseudoDSL::PNode] node Node (destination)
+  # @param [String] next_hop Next-hop IP address of a static-route
+  # @return [nil, Netomox::PseudoDSL::PTermPoint] Term-point that is connected with next-hop segment
+  def find_next_hop_interface(node, next_hop)
+    node.tps.find do |tp|
+      tp.attribute[:ip_addrs]
+        .map { |ip_addr| IPAddr.new(ip_addr) }
+        .any? { |ip_addr| ip_addr.include?(next_hop) }
+    end
+  end
+
+  # rubocop:disable Metrics/MethodLength, Metrics/AbcSize
+
+  # @param [Netomox::Topology::Node] src_node Source node (L3+)
+  # @param [Netomox::PseudoDSL::PNode] dst_node Destination node (L3+)
+  # @return [void]
+  # @raise [StandardError]
+  def rewrite_layer3_node_attr(src_node, dst_node)
+    return if dst_node.attribute[:static_routes].empty?
+
+    # rewrite static route next-hop
+    dst_node.attribute[:static_routes].reject { |r| r[:interface] == 'dynamic' }.each do |route|
+      route[:interface] = convert_tp_name(src_node.name, route[:interface])
+    end
+    dst_node.attribute[:static_routes].select { |r| r[:interface] == 'dynamic' }.each do |route|
+      tp = find_next_hop_interface(dst_node, route[:next_hop])
+      if tp.nil?
+        raise StandardError,
+              "Static route: prefix=#{route[:prefix]}, next-hop=#{route[:next_hop]}: next hop is not local address"
+      end
+      route[:interface] = tp.name
+    end
+  end
+  # rubocop:enable Metrics/MethodLength, Metrics/AbcSize
+
+  # @param [Netomox::Topology::Node] src_node Source node (L3+)
+  # @param [Netomox::PseudoDSL::PNode] dst_node Destination node (L3+)
+  # @return [void]
+  def rewrite_ospf_node_attr(src_node, dst_node)
+    # rewrite ospf process-id in node-attribute of ospf-layer
+    dst_node.attribute[:process_id] = convert_ospf_proc_id(src_node.name, src_node.attribute.process_id)
+  end
+
   # @param [Netomox::Topology::Node] src_node Source node (L3+)
   # @param [Netomox::PseudoDSL::PNode] dst_node Destination node (L3+)
   # @return [void]
   def rewrite_node_attr(src_node, dst_node)
-    return unless ospf_node?(src_node) && !segment_node?(src_node)
+    # ignore segment node in layer3/ospf layer
+    return if segment_node?(src_node)
 
-    # rewrite ospf process-id in node-attribute of ospf-layer
-    dst_node.attribute[:process_id] = convert_ospf_proc_id(src_node.name, src_node.attribute.process_id)
+    rewrite_layer3_node_attr(src_node, dst_node) if layer3_node?(src_node)
+    rewrite_ospf_node_attr(src_node, dst_node) if ospf_node?(src_node)
   end
 
   # @param [Netomox::Topology::Node] src_node Source node (L3+)
@@ -114,3 +182,4 @@ class NamespaceConverter < NamespaceConvertTable
   end
   # rubocop:enable Metrics/AbcSize
 end
+# rubocop:enable Metrics/ClassLength
