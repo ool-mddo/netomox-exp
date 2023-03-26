@@ -163,12 +163,23 @@ module NetomoxExp
     # @param [Netomox::Topology::Node] src_node Source node (L3)
     # @param [Integer] index Term-point index
     # @return [String] Converted term-point name
-    def forward_convert_tp_name(src_node, index)
-      # for segment node
-      return "#{src_node.name.tr('_/', '-').downcase}_Ethernet#{index}" if segment_node?(src_node)
+    def forward_convert_actual_tp_name(src_node, index)
+      # for actual node (some container in emulated env)
+      "eth#{index}.0" unless segment_node?(src_node)
+    end
 
-      # for other actual node (some container in emulated env)
-      "eth#{index}.0"
+    # @param [Netomox::Topology::Network] src_nw Source network (L3)
+    # @param [Netomox::Topology::Node] src_node Source node (L3)
+    # @param [Netomox::Topology::TermPoint] src_tp Source term-point (L3)
+    # @return [String] Converted term-point name
+    # @raise [StandardError] if link connected src_node/tp is not found
+    def forward_convert_segment_tp_name(src_nw, src_node, src_tp)
+      link = src_nw.find_link_by_source(src_node.name, src_tp.name)
+      raise StandardError, "Link is not found source: #{src_tp.path}" if link.nil?
+
+      target_node_ref = link.destination.node_ref
+      target_tp_ref = link.destination.tp_ref
+      "#{convert_node_name(target_node_ref)}_#{convert_tp_name(target_node_ref, target_tp_ref)}"
     end
 
     # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
@@ -195,10 +206,9 @@ module NetomoxExp
       @tp_name_table[dst_node_name] = {} unless key_node_tp?(dst_node_name)
     end
 
-    # @return [void]
-    def make_tp_name_table
-      src_nw = @src_nws.find_network('layer3')
-      src_nw.nodes.each do |src_node|
+    # @param [Netomox::Topology::Network] src_nw Source network (L3)
+    def make_tp_name_table_for_actual(src_nw)
+      src_nw.nodes.reject { |node| segment_node?(node) }.each do |src_node|
         dst_node_name = convert_node_name(src_node.name)
         add_tp_name_hash(src_node.name, dst_node_name)
 
@@ -208,11 +218,37 @@ module NetomoxExp
           add_tp_name_entry(src_node.name, src_tp.name, dst_node_name, dst_tp_name)
         end
         src_node.termination_points.reject { |src_tp| loopback?(src_tp) }.each_with_index do |src_tp, index|
-          dst_tp_name = forward_convert_tp_name(src_node, index + 1)
+          dst_tp_name = forward_convert_actual_tp_name(src_node, index + 1)
           add_tp_name_entry(src_node.name, src_tp.name, dst_node_name, dst_tp_name)
         end
       end
     end
+
+    # @param [Netomox::Topology::Network] src_nw Source network (L3)
+    def make_tp_name_table_for_segment(src_nw)
+      src_nw.nodes.select { |node| segment_node?(node) }.each do |src_node|
+        dst_node_name = convert_node_name(src_node.name)
+        add_tp_name_hash(src_node.name, dst_node_name)
+        src_node.termination_points.each do |src_tp|
+          dst_tp_name = forward_convert_segment_tp_name(src_nw, src_node, src_tp)
+          add_tp_name_entry(src_node.name, src_tp.name, dst_node_name, dst_tp_name)
+        end
+      end
+    end
+
+    # @return [void]
+    # @raise [StandardError] if target layer (layer3) is not found
+    def make_tp_name_table
+      src_nw = @src_nws.find_network('layer3')
+      raise StandardError, 'Network: layer3 is not found' if src_nw.nil?
+
+      make_tp_name_table_for_actual(src_nw)
+      # NOTE: The node name and interface name of the node facing it
+      #   are used for the interface name of the segment node.
+      #   Therefore, it is necessary to first create an interface name conversion table for the node.
+      make_tp_name_table_for_segment(src_nw)
+    end
+
     # rubocop:enable Metrics/AbcSize, Metrics/MethodLength
 
     # @param [Netomox::Topology::Node] src_node Source node

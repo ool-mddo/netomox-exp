@@ -5,8 +5,6 @@ require 'ipaddr'
 require_relative 'namespace_convert_table'
 
 module NetomoxExp
-  # rubocop:disable Metrics/ClassLength
-
   # namespace converter (original/emulated)
   class NamespaceConverter < NamespaceConvertTable
     # @return [void]
@@ -82,29 +80,21 @@ module NetomoxExp
       end
     end
 
-    # rubocop:disable Metrics/MethodLength, Metrics/AbcSize
-
-    # @param [Netomox::Topology::Node] src_node Source node (L3+)
+    # @param [Netomox::Topology::Node] _src_node Source node (L3+)
     # @param [Netomox::PseudoDSL::PNode] dst_node Destination node (L3+)
     # @return [void]
     # @raise [StandardError]
-    def rewrite_layer3_node_attr(src_node, dst_node)
+    def rewrite_layer3_node_attr(_src_node, dst_node)
       return if dst_node.attribute[:static_routes].empty?
 
-      # rewrite static route next-hop
+      # rewrite static route next-hop interface (if it is not 'dynamic')
       dst_node.attribute[:static_routes].reject { |r| r[:interface] == 'dynamic' }.each do |route|
-        route[:interface] = convert_tp_name(src_node.name, route[:interface])
-      end
-      dst_node.attribute[:static_routes].select { |r| r[:interface] == 'dynamic' }.each do |route|
-        tp = find_next_hop_interface(dst_node, route[:next_hop])
-        if tp.nil?
-          raise StandardError,
-                "Static route: prefix=#{route[:prefix]}, next-hop=#{route[:next_hop]}: next hop is not local address"
-        end
-        route[:interface] = tp.name
+        # NOTE: As demonstration, all actual nodes (except segment node) in emulated environment
+        #   are actualized using cRPD.
+        #   Therefore, all interface of static route attribute will be 'dynamic'
+        route[:interface] = 'dynamic' # convert_tp_name(src_node.name, route[:interface])
       end
     end
-    # rubocop:enable Metrics/MethodLength, Metrics/AbcSize
 
     # @param [Netomox::Topology::Node] src_node Source node (L3+)
     # @param [Netomox::PseudoDSL::PNode] dst_node Destination node (L3+)
@@ -188,5 +178,4 @@ module NetomoxExp
     end
     # rubocop:enable Metrics/AbcSize
   end
-  # rubocop:enable Metrics/ClassLength
 end

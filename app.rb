@@ -22,6 +22,7 @@ module NetomoxExp
 
   # Netomox REST API definition
   class NetomoxRestApi < RestApiBase
+    # rubocop:disable Metrics/BlockLength
     helpers do
       # @param [String] file_path File path to read
       # @return [Object]
@@ -73,6 +74,7 @@ module NetomoxExp
         read_json_file(ns_convert_table_file(network))
       end
     end
+    # rubocop:enable Metrics/BlockLength
 
     # rubocop:disable Metrics/BlockLength
     namespace 'topologies' do

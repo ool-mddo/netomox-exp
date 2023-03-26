@@ -99,14 +99,14 @@ module TopologyBuilder
       [l3_node, l3_tp]
     end
 
-    # @param [Netomox::PseudoDSL::PNode] l3_seg_node Layer3 segment-node
-    # @param [Netomox::PseudoDSL::PLink] l2_link Layer2 link
-    # @param [Netomox::PseudoDSL::PNode] l3_node Layer3 node
-    # @param [Netomox::PseudoDSL::PTermPoint] l3_tp Layer3 term-point
+    # @param [Netomox::PseudoDSL::PNode] l3_seg_node Layer3 segment-node (L3/src)
+    # @param [Netomox::PseudoDSL::PLink] l2_link Layer2 link (l2, node -> seg_node)
+    # @param [Netomox::PseudoDSL::PNode] l3_node Layer3 node (L3/dst)
+    # @param [Netomox::PseudoDSL::PTermPoint] l3_tp Layer3 term-point (L2/dst)
     # @return [String] Term-point name
     def l3_seg_tp_name(l3_seg_node, l2_link, l3_node, l3_tp)
-      l2_dst_node = @layer2p.node(l2_link.dst.node)
-      tp_name = l2_link ? "#{l2_dst_node.attribute[:name]}_#{l2_link.dst.tp}" : l3_seg_node.auto_tp_name
+      l2_node = @layer2p.node(l2_link.src.node) # facing node of segment node
+      tp_name = l2_link ? "#{l2_node.attribute[:name]}_#{l2_link.src.tp}" : l3_seg_node.auto_tp_name
       tp_name = "#{l3_node.name}_#{l3_tp.name}" if l3_tp.name =~ /Vlan\d+/
       tp_name
     end
@@ -114,15 +114,17 @@ module TopologyBuilder
     # rubocop:disable Metrics/AbcSize
 
     # Connect L3 segment-node and host-node
-    # @param [Netomox::PseudoDSL::PNode] l3_seg_node Layer3 segment-node
-    # @param [Netomox::PseudoDSL::PNode] l3_node Layer3 (host) node
-    # @param [Netomox::PseudoDSL::PTermPoint] l3_tp Layer3 (host) port on l3_node
-    # @param [Netomox::PseudoDSL::PLinkEdge] l2_edge A Link-edge in layer2 topology (in segment)
+    # @param [Netomox::PseudoDSL::PNode] l3_seg_node Layer3 segment-node (L3/src)
+    # @param [Netomox::PseudoDSL::PNode] l3_node Layer3 (host) node (L3/dst)
+    # @param [Netomox::PseudoDSL::PTermPoint] l3_tp Layer3 (host) port on l3_node (L3/dst)
+    # @param [Netomox::PseudoDSL::PLinkEdge] l2_edge A Link-edge in layer2 topology (in segment) (L2/dst)
     # @return [void]
     def add_l3_link(l3_seg_node, l3_node, l3_tp, l2_edge)
-      l2_link = @layer2p.find_link_by_src_edge(l2_edge)
-      l3_seg_tp = l3_seg_node.term_point(l3_seg_tp_name(l3_seg_node, l2_link, l3_node, l3_tp))
+      l2_link = @layer2p.find_link_by_src_edge(l2_edge) # node -> seg_node
+      l3_seg_tp_name = l3_seg_tp_name(l3_seg_node, l2_link, l3_node, l3_tp)
+      l3_seg_tp = l3_seg_node.term_point(l3_seg_tp_name)
       l3_seg_tp.supports.push([@layer2p.name, l2_link.dst.node, l2_link.dst.tp])
+
       debug_print "  link: #{l3_seg_node.name}, #{l3_seg_tp.name}, #{l3_node.name}, #{l3_tp.name}"
       @network.link(l3_seg_node.name, l3_seg_tp.name, l3_node.name, l3_tp.name)
       @network.link(l3_node.name, l3_tp.name, l3_seg_node.name, l3_seg_tp.name) # bidirectional
@@ -218,6 +220,7 @@ module TopologyBuilder
             next
           end
 
+          # Args: L3 (src_node, dst_node, dst_tp), L2 (dst_tp)
           add_l3_link(l3_seg_node, l3_node, l3_tp, l2_edge)
         end
       end
