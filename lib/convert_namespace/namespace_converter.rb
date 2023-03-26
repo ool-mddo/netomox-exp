@@ -40,20 +40,6 @@ class NamespaceConverter < NamespaceConvertTable
   private
 
   # @param [Netomox::Topology::TermPoint] src_tp Source term-point (L3+)
-  # @param [Netomox::PseudoDSL::PTermPoint] dst_tp Destination term-point (L3+)
-  # return [void]
-  def rewrite_layer3_tp_attr(src_tp, dst_tp)
-    return if src_tp.attribute.description.empty?
-
-    # rewrite interface description
-    _, src_host_name, src_tp_name = src_tp.attribute.description.split('_') # "[to, <host>, <tp>]"
-    # NOTICE: host and interface(term-point) name in description is not normalized
-    dst_host_name = convert_node_name(src_host_name.downcase)
-    dst_tp_name = convert_tp_name_match(src_host_name.downcase, Regexp.new("#{src_tp_name}.*$")) # ignore unit number
-    dst_tp.attribute[:description] = ['to', dst_host_name, dst_tp_name].join('_')
-  end
-
-  # @param [Netomox::Topology::TermPoint] src_tp Source term-point (L3+)
   # @return [Array<Array<String>>] Array of term-point supports
   def rewrite_tp_supports(src_tp)
     # ignore layer3 -> layer2 support info: these are not used in emulated env
@@ -72,7 +58,6 @@ class NamespaceConverter < NamespaceConvertTable
     dst_tp = Netomox::PseudoDSL::PTermPoint.new(convert_tp_name(src_node.name, src_tp.name))
     dst_tp.attribute = convert_all_hash_keys(src_tp.attribute.to_data)
     dst_tp.supports = rewrite_tp_supports(src_tp)
-    rewrite_layer3_tp_attr(src_tp, dst_tp) if layer3_node?(src_node) && !segment_node?(src_node)
     dst_tp
   end
 
@@ -125,7 +110,7 @@ class NamespaceConverter < NamespaceConvertTable
   # @return [void]
   def rewrite_ospf_node_attr(src_node, dst_node)
     # rewrite ospf process-id in node-attribute of ospf-layer
-    dst_node.attribute[:process_id] = convert_ospf_proc_id(src_node.name, src_node.attribute.process_id)
+    dst_node.attribute[:process_id] = convert_ospf_proc_id(src_node.name, src_node.attribute.process_id.to_s)
   end
 
   # @param [Netomox::Topology::Node] src_node Source node (L3+)
@@ -168,6 +153,22 @@ class NamespaceConverter < NamespaceConvertTable
 
   # rubocop:disable Metrics/AbcSize
 
+  # @param [Netomox::PseudoDSL::Network] target_nw Destination network (L3)
+  # @return [void]
+  def update_tp_description(target_nw)
+    target_nw.links.each do |link|
+      target_node = target_nw.node(link.src.node)
+      next if target_node.attribute[:node_type] == 'segment' # ignore segment node
+
+      # Update target is source edge, Note: link is bidirectional
+      target_tp = target_node.term_point(link.src.tp)
+      target_tp.attribute[:description] = ['to', link.dst.node, link.dst.tp].join('_')
+    end
+  end
+  # rubocop:enable Metrics/AbcSize
+
+  # rubocop:disable Metrics/AbcSize
+
   # @param [Netomox::Topology::Network] src_nw Source network (L3+)
   # @return [Netomox::PseudoDSL::PNetwork]
   def rewrite_network(src_nw)
@@ -178,6 +179,10 @@ class NamespaceConverter < NamespaceConvertTable
     dst_nw.supports = src_nw.supports.map(&:ref_network) if src_nw.supports
     dst_nw.nodes = src_nw.nodes.map { |src_node| rewrite_node(src_node) }
     dst_nw.links = src_nw.links.map { |src_link| rewrite_link(src_link) }
+    # The interface description describes the information on the peer interface,
+    # assuming the converted layer3 topology to be layer1.
+    # Therefore, it must be updated when the conversion has been completed up to the link.
+    update_tp_description(dst_nw) if dst_nw.name == 'layer3'
     dst_nw
   end
   # rubocop:enable Metrics/AbcSize

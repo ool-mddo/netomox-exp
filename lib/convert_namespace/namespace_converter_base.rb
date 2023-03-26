@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 require 'json'
-require 'netomox'
 
 # Base class of namespace converter
 class NamespaceConverterBase
@@ -18,11 +17,6 @@ class NamespaceConverterBase
     ip_address: :ip_addrs,
     flag: :flags
   }.freeze
-
-  # @param [Hash] topology_data Topology data
-  def initialize(topology_data)
-    @src_nws = Netomox::Topology::Networks.new(topology_data)
-  end
 
   protected
 

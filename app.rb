@@ -50,6 +50,24 @@ class NetomoxRestApi < Grape::API
       topology_file = File.join(TOPOLOGIES_DIR, network, snapshot, 'topology.json')
       read_json_file(topology_file)
     end
+
+    # @param [String] network Network name
+    # @return [String] file path
+    def ns_convert_table_file(network)
+      File.join(TOPOLOGIES_DIR, network, 'ns_convert_table.json')
+    end
+
+    # @param [String] network Network name
+    # @return [void]
+    def save_ns_convert_table(network, data)
+      save_json_file(ns_convert_table_file(network), data)
+    end
+
+    # @param [String] network Network name
+    # @return [Hash] convert_table
+    def read_ns_convert_table(network)
+      read_json_file(ns_convert_table_file(network))
+    end
   end
 
   # rubocop:disable Metrics/BlockLength
@@ -74,6 +92,60 @@ class NetomoxRestApi < Grape::API
       delete do
         network_dir = File.join(TOPOLOGIES_DIR, params[:network])
         FileUtils.rm_rf(network_dir)
+      end
+
+      resource 'ns_convert_table' do
+        desc 'Post convert_table'
+        params do
+          optional :origin_snapshot, type: String, desc: 'Origin snapshot name'
+          optional :convert_table, type: Hash, desc: 'Convert table'
+          mutually_exclusive :origin_snapshot, :convert_table, message: 'are exclusive cannot pass both params'
+        end
+        post do
+          network = params[:network]
+          converter = NamespaceConverter.new
+          if params.key?(:origin_snapshot)
+            snapshot = params[:origin_snapshot]
+            logger.info "Initialize namespace convert table with snapshot: #{network}/#{snapshot}"
+            converter.make_convert_table(read_topology_file(network, snapshot))
+          else
+            logger.info "Update namespace convert table of network: #{network}"
+            converter.reload_convert_table(params[:convert_table])
+          end
+          save_ns_convert_table(network, converter.convert_table)
+        end
+
+        desc 'Get convert_table'
+        get do
+          # reply
+          read_ns_convert_table(params[:network])
+        end
+
+        desc 'Delete convert_table'
+        delete do
+          FileUtils.rm_f(ns_convert_table_file(params[:network]))
+        end
+
+        desc 'Convert hostname'
+        params do
+          requires :host_name, type: String, desc: 'Host name to convert'
+          optional :if_name, type: String, desc: 'Interface name to convert'
+        end
+        post 'query' do
+          converter = NamespaceConverter.new
+          converter.reload_convert_table(read_ns_convert_table(params[:network]))
+          begin
+            resp = { origin_host: params[:host_name], target_host: converter.convert_node_name(params[:host_name]) }
+            if params.key?(:if_name)
+              resp[:origin_if] = params[:if_name]
+              resp[:target_if] = converter.convert_tp_name(params[:host_name], params[:if_name])
+            end
+            # reply
+            resp
+          rescue StandardError
+            error!("#{params} not found in convert table", 404)
+          end
+        end
       end
 
       params do
@@ -108,9 +180,6 @@ class NetomoxRestApi < Grape::API
             # copy layout file if found
             layout_file = File.join(MODEL_DEFS_DIR, network, snapshot, 'layout.json')
             FileUtils.cp(layout_file, File.join(topology_dir, 'layout.json')) if File.exist?(layout_file)
-
-            # reply
-            topology_data
           end
 
           desc 'Get topology data'
@@ -151,22 +220,16 @@ class NetomoxRestApi < Grape::API
         end
 
         resource 'converted_topology' do
-          desc 'Post namespace-convert-table to get converted topology'
-          params do
-            optional :convert_table, type: Hash, desc: 'Namespace convert table'
-          end
-          post do
-            converter = NamespaceConverter.new(read_topology_file(params[:network], params[:snapshot]))
-            if params.key?(:convert_table)
-              converter.reload_convert_table(params[:convert_table])
-            else
-              converter.make_convert_table
-            end
+          desc 'Get namespace-convert-table to get converted topology'
+          get do
+            network = params[:network]
+            snapshot = params[:snapshot]
+
+            converter = NamespaceConverter.new
+            converter.load_origin_topology(read_topology_file(network, snapshot))
+            converter.reload_convert_table(read_ns_convert_table(network))
             # reply
-            {
-              convert_table: converter.convert_table,
-              converted_topology_data: converter.convert
-            }
+            converter.convert
           end
         end
       end

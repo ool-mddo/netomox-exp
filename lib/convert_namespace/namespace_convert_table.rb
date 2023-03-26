@@ -8,9 +8,12 @@ require_relative 'namespace_converter_base'
 
 # convert table
 class NamespaceConvertTable < NamespaceConverterBase
-  # @param [Hash] topology_data Topology data
-  def initialize(topology_data)
-    super(topology_data)
+  def initialize
+    super
+    # NOTE: initialized in #make_convert_table method:
+    #   used when construct convert table from topology data
+    @src_nws = nil
+    # convert tables
     @node_name_table = {}
     @tp_name_table = {}
     @ospf_proc_id_table = {}
@@ -94,8 +97,15 @@ class NamespaceConvertTable < NamespaceConverterBase
     }
   end
 
+  # @param [Netomox::Topology::Networks] topology_data Topology data
+  def load_origin_topology(topology_data)
+    @src_nws = Netomox::Topology::Networks.new(topology_data)
+  end
+
+  # @param [Netomox::Topology::Networks] topology_data Topology data
   # @return [void]
-  def make_convert_table
+  def make_convert_table(topology_data)
+    load_origin_topology(topology_data)
     make_node_name_table # MUST at first (in use making other tables)
     make_tp_name_table
     make_ospf_proc_id_table

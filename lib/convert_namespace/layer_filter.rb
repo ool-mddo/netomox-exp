@@ -6,6 +6,12 @@ require_relative 'namespace_converter_base'
 # filter L3+ (over layer3...layer3 + OSPF area0)
 # NOTE: it requires inherit NamespaceConverter to use convert_all_hash_keys
 class LayerFilter < NamespaceConverterBase
+  # @param [Hash] topology_data Topology data
+  def initialize(topology_data)
+    super()
+    @src_nws = Netomox::Topology::Networks.new(topology_data)
+  end
+
   # @return [Hash]
   def filter
     @dst_nws = Netomox::PseudoDSL::PNetworks.new
