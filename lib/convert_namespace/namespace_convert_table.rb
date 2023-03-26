@@ -164,9 +164,8 @@ module NetomoxExp
     # @param [Integer] index Term-point index
     # @return [String] Converted term-point name
     def forward_convert_tp_name(src_node, index)
-      # A term-point of segment node is veth for emulated env on container host
-      # all veth in bridges must be unique on the host OS
-      return "#{@node_name_table[src_node.name]}eth#{index}" if segment_node?(src_node)
+      # for segment node
+      return "#{src_node.name.tr('_/', '-').downcase}_Ethernet#{index}" if segment_node?(src_node)
 
       # for other actual node (some container in emulated env)
       "eth#{index}.0"
@@ -216,29 +215,24 @@ module NetomoxExp
     end
     # rubocop:enable Metrics/AbcSize, Metrics/MethodLength
 
-    # rubocop:disable Metrics/MethodLength
+    # @param [Netomox::Topology::Node] src_node Source node
+    # @return [String] Converted node name
+    def forward_convert_node_name(src_node)
+      src_node.name # not convert
+    end
 
     # @return [void]
     def make_node_name_table
-      seg_node_count = -1 # start 0
       src_nw = @src_nws.find_network('layer3')
       src_nw.nodes.each do |src_node|
         # forward (src -> dst) node name conversion
-        dst_node_name = if src_node.attribute.node_type == 'segment'
-                          # segment node in emulated env will be OVS bridge,
-                          # it has strong name restriction: characters, length<16
-                          seg_node_count += 1
-                          "br#{seg_node_count}"
-                        else
-                          src_node.name # not convert
-                        end
+        dst_node_name = forward_convert_node_name(src_node)
 
         # forward
         @node_name_table[src_node.name] = dst_node_name unless key_node?(src_node.name)
         # reverse
         @node_name_table[dst_node_name] = src_node.name unless key_node?(dst_node_name)
       end
-      # rubocop:enable Metrics/MethodLength
     end
   end
   # rubocop:enable Metrics/ClassLength
