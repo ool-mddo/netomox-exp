@@ -48,6 +48,14 @@ module NetomoxExp
       end
 
       # @param [String] network Network name
+      # @param [String] snapshot Snapshot name
+      # @return [Netomox::Topology::Networks] topology instance
+      def read_topology_instance(network, snapshot)
+        topology_data = read_topology_file(network, snapshot)
+        Netomox::Topology::Networks.new(topology_data)
+      end
+
+      # @param [String] network Network name
       # @return [String] file path
       def ns_convert_table_file(network)
         File.join(TOPOLOGIES_DIR, network, 'ns_convert_table.json')
@@ -211,6 +219,20 @@ module NetomoxExp
                 opts = { env_name: params[:env_name] }
                 converter = ContainerLabConverter.new(topology_data, params[:layer], opts)
                 converter.convert
+              end
+
+              desc 'Get nodes in the layer'
+              params do
+                optional :node_type, type: String, desc: 'Node type'
+              end
+              get 'nodes' do
+                network, snapshot, layer = %i[network snapshot layer].map { |key| params[key] }
+
+                nws = read_topology_instance(network, snapshot)
+                nw = nws.find_network(layer)
+                error!("#{network}/#{snapshot}/#{layer} not found", 404) if nw.nil?
+
+                nw.nodes.map(&:name)
               end
             end
           end
