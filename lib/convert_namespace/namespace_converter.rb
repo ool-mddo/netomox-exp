@@ -38,6 +38,11 @@ module NetomoxExp
 
     private
 
+    # @param [Netomox::Topology::Node] node
+    def segment_node?(node)
+      node.attribute.node_type == 'segment'
+    end
+
     # @param [Netomox::Topology::TermPoint] src_tp Source term-point (L3+)
     # @return [Array<Array<String>>] Array of term-point supports
     def rewrite_tp_supports(src_tp)
@@ -45,8 +50,8 @@ module NetomoxExp
       src_tp.supports
             .find_all { |tp_sup| target_network?(tp_sup.ref_network) }
             .map do |tp_sup|
-        converted_tp = convert_tp_name(tp_sup.ref_node, tp_sup.ref_tp)
-        [tp_sup.ref_network, convert_node_name(tp_sup.ref_node), converted_tp]
+        converted_tp = @tp_name_table.convert(tp_sup.ref_node, tp_sup.ref_tp)
+        [tp_sup.ref_network, @node_name_table.convert(tp_sup.ref_node), converted_tp]
       end
     end
 
@@ -54,7 +59,7 @@ module NetomoxExp
     # @param [Netomox::Topology::TermPoint] src_tp Source term-point (L3+)
     # @return [Netomox::PseudoDSL::PTermPoint]
     def rewrite_term_point(src_node, src_tp)
-      dst_tp = Netomox::PseudoDSL::PTermPoint.new(convert_tp_name(src_node.name, src_tp.name))
+      dst_tp = Netomox::PseudoDSL::PTermPoint.new(@tp_name_table.convert(src_node.name, src_tp.name))
       dst_tp.attribute = convert_all_hash_keys(src_tp.attribute.to_data)
       dst_tp.supports = rewrite_tp_supports(src_tp)
       dst_tp
@@ -66,7 +71,7 @@ module NetomoxExp
       # ignore layer3 -> layer2 support info: these are not used in emulated env
       src_node.supports
               .find_all { |node_sup| target_network?(node_sup.ref_network) }
-              .map { |node_sup| [node_sup.ref_network, convert_node_name(node_sup.ref_node)] }
+              .map { |node_sup| [node_sup.ref_network, @node_name_table.convert(node_sup.ref_node)] }
     end
 
     # @param [Netomox::PseudoDSL::PNode] node Node (destination)
@@ -80,19 +85,16 @@ module NetomoxExp
       end
     end
 
-    # @param [Netomox::Topology::Node] _src_node Source node (L3+)
+    # @param [Netomox::Topology::Node] src_node Source node (L3+)
     # @param [Netomox::PseudoDSL::PNode] dst_node Destination node (L3+)
     # @return [void]
     # @raise [StandardError]
-    def rewrite_layer3_node_attr(_src_node, dst_node)
+    def rewrite_layer3_node_attr(src_node, dst_node)
       return if dst_node.attribute[:static_routes].empty?
 
       # rewrite static route next-hop interface (if it is not 'dynamic')
-      dst_node.attribute[:static_routes].reject { |r| r[:interface] == 'dynamic' }.each do |route|
-        # NOTE: As demonstration, all actual nodes (except segment node) in emulated environment
-        #   are actualized using cRPD.
-        #   Therefore, all interface of static route attribute will be 'dynamic'
-        route[:interface] = 'dynamic' # convert_tp_name(src_node.name, route[:interface])
+      dst_node.attribute[:static_routes].each do |route|
+        route[:interface] = @static_route_tp_table.convert(src_node.name, route[:prefix], route[:interface])
       end
     end
 
@@ -101,7 +103,7 @@ module NetomoxExp
     # @return [void]
     def rewrite_ospf_node_attr(src_node, dst_node)
       # rewrite ospf process-id in node-attribute of ospf-layer
-      dst_node.attribute[:process_id] = convert_ospf_proc_id(src_node.name, src_node.attribute.process_id.to_s)
+      dst_node.attribute[:process_id] = @ospf_proc_id_table.convert(src_node.name, src_node.attribute.process_id.to_s)
     end
 
     # @param [Netomox::Topology::Node] src_node Source node (L3+)
@@ -118,7 +120,7 @@ module NetomoxExp
     # @param [Netomox::Topology::Node] src_node Source node (L3+)
     # @return [Netomox::PseudoDSL::PNode]
     def rewrite_node(src_node)
-      dst_node = Netomox::PseudoDSL::PNode.new(convert_node_name(src_node.name))
+      dst_node = Netomox::PseudoDSL::PNode.new(@node_name_table.convert(src_node.name))
       dst_node.tps = src_node.termination_points.map { |src_tp| rewrite_term_point(src_node, src_tp) }
       dst_node.attribute = convert_all_hash_keys(src_node.attribute.to_data)
       dst_node.supports = rewrite_node_support(src_node)
@@ -129,8 +131,8 @@ module NetomoxExp
     # @param [Netomox::Topology::TpRef] orig_edge Original link edge
     # @return [Netomox::PseudoDSL::PLinkEdge]
     def rewrite_link_edge(orig_edge)
-      node = convert_node_name(orig_edge.node_ref)
-      tp = convert_tp_name(orig_edge.node_ref, orig_edge.tp_ref)
+      node = @node_name_table.convert(orig_edge.node_ref)
+      tp = @tp_name_table.convert(orig_edge.node_ref, orig_edge.tp_ref)
       Netomox::PseudoDSL::PLinkEdge.new(node, tp)
     end
 
