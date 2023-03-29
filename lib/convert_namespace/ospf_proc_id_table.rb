@@ -11,15 +11,17 @@ module NetomoxExp
       @node_name_table = node_name_table
     end
 
-    # @return [String, Integer] Converted OSPF process id
+    # @param [String] src_node_name Source node name
+    # @param [String, Integer] proc_id OSPF process id
+    # @return [String] Converted OSPF process id (string number or "default")
     # @raise [StandardError]
     def convert(src_node_name, proc_id)
       raise StandardError, "Node: #{src_node_name} is not in ospf-proc-id-table" unless key_in_table?(src_node_name)
       unless key_in_table?(src_node_name, proc_id)
-        raise StandardError, "Proc-ID: #{proc_id} is not in ospf-proc-id-table"
+        raise StandardError, "Proc-ID: #{proc_id} in #{src_node_name} is not in ospf-proc-id-table"
       end
 
-      @convert_table[src_node_name][proc_id]
+      @convert_table[src_node_name][proc_id.to_s]
     end
 
     # @param [String] node_name Node name (OSPF)
@@ -28,7 +30,7 @@ module NetomoxExp
     def key_in_table?(node_name, proc_id = nil)
       return @convert_table.key?(node_name) if proc_id.nil?
 
-      @convert_table.key?(node_name) && @convert_table[node_name].key?(proc_id)
+      @convert_table.key?(node_name) && @convert_table[node_name].key?(proc_id.to_s)
     end
 
     # @param [Netomox::Topology::Networks] src_nws Source networks
@@ -37,7 +39,7 @@ module NetomoxExp
       super(src_nws)
       src_nw = @src_nws.find_network('ospf_area0')
       src_nw.nodes.each do |src_node|
-        dst_node_name = @node_name_table.convert(src_node.name)
+        dst_node_name = @node_name_table.convert(src_node.name)['l3']
         src_proc_id = src_node.attribute.process_id
         dst_proc_id = 'default' # to cRPD ospf (fixed)
         add_ospf_proc_id_entry(src_node.name, src_proc_id, dst_node_name, dst_proc_id)
@@ -54,10 +56,10 @@ module NetomoxExp
     def add_ospf_proc_id_entry(src_node, src_proc_id, dst_node, dst_proc_id)
       # forward
       @convert_table[src_node] = {} unless key_in_table?(src_node)
-      @convert_table[src_node][src_proc_id] = dst_proc_id unless key_in_table?(src_node, src_proc_id)
+      @convert_table[src_node][src_proc_id.to_s] = dst_proc_id.to_s unless key_in_table?(src_node, src_proc_id)
       # reverse
       @convert_table[dst_node] = {} unless key_in_table?(dst_node)
-      @convert_table[dst_node][dst_proc_id] = src_proc_id unless key_in_table?(dst_node, dst_proc_id)
+      @convert_table[dst_node][dst_proc_id.to_s] = src_proc_id.to_s unless key_in_table?(dst_node, dst_proc_id)
     end
   end
 end

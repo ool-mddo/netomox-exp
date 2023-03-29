@@ -50,8 +50,8 @@ module NetomoxExp
       src_tp.supports
             .find_all { |tp_sup| target_network?(tp_sup.ref_network) }
             .map do |tp_sup|
-        converted_tp = @tp_name_table.convert(tp_sup.ref_node, tp_sup.ref_tp)
-        [tp_sup.ref_network, @node_name_table.convert(tp_sup.ref_node), converted_tp]
+        converted_tp = @tp_name_table.convert(tp_sup.ref_node, tp_sup.ref_tp)['l3']
+        [tp_sup.ref_network, @node_name_table.convert(tp_sup.ref_node)['l3'], converted_tp]
       end
     end
 
@@ -59,7 +59,7 @@ module NetomoxExp
     # @param [Netomox::Topology::TermPoint] src_tp Source term-point (L3+)
     # @return [Netomox::PseudoDSL::PTermPoint]
     def rewrite_term_point(src_node, src_tp)
-      dst_tp = Netomox::PseudoDSL::PTermPoint.new(@tp_name_table.convert(src_node.name, src_tp.name))
+      dst_tp = Netomox::PseudoDSL::PTermPoint.new(@tp_name_table.convert(src_node.name, src_tp.name)['l3'])
       dst_tp.attribute = convert_all_hash_keys(src_tp.attribute.to_data)
       dst_tp.supports = rewrite_tp_supports(src_tp)
       dst_tp
@@ -71,7 +71,7 @@ module NetomoxExp
       # ignore layer3 -> layer2 support info: these are not used in emulated env
       src_node.supports
               .find_all { |node_sup| target_network?(node_sup.ref_network) }
-              .map { |node_sup| [node_sup.ref_network, @node_name_table.convert(node_sup.ref_node)] }
+              .map { |node_sup| [node_sup.ref_network, @node_name_table.convert(node_sup.ref_node)['l3']] }
     end
 
     # @param [Netomox::PseudoDSL::PNode] node Node (destination)
@@ -120,7 +120,7 @@ module NetomoxExp
     # @param [Netomox::Topology::Node] src_node Source node (L3+)
     # @return [Netomox::PseudoDSL::PNode]
     def rewrite_node(src_node)
-      dst_node = Netomox::PseudoDSL::PNode.new(@node_name_table.convert(src_node.name))
+      dst_node = Netomox::PseudoDSL::PNode.new(@node_name_table.convert(src_node.name)['l3'])
       dst_node.tps = src_node.termination_points.map { |src_tp| rewrite_term_point(src_node, src_tp) }
       dst_node.attribute = convert_all_hash_keys(src_node.attribute.to_data)
       dst_node.supports = rewrite_node_support(src_node)
@@ -131,8 +131,8 @@ module NetomoxExp
     # @param [Netomox::Topology::TpRef] orig_edge Original link edge
     # @return [Netomox::PseudoDSL::PLinkEdge]
     def rewrite_link_edge(orig_edge)
-      node = @node_name_table.convert(orig_edge.node_ref)
-      tp = @tp_name_table.convert(orig_edge.node_ref, orig_edge.tp_ref)
+      node = @node_name_table.convert(orig_edge.node_ref)['l3']
+      tp = @tp_name_table.convert(orig_edge.node_ref, orig_edge.tp_ref)['l3']
       Netomox::PseudoDSL::PLinkEdge.new(node, tp)
     end
 
@@ -151,11 +151,13 @@ module NetomoxExp
     def update_tp_description(target_nw)
       target_nw.links.each do |link|
         target_node = target_nw.node(link.src.node)
-        next if target_node.attribute[:node_type] == 'segment' # ignore segment node
+        next if target_node.attribute.nil? || target_node.attribute[:node_type] == 'segment' # ignore segment node
 
         # Update target is source edge, Note: link is bidirectional
+        target_node_dic = @node_name_table.find_dic_by_l3(link.dst.node)
         target_tp = target_node.term_point(link.src.tp)
-        target_tp.attribute[:description] = ['to', link.dst.node, link.dst.tp].join('_')
+        target_tp_dic = @tp_name_table.find_dic_by_l3(link.dst.node, link.dst.tp)
+        target_tp.attribute[:description] = ['to', target_node_dic['l1_agent'], target_tp_dic['l1_agent']].join('_')
       end
     end
     # rubocop:enable Metrics/AbcSize
