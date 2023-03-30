@@ -31,7 +31,9 @@ module NetomoxExp
       # # backward convert
       # emulated_node_name => {
       #   emulated_tp_name => {
-      #     'l3' => 'original_tp_name (L3 model)'
+      #     'l3' => 'original_tp_name (L3 model)',
+      #     'l1_agent' => 'original_tp_name (L3 model)',
+      #     'l1_principal' => 'original_tp_name (L3 model)'
       #   }
       # }
       # NOTE: all keys must be String, because string node name is used as dictionary key.
@@ -42,7 +44,7 @@ module NetomoxExp
     # @param [String] l3_node_name Node name (L3)
     # @param [String] l3_tp_name Term-point name (L3)
     # @return [nil,Hash] Term-point name dic
-    def find_dic_by_l3(l3_node_name, l3_tp_name)
+    def find_l1_alias(l3_node_name, l3_tp_name)
       orig_node = @node_name_table.keys.find { |node| @node_name_table[node]['l3'] == l3_node_name }
       orig_tp = @convert_table[orig_node].keys.find { |tp| @convert_table[orig_node][tp]['l3'] == l3_tp_name }
       @convert_table[orig_node][orig_tp]
@@ -85,7 +87,7 @@ module NetomoxExp
       # reverse
       return if key_in_table?(dst_node_name, dst_tp_dic['l3'])
 
-      @convert_table[dst_node_name][dst_tp_dic['l3']] = { 'l3' => src_tp_name }
+      @convert_table[dst_node_name][dst_tp_dic['l3']] = emulated_name_dict_short(src_tp_name)
     end
 
     # @param [String] src_node_name Source (original) node name

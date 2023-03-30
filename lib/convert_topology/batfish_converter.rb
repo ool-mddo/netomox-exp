@@ -17,8 +17,8 @@ module NetomoxExp
     def edge_to_hash(edge)
       # NOTE: interface (tp) name is unsafe
       {
-        'hostname' => safe_node_name(edge.node_ref),
-        'interfaceName' => edge.tp_ref
+        'hostname' => converted_node_l1agent(edge.node_ref),
+        'interfaceName' => converted_tp_l1agent(edge.node_ref, edge.tp_ref)
       }
     end
 

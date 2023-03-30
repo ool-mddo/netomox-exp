@@ -33,8 +33,9 @@ module NetomoxExp
     # @param [Netomox::Topology::TpRef] edge Link edge
     # @return [String]
     def link_edge_to_str(edge)
-      # NOTE: interface (tp) name is unsafe
-      "#{safe_node_name(edge.node_ref)}:#{edge.tp_ref}"
+      node_name = converted_node_l1principal(edge.node_ref)
+      tp_name = converted_tp_l1principal(edge.node_ref, edge.tp_ref)
+      "#{node_name}:#{tp_name}"
     end
 
     # @return [Array<Hash>] link data
@@ -45,28 +46,27 @@ module NetomoxExp
       end
     end
 
-    # @param [String] image Container image name
     # @param [String] kind Container type
+    # @param [String] image Container image name
     # @param [String] config Startup-config file name
     # @return [Hash]
-    def define_node_data(image, kind, config)
-      {
-        'image' => image,
-        'kind' => kind,
-        'startup-config' => config
-      }
+    def define_node_data(kind, image: nil, config: nil)
+      data = { 'kind' => kind }
+      data['image'] = image unless image.nil?
+      data['startup-config'] = config unless config.nil?
+      data
     end
 
     # @param [Netomox::Topology::Node] node
     # @return [Hash]
     # @raise [StandardError] if found unknown node-type
     def make_node_data(node)
-      node_name = safe_node_name(node.name)
+      node_name = converted_node_l1principal(node.name)
       case node.attribute.node_type
       when 'segment'
-        define_node_data('ghcr.io/ool-mddo/clab-ovs:latest', 'linux', "#{node_name}.conf")
+        define_node_data('ovs-bridge')
       when 'node', 'endpoint'
-        define_node_data('crpd:22.1R1.10', 'juniper_crpd', "#{node_name}.conf")
+        define_node_data('juniper_crpd', image: 'crpd:22.1R1.10', config: "#{node_name}.conf")
       else
         raise StandardError, "Unknown node type: #{node.name}, type=#{node.attribute.node_type}"
       end
@@ -74,7 +74,7 @@ module NetomoxExp
 
     # @return [Hash<Hash>] node data
     def node_data
-      @src_network.nodes.to_h { |node| [safe_node_name(node.name), make_node_data(node)] }
+      @src_network.nodes.to_h { |node| [converted_node_l1principal(node.name), make_node_data(node)] }
     end
 
     # @return [void]

@@ -46,7 +46,7 @@ module NetomoxExp
     # @param [String] l3_name Layer3 model node/tp name
     # @return [Hash] l3 node name dic contains specified l3 node
     def emulated_name_dict_short(l3_name)
-      { 'l3' => l3_name, 'l1_agent' => l3_name, 'l3_principal' => l3_name }
+      { 'l3' => l3_name, 'l1_agent' => l3_name, 'l1_principal' => l3_name }
     end
 
     # @param [String] l3_name Layer3 model node/tp name

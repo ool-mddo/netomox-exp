@@ -154,9 +154,9 @@ module NetomoxExp
         next if target_node.attribute.nil? || target_node.attribute[:node_type] == 'segment' # ignore segment node
 
         # Update target is source edge, Note: link is bidirectional
-        target_node_dic = @node_name_table.find_dic_by_l3(link.dst.node)
+        target_node_dic = @node_name_table.find_l1_alias(link.dst.node)
         target_tp = target_node.term_point(link.src.tp)
-        target_tp_dic = @tp_name_table.find_dic_by_l3(link.dst.node, link.dst.tp)
+        target_tp_dic = @tp_name_table.find_l1_alias(link.dst.node, link.dst.tp)
         target_tp.attribute[:description] = ['to', target_node_dic['l1_agent'], target_tp_dic['l1_agent']].join('_')
       end
     end

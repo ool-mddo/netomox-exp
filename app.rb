@@ -219,7 +219,9 @@ module NetomoxExp
               get 'batfish_layer1_topology' do
                 network, snapshot, layer = %i[network snapshot layer].map { |key| params[key] }
                 topology_data = read_topology_file(network, snapshot)
-                converter = BatfishConverter.new(topology_data, layer)
+                ns_converter = NamespaceConverter.new
+                ns_converter.reload_convert_table(read_ns_convert_table(network))
+                converter = BatfishConverter.new(topology_data, layer, ns_converter)
                 # response
                 converter.convert
               end
@@ -231,7 +233,9 @@ module NetomoxExp
               get 'containerlab_topology' do
                 network, snapshot, layer, env_name = %i[network snapshot layer env_name].map { |key| params[key] }
                 topology_data = read_topology_file(network, snapshot)
-                converter = ContainerLabConverter.new(topology_data, layer, { env_name: })
+                ns_converter = NamespaceConverter.new
+                ns_converter.reload_convert_table(read_ns_convert_table(network))
+                converter = ContainerLabConverter.new(topology_data, layer, ns_converter, { env_name: })
                 # response
                 converter.convert
               end
