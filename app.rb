@@ -73,6 +73,14 @@ module NetomoxExp
       def read_ns_convert_table(network)
         read_json_file(ns_convert_table_file(network))
       end
+
+      # @param [String] network Network name
+      # @return [NamespaceConverter] Namespace converter without topology data
+      def ns_converter_wo_topology(network)
+        ns_converter = NamespaceConverter.new
+        ns_converter.reload_convert_table(read_ns_convert_table(network))
+        ns_converter
+      end
     end
     # rubocop:enable Metrics/BlockLength
 
@@ -111,16 +119,16 @@ module NetomoxExp
           end
           post do
             network = params[:network]
-            converter = NamespaceConverter.new
+            ns_converter = NamespaceConverter.new
             if params.key?(:origin_snapshot)
               snapshot = params[:origin_snapshot]
               logger.info "Initialize namespace convert table with snapshot: #{network}/#{snapshot}"
-              converter.make_convert_table(read_topology_file(network, snapshot))
+              ns_converter.make_convert_table(read_topology_file(network, snapshot))
             else
               logger.info "Update namespace convert table of network: #{network}"
-              converter.reload_convert_table(params[:convert_table])
+              ns_converter.reload_convert_table(params[:convert_table])
             end
-            save_ns_convert_table(network, converter.convert_table)
+            save_ns_convert_table(network, ns_converter.convert_table)
             # response
             {}
           end
@@ -145,14 +153,13 @@ module NetomoxExp
           end
           post 'query' do
             network, host_name = %i[network host_name].map { |key| params[key] }
-            converter = NamespaceConverter.new
-            converter.reload_convert_table(read_ns_convert_table(network))
+            ns_converter = ns_converter_wo_topology(network)
             begin
-              resp = { origin_host: host_name, target_host: converter.node_name_table.convert(host_name) }
+              resp = { origin_host: host_name, target_host: ns_converter.node_name_table.convert(host_name) }
               if params.key?(:if_name)
                 if_name = params[:if_name]
                 resp[:origin_if] = if_name
-                resp[:target_if] = converter.tp_name_table.convert(host_name, if_name)
+                resp[:target_if] = ns_converter.tp_name_table.convert(host_name, if_name)
               end
               # response
               resp
@@ -219,8 +226,7 @@ module NetomoxExp
               get 'batfish_layer1_topology' do
                 network, snapshot, layer = %i[network snapshot layer].map { |key| params[key] }
                 topology_data = read_topology_file(network, snapshot)
-                ns_converter = NamespaceConverter.new
-                ns_converter.reload_convert_table(read_ns_convert_table(network))
+                ns_converter = ns_converter_wo_topology(network)
                 converter = BatfishConverter.new(topology_data, layer, ns_converter)
                 # response
                 converter.convert
@@ -233,8 +239,7 @@ module NetomoxExp
               get 'containerlab_topology' do
                 network, snapshot, layer, env_name = %i[network snapshot layer env_name].map { |key| params[key] }
                 topology_data = read_topology_file(network, snapshot)
-                ns_converter = NamespaceConverter.new
-                ns_converter.reload_convert_table(read_ns_convert_table(network))
+                ns_converter = ns_converter_wo_topology(network)
                 converter = ContainerLabConverter.new(topology_data, layer, ns_converter, { env_name: })
                 # response
                 converter.convert
@@ -242,7 +247,8 @@ module NetomoxExp
 
               desc 'Get nodes in the layer'
               params do
-                optional :node_type, type: String, desc: 'Node type'
+                optional :node_type, type: String, desc: 'Node type (segment/node/endpoint)'
+                optional :name_type, type: String, desc: 'Converted name type (l3/l1_agent/l1_principal)', default: 'l3'
               end
               get 'nodes' do
                 network, snapshot, layer = %i[network snapshot layer].map { |key| params[key] }
@@ -250,12 +256,15 @@ module NetomoxExp
                 nw = nws.find_network(layer)
                 error!("#{network}/#{snapshot}/#{layer} not found", 404) if nw.nil?
 
+                nodes = if params.key?(:node_type)
+                          nw.nodes.select { |node| node.attribute.node_type == params[:node_type] }.map(&:name)
+                        else
+                          nw.nodes.map(&:name)
+                        end
+
+                ns_converter = ns_converter_wo_topology(network)
                 # response
-                if params.key?(:node_type)
-                  nw.nodes.select { |node| node.attribute.node_type == params[:node_type] }.map(&:name)
-                else
-                  nw.nodes.map(&:name)
-                end
+                nodes.map { |node| ns_converter.node_name_table.find_l1_alias(node)[params[:name_type]] }
               end
             end
           end
@@ -264,11 +273,10 @@ module NetomoxExp
             desc 'Get namespace-convert-table to get converted topology'
             get do
               network, snapshot = %i[network snapshot].map { |key| params[key] }
-              converter = NamespaceConverter.new
-              converter.load_origin_topology(read_topology_file(network, snapshot))
-              converter.reload_convert_table(read_ns_convert_table(network))
+              ns_converter = ns_converter_wo_topology(network)
+              ns_converter.load_origin_topology(read_topology_file(network, snapshot))
               # response
-              converter.convert
+              ns_converter.convert
             end
           end
         end
