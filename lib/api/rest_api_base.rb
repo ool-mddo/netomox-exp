@@ -1,12 +1,16 @@
 # frozen_string_literal: true
 
 require 'grape'
+require 'logger'
+require_relative 'helpers'
 
 # NetomoxExp Application (REST API server)
 module NetomoxExp
   # Rest api base class
   class RestApiBase < Grape::API
     format :json
+
+    helpers NetomoxExpHelpers
 
     helpers do
       # @return [Logger] Logger
