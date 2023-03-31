@@ -120,20 +120,17 @@ module NetomoxExp
     end
     # rubocop:enable Metrics/AbcSize, Metrics/MethodLength
 
-    # rubocop:disable Metrics/AbcSize
-
     # @param [Netomox::Topology::Network] src_nw Source network (L3)
     def make_table_for_segment(src_nw)
       src_nw.nodes.select { |node| segment_node?(node) }.each do |src_node|
         dst_node_name = @node_name_table.convert(src_node.name)['l3']
         add_tp_name_hash(src_node.name, dst_node_name)
         src_node.termination_points.each_with_index do |src_tp, tp_index|
-          dst_tp_dic = forward_convert_segment_tp_name(src_nw, src_node, src_tp, tp_index + 1)
+          dst_tp_dic = forward_convert_segment_tp_name(src_nw, src_node, src_tp, tp_index)
           add_tp_name_entry(src_node.name, src_tp.name, dst_node_name, dst_tp_dic)
         end
       end
     end
-    # rubocop:enable Metrics/AbcSize
 
     # @param [String] src_tp_name Source term-point name (loopback)
     # @return [Hash] Converted term-point (loopback) name
@@ -155,7 +152,7 @@ module NetomoxExp
     # @param [Netomox::Topology::Network] src_nw Source network (L3)
     # @param [Netomox::Topology::Node] src_node Source node (L3)
     # @param [Netomox::Topology::TermPoint] src_tp Source term-point (L3)
-    # @param [Integer] tp_index Term-point index
+    # @param [Integer] tp_index Term-point index (start:0)
     # @return [Hash] Converted term-point name dic
     # @raise [StandardError] if link connected src_node/tp is not found
     def forward_convert_segment_tp_name(src_nw, src_node, src_tp, tp_index)
@@ -168,7 +165,7 @@ module NetomoxExp
       src_node_dic = @node_name_table.convert(src_node.name)
       emulated_name_dict(
         "#{target_node_dic['l3']}_#{convert(target_node_ref, target_tp_ref)['l3']}",
-        "Ethernet#{tp_index}",
+        "Ethernet#{tp_index + 1}",
         "#{src_node_dic['l1_principal']}p#{tp_index}"
       )
     end
