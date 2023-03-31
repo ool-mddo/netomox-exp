@@ -70,9 +70,9 @@ curl -X POST -H "Content-Type: application/json" -d @netoviz_index.json \
   http://localhost:9292/topologies/index
 ```
 
-### Operate topology dat
+### Operate topology data
 
-Delete all topology data in a network
+Delete all topology (and other network-related) data in a network
 
 * DELETE `/topologies/<network>`
 
@@ -107,6 +107,101 @@ Fetch topology data
 ```shell
 curl http://localhost:9292/topologies/pushed_configs/mddo_network/topology
 ```
+
+### Operate namespace convert table
+
+Delete namespace convert table of a network
+
+* DELETE `/topologies/<network>/ns_convert_table`
+
+```shell
+curl -X DELETE http://localhost:9292/topologies/mddo-ospf
+```
+
+Create (initialize) or update namespace convert table of a network
+
+* POST `/topologies/<network>/ns_convert_table`
+  * `origin_snapshot`: snapshot name to create convert table (MUST be "original" env snapshot)
+  * `convert_table`: convert table data to update (upload)
+
+```shell
+curl -s -X POST -H 'Content-Type: application/json' \
+  -d '{"origin_snapshot": "original_asis"}' \
+  http://localhost:9292/topologies/mddo-ospf/ns_convert_table
+```
+
+Fetch namespace convert table of a network
+
+* GET `/topologies/<network>/ns_convert_table`
+
+```shell
+curl http://localhost:9292/topologies/mddo-ospf/ns_convert_table
+```
+
+Convert hostname using convert table
+
+* POST `/topologies/<netowrk>/ns_convert_table/query`
+  * `host_name` : host name to convert
+  * `if_name` : [optional] interface name to convert 
+
+```shell
+curl -s -X POST -H 'Content-Type: application/json' \
+  -d '{"host_name": "Seg_192.168.0.0/30", "if_name": "regiona-rt1_ge-0/0/0.0"}' \
+  http://localhost:9292/topologies/mddo-ospf/ns_convert_table/query
+```
+
+### Convert topology namespace
+
+Fetch namespace converted topology data
+
+* GET `/topologies/<neetwork>/<snapshot>/converte_topology`
+  * NOTE: initialize namespace convert table of the network before convert topology
+
+```shell
+curl -s http://localhost:9292/topologies/mddo-ospf/original_asis/converted_topology
+```
+
+### Filter/Convert layer data of a topology data
+
+Convert specified layer topology to layer1_topology.json for batfish
+
+* GET `/topologies/<network>/<snapshot>/topology/<layer>/batfish_layer1_topology`
+  * NOTE: Namespace are converted (Initialize convert table at first)
+
+```shell
+curl -s http://localhost:9292/topologies/mddo-ospf/emulated_asis/topology/layer3/batfish_layer1_topology
+```
+
+Convert specified layer topology to clab-topo.yaml for container-lab
+
+* GET `/topologies/<network>/<snapshot>/topology/<layer>/containerlab_topology`
+  * NOTE: Namespace are converted (Initialize convert table at first)
+  * NOTE: It returns json data. Convert it to yaml using other tool
+
+```shell
+curl -s http://localhost:9292/topologies/mddo-ospf/emulated_asis/topology/layer3/containerlab_topology \
+  | ruby -r json -r yaml -e "puts YAML.dump_stream(JSON.parse(STDIN.read))"
+```
+
+Fetch all nodes and its attributes with namespace-converted names in a layer of the topology data
+
+* GET `/topologies/<network>/<snapshot>/topology/<layer>/nodes`
+  * NOTE: Namespace are converted (Initialize convert table at first)
+
+```shell
+curl -s http://localhost:9292/topologies/mddo-ospf/emulated_asis/topology/layer3/nodes
+```
+
+Fetch all interfaces and its attributes with namespace-converted names in a layer of the topology data
+
+* GET `/topologies/<network>/<snapshot>/topology/<layer>/interfaces`
+  * NOTE: Namespace are converted (Initialize convert table at first)
+
+```shell
+curl -s http://localhost:9292/topologies/mddo-ospf/emulated_asis/topology/layer3/interfaces
+```
+
+
 
 ## Tools
 
