@@ -22,11 +22,16 @@ module NetomoxExp
       @convert_table[src_node_name]
     end
 
+    # @param [String] l3_node_name Node name (L3) (original/emulated)
+    # @return [String,nil] Node name (emulated/original)
+    def reverse_lookup(l3_node_name)
+      @convert_table.keys.find { |node| @convert_table[node]['l3'] == l3_node_name }
+    end
+
     # @param [String] l3_node_name Node name (L3)
     # @return [Hash] Node name dic
     def find_l1_alias(l3_node_name)
-      orig_node = @convert_table.keys.find { |node| @convert_table[node]['l3'] == l3_node_name }
-      @convert_table[orig_node]
+      @convert_table[reverse_lookup(l3_node_name)]
     end
 
     # @param [String] node_name Node name

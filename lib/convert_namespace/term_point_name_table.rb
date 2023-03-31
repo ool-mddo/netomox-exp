@@ -41,12 +41,20 @@ module NetomoxExp
       @convert_table[src_node_name][src_tp_name]
     end
 
+    # @param [String] l3_node_name Node name (L3) (original/emulated)
+    # @param [String] l3_tp_name Node name (L3) (original/emulated)
+    # @return [Array(String, String)] List [node-name, tp-name] (emulated/original)
+    def reverse_lookup(l3_node_name, l3_tp_name)
+      rev_node = @node_name_table.reverse_lookup(l3_node_name)
+      rev_tp = @convert_table[rev_node].keys.find { |tp| @convert_table[rev_node][tp]['l3'] == l3_tp_name }
+      [rev_node, rev_tp]
+    end
+
     # @param [String] l3_node_name Node name (L3)
     # @param [String] l3_tp_name Term-point name (L3)
     # @return [nil,Hash] Term-point name dic
     def find_l1_alias(l3_node_name, l3_tp_name)
-      orig_node = @node_name_table.keys.find { |node| @node_name_table[node]['l3'] == l3_node_name }
-      orig_tp = @convert_table[orig_node].keys.find { |tp| @convert_table[orig_node][tp]['l3'] == l3_tp_name }
+      orig_node, orig_tp = reverse_lookup(l3_node_name, l3_tp_name)
       @convert_table[orig_node][orig_tp]
     end
 
