@@ -7,7 +7,6 @@ Backend api to operate topology data. (original: https://github.com/corestate55/
 ```text
 + netomox-exp/         # https://github.com/ool-mddo/netomox-exp (THIS repository)
   + doc/               # class documents (generated w/yard)
-  + exe/               # executable scripts
   + figs/              # design diagrams
   + model_defs/        # scripts to generate topology data
   + yang/              # yang schema to validate topology data (TODO)
@@ -201,28 +200,22 @@ Fetch all interfaces and its attributes with namespace-converted names in a laye
 curl -s http://localhost:9292/topologies/mddo-ospf/emulated_asis/topology/layer3/interfaces
 ```
 
+### L1 interface description check
 
+Generate interface description from layer1
 
-## Tools
+* GET `/topologies/<network>/<snapshot>/topology/<layer>/interface_description`
 
-### Check/Make L1 interface description
-
-Check existence of interface description and it format is correct.
-
-- `-f`, `--format` : specify output format (json/yaml, default: yaml)
-- `-l`, `--level` : filter output items by its type (level: info/warning/error, default: info)
-
-```text
-bundle exec ruby exe/mddo_toolbox.rb check_l1_descr [options] <topology-file>
+```shell
+curl -s http://localhost:15000/topologies/mddo-ospf/original_asis/topology/layer1/interface_description
 ```
 
-Make layer1 interface description from its topology.
+Fetch check results of interface description in layer1
 
-- `-o`, `--output` : specify output file to save generated descriptions (CSV),
-  default (without this option) : output STDOUT
+* GET `/topologies/<network>/<snapshot>/topology/<layer>/interface_description/check`
 
-```text
-bundle exec ruby exe/mddo_toolbox.rb make_l1_descr [options] <topology-file>
+```shell
+curl -s http://localhost:15000/topologies/mddo-ospf/original_asis/topology/layer1/interface_description/check
 ```
 
 ## Development

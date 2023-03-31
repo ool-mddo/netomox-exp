@@ -45,7 +45,10 @@ module TopologyBuilder
     def setup_ospf_network_attr
       @network.type = Netomox::NWTYPE_MDDO_OSPF_AREA
       @network.supports.push(@layer3p.name)
-      @network.attribute = { identifier: dotted_quad_area_id }
+      @network.attribute = {
+        name: 'mddo-ospf-area-network',
+        identifier: dotted_quad_area_id
+      }
     end
 
     # @return [String] Dotted-quad format area id

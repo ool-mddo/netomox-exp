@@ -1,13 +1,13 @@
 # frozen_string_literal: true
 
-require_relative './l1_intf_descr_ops_base'
+require_relative 'interface_descr_ops_base'
 
-module TopologyOperator
+module NetomoxExp
   # Layer1 interface description checker
-  class L1InterfaceDescriptionChecker < L1InterfaceDescriptionOpsBase
+  class InterfaceDescrChecker < InterfaceDescrOpsBase
     # @param [String] level Output type level
     # @return [Array<Hash>] Level-filtered description check results
-    def check(level)
+    def verify_description(level)
       @level = level
       descr_check_data.filter { |datum| level_match(datum[:type]) }
     end

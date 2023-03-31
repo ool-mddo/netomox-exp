@@ -1,18 +1,40 @@
 # frozen_string_literal: true
 
 require 'csv'
-require_relative './l1_intf_descr_ops_base'
+require_relative 'interface_descr_ops_base'
 
-module TopologyOperator
+module NetomoxExp
   # Layer1 interface description maker
-  class L1InterfaceDescriptionMaker < L1InterfaceDescriptionOpsBase
-    # @return [Array<Array<String>>] Table records
+  class InterfaceDescrGenerator < InterfaceDescrOpsBase
+    # @return [Array<Array<String>>] Table records (csv)
     def full_table
       header = %w[No. Source_Node Source_Interface Destination_Node Destination_Interface Source_Interface_Description]
       [header] + layer1_link_table.map { |rec| ordering_layer1_link_table_rec(rec) }
     end
 
+    # @return [Array<Hash>] records (json)
+    def records
+      layer1_link_table.map { |rec| ordering_layer1_link_rec(rec) }
+    end
+
     private
+
+    # @param [Hash] rec layer1_link_table record
+    # @return [String] Source itnerface description
+    def src_ifdescr(rec)
+      "to_#{normal_hostname(rec[:dst_node])}_#{rec[:dst_tp]}"
+    end
+
+    def ordering_layer1_link_rec(rec)
+      {
+        number: rec[:number],
+        source_node: normal_hostname(rec[:src_node]),
+        source_interface: rec[:src_tp],
+        destination_node: normal_hostname(rec[:dst_node]),
+        destination_interface: rec[:dst_tp],
+        source_interface_description: src_ifdescr(rec)
+      }
+    end
 
     # Reorder layer1 interface description data (`#layer1_link_table`) to CSV row data
     # @param [Hash] rec Layer1 interface description datum
@@ -22,7 +44,7 @@ module TopologyOperator
         rec[:number],
         normal_hostname(rec[:src_node]), rec[:src_tp],
         normal_hostname(rec[:dst_node]), rec[:dst_tp],
-        "to_#{normal_hostname(rec[:dst_node])}_#{rec[:dst_tp]}"
+        src_ifdescr(rec)
       ]
     end
 

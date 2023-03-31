@@ -21,6 +21,7 @@ module TopologyBuilder
     def make_networks
       @network = @networks.network('layer1')
       @network.type = Netomox::NWTYPE_MDDO_L1
+      @network.attribute = { name: 'mddo-layer1-network' }
       setup_node_tp_link
       check_disconnected_node
       @networks
