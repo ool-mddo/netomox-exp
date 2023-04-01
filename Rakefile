@@ -18,7 +18,6 @@ begin
   YARD::Rake::YardocTask.new do |task|
     task.files = FileList[
       './model_defs/topology_builder/**/*.rb',
-      './exe/**/*.rb',
       './lib/**/*.rb',
       './app.rb'
     ]

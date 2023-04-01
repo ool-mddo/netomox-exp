@@ -7,7 +7,7 @@ require 'lib/convert_namespace/namespace_converter'
 
 module NetomoxExp
   # helpers for NetomoxRestApi
-  module NetomoxExpHelpers
+  module Helpers
     # @param [String] file_path File path to read
     # @return [Object]
     def read_json_file(file_path)

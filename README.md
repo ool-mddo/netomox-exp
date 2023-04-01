@@ -8,7 +8,8 @@ Backend api to operate topology data. (original: https://github.com/corestate55/
 + netomox-exp/         # https://github.com/ool-mddo/netomox-exp (THIS repository)
   + doc/               # class documents (generated w/yard)
   + figs/              # design diagrams
-  + model_defs/        # scripts to generate topology data
+  + lib/               # REST API body
+  + model_defs/        # scripts to generate topology data (prototype)
   + yang/              # yang schema to validate topology data (TODO)
 ```
 

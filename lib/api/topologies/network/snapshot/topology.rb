@@ -3,7 +3,7 @@
 require 'fileutils'
 require 'grape'
 require 'lib/convert_namespace/layer_filter'
-require 'model_defs/topology_builder/networks'
+require 'lib/topology_builder/topology_builder'
 require_relative 'topology/layer'
 
 module NetomoxExp
@@ -34,10 +34,6 @@ module NetomoxExp
           topology_dir = File.join(TOPOLOGIES_DIR, network, snapshot)
           topology_file = File.join(topology_dir, 'topology.json')
           save_json_file(topology_file, topology_data)
-
-          # copy layout file if found
-          layout_file = File.join(MODEL_DEFS_DIR, network, snapshot, 'layout.json')
-          FileUtils.cp(layout_file, File.join(topology_dir, 'layout.json')) if File.exist?(layout_file)
         end
 
         desc 'Get topology data'

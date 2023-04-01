@@ -1,6 +1,7 @@
 # auto generated documents
 doc
 figs
+model_defs
 # local configs
 .rubocop.yml
 .yardoc

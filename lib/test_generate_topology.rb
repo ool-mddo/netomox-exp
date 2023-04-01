@@ -2,7 +2,8 @@
 
 require 'json'
 require 'optparse'
-require_relative 'topology_builder/networks'
+require_relative 'netomox_exp'
+require_relative 'topology_builder/topology_builder'
 
 opts = ARGV.getopts('i:', 'debug:')
 
@@ -20,8 +21,8 @@ def to_json(topology_data)
 end
 
 if opts['debug']
-  puts to_json(TopologyBuilder.generate_data(target_data_dir, layer: opts['debug'], debug: true))
+  puts to_json(NetomoxExp::TopologyBuilder.generate_data(target_data_dir, layer: opts['debug'], debug: true))
   exit 0
 end
 
-puts to_json(TopologyBuilder.generate_data(target_data_dir))
+puts to_json(NetomoxExp::TopologyBuilder.generate_data(target_data_dir))
