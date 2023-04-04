@@ -151,7 +151,6 @@ module NetomoxExp
     def update_tp_description(target_nw)
       target_nw.links.each do |link|
         target_node = target_nw.node(link.src.node)
-        next if target_node.attribute.nil? || target_node.attribute[:node_type] == 'segment' # ignore segment node
 
         # Update target is source edge, Note: link is bidirectional
         target_node_dic = @node_name_table.find_l1_alias(link.dst.node)

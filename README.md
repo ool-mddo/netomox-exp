@@ -163,10 +163,11 @@ curl -s http://localhost:9292/topologies/mddo-ospf/original_asis/converted_topol
 
 ### Filter/Convert layer data of a topology data
 
+NOTE: Namespace is converted (Initialize convert table at first before call below APIs)
+
 Convert specified layer topology to layer1_topology.json for batfish
 
 * GET `/topologies/<network>/<snapshot>/topology/<layer>/batfish_layer1_topology`
-  * NOTE: Namespace are converted (Initialize convert table at first)
 
 ```shell
 curl -s http://localhost:9292/topologies/mddo-ospf/emulated_asis/topology/layer3/batfish_layer1_topology
@@ -175,7 +176,6 @@ curl -s http://localhost:9292/topologies/mddo-ospf/emulated_asis/topology/layer3
 Convert specified layer topology to clab-topo.yaml for container-lab
 
 * GET `/topologies/<network>/<snapshot>/topology/<layer>/containerlab_topology`
-  * NOTE: Namespace are converted (Initialize convert table at first)
   * NOTE: It returns json data. Convert it to yaml using other tool
 
 ```shell
@@ -186,7 +186,7 @@ curl -s http://localhost:9292/topologies/mddo-ospf/emulated_asis/topology/layer3
 Fetch all nodes and its attributes with namespace-converted names in a layer of the topology data
 
 * GET `/topologies/<network>/<snapshot>/topology/<layer>/nodes`
-  * NOTE: Namespace are converted (Initialize convert table at first)
+  * `node_type`: filter specified type nodes (segment/node/endpoint)
 
 ```shell
 curl -s http://localhost:9292/topologies/mddo-ospf/emulated_asis/topology/layer3/nodes
@@ -195,11 +195,51 @@ curl -s http://localhost:9292/topologies/mddo-ospf/emulated_asis/topology/layer3
 Fetch all interfaces and its attributes with namespace-converted names in a layer of the topology data
 
 * GET `/topologies/<network>/<snapshot>/topology/<layer>/interfaces`
-  * NOTE: Namespace are converted (Initialize convert table at first)
+  * `node_type`: filter specified type nodes (segment/node/endpoint)
 
 ```shell
 curl -s http://localhost:9292/topologies/mddo-ospf/emulated_asis/topology/layer3/interfaces
 ```
+
+Fetch all nodes and interface parameters to generate CNF configurations
+
+* GET `/topologies/<network>/<snapshot>/topology/<layer>/config_params`
+  * `node_type`: filter specified type nodes (segment/node/endpoint)
+
+```shell
+curl -s http://localhost:9292/topologies/mddo-ospf/emulated_asis/topology/layer3/config_params
+```
+<details>
+<summary>Response example:</summary>
+
+```text
+[
+  {
+    "name": "Seg_192.168.0.0/30",                 : node name (L3 model)
+    "agent_name": "Seg-192.168.0.0-30",           : node name (L1 agent)
+    "type": "segment",                            : node type from node attribute
+    "if_list": [
+      {
+        "name": "regiona-rt1_eth1.0",             : interface name (L3 model)
+        "agent_name": "Ethernet1",                : interface name (L1 agent)
+        "ipv4": null,                             : IPv4 address from interface attribute
+        "description": "to_regiona-rt1_eth1.0",   : Description from interface attribute
+        "original_if": "regiona-rt1_ge-0/0/0.0"   : Description in original namespace (before namespace conversion)
+      },
+      {
+        "name": "regiona-rt2_eth1.0",
+        "agent_name": "Ethernet2",
+        "ipv4": null,
+        "description": "to_regiona-rt2_eth1.0",
+        "original_if": "regiona-rt2_ge-0/0/0.0"
+      }
+    ]
+  },
+...
+]
+```
+
+</details>
 
 ### L1 interface description check
 

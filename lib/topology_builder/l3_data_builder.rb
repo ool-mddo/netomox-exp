@@ -113,25 +113,33 @@ module NetomoxExp
         tp_name
       end
 
-      # rubocop:disable Metrics/AbcSize
-
-      # Connect L3 segment-node and host-node
       # @param [Netomox::PseudoDSL::PNode] l3_seg_node Layer3 segment-node (L3/src)
       # @param [Netomox::PseudoDSL::PNode] l3_node Layer3 (host) node (L3/dst)
       # @param [Netomox::PseudoDSL::PTermPoint] l3_tp Layer3 (host) port on l3_node (L3/dst)
       # @param [Netomox::PseudoDSL::PLinkEdge] l2_edge A Link-edge in layer2 topology (in segment) (L2/dst)
-      # @return [void]
-      def add_l3_link(l3_seg_node, l3_node, l3_tp, l2_edge)
-        l2_link = @layer2p.find_link_by_src_edge(l2_edge) # node -> seg_node
+      # @return [Netomox::PseudoDSL::PTermPoint] L3/src interface (segment node term-point)
+      def add_l3_seg_tp(l3_seg_node, l3_node, l3_tp, l2_edge)
+        l2_link = @layer2p.find_link_by_src_edge(l2_edge) # link: (L2)node -> segment
+        # L3/src term-point (segment node term-point)
         l3_seg_tp_name = l3_seg_tp_name(l3_seg_node, l2_link, l3_node, l3_tp)
         l3_seg_tp = l3_seg_node.term_point(l3_seg_tp_name)
         l3_seg_tp.supports.push([@layer2p.name, l2_link.dst.node, l2_link.dst.tp])
+        l3_seg_tp.attribute = { description: "to_#{l3_node.name}_#{l3_tp.name}" }
+        debug_print "  seg-node-tp: #{l3_seg_tp.name}, attr=#{l3_seg_tp.attribute}"
+        l3_seg_tp
+      end
 
+      # Connect L3 segment-node and host-node
+      # @param [Netomox::PseudoDSL::PNode] l3_seg_node Layer3 segment-node (L3/src)
+      # @param [Netomox::PseudoDSL::PTermPoint] l3_seg_tp Layer3 segment-node term point (L3/src)
+      # @param [Netomox::PseudoDSL::PNode] l3_node Layer3 (host) node (L3/dst)
+      # @param [Netomox::PseudoDSL::PTermPoint] l3_tp Layer3 (host) port on l3_node (L3/dst)
+      # @return [void]
+      def add_l3_link(l3_seg_node, l3_seg_tp, l3_node, l3_tp)
         debug_print "  link: #{l3_seg_node.name}, #{l3_seg_tp.name}, #{l3_node.name}, #{l3_tp.name}"
         @network.link(l3_seg_node.name, l3_seg_tp.name, l3_node.name, l3_tp.name)
         @network.link(l3_node.name, l3_tp.name, l3_seg_node.name, l3_seg_tp.name) # bidirectional
       end
-      # rubocop:enable Metrics/AbcSize
 
       # @param [Array<Netomox::PseudoDSL::PLinkEdge>] segment Edge list in same segment
       # @return [Array<Hash>] A list of 'prefix' attribute
@@ -205,7 +213,7 @@ module NetomoxExp
         l3_seg_node
       end
 
-      # rubocop:disable Metrics/MethodLength
+      # rubocop:disable Metrics/MethodLength, Metrics/AbcSize
 
       # Add all layer3 node, tp and link
       # @return [void]
@@ -223,11 +231,12 @@ module NetomoxExp
             end
 
             # Args: L3 (src_node, dst_node, dst_tp), L2 (dst_tp)
-            add_l3_link(l3_seg_node, l3_node, l3_tp, l2_edge)
+            l3_seg_tp = add_l3_seg_tp(l3_seg_node, l3_node, l3_tp, l2_edge)
+            add_l3_link(l3_seg_node, l3_seg_tp, l3_node, l3_tp)
           end
         end
       end
-      # rubocop:enable Metrics/MethodLength
+      # rubocop:enable Metrics/MethodLength, Metrics/AbcSize
 
       # @param [String] l3_node_name L3 node name
       # @param [String] l3_tp_name L3 term-point name (in the L3 node)
