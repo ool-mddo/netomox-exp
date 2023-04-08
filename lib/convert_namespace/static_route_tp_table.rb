@@ -71,7 +71,7 @@ module NetomoxExp
       @convert_table[fwd_route_key] = {} unless key_in_table?(fwd_route_key)
       @convert_table[fwd_route_key][route.interface] = 'dynamic'
       # reverse
-      bwd_route_key = static_route_key(@node_name_table.convert(src_node.name)['l3'], route.prefix)
+      bwd_route_key = static_route_key(@node_name_table.convert(src_node.name)['l3_model'], route.prefix)
       @convert_table[bwd_route_key] = {} unless key_in_table?(bwd_route_key)
       @convert_table[bwd_route_key]['dynamic'] = route.interface
     end

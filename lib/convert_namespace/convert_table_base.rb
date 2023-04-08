@@ -43,17 +43,14 @@ module NetomoxExp
       !term_point.attribute.empty? && term_point.attribute.flags.include?('loopback')
     end
 
-    # @param [String] l3_name Layer3 model node/tp name
-    # @return [Hash] l3 node name dic contains specified l3 node
-    def emulated_name_dict_short(l3_name)
-      { 'l3' => l3_name, 'l1_agent' => l3_name, 'l1_principal' => l3_name }
-    end
-
-    # @param [String] l3_name Layer3 model node/tp name
-    # @param [String] l1_agent_name Layer1 config node/tp name
-    # @param [String] l1_principal_name Layer1 instance node/tp name
-    def emulated_name_dict(l3_name, l1_agent_name, l1_principal_name)
-      { 'l3' => l3_name, 'l1_agent' => l1_agent_name, 'l1_principal' => l1_principal_name }
+    # @param [String] l3_model Layer3 model node/tp name
+    # @param [String] l1_agent Layer1 config node/tp name
+    # @param [String] l1_principal Layer1 instance node/tp name
+    def emulated_name_dict(l3_model, l1_agent: nil, l1_principal: nil)
+      dict = { 'l3_model' => l3_model, 'l1_agent' => l3_model, 'l1_principal' => l3_model }
+      dict['l1_agent'] = l1_agent unless l1_agent.nil?
+      dict['l1_principal'] = l1_principal unless l1_principal.nil?
+      dict
     end
   end
 end

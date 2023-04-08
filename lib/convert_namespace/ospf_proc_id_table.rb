@@ -39,7 +39,7 @@ module NetomoxExp
       super(src_nws)
       src_nw = @src_nws.find_network('ospf_area0')
       src_nw.nodes.each do |src_node|
-        dst_node_name = @node_name_table.convert(src_node.name)['l3']
+        dst_node_name = @node_name_table.convert(src_node.name)['l3_model']
         src_proc_id = src_node.attribute.process_id
         dst_proc_id = 'default' # to cRPD ospf (fixed)
         add_ospf_proc_id_entry(src_node.name, src_proc_id, dst_node_name, dst_proc_id)

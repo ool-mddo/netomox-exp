@@ -11,8 +11,10 @@ module NetomoxExp
     def convert(src_node_name)
       raise StandardError, "Node name: #{src_node_name} is not in node-table" unless key_in_table?(src_node_name)
 
+      # key string is "L3 model name"
+      #
       # original_node_name => {                            # <= converted name dictionary
-      #   'l3' => 'emulated_node_name (L3 model)',
+      #   'l3_model' => 'emulated_node_name (L3 model)',
       #   'l1_agent' => 'emulated_node_name (emulated env L1 config, cEOS for segment-node)',
       #   'l1_principal' => 'emulated_node_name (emulated env instance, OVS for segment-node)'
       # }
@@ -25,7 +27,7 @@ module NetomoxExp
     # @param [String] l3_node_name Node name (L3) (original/emulated)
     # @return [String,nil] Node name (emulated/original)
     def reverse_lookup(l3_node_name)
-      @convert_table.keys.find { |node| @convert_table[node]['l3'] == l3_node_name }
+      @convert_table.keys.find { |node| @convert_table[node]['l3_model'] == l3_node_name }
     end
 
     # @param [String] l3_node_name Node name (L3)
@@ -40,12 +42,14 @@ module NetomoxExp
       @convert_table.key?(node_name)
     end
 
+    # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
+
     # @param [Netomox::Topology::Networks] src_nws Source networks
     # @return [void]
     def make_table(src_nws)
       super(src_nws)
-      src_nw = @src_nws.find_network('layer3')
       segment_node_count = -1
+      src_nw = @src_nws.find_network('layer3')
       src_nw.nodes.each do |src_node|
         segment_node_count += 1 if segment_node?(src_node)
         # forward (src -> dst) node name conversion
@@ -54,9 +58,12 @@ module NetomoxExp
         # forward
         @convert_table[src_node.name] = dst_node_dic unless key_in_table?(src_node.name)
         # reverse
-        @convert_table[dst_node_dic['l3']] = { 'l3' => src_node.name } unless key_in_table?(dst_node_dic['l3'])
+        unless key_in_table?(dst_node_dic['l3_model'])
+          @convert_table[dst_node_dic['l3_model']] = emulated_name_dict(src_node.name)
+        end
       end
     end
+    # rubocop:enable Metrics/AbcSize, Metrics/MethodLength
 
     private
 
@@ -65,11 +72,13 @@ module NetomoxExp
     # @return [Hash] Converted node name
     def forward_convert_node_name(src_node, segment_node_count)
       if segment_node?(src_node)
-        return emulated_name_dict(src_node.name, src_node.name.gsub(%r{[/_]}, '-'), "br#{segment_node_count}")
+        l1_agent = src_node.name.gsub(%r{[/_]}, '-')
+        l1_principal = "br#{segment_node_count}"
+        return emulated_name_dict(src_node.name, l1_agent:, l1_principal:)
       end
 
       # other node (actual node)
-      emulated_name_dict_short(src_node.name)
+      emulated_name_dict(src_node.name)
     end
   end
 end

@@ -50,8 +50,8 @@ module NetomoxExp
       src_tp.supports
             .find_all { |tp_sup| target_network?(tp_sup.ref_network) }
             .map do |tp_sup|
-        converted_tp = @tp_name_table.convert(tp_sup.ref_node, tp_sup.ref_tp)['l3']
-        [tp_sup.ref_network, @node_name_table.convert(tp_sup.ref_node)['l3'], converted_tp]
+        converted_tp = @tp_name_table.convert(tp_sup.ref_node, tp_sup.ref_tp)['l3_model']
+        [tp_sup.ref_network, @node_name_table.convert(tp_sup.ref_node)['l3_model'], converted_tp]
       end
     end
 
@@ -59,7 +59,7 @@ module NetomoxExp
     # @param [Netomox::Topology::TermPoint] src_tp Source term-point (L3+)
     # @return [Netomox::PseudoDSL::PTermPoint]
     def rewrite_term_point(src_node, src_tp)
-      dst_tp = Netomox::PseudoDSL::PTermPoint.new(@tp_name_table.convert(src_node.name, src_tp.name)['l3'])
+      dst_tp = Netomox::PseudoDSL::PTermPoint.new(@tp_name_table.convert(src_node.name, src_tp.name)['l3_model'])
       dst_tp.attribute = convert_all_hash_keys(src_tp.attribute.to_data)
       dst_tp.supports = rewrite_tp_supports(src_tp)
       dst_tp
@@ -71,7 +71,7 @@ module NetomoxExp
       # ignore layer3 -> layer2 support info: these are not used in emulated env
       src_node.supports
               .find_all { |node_sup| target_network?(node_sup.ref_network) }
-              .map { |node_sup| [node_sup.ref_network, @node_name_table.convert(node_sup.ref_node)['l3']] }
+              .map { |node_sup| [node_sup.ref_network, @node_name_table.convert(node_sup.ref_node)['l3_model']] }
     end
 
     # @param [Netomox::PseudoDSL::PNode] node Node (destination)
@@ -120,7 +120,7 @@ module NetomoxExp
     # @param [Netomox::Topology::Node] src_node Source node (L3+)
     # @return [Netomox::PseudoDSL::PNode]
     def rewrite_node(src_node)
-      dst_node = Netomox::PseudoDSL::PNode.new(@node_name_table.convert(src_node.name)['l3'])
+      dst_node = Netomox::PseudoDSL::PNode.new(@node_name_table.convert(src_node.name)['l3_model'])
       dst_node.tps = src_node.termination_points.map { |src_tp| rewrite_term_point(src_node, src_tp) }
       dst_node.attribute = convert_all_hash_keys(src_node.attribute.to_data)
       dst_node.supports = rewrite_node_support(src_node)
@@ -131,8 +131,8 @@ module NetomoxExp
     # @param [Netomox::Topology::TpRef] orig_edge Original link edge
     # @return [Netomox::PseudoDSL::PLinkEdge]
     def rewrite_link_edge(orig_edge)
-      node = @node_name_table.convert(orig_edge.node_ref)['l3']
-      tp = @tp_name_table.convert(orig_edge.node_ref, orig_edge.tp_ref)['l3']
+      node = @node_name_table.convert(orig_edge.node_ref)['l3_model']
+      tp = @tp_name_table.convert(orig_edge.node_ref, orig_edge.tp_ref)['l3_model']
       Netomox::PseudoDSL::PLinkEdge.new(node, tp)
     end
 

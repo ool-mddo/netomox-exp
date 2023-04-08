@@ -20,10 +20,12 @@ module NetomoxExp
       raise StandardError, "TP: #{src_tp_name} is not in tp-table" unless key_in_table?(src_node_name,
                                                                                         src_tp_name)
 
+      # key string is "L3 model name"
+      #
       # # forward convert
       # original_node_name => {
       #   original_tp_name => {                            # <= converted name dictionary
-      #     'l3' => 'emulated_tp_name (L3 model)',
+      #     'l3_model' => 'emulated_tp_name (L3 model)',
       #     'l1_agent' => 'emulated_tp_name (emulated env L1 config, cEOS for segment-node)',
       #     'l1_principal' => 'emulated_tp_name (emulated env instance, OVS for segment-node)'
       #   }
@@ -31,7 +33,7 @@ module NetomoxExp
       # # backward convert
       # emulated_node_name => {
       #   emulated_tp_name => {
-      #     'l3' => 'original_tp_name (L3 model)',
+      #     'l3_model' => 'original_tp_name (L3 model)',
       #     'l1_agent' => 'original_tp_name (L3 model)',
       #     'l1_principal' => 'original_tp_name (L3 model)'
       #   }
@@ -46,7 +48,7 @@ module NetomoxExp
     # @return [Array(String, String)] List [node-name, tp-name] (emulated/original)
     def reverse_lookup(l3_node_name, l3_tp_name)
       rev_node = @node_name_table.reverse_lookup(l3_node_name)
-      rev_tp = @convert_table[rev_node].keys.find { |tp| @convert_table[rev_node][tp]['l3'] == l3_tp_name }
+      rev_tp = @convert_table[rev_node].keys.find { |tp| @convert_table[rev_node][tp]['l3_model'] == l3_tp_name }
       [rev_node, rev_tp]
     end
 
@@ -93,9 +95,9 @@ module NetomoxExp
       # forward
       @convert_table[src_node_name][src_tp_name] = dst_tp_dic unless key_in_table?(src_node_name, src_tp_name)
       # reverse
-      return if key_in_table?(dst_node_name, dst_tp_dic['l3'])
+      return if key_in_table?(dst_node_name, dst_tp_dic['l3_model'])
 
-      @convert_table[dst_node_name][dst_tp_dic['l3']] = emulated_name_dict_short(src_tp_name)
+      @convert_table[dst_node_name][dst_tp_dic['l3_model']] = emulated_name_dict(src_tp_name)
     end
 
     # @param [String] src_node_name Source (original) node name
@@ -113,7 +115,7 @@ module NetomoxExp
     # @param [Netomox::Topology::Network] src_nw Source network (L3)
     def make_table_for_actual(src_nw)
       src_nw.nodes.reject { |node| segment_node?(node) }.each do |src_node|
-        dst_node_name = @node_name_table.convert(src_node.name)['l3']
+        dst_node_name = @node_name_table.convert(src_node.name)['l3_model']
         add_tp_name_hash(src_node.name, dst_node_name)
 
         src_node.termination_points.find_all { |src_tp| loopback?(src_tp) }.each do |src_tp|
@@ -131,7 +133,7 @@ module NetomoxExp
     # @param [Netomox::Topology::Network] src_nw Source network (L3)
     def make_table_for_segment(src_nw)
       src_nw.nodes.select { |node| segment_node?(node) }.each do |src_node|
-        dst_node_name = @node_name_table.convert(src_node.name)['l3']
+        dst_node_name = @node_name_table.convert(src_node.name)['l3_model']
         add_tp_name_hash(src_node.name, dst_node_name)
         src_node.termination_points.each_with_index do |src_tp, tp_index|
           dst_tp_dic = forward_convert_segment_tp_name(src_nw, src_node, src_tp, tp_index)
@@ -145,17 +147,17 @@ module NetomoxExp
     def forward_convert_actual_lo_name(src_tp_name)
       # pick last number e.g. loX.Y -> Y
       index = src_tp_name.match(/(\d+)/)[-1]
-      emulated_name_dict_short("lo.#{index}") # cRPD loopback
+      emulated_name_dict("lo.#{index}") # cRPD loopback
     end
 
     # @param [Integer] index Term-point index
     # @return [Hash] Converted term-point name dic
     def forward_convert_actual_tp_name(index)
       # for actual node (some container in emulated env)
-      emulated_name_dict_short("eth#{index}.0")
+      emulated_name_dict("eth#{index}.0", l1_principal: "eth#{index}") # cRPD interface
     end
 
-    # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
+    # rubocop:disable Metrics/AbcSize
 
     # @param [Netomox::Topology::Network] src_nw Source network (L3)
     # @param [Netomox::Topology::Node] src_node Source node (L3)
@@ -171,12 +173,12 @@ module NetomoxExp
       target_tp_ref = link.destination.tp_ref
       target_node_dic = @node_name_table.convert(target_node_ref)
       src_node_dic = @node_name_table.convert(src_node.name)
-      emulated_name_dict(
-        "#{target_node_dic['l3']}_#{convert(target_node_ref, target_tp_ref)['l3']}",
-        "Ethernet#{tp_index + 1}",
-        "#{src_node_dic['l1_principal']}p#{tp_index}"
-      )
+
+      l3_model = "#{target_node_dic['l3_model']}_#{convert(target_node_ref, target_tp_ref)['l3_model']}"
+      l1_agent = "Ethernet#{tp_index + 1}" # cEOS interface
+      l1_principal = "#{src_node_dic['l1_principal']}p#{tp_index}"
+      emulated_name_dict(l3_model, l1_agent:, l1_principal:)
     end
-    # rubocop:enable Metrics/AbcSize, Metrics/MethodLength
+    # rubocop:enable Metrics/AbcSize
   end
 end
