@@ -13,7 +13,7 @@ module NetomoxExp
 
     # @param [String] src_node_name Source node name
     # @param [String, Integer] proc_id OSPF process id
-    # @return [String] Converted OSPF process id (string number or "default")
+    # @return [String, Integer] Converted OSPF process id (integer or "default")
     # @raise [StandardError]
     def convert(src_node_name, proc_id)
       raise StandardError, "Node: #{src_node_name} is not in ospf-proc-id-table" unless key_in_table?(src_node_name)
@@ -21,7 +21,8 @@ module NetomoxExp
         raise StandardError, "Proc-ID: #{proc_id} in #{src_node_name} is not in ospf-proc-id-table"
       end
 
-      @convert_table[src_node_name][proc_id.to_s]
+      proc_id = @convert_table[src_node_name][proc_id.to_s]
+      proc_id =~ /\d+/ ? proc_id.to_i : proc_id
     end
 
     # @param [String] node_name Node name (OSPF)
