@@ -31,6 +31,7 @@ module NetomoxExp
           # set context
           @area_id = area_id
           @network = @networks.network("ospf_area#{@area_id}")
+          debug_print "# current: Area=#{@area_id}"
           # setup network (per ospf-area) data
           setup_ospf_network_attr
           setup_ospf_topology
@@ -107,7 +108,7 @@ module NetomoxExp
         }
       end
 
-      # rubocop:disable Metrics/CyclomaticComplexity, Metrics/MethodLength
+      # rubocop:disable Metrics/CyclomaticComplexity, Metrics/MethodLength, Metrics/PerceivedComplexity
 
       # @param l3_node [Netomox::PseudoDSL::PNode] l3node Layer3 node
       # @param l3_tp [Netomox::PseudoDSL::PTermPoint] l3tp Layer3 term-point
@@ -115,7 +116,7 @@ module NetomoxExp
       def ospf_tp_attr(l3_node, l3_tp)
         ospf_intf_conf = @ospf_intf_conf.find_record_by_node_intf(l3_node.name, l3_tp.name)
         # empty (default) term-point attribute for segment-type ospf-node
-        return {} if segment_type_l3_node?(l3_node)
+        return { area: @area_id } if segment_type_l3_node?(l3_node)
 
         # attribute for a term-point in ospf-proc type ospf-node
         {
@@ -125,10 +126,11 @@ module NetomoxExp
           timer: {
             hello_interval: ospf_intf_conf&.ospf_hello_interval || 10,
             dead_interval: ospf_intf_conf&.ospf_dead_interval || 40
-          }
+          },
+          area: ospf_intf_conf&.ospf_area_name || -1
         }
       end
-      # rubocop:enable Metrics/CyclomaticComplexity, Metrics/MethodLength
+      # rubocop:enable Metrics/CyclomaticComplexity, Metrics/MethodLength, Metrics/PerceivedComplexity
 
       # @param [Netomox::PseudoDSL::PLinkEdge] l3_edge A edge of L3 link
       # @return [Array(Netomox::PseudoDSL::PNode, Netomox::PseudoDSL::PTermPoint)] pair of node/tp
@@ -205,8 +207,9 @@ module NetomoxExp
       def add_ospf_node_tp_link(l3_links)
         l3_links.each do |l3_link|
           dst_intf_conf = @ospf_intf_conf.find_record_by_node_intf(l3_link.dst.node, l3_link.dst.tp)
+          debug_print "  # #{l3_link.dst.node}[#{l3_link.dst.tp}], ospf-intf area: #{dst_intf_conf&.ospf_area_name}"
           # ignore destination if it is NOT ospf-enabled node
-          next if dst_intf_conf.nil? || !dst_intf_conf.ospf_enabled?
+          next if dst_intf_conf.nil? || !dst_intf_conf.ospf_enabled? || dst_intf_conf.ospf_area_name != @area_id
 
           # add destination node as ospf node (ospf-proc) and connect it to segment node
           n1, tp1 = add_ospf_node_tp(l3_link.src) # segment node
