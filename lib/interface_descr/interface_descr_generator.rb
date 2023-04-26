@@ -25,6 +25,8 @@ module NetomoxExp
       "to_#{normal_hostname(rec[:dst_node])}_#{rec[:dst_tp]}"
     end
 
+    # @param [Hash] rec A record of layer1_link_table (L1 interface description data)
+    # @return [Hash] layer1 link record
     def ordering_layer1_link_rec(rec)
       {
         number: rec[:number],
