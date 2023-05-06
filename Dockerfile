@@ -5,11 +5,15 @@ COPY . /netomox-exp
 
 # gcc/make: to build native extensions (json)
 RUN apt-get update \
-    && apt-get install -y --no-install-recommends gcc make git
+    && apt-get install -y --no-install-recommends gcc make \
+    && rm -rf /var/lib/apt/lists/*
 
 # install all (production and development) ruby tools (with native extensions)
-RUN gem install bundler \
-    && bundle install
+RUN --mount=type=secret,id=ghp_credential \
+    gem install bundler \
+    && export BUNDLE_RUBYGEMS__PKG__GITHUB__COM=$(cat /run/secrets/ghp_credential) \
+    && bundle install \
+    && unset BUNDLE_RUBYGEMS__PKG__GITHUB__COM
 
 # install required packages
 RUN apt-get update \
