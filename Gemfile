@@ -6,7 +6,7 @@ git_source(:github) { |repo_name| "https://github.com/#{repo_name}" }
 
 group :production do
   source 'https://rubygems.pkg.github.com/ool-mddo' do
-    gem 'netomox', '0.3.0.pre1'
+    gem 'netomox', '0.3.0.pre2'
   end
 
   gem 'grape', '>= 1.7.0'
@@ -14,7 +14,6 @@ group :production do
   gem 'ipaddress', '~> 0.8.3'
   gem 'rack', '>= 1.3.0', '< 3' # grape restriction
   gem 'rake', '>= 13.0.6'
-  gem 'rexml', '>= 3.2.5' # to resolve dependency of termcolor in netomox/diff_view
   gem 'thor', '~> 1.2.1'
   gem 'webrick', '~> 1.7.0' # yard restriction
 end

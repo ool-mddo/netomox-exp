@@ -1,4 +1,4 @@
-FROM ruby:3.1.0-slim as base
+FROM ruby:3.1.0-slim
 
 WORKDIR /netomox-exp
 COPY . /netomox-exp
@@ -6,6 +6,7 @@ COPY . /netomox-exp
 # gcc/make: to build native extensions (json)
 RUN apt-get update \
     && apt-get install -y --no-install-recommends gcc make \
+    && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
 # install all (production and development) ruby tools (with native extensions)

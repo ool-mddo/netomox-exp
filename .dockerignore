@@ -17,5 +17,6 @@ Dockerfile
 **/.idea
 **/.vscode
 # ruby
+Gemfile.lock
 vendor
 .bundle
