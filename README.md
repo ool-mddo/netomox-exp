@@ -21,11 +21,23 @@ Backend api to operate topology data. (original: https://github.com/corestate55/
 
 ### Optional: Install ruby gems
 
+netomox-exp uses [netomox](https://github.com/ool-mddo/netomox) gem that pushed on github packages.
+So, it need authentication to exec `bundle install`.
+One of method to set authentication credential of bundler is using `BUNDLE_RUBYGEMS__PKG__GITHUB__COM` environment variable like below:
+
+- `USERNAME` : your github username
+- `TOKEN` : your github personal access token (need `read:packages` scope)
+
 ```shell
+# authentication credential of github packages
+export BUNDLE_RUBYGEMS__PKG__GITHUB__COM="USERNAME:TOKEN"
+
 # If you install gems into project local
 # bundle config set --local path 'vendor/bundle'
 bundle install
 ```
+
+see also: [Working with the RubyGems registry - GitHub Docs](https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-rubygems-registry)
 
 ## Environment variables
 
@@ -263,8 +275,15 @@ curl -s http://localhost:15000/topologies/mddo-ospf/original_asis/topology/layer
 
 ### Optional: Build netomox container
 
+netomox-exp uses [netomox](https://github.com/ool-mddo/netomox) gem that pushed on github packages.
+So, it need authentication to exec `bundle install` when building its container image.
+You have to pass authentication credential via `ghp_credential` environment variable like below:
+
+- `USERNAME` : your github username
+- `TOKEN` : your github personal access token (need `read:packages` scope)
+
 ```shell
-docker build -t netomox-exp .
+ghp_credential="USERNAME:TOKEN" docker buildx build -t netomox-exp --secret id=ghp_credential .
 ```
 
 ### Generate YARD documents
