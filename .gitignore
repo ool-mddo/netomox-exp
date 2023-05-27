@@ -1,11 +1,5 @@
 .idea/
-configs/
-models/
-netoviz_model/
 *.swp
-.env.sh
-*.test_summary.*
-*.test_detail.*
 
 *.gem
 *.rbc

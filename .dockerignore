@@ -1,19 +1,14 @@
 # auto generated documents
 doc
 figs
-# mddo project data
-configs
-models
-netoviz_model
+model_defs
 # local configs
-.env
 .rubocop.yml
 .yardoc
 .yardopts
 # docker
 .dockerignore
 Dockerfile
-docker-compose.yml
 # git
 .git
 .github
@@ -22,5 +17,6 @@ docker-compose.yml
 **/.idea
 **/.vscode
 # ruby
+Gemfile.lock
 vendor
 .bundle
