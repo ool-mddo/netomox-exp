@@ -5,6 +5,7 @@ require_relative 'l2_data_builder'
 require_relative 'l3_data_builder'
 require_relative 'expanded_l3_data_builder'
 require_relative 'ospf_data_builder'
+require_relative 'bgp_data_builder'
 
 module NetomoxExp
   # Topology data builder
@@ -86,6 +87,16 @@ module NetomoxExp
       ospf_nws = ospf_builder.make_networks
       ospf_nws.dump if ospf_debug
       to_data([ospf_nws, layer3_nws, layer2_nws, layer1_nws])
+
+      bgp_debug = debug_layer?(debug, layer, 'bgp')
+      bgp_builder = BgpDataBuilder.new(
+        target:,
+        layer3p: layer3_nws.find_network_by_name('layer3'),
+        debug: bgp_debug
+      )
+      bgp_nws = bgp_builder.make_networks
+      bgp_nws.dump if bgp_debug
+      to_data([bgp_nws, ospf_nws, layer3_nws, layer2_nws, layer1_nws])
     end
     # rubocop:enable Metrics/AbcSize, Metrics/MethodLength
   end
