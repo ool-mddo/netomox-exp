@@ -4,7 +4,7 @@ require 'netomox'
 require_relative 'namespace_converter_base'
 
 module NetomoxExp
-  # filter L3+ (over layer3...layer3 + OSPF area0)
+  # filter L3+ (over layer3...layer3 + OSPF areaN)
   # NOTE: it requires inherit NamespaceConverter to use convert_all_hash_keys
   class LayerFilter < NamespaceConverterBase
     # @param [Hash] topology_data Topology data

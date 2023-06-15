@@ -2,6 +2,19 @@
 
 require_relative 'convert_table_base'
 
+module Netomox
+  module Topology
+    # monkey patch of Netomox::Topology::Networks
+    class Networks
+      # @param [Regexp] name_regexp
+      # @return [Array<Network>] Matched networks(layers)
+      def find_all_networks_by_name_regexp(name_regexp)
+        @networks.find_all { |nws| name_regexp.match?(nws.name) }
+      end
+    end
+  end
+end
+
 module NetomoxExp
   # Term-point name convert table
   class OspfProcIdTable < ConvertTableBase
@@ -34,18 +47,25 @@ module NetomoxExp
       @convert_table.key?(node_name) && @convert_table[node_name].key?(proc_id.to_s)
     end
 
+    # rubocop:disable Metrics/MethodLength
+
     # @param [Netomox::Topology::Networks] src_nws Source networks
     # @return [void]
     def make_table(src_nws)
       super(src_nws)
-      src_nw = @src_nws.find_network('ospf_area0')
-      src_nw.nodes.each do |src_node|
-        dst_node_name = @node_name_table.convert(src_node.name)['l3_model']
-        src_proc_id = src_node.attribute.process_id
-        dst_proc_id = 'default' # to cRPD ospf (fixed)
-        add_ospf_proc_id_entry(src_node.name, src_proc_id, dst_node_name, dst_proc_id)
+      src_nw_list = @src_nws.find_all_networks_by_name_regexp(/ospf_area\d+/)
+      return if src_nw_list.empty?
+
+      src_nw_list.each do |src_nw|
+        src_nw.nodes.each do |src_node|
+          dst_node_name = @node_name_table.convert(src_node.name)['l3_model']
+          src_proc_id = src_node.attribute.process_id
+          dst_proc_id = 'default' # to cRPD ospf (fixed)
+          add_ospf_proc_id_entry(src_node.name, src_proc_id, dst_node_name, dst_proc_id)
+        end
       end
     end
+    # rubocop:enable Metrics/MethodLength
 
     private
 
