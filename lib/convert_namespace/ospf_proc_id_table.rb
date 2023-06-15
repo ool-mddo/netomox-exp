@@ -6,10 +6,12 @@ module Netomox
   module Topology
     # monkey patch of Netomox::Topology::Networks
     class Networks
-      # @param [Regexp] name_regexp
+      # @param [String] network_type Network type (see const.rb)
       # @return [Array<Network>] Matched networks(layers)
-      def find_all_networks_by_name_regexp(name_regexp)
-        @networks.find_all { |nws| name_regexp.match?(nws.name) }
+      def find_all_networks_by_type(network_type)
+        @networks.find_all do |network|
+          network.network_types.keys.include?(network_type)
+        end
       end
     end
   end
@@ -53,7 +55,7 @@ module NetomoxExp
     # @return [void]
     def make_table(src_nws)
       super(src_nws)
-      src_nw_list = @src_nws.find_all_networks_by_name_regexp(/ospf_area\d+/)
+      src_nw_list = @src_nws.find_all_networks_by_type(Netomox::NWTYPE_MDDO_OSPF_AREA)
       return if src_nw_list.empty?
 
       src_nw_list.each do |src_nw|
