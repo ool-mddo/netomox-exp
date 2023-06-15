@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+require 'ipaddr'
 require_relative 'pseudo_model'
 require_relative 'csv_mapper/bgp_peer_conf_table'
 require_relative 'csv_mapper/bgp_proc_conf_table'
@@ -67,13 +68,10 @@ module NetomoxExp
         end
       end
 
-      # @param [PNode] bgp_node BGP node (bgp proc)
       # @param [BgpPeerConfigurationTableRecord] peer_rec A peer configuration of the bgp node
-      # @return [void]
-      def add_bgp_tp(bgp_node, peer_rec)
-        debug_print "#  peer: from #{peer_rec.local_ip} to #{peer_rec.remote_ip}"
-        bgp_tp = bgp_node.term_point(peer_tp_name(peer_rec.remote_ip))
-        bgp_tp.attribute = {
+      # @return [Hash] Attribute of bgp term-point
+      def bgp_tp_attribute(peer_rec)
+        {
           local_as: peer_rec.local_as,
           local_ip: peer_rec.local_ip,
           remote_as: peer_rec.remote_as,
@@ -81,16 +79,55 @@ module NetomoxExp
         }
       end
 
+      # @param [String] l3_node_name L3 node name to support
+      # @param [String] local_ip Local ip address of a bgp term-point (peer)
+      # @return [PTermPoint] L3 term-point to support the bgp term-point
+      # @raise [StandardError]
+      def find_support_l3_tp(l3_node_name, local_ip)
+        l3_node = @layer3p.node(l3_node_name)
+        raise StandardError("Found unknown layer3 node name: #{l3_node_name}") if l3_node.nil?
+
+        l3_node.tps.find do |l3_tp|
+          debug_print "#    l3_tp: #{l3_tp.name}, #{l3_tp.attribute}"
+          l3_tp.attribute[:ip_addrs] # ["a.b.c.d/nn",...]
+               .map { |ip| IPAddr.new(ip).include?(local_ip) }
+               .include?(true)
+        end
+      end
+
+      # rubocop:disable Metrics/AbcSize
+
+      # @param [PNode] bgp_node BGP node (bgp proc)
+      # @param [BgpPeerConfigurationTableRecord] peer_rec A peer configuration of the bgp node
+      # @return [void]
+      def add_bgp_tp(bgp_node, peer_rec)
+        debug_print "#  peer: from #{peer_rec.local_ip} to #{peer_rec.remote_ip}"
+        bgp_tp = bgp_node.term_point(peer_tp_name(peer_rec.remote_ip))
+        bgp_tp.attribute = bgp_tp_attribute(peer_rec)
+
+        node_support = bgp_node.supports[0] # ["layer3", "L3-node-name"]
+        debug_print "#  node support: #{node_support}"
+        l3_tp = find_support_l3_tp(node_support[1], peer_rec.local_ip)
+        # TODO: complement eBGP peer
+        bgp_tp.supports.push([*node_support, l3_tp.name]) unless l3_tp.nil?
+      end
+      # rubocop:enable Metrics/AbcSize
+
+      # rubocop:disable Metrics/AbcSize
+
       # @param [BgpProcessConfigurationTableRecord] proc_rec BGP process configuration
       # return [void]
       def add_bgp_node_tp(proc_rec)
         debug_print "# node: #{proc_rec.node} (vrf=#{proc_rec.vrf}), router_id=#{proc_rec.router_id}"
         bgp_node = @network.node(proc_rec.router_id)
         bgp_node.attribute = { router_id: proc_rec.router_id }
+        bgp_node.supports.push([@layer3p.name, proc_rec.node])
 
+        # supporting node (NOTICE: vrf is not assumed)
         peer_recs = @bgp_peer_conf.find_all_recs_by_node_vrf(proc_rec.node, proc_rec.vrf)
         peer_recs.each { |peer_rec| add_bgp_tp(bgp_node, peer_rec) }
       end
+      # rubocop:enable Metrics/AbcSize
 
       # @return [void]
       def setup_bgp_node_tp
