@@ -2,21 +2,6 @@
 
 require_relative 'convert_table_base'
 
-module Netomox
-  module Topology
-    # monkey patch of Netomox::Topology::Networks
-    class Networks
-      # @param [String] network_type Network type (see const.rb)
-      # @return [Array<Network>] Matched networks(layers)
-      def find_all_networks_by_type(network_type)
-        @networks.find_all do |network|
-          network.network_types.keys.include?(network_type)
-        end
-      end
-    end
-  end
-end
-
 module NetomoxExp
   # Term-point name convert table
   class OspfProcIdTable < ConvertTableBase
