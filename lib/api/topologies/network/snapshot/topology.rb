@@ -5,6 +5,7 @@ require 'grape'
 require 'lib/convert_namespace/layer_filter'
 require 'lib/topology_builder/topology_builder'
 require_relative 'topology/layer'
+require_relative 'topology/layer_type'
 
 module NetomoxExp
   module ApiRoute
@@ -51,7 +52,9 @@ module NetomoxExp
           layer_filter.filter
         end
 
-        mount ApiRoute::Layer
+        # NOTICE: url match sequence
+        mount ApiRoute::LayerType # 1st match; /layer_type_:layer_type
+        mount ApiRoute::Layer # 2nd match; /:layer
       end
       # rubocop:enable Metrics/BlockLength
     end
