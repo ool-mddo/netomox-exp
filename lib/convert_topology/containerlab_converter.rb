@@ -55,7 +55,7 @@ module NetomoxExp
       data = { 'kind' => kind }
       data['image'] = image unless image.nil?
       data['startup-config'] = config unless config.nil?
-      data['bind'] = bind_configs unless bind_configs.empty?
+      data['binds'] = bind_configs unless bind_configs.empty?
       data
     end
 
