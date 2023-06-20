@@ -20,7 +20,11 @@ module NetomoxExp
         nodes = nw.nodes.select { |n| n.attribute.node_type == params[:node_type] } if params.key?(:node_type)
 
         # response
-        convert_layer_nodes(network, nodes)
+        {
+          network: nw.name,
+          attribute: nw.attribute.to_data,
+          nodes: convert_layer_nodes(network, nodes)
+        }
       end
 
       desc 'Get all interfaces in the layer'
@@ -37,7 +41,11 @@ module NetomoxExp
         nodes = nw.nodes.select { |n| n.attribute.node_type == params[:node_type] } if params.key?(:node_type)
 
         # response
-        convert_layer_interfaces(network, nodes)
+        {
+          network: nw.name,
+          attribute: nw.attribute.to_data,
+          nodes: convert_layer_interfaces(network, nodes)
+        }
       end
     end
   end
