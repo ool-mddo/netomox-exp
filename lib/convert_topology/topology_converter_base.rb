@@ -10,6 +10,8 @@ module NetomoxExp
     # @param [String] src_network Source network name (input of converter)
     # @param [NamespaceConverter] ns_converter Namespace converter
     # @param [Hash] options Other options
+    # @option options [String] :env_name Environment name (for cLab)
+    # @option options [String] :bind_license Bind configs to add license key (for cLab/cRPD)
     # @raise [StandardError]
     def initialize(topology_data, src_network, ns_converter, options = {})
       @networks = Netomox::Topology::Networks.new(topology_data)
