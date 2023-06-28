@@ -68,6 +68,8 @@ module NetomoxExp
         end
       end
 
+      # rubocop:disable Metrics/MethodLength
+
       # @param [BgpPeerConfigurationTableRecord] peer_rec A peer configuration of the bgp node
       # @return [Hash] Attribute of bgp term-point
       def bgp_tp_attribute(peer_rec)
@@ -75,9 +77,16 @@ module NetomoxExp
           local_as: peer_rec.local_as,
           local_ip: peer_rec.local_ip,
           remote_as: peer_rec.remote_as,
-          remote_ip: peer_rec.remote_ip
+          remote_ip: peer_rec.remote_ip,
+          confederation: peer_rec.confederation,
+          route_reflector_client: peer_rec.route_reflector_client,
+          cluster_id: peer_rec.cluster_id,
+          peer_group: peer_rec.peer_group,
+          import_policies: peer_rec.import_policy,
+          export_policies: peer_rec.export_policy
         }
       end
+      # rubocop:enable Metrics/MethodLength
 
       # @param [String] l3_node_name L3 node name to support
       # @param [String] local_ip Local ip address of a bgp term-point (peer)
@@ -113,6 +122,16 @@ module NetomoxExp
       end
       # rubocop:enable Metrics/AbcSize
 
+      # @param [BgpProcessConfigurationTableRecord] proc_rec BGP process configuration
+      # @return [Hash] BGP node (proc) attribute
+      def bgp_node_attribute(proc_rec)
+        {
+          router_id: proc_rec.router_id,
+          confederation_id: proc_rec.confederation_id,
+          confederation_members: proc_rec.confederation_members,
+          route_reflector: proc_rec.route_reflector
+        }
+      end
       # rubocop:disable Metrics/AbcSize
 
       # @param [BgpProcessConfigurationTableRecord] proc_rec BGP process configuration
@@ -120,7 +139,7 @@ module NetomoxExp
       def add_bgp_node_tp(proc_rec)
         debug_print "# node: #{proc_rec.node} (vrf=#{proc_rec.vrf}), router_id=#{proc_rec.router_id}"
         bgp_node = @network.node(proc_rec.router_id)
-        bgp_node.attribute = { router_id: proc_rec.router_id }
+        bgp_node.attribute = bgp_node_attribute(proc_rec)
         bgp_node.supports.push([@layer3p.name, proc_rec.node])
 
         # supporting node (NOTICE: vrf is not assumed)

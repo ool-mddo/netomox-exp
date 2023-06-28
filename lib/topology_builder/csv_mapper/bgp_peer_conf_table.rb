@@ -57,13 +57,13 @@ module NetomoxExp
           @remote_as = record[:remote_as]
           @remote_ip = record[:remote_ip]
           @description = record[:description]
-          @route_reflector_client = record[:route_reflector_client]
+          @route_reflector_client = true_string?(record[:route_reflector_client])
           @cluster_id = record[:cluster_id]
           @peer_group = record[:peer_group]
-          @import_policy = record[:peer_group]
-          @export_policy = record[:export_policy]
-          @send_community = record[:send_community]
-          @is_passive = record[:is_passive]
+          @import_policy = parse_array_string(record[:peer_group])
+          @export_policy = parse_array_string(record[:export_policy])
+          @send_community = true_string?(record[:send_community])
+          @is_passive = true_string?(record[:is_passive])
         end
         # rubocop:enable Metrics/MethodLength, Metrics/AbcSize
       end

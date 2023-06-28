@@ -32,7 +32,7 @@ module NetomoxExp
         attr_accessor :node, :vrf, :router_id, :confederation_id, :confederation_members, :multipath_ebgp,
                       :multipath_ibgp, :multipath_match_mode, :neighbors, :route_reflector, :tie_breaker
 
-        # rubocop:disable Metrics/MethodLength
+        # rubocop:disable Metrics/MethodLength, Metrics/AbcSize
 
         # @param [Enumerable] record A row of csv_mapper table
         def initialize(record)
@@ -41,15 +41,15 @@ module NetomoxExp
           @vrf = record[:vrf]
           @router_id = record[:router_id]
           @confederation_id = record[:confederation_id]
-          @confederation_members = record[:confederation_members]
-          @multipath_ebgp = record[:multipath_ebgp]
-          @multipath_ibgp = record[:multipath_ebgp]
+          @confederation_members = parse_array_string(record[:confederation_members]).map(&:to_i)
+          @multipath_ebgp = true_string?(record[:multipath_ebgp])
+          @multipath_ibgp = true_string?(record[:multipath_ebgp])
           @multipath_match_mode = record[:multipath_match_mode]
-          @neighbors = record[:neighbors]
-          @route_reflector = record[:route_reflector]
+          @neighbors = parse_array_string(record[:neighbors])
+          @route_reflector = true_string?(record[:route_reflector])
           @tie_breaker = record[:tie_breaker]
         end
-        # rubocop:enable Metrics/MethodLength
+        # rubocop:enable Metrics/MethodLength, Metrics/AbcSize
       end
 
       # bgp process configuration table

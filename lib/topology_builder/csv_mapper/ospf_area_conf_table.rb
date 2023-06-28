@@ -31,25 +31,14 @@ module NetomoxExp
           @process_id = record[:process_id]
           @area = record[:area]
           @area_type = record[:area_type]
-          @active_interfaces = parse_interfaces(record[:active_interfaces])
-          @passive_interfaces = parse_interfaces(record[:passive_interfaces])
+          @active_interfaces = parse_array_string(record[:active_interfaces])
+          @passive_interfaces = parse_array_string(record[:passive_interfaces])
         end
 
         # @return [String]
         def to_s
           [@node, @process_id, @area].map(&:to_s).join(', ')
         end
-
-        private
-
-        # rubocop:disable Security/Eval
-
-        # @param [String] intfs_str A string of interface array
-        # @return [Array<String>] Interface array
-        def parse_interfaces(intfs_str)
-          eval(intfs_str)
-        end
-        # rubocop:enable Security/Eval
       end
 
       # ospf area configuration table
