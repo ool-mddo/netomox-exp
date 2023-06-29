@@ -60,7 +60,7 @@ module NetomoxExp
           @route_reflector_client = true_string?(record[:route_reflector_client])
           @cluster_id = record[:cluster_id]
           @peer_group = record[:peer_group]
-          @import_policy = parse_array_string(record[:peer_group])
+          @import_policy = parse_array_string(record[:import_policy])
           @export_policy = parse_array_string(record[:export_policy])
           @send_community = true_string?(record[:send_community])
           @is_passive = true_string?(record[:is_passive])
