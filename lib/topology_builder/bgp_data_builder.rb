@@ -107,12 +107,19 @@ module NetomoxExp
       end
       # rubocop:enable Metrics/AbcSize
 
+      # @param [Netomox::PseudoDSL::PTermPoint] l3_tp Layer3 term-point
+      # @param [String] ip_addr IP address ("a.b.c.d")
+      # @return [String, nil] Found IP address ("a.b.c.d/nn" that includes ip_addr)
+      def find_ip_in_l3_tp_includes(l3_tp, ip_addr)
+        l3_tp.attribute[:ip_addrs].find { |ip| IPAddr.new(ip).include?(ip_addr) }
+      end
+
       # @param [Netomox::PseudoDSL::PTermPoint] l3_local_tp L3 Local term-point
       # @param [String] remote_ip Peer IP address
       # @return [String, nil] Local ip address (companion of remote_ip)
       def l3_local_ip_by_remote_ip(l3_local_tp, remote_ip)
         debug_print "#   - l3_local_tp: #{l3_local_tp.name}, attr: #{l3_local_tp.attribute}"
-        l3_local_ip = l3_local_tp.attribute[:ip_addrs].find { |ip| IPAddr.new(ip).include?(remote_ip) }
+        l3_local_ip = find_ip_in_l3_tp_includes(l3_local_tp, remote_ip)
         l3_local_ip.nil? ? nil : ip_str_wo_prefix(l3_local_ip)
       end
 
@@ -126,8 +133,10 @@ module NetomoxExp
           bgp_local_node.tps.each do |bgp_local_tp|
             local_ip = bgp_local_tp.attribute[:local_ip]
             debug_print "#   Target = local_tp: #{bgp_local_tp.name}, local_ip: #{local_ip}"
-            # Nothing to do if bgp_local_tp have local_ip attribute
-            next unless local_ip.nil?
+            unless local_ip.nil?
+              add_bgp_tp_support(bgp_local_node, bgp_local_tp, local_ip)
+              next
+            end
 
             remote_ip = bgp_local_tp.attribute[:remote_ip]
             debug_print "#   - remote_ip: #{remote_ip}"
@@ -140,6 +149,7 @@ module NetomoxExp
             local_ip = l3_local_ip_by_remote_ip(l3_local_tp, remote_ip)
             bgp_local_tp.attribute[:local_ip] = local_ip
             debug_print "#   - bgp_local_tp: attr: #{bgp_local_tp.attribute}"
+            add_bgp_tp_support(bgp_local_node, bgp_local_tp, local_ip)
           end
         end
       end
@@ -189,22 +199,18 @@ module NetomoxExp
       # rubocop:enable Metrics/MethodLength
 
       # @param [String] l3_node_name L3 node name to support
-      # @param [String] local_ip Local ip address of a bgp term-point (peer)
-      # @return [PTermPoint] L3 term-point to support the bgp term-point
+      # @param [String] ip_addr IP address
+      # @return [Netomox::PseudoDSL::PTermPoint] L3 term-point to support the bgp term-point
       # @raise [StandardError]
-      def find_support_l3_tp(l3_node_name, local_ip)
+      def find_l3_tp_by_ip(l3_node_name, ip_addr)
         l3_node = @layer3p.node(l3_node_name)
         raise StandardError("Found unknown layer3 node name: #{l3_node_name}") if l3_node.nil?
 
         l3_node.tps.find do |l3_tp|
           debug_print "#    l3_tp: #{l3_tp.name}, #{l3_tp.attribute}"
-          l3_tp.attribute[:ip_addrs] # ["a.b.c.d/nn",...]
-               .map { |ip| IPAddr.new(ip).include?(local_ip) }
-               .include?(true)
+          find_ip_in_l3_tp_includes(l3_tp, ip_addr)
         end
       end
-
-      # rubocop:disable Metrics/AbcSize
 
       # @param [PNode] bgp_node BGP node (bgp proc)
       # @param [BgpPeerConfigurationTableRecord] peer_rec A peer configuration of the bgp node
@@ -213,14 +219,17 @@ module NetomoxExp
         debug_print "#  peer: from #{peer_rec.local_ip} to #{peer_rec.remote_ip}"
         bgp_tp = bgp_node.term_point(peer_tp_name(peer_rec.remote_ip))
         bgp_tp.attribute = bgp_tp_attribute(peer_rec)
-
-        node_support = bgp_node.supports[0] # ["layer3", "L3-node-name"]
-        debug_print "#  node support: #{node_support}"
-        l3_tp = find_support_l3_tp(node_support[1], peer_rec.local_ip)
-        # TODO: complement eBGP peer
-        bgp_tp.supports.push([*node_support, l3_tp.name]) unless l3_tp.nil?
       end
-      # rubocop:enable Metrics/AbcSize
+
+      # @param [Netomox::PseudoDSL::PNode] bgp_node local bgp node
+      # @param [Netomox::PseudoDSL::PTermPoint] bgp_tp Local bgp term-point
+      # @param [String] local_ip Local ip address of the term-point
+      # @return [void]
+      def add_bgp_tp_support(bgp_node, bgp_tp, local_ip)
+        support_l3_node = bgp_node.supports[0] # ["layer3", "node-name"]
+        l3_tp = find_l3_tp_by_ip(support_l3_node[1], local_ip)
+        bgp_tp.supports.push([*support_l3_node, l3_tp.name]) unless l3_tp.nil?
+      end
 
       # @param [BgpProcessConfigurationTableRecord] proc_rec BGP process configuration
       # @return [Hash] BGP node (proc) attribute
