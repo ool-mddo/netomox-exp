@@ -20,7 +20,7 @@ module NetomoxExp
         @bgp_proc_conf = CSVMapper::BgpProcessConfigurationTable.new(target)
       end
 
-      # @return [Netomox::PseudoDSL::PNetworks] Networks contains ospf area topology
+      # @return [Netomox::PseudoDSL::PNetworks] Networks contains bgp topology
       def make_networks
         # setup bgp layer
         @network = @networks.network('bgp')
@@ -59,16 +59,26 @@ module NetomoxExp
         [nil, nil]
       end
 
+      # @param [String] ip_str IP address string with prefix length ("a.b.c.d/nn")
+      # @return [String] IP address string without prefix length
+      def ip_str_wo_prefix(ip_str)
+        ip_str.sub(%r{/\d+$}, '')
+      end
+
+      # @param [String] ip_addr IP address ("a.b.c.d") without prefix length ("/nn")
+      def find_strict_match_ip_in_l3tp_attr(l3_tp, ip_addr)
+        l3_tp.attribute[:ip_addrs].find do |ip|
+          # layer3 ip addr format in :ip_addrs attr is "a.b.c.d/nn" (with prefix length)
+          ip_str_wo_prefix(ip) == ip_addr && IPAddr.new(ip).include?(ip_addr)
+        end
+      end
+
       # @param [String] tp_ip IP address of a L3 term-point
       # @return [Array(Netomox::PseudoDSL::PNode, Netomox::PseudoDSL::PTermPoint), Array(nil, nil)]
       #   A pair of node and term-point that have the IP address
       def find_l3_node_tp_by_ip(tp_ip)
         @layer3p.nodes.reject { |node| node.attribute[:node_type] == 'segment' }.each do |node|
-          tp = node.tps.find do |term_point|
-            term_point.attribute[:ip_addrs].find do |ip|
-              ip.sub(%r{/\d+$}, '') == tp_ip && IPAddr.new(ip).include?(tp_ip)
-            end
-          end
+          tp = node.tps.find { |term_point| find_strict_match_ip_in_l3tp_attr(term_point, tp_ip) }
           next if tp.nil?
 
           return [node, tp]
@@ -81,8 +91,8 @@ module NetomoxExp
       # @param [Netomox::PseudoDSL::PNode] bgp_local_node Local node (BGP)
       # @param [Netomox::PseudoDSL::PNode] l3_remote_node Remote node (L3)
       # @param [Netomox::PseudoDSL::PTermPoint] l3_remote_tp Remote term-point (L3)
-      # @return [String] Local IP address
-      def l3_local_ip_by_remote(bgp_local_node, l3_remote_node, l3_remote_tp)
+      # @return [Netomox::PseudoDSL::PTermPoint, nil] Local term-point
+      def l3_local_tp_by_remote(bgp_local_node, l3_remote_node, l3_remote_tp)
         l3_local_node = @layer3p.node(bgp_local_node.supports[0][1])
         debug_print "#   - l3_local: #{l3_local_node.name}, l3_remote: #{l3_remote_node.name}[#{l3_remote_tp.name}]"
         l3_remote_dst_edge = @layer3p.find_link_by_src_name(l3_remote_node.name, l3_remote_tp.name)&.dst
@@ -93,11 +103,18 @@ module NetomoxExp
                                 .find { |link| link.dst.node == l3_remote_dst_edge.node }
         debug_print "#   - l3_local_link: #{l3_local_link}"
         _, l3_local_tp = @layer3p.find_node_tp_by_edge(l3_local_link.src)
-        debug_print "#   - l3_local_tp: #{l3_local_tp.name}, attr: #{l3_local_tp.attribute}"
-        # remove prefix length ("a.b.c.d/NN" -> "a.b.c.d")
-        l3_local_tp.attribute[:ip_addrs][0].sub(%r{/\d+$}, '')
+        l3_local_tp
       end
       # rubocop:enable Metrics/AbcSize
+
+      # @param [Netomox::PseudoDSL::PTermPoint] l3_local_tp L3 Local term-point
+      # @param [String] remote_ip Peer IP address
+      # @return [String, nil] Local ip address (companion of remote_ip)
+      def l3_local_ip_by_remote_ip(l3_local_tp, remote_ip)
+        debug_print "#   - l3_local_tp: #{l3_local_tp.name}, attr: #{l3_local_tp.attribute}"
+        l3_local_ip = l3_local_tp.attribute[:ip_addrs].find { |ip| IPAddr.new(ip).include?(remote_ip) }
+        l3_local_ip.nil? ? nil : ip_str_wo_prefix(l3_local_ip)
+      end
 
       # rubocop:disable Metrics/MethodLength, Metrics/AbcSize
 
@@ -117,7 +134,10 @@ module NetomoxExp
             l3_remote_node, l3_remote_tp = find_l3_node_tp_by_ip(remote_ip)
             next if l3_remote_node.nil? || l3_remote_tp.nil?
 
-            local_ip = l3_local_ip_by_remote(bgp_local_node, l3_remote_node, l3_remote_tp)
+            l3_local_tp = l3_local_tp_by_remote(bgp_local_node, l3_remote_node, l3_remote_tp)
+            next if l3_local_tp.nil?
+
+            local_ip = l3_local_ip_by_remote_ip(l3_local_tp, remote_ip)
             bgp_local_tp.attribute[:local_ip] = local_ip
             debug_print "#   - bgp_local_tp: attr: #{bgp_local_tp.attribute}"
           end
