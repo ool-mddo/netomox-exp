@@ -7,6 +7,8 @@ require_relative 'csv_mapper/bgp_proc_conf_table'
 
 module NetomoxExp
   module TopologyBuilder
+    # rubocop:disable Metrics/ClassLength
+
     # BGP data builder
     class BgpDataBuilder < DataBuilderBase
       # @param [String] target Target network (config) data name
@@ -42,8 +44,10 @@ module NetomoxExp
 
       # @param [String] local_ip Local ip address (endpoint of a link)
       # @param [String] remote_ip Remote ip address (endpoint of a link)
-      # @return [Array(PNode, PTermPoint), Array(nil, nil)] A pair of node and term-point = source of the link
-      def find_node_and_tp_by_ip(local_ip, remote_ip)
+      # @return [Array(Netomox::PseudoDSL::PNode, Netomox::PseudoDSL::PTermPoint), Array(nil, nil)]
+      #   A pair of node and term-point = source of the link
+      def find_bgp_node_tp_by_ip_pair(local_ip, remote_ip)
+        # find bgp layer (network)
         @network.nodes.each do |node|
           tp = node.tps.find do |term_point|
             term_point.attribute[:local_ip] == local_ip && term_point.attribute[:remote_ip] == remote_ip
@@ -55,18 +59,93 @@ module NetomoxExp
         [nil, nil]
       end
 
+      # @param [String] tp_ip IP address of a L3 term-point
+      # @return [Array(Netomox::PseudoDSL::PNode, Netomox::PseudoDSL::PTermPoint), Array(nil, nil)]
+      #   A pair of node and term-point that have the IP address
+      def find_l3_node_tp_by_ip(tp_ip)
+        @layer3p.nodes.reject { |node| node.attribute[:node_type] == 'segment' }.each do |node|
+          tp = node.tps.find do |term_point|
+            term_point.attribute[:ip_addrs].find do |ip|
+              ip.sub(%r{/\d+$}, '') == tp_ip && IPAddr.new(ip).include?(tp_ip)
+            end
+          end
+          next if tp.nil?
+
+          return [node, tp]
+        end
+        [nil, nil]
+      end
+
+      # rubocop:disable Metrics/AbcSize
+
+      # @param [Netomox::PseudoDSL::PNode] bgp_local_node Local node (BGP)
+      # @param [Netomox::PseudoDSL::PNode] l3_remote_node Remote node (L3)
+      # @param [Netomox::PseudoDSL::PTermPoint] l3_remote_tp Remote term-point (L3)
+      # @return [String] Local IP address
+      def l3_local_ip_by_remote(bgp_local_node, l3_remote_node, l3_remote_tp)
+        l3_local_node = @layer3p.node(bgp_local_node.supports[0][1])
+        debug_print "#   - l3_local: #{l3_local_node.name}, l3_remote: #{l3_remote_node.name}[#{l3_remote_tp.name}]"
+        l3_remote_dst_edge = @layer3p.find_link_by_src_name(l3_remote_node.name, l3_remote_tp.name)&.dst
+        debug_print "#   - l3_remote_dst: #{l3_remote_dst_edge}"
+        # NOTE: No eBGP multi-hop assumed,
+        #   it finds the `local-node -- segment -- remote-node` relation in layer3
+        l3_local_link = @layer3p.find_all_links_by_src_name(l3_local_node.name)
+                                .find { |link| link.dst.node == l3_remote_dst_edge.node }
+        debug_print "#   - l3_local_link: #{l3_local_link}"
+        _, l3_local_tp = @layer3p.find_node_tp_by_edge(l3_local_link.src)
+        debug_print "#   - l3_local_tp: #{l3_local_tp.name}, attr: #{l3_local_tp.attribute}"
+        # remove prefix length ("a.b.c.d/NN" -> "a.b.c.d")
+        l3_local_tp.attribute[:ip_addrs][0].sub(%r{/\d+$}, '')
+      end
+      # rubocop:enable Metrics/AbcSize
+
+      # rubocop:disable Metrics/MethodLength, Metrics/AbcSize
+
       # @return [void]
-      def setup_bgp_link
-        @network.nodes.each do |local_node|
-          debug_print "# Target = local_node: #{local_node.name}"
-          local_node.tps.each do |local_tp|
-            local_ip = local_tp.attribute[:local_ip]
-            remote_ip = local_tp.attribute[:remote_ip]
-            remote_node, remote_tp = find_node_and_tp_by_ip(remote_ip, local_ip)
-            @network.link(*[local_node, local_tp, remote_node, remote_tp].map(&:name)) unless remote_node.nil?
+      def complement_local_ip_in_tps
+        debug_print '# complement_local_ip_in_tps'
+        @network.nodes.each do |bgp_local_node|
+          debug_print "# Target = local_node: #{bgp_local_node.name}"
+          bgp_local_node.tps.each do |bgp_local_tp|
+            local_ip = bgp_local_tp.attribute[:local_ip]
+            debug_print "#   Target = local_tp: #{bgp_local_tp.name}, local_ip: #{local_ip}"
+            # Nothing to do if bgp_local_tp have local_ip attribute
+            next unless local_ip.nil?
+
+            remote_ip = bgp_local_tp.attribute[:remote_ip]
+            debug_print "#   - remote_ip: #{remote_ip}"
+            l3_remote_node, l3_remote_tp = find_l3_node_tp_by_ip(remote_ip)
+            next if l3_remote_node.nil? || l3_remote_tp.nil?
+
+            local_ip = l3_local_ip_by_remote(bgp_local_node, l3_remote_node, l3_remote_tp)
+            bgp_local_tp.attribute[:local_ip] = local_ip
+            debug_print "#   - bgp_local_tp: attr: #{bgp_local_tp.attribute}"
           end
         end
       end
+      # rubocop:enable Metrics/MethodLength, Metrics/AbcSize
+
+      # rubocop:disable Metrics/MethodLength, Metrics/AbcSize
+
+      # @return [void]
+      def setup_bgp_link
+        # complement local_ip attribute using layer3 info if possible
+        complement_local_ip_in_tps
+
+        @network.nodes.each do |local_node|
+          debug_print "# Target = local_node: #{local_node.name}"
+          local_node.tps.each do |local_tp|
+            local_ip, remote_ip = local_tp.attribute.fetch_values(:local_ip, :remote_ip)
+            # cannot complement local_ip...it has external peer?
+            next if local_ip.nil?
+
+            debug_print "#   local tp/ip: #{local_tp.name}/#{local_ip} -> #{remote_ip}"
+            remote_node, remote_tp = find_bgp_node_tp_by_ip_pair(remote_ip, local_ip)
+            @network.link(*[local_node, local_tp, remote_node, remote_tp].map(&:name)) unless remote_tp.nil?
+          end
+        end
+      end
+      # rubocop:enable Metrics/MethodLength, Metrics/AbcSize
 
       # rubocop:disable Metrics/MethodLength
 
@@ -86,6 +165,7 @@ module NetomoxExp
           export_policies: peer_rec.export_policy
         }
       end
+
       # rubocop:enable Metrics/MethodLength
 
       # @param [String] l3_node_name L3 node name to support
@@ -154,5 +234,6 @@ module NetomoxExp
         @bgp_proc_conf.records.each { |rec| add_bgp_node_tp(rec) }
       end
     end
+    # rubocop:enable Metrics/ClassLength
   end
 end
