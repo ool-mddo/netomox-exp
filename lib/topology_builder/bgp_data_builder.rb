@@ -29,6 +29,7 @@ module NetomoxExp
         # setup bgp layer
         setup_bgp_node_tp
         setup_bgp_link
+        update_bgp_attribute
 
         # return networks contains bgp layer
         @networks
@@ -261,6 +262,25 @@ module NetomoxExp
       def setup_bgp_node_tp
         debug_print '# setup node/tp'
         @bgp_proc_conf.records.each { |rec| add_bgp_node_tp(rec) }
+      end
+
+      # @param [Netomox::PseudoDSL::PNode] bgp_node BGP node
+      # @return [void]
+      def update_confederation_id(bgp_node)
+        debug_print '# update node confederation id'
+        return unless bgp_node.attribute[:confederation_id].nil?
+
+        confederation_ids = bgp_node.tps.map { |tp| tp.attribute[:confederation] }.uniq.compact
+        debug_print "#  node: #{bgp_node.name}, confederation_ids: #{confederation_ids}"
+        bgp_node.attribute[:confederation_id] = confederation_ids[0] unless confederation_ids.empty?
+      end
+
+      # @return [void]
+      def update_bgp_attribute
+        debug_print '# update bgp attribute'
+        @network.nodes.each do |bgp_node|
+          update_confederation_id(bgp_node)
+        end
       end
     end
     # rubocop:enable Metrics/ClassLength
