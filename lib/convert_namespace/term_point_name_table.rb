@@ -154,7 +154,10 @@ module NetomoxExp
     # @return [Hash] Converted term-point name dic
     def forward_convert_actual_tp_name(index)
       # for actual node (some container in emulated env)
-      emulated_name_dict("eth#{index}.0", l1_principal: "eth#{index}") # cRPD interface
+      # NOTE: l1_agent for cRPD, use physical interface name (without unit number),
+      #   When converting original topology to emulated topology, it assumes  L3 topology of original as L1 topology of emulated.
+      #   l1_agent is "name in device configuration" in emulated. Therefore, use physical name of a interface on cRPD as l1_agent name
+      emulated_name_dict("eth#{index}.0", l1_agent: "eth#{index}", l1_principal: "eth#{index}") # cRPD interface
     end
 
     # rubocop:disable Metrics/AbcSize
