@@ -197,20 +197,26 @@ curl -s http://localhost:9292/topologies/mddo-ospf/emulated_asis/topology/layer3
 
 Fetch all nodes and its attributes with namespace-converted names in a layer of the topology data
 
-* GET `/topologies/<network>/<snapshot>/topology/<layer>/nodes`
+* GET `/topologies/<network>/<snapshot>/topology/<layer>/nodes` (single layer)
+* GET `/topologies/<network>/<snapshot>/topology/layer_type_<layer_type>/nodes` (multiple layers)
+* option
   * `node_type`: filter specified type nodes (segment/node/endpoint)
 
 ```shell
-curl -s http://localhost:9292/topologies/mddo-ospf/emulated_asis/topology/layer3/nodes
+curl -s http://localhost:9292/topologies/mddo-ospf/emulated_asis/topology/ospf_area0/nodes
+curl -s http://localhost:9292/topologies/mddo-ospf/emulated_asis/topology/layer_type_ospf/nodes
 ```
 
 Fetch all interfaces and its attributes with namespace-converted names in a layer of the topology data
 
-* GET `/topologies/<network>/<snapshot>/topology/<layer>/interfaces`
+* GET `/topologies/<network>/<snapshot>/topology/<layer>/interfaces` (single layer)
+* GET `/topologies/<network>/<snapshot>/topology/layer_type_<layer_type>/interfaces` (multiple layers)
+* option
   * `node_type`: filter specified type nodes (segment/node/endpoint)
 
 ```shell
-curl -s http://localhost:9292/topologies/mddo-ospf/emulated_asis/topology/layer3/interfaces
+curl -s http://localhost:9292/topologies/mddo-ospf/emulated_asis/topology/ospf_area0/interfaces
+curl -s http://localhost:9292/topologies/mddo-ospf/emulated_asis/topology/layer_type_ospf/interfaces
 ```
 
 Fetch all nodes and interface parameters to generate CNF configurations
@@ -221,6 +227,7 @@ Fetch all nodes and interface parameters to generate CNF configurations
 ```shell
 curl -s http://localhost:9292/topologies/mddo-ospf/emulated_asis/topology/layer3/config_params
 ```
+
 <details>
 <summary>Response example:</summary>
 

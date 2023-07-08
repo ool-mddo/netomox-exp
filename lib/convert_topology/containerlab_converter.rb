@@ -49,11 +49,13 @@ module NetomoxExp
     # @param [String] kind Container type
     # @param [String] image Container image name
     # @param [String] config Startup-config file name
+    # @param [Array<String>] bind_configs
     # @return [Hash]
-    def define_node_data(kind, image: nil, config: nil)
+    def define_node_data(kind, image: nil, config: nil, bind_configs: [])
       data = { 'kind' => kind }
       data['image'] = image unless image.nil?
       data['startup-config'] = config unless config.nil?
+      data['binds'] = bind_configs unless bind_configs.empty?
       data
     end
 
@@ -66,7 +68,8 @@ module NetomoxExp
       when 'segment'
         define_node_data('ovs-bridge')
       when 'node', 'endpoint'
-        define_node_data('juniper_crpd', image: 'crpd:22.1R1.10', config: "#{node_name}.conf")
+        define_node_data('juniper_crpd', image: 'crpd:22.1R1.10', config: "#{node_name}.conf",
+                                         bind_configs: [@options[:bind_license]])
       else
         raise StandardError, "Unknown node type: #{node.name}, type=#{node.attribute.node_type}"
       end

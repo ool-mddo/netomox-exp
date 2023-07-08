@@ -4,7 +4,7 @@ require 'grape'
 
 module NetomoxExp
   module ApiRoute
-    # api /nodes
+    # api /nodes, /interfaces
     class LayerObjects < Grape::API
       desc 'Get all nodes in the layer'
       params do
@@ -16,19 +16,15 @@ module NetomoxExp
         nw = nws.find_network(layer)
         error!("#{network}/#{snapshot}/#{layer} not found", 404) if nw.nil?
 
-        ns_converter = ns_converter_wo_topology(network)
-        nodes = nw.nodes.map
+        nodes = nw.nodes
         nodes = nw.nodes.select { |n| n.attribute.node_type == params[:node_type] } if params.key?(:node_type)
 
         # response
-        nodes.map do |node|
-          {
-            node: node.name,
-            reverse: ns_converter.node_name_table.reverse_lookup(node.name),
-            alias: ns_converter.node_name_table.find_l1_alias(node.name),
-            attribute: node.attribute.to_data
-          }
-        end
+        {
+          network: nw.name,
+          attribute: nw.attribute.to_data,
+          nodes: convert_layer_nodes(network, nodes)
+        }
       end
 
       desc 'Get all interfaces in the layer'
@@ -41,27 +37,15 @@ module NetomoxExp
         nw = nws.find_network(layer)
         error!("#{network}/#{snapshot}/#{layer} not found", 404) if nw.nil?
 
-        ns_converter = ns_converter_wo_topology(network)
         nodes = nw.nodes
         nodes = nw.nodes.select { |n| n.attribute.node_type == params[:node_type] } if params.key?(:node_type)
 
         # response
-        nodes.map do |node|
-          {
-            node: node.name,
-            reverse: ns_converter.node_name_table.reverse_lookup(node.name),
-            alias: ns_converter.node_name_table.find_l1_alias(node.name),
-            attribute: node.attribute.to_data,
-            interfaces: node.termination_points.map do |tp|
-              {
-                interface: tp.name,
-                reverse: ns_converter.tp_name_table.reverse_lookup(node.name, tp.name)[1],
-                alias: ns_converter.tp_name_table.find_l1_alias(node.name, tp.name),
-                attribute: tp.attribute.to_data
-              }
-            end
-          }
-        end
+        {
+          network: nw.name,
+          attribute: nw.attribute.to_data,
+          nodes: convert_layer_interfaces(network, nodes)
+        }
       end
     end
   end
