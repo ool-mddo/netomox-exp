@@ -31,33 +31,35 @@ module NetomoxExp
       private
 
       # @param [Netomox::PseudoDSL::PNode] l1_node A node under the new layer2 node
-      # @param [Netomox::PseudoDSL::PTermPoint] l1_tp Layer1 term-point under the new layer2 term-point
       # @param [InterfacePropertiesTableRecord] l1_tp_prop Layer1 (phy) or unit interface property
       # @param [Integer] vlan_id VLAN id (if used)
       # @return [String] Suffix string for Layer2 node name
-      def l2_node_name_suffix(l1_node, l1_tp, l1_tp_prop, vlan_id)
+      def l2_node_name_suffix(l1_node, l1_tp_prop, vlan_id)
         return l1_tp_prop.interface unless vlan_id.positive?
-        return l2_tp_name(l1_node, l1_tp, l1_tp_prop, vlan_id) if juniper_node?(l1_node)
 
-        "Vlan#{vlan_id}" # Cisco-IOS-style (SVI)
+        if juniper_node?(l1_node)
+          # Juniper-Junos-style
+          format('vlan%<vlan_id>04d', vlan_id:)
+        else
+          # Cisco-IOS-style (SVI)
+          "Vlan#{vlan_id}"
+        end
       end
 
       # @param [Netomox::PseudoDSL::PNode] l1_node A node under the new layer2 node
-      # @param [Netomox::PseudoDSL::PTermPoint] l1_tp Layer1 term-point under the new layer2 term-point
       # @param [InterfacePropertiesTableRecord] l1_tp_prop Layer1 (phy) or unit interface property
       # @param [Integer] vlan_id VLAN id (if used)
       # @return [String] Name of layer2 node
-      def l2_node_name(l1_node, l1_tp, l1_tp_prop, vlan_id)
-        "#{l1_node.name}_#{l2_node_name_suffix(l1_node, l1_tp, l1_tp_prop, vlan_id)}"
+      def l2_node_name(l1_node, l1_tp_prop, vlan_id)
+        "#{l1_node.name}_#{l2_node_name_suffix(l1_node, l1_tp_prop, vlan_id)}"
       end
 
       # @param [Netomox::PseudoDSL::PNode] l1_node A node under the new layer2 node
-      # @param [Netomox::PseudoDSL::PTermPoint] l1_tp Layer1 term-point under the new layer2 term-point
       # @param [InterfacePropertiesTableRecord] l1_tp_prop Layer1 (phy) or unit interface property
       # @param [Integer] vlan_id VLAN id (if used)
       # @return [Netomox::PseudoDSL::PNode] Added layer2 node
-      def add_l2_node(l1_node, l1_tp, l1_tp_prop, vlan_id)
-        new_node = @network.node(l2_node_name(l1_node, l1_tp, l1_tp_prop, vlan_id))
+      def add_l2_node(l1_node, l1_tp_prop, vlan_id)
+        new_node = @network.node(l2_node_name(l1_node, l1_tp_prop, vlan_id))
         new_node.attribute = { name: l1_node.name, vlan_id: }
         # same supports are pushed when vlan bridge node (uniq)
         new_node.supports.push([@layer1p.name, l1_node.name]).uniq!
@@ -140,7 +142,7 @@ module NetomoxExp
       # @param [Integer] vlan_id vlan_id VLAN id (if used)
       # @return [Array(Netomox::PseudoDSL::PNode, Netomox::PseudoDSL::PTermPoint)] A pair of added node name and tp name
       def add_l2_node_tp(l1_node, l1_tp, l1_tp_prop, vlan_id)
-        new_node = add_l2_node(l1_node, l1_tp, l1_tp_prop, vlan_id)
+        new_node = add_l2_node(l1_node, l1_tp_prop, vlan_id)
         new_tp = add_l2_tp(new_node, l1_node, l1_tp, l1_tp_prop, vlan_id)
         [new_node, new_tp]
       end
