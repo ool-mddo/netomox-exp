@@ -151,6 +151,8 @@ module NetomoxExp
         end
       end
 
+      # rubocop:disable Metrics/AbcSize
+
       # add loopback term-point to ospf-are anode if origin (layer3) node has loopback
       # @param [Netomox::PseudoDSL::PLinkEdge] l3_edge A edge of L3 link
       # @return [void]
@@ -160,10 +162,15 @@ module NetomoxExp
         debug_print "  # Add loopback interface to #{ospf_node.name} from #{l3_node.name}"
 
         find_all_l3_tps_by_flags(l3_node, 'loopback').each do |l3_tp_lo|
-          debug_print "    - add: #{l3_tp_lo.name} to #{ospf_node.name}"
+          ospf_tp_lo_rec = @ospf_intf_conf.find_record_by_node_intf(l3_node.name, l3_tp_lo.name)
+          debug_print "    - search: #{l3_node.name}[#{l3_tp_lo.name}] in ospf_intf_conf > #{ospf_tp_lo_rec}"
+          next if ospf_tp_lo_rec.nil? || ospf_tp_lo_rec.ospf_area_name != @area_id
+
+          debug_print "    - add: #{l3_tp_lo.name} to #{ospf_node.name} in ospf area #{@area_id}"
           add_tp_to_ospf_node(l3_node, l3_tp_lo, ospf_node)
         end
       end
+      # rubocop:enable Metrics/AbcSize
 
       # @param [Netomox::PseudoDSL::PNode] l3_node Layer3 node
       # @param [Netomox::PseudoDSL::PTermPoint] l3_tp Layer3 term-point of l3_node
@@ -196,8 +203,8 @@ module NetomoxExp
       # @param [Netomox::PseudoDSL::PTermPoint] tp2 Source ospf term-point
       # @return [void]
       def add_ospf_link(node1, tp1, node2, tp2)
-        @network.link(node1, tp1, node2, tp2)
-        @network.link(node2, tp2, node1, tp1) # bidirectional
+        @network.link(*[node1, tp1, node2, tp2].map(&:name))
+        @network.link(*[node2, tp2, node1, tp1].map(&:name)) # bidirectional
       end
 
       # rubocop:disable Metrics/AbcSize
@@ -215,7 +222,7 @@ module NetomoxExp
           n1, tp1 = add_ospf_node_tp(l3_link.src) # segment node
           n2, tp2 = add_ospf_node_tp(l3_link.dst) # ospf-proc node
           add_ospf_node_loopback_tp(l3_link.dst) # segment node doesn't have loopback
-          add_ospf_link(n1.name, tp1.name, n2.name, tp2.name)
+          add_ospf_link(n1, tp1, n2, tp2)
         end
       end
       # rubocop:enable Metrics/AbcSize
