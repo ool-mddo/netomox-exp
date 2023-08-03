@@ -25,6 +25,8 @@ module NetomoxExp
         @segment_prefixes = {}.compare_by_identity
       end
 
+      # rubocop:disable Metrics/MethodLength
+
       # @return [Netomox::PseudoDSL::PNetworks] Networks contains only layer3 network topology
       def make_networks
         @network = @networks.network('layer3')
@@ -36,8 +38,10 @@ module NetomoxExp
         add_l3_node_tp_link
         add_l3_loopback_tps
         update_node_attribute
+        add_unlinked_ip_owner_tp
         @networks
       end
+      # rubocop:enable Metrics/MethodLength
 
       private
 
@@ -336,7 +340,28 @@ module NetomoxExp
           update_node_static_route_attr(l3_node)
         end
       end
+
+      # rubocop:disable Metrics/MethodLength
+
+      # add unlinked interface which owns ip address (interface to external network/AS)
+      # @return [void]
+      def add_unlinked_ip_owner_tp
+        debug_print '# add_unlinked_tp'
+        @layer2p.nodes.each do |l2_node|
+          debug_print "  - target node: #{l2_node.name}"
+          l2_node.tps.each do |l2_tp|
+            l2_link = @layer2p.find_link_by_src_name(l2_node.name, l2_tp.name)
+            # nothing to do if the term-point is linked (L2)
+            next if l2_link
+
+            debug_print "  - find unlinked tp: #{l2_tp.name}"
+            l2_edge = Netomox::PseudoDSL::PLinkEdge.new(l2_node.name, l2_tp.name)
+            add_l3_node_tp(l2_edge)
+          end
+        end
+      end
     end
+    # rubocop:enable Metrics/MethodLength
   end
 end
 # rubocop:enable Metrics/ClassLength

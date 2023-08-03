@@ -25,6 +25,7 @@ module NetomoxExp
         @network.supports.push(@layer1p.name)
         setup_nodes_and_links
         check_disconnected_node
+        add_unlinked_ip_owner_tp
         @networks
       end
 
@@ -320,6 +321,32 @@ module NetomoxExp
           add_l2_node_tp_link_by_config(src_node, src_tp, dst_node, dst_tp, check_result)
         end
       end
+
+      # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
+
+      # add unlinked interface which owns ip address (interface to external network/AS)
+      # @return [void]
+      def add_unlinked_ip_owner_tp
+        debug_print '# add_unlinked_tp'
+        @layer1p.nodes.each do |l1_node|
+          debug_print "  - target node: #{l1_node.name}"
+          l1_node.tps.each do |l1_tp|
+            l1_link = @layer1p.find_link_by_src_name(l1_node.name, l1_tp.name)
+            next if l1_link
+
+            debug_print "    - find unlinked L1 tp: #{l1_tp.name}"
+            link_edge = Netomox::PseudoDSL::PLinkEdge.new(l1_node.name, l1_tp.name)
+            _, _, tp_prop = tp_prop_by_link_edge(link_edge)
+            tp_prop = choose_tp_prop(l1_node, tp_prop)
+            debug_print "    - tp prop: #{tp_prop}"
+
+            # unlinked interface is L3 (routed)
+            # @see [L1DataBuilder#add_unlinked_ip_owner_tp]
+            add_l2_node_tp(l1_node, l1_tp, tp_prop, 0)
+          end
+        end
+      end
+      # rubocop:enable Metrics/AbcSize, Metrics/MethodLength
     end
     # rubocop:enable Metrics/ClassLength
   end

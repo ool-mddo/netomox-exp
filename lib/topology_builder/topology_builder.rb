@@ -10,6 +10,9 @@ require_relative 'bgp_data_builder'
 module NetomoxExp
   # Topology data builder
   module TopologyBuilder
+    # Regexp to check interface (term-point) name (loopback interface or not)
+    LO_INTERFACE_REGEXP = %r{^lo(?:opback)?[-\d./:]*$}i
+
     module_function
 
     # @param [Array<Netomox::PseudoDSL::PNetworks>] nws Networks
