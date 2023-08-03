@@ -14,30 +14,9 @@ def register_layer3_external(nws)
           attribute({ ip_addrs: %w[172.16.0.5/30] })
         end
         term_point 'Ethernet2' do
-          attribute({ ip_addrs: %w[172.16.0.14/30] })
-        end
-        term_point 'Ethernet3' do
-          attribute({ ip_addrs: %w[172.26.1.1/30] })
-        end
-      end
-      node 'PNI02' do
-        term_point 'Ethernet1' do
           attribute({ ip_addrs: %w[172.16.1.9/30] })
         end
-        term_point 'Ethernet2' do
-          attribute({ ip_addrs: %w[172.16.1.14/30] })
-        end
-        term_point 'Ethernet3' do
-          attribute({ ip_addrs: %w[172.26.1.2/30] })
-        end
-      end
-      node 'PNI-Root' do
-        term_point 'Ethernet1' do
-          attribute({ ip_addrs: %w[172.16.0.13/30] })
-        end
-        term_point 'Ethernet2' do
-          attribute({ ip_addrs: %w[172.16.1.13/30] })
-        end
+
         term_point 'Ethernet3' do
           attribute({ ip_addrs: %w[10.0.1.1/24] })
         end
@@ -51,6 +30,7 @@ def register_layer3_external(nws)
           attribute({ ip_addrs: %w[10.0.4.1/24] })
         end
       end
+
       node 'endpoint01-iperf1' do
         term_point 'ens2' do
           attribute({ ip_addrs: %w[10.0.1.100/24] })
@@ -72,15 +52,10 @@ def register_layer3_external(nws)
         end
       end
 
-      bdlink %w[PNI01 Ethernet3 PNI02 Ethernet3]
-
-      bdlink %w[PNI01 Ethernet2 PNI-Root Ethernet1]
-      bdlink %w[PNI02 Ethernet2 PNI-Root Ethernet2]
-
-      bdlink %w[PNI-Root Ethernet3 endpoint01-iperf1 ens2]
-      bdlink %w[PNI-Root Ethernet4 endpoint01-iperf2 ens3]
-      bdlink %w[PNI-Root Ethernet5 endpoint01-iperf3 enp1s4]
-      bdlink %w[PNI-Root Ethernet6 endpoint01-iperf4 enp1s5]
+      bdlink %w[PNI01 Ethernet3 endpoint01-iperf1 ens2]
+      bdlink %w[PNI01 Ethernet4 endpoint01-iperf2 ens3]
+      bdlink %w[PNI01 Ethernet5 endpoint01-iperf3 enp1s4]
+      bdlink %w[PNI01 Ethernet6 endpoint01-iperf4 enp1s5]
 
       # AS65520, POI-East
       node 'POI-East' do

@@ -17,7 +17,7 @@ def register_bgp_as(nws)
           attribute({ description: 'from Edge-TK01 to PNI01' })
         end
         term_point 'peer_172.16.1.9' do
-          attribute({ description: 'from Edge-TK02 to PNI02' })
+          attribute({ description: 'from Edge-TK02 to PNI01' })
         end
         term_point 'peer_192.168.0.10' do
           attribute({ description: 'from Edge-TK01 to POI-East' })
@@ -30,16 +30,14 @@ def register_bgp_as(nws)
       # PNI
       node 'as65550' do
         support %w[bgp_external PNI01]
-        support %w[bgp_external PNI02]
-        support %w[bgp_external PNI-Root]
 
         term_point 'peer_172.16.0.6' do
           attribute({ description: 'from PNI01 to Edge-TK01' })
           support %w[bgp_external PNI01 peer_172.16.0.6]
         end
         term_point 'peer_172.16.1.10' do
-          attribute({ description: 'from PNI02 to Edge-TK02' })
-          support %w[bgp_external PNI02 peer_172.16.1.10]
+          attribute({ description: 'from PNI01 to Edge-TK02' })
+          support %w[bgp_external PNI01 peer_172.16.1.10]
         end
       end
 
