@@ -180,6 +180,22 @@ module NetomoxExp
         l1_node.attribute[:os_type].downcase == 'juniper'
       end
 
+      # @param [Netomox::PseudoDSL::PNode] l1_node Layer1 node
+      # @param [CSVMapper::IPOwnersTableRecord] rec A record of ip_owners table
+      # @return [String] physical interface name for junos (nothing to do for other OS)
+      def select_physical_tp_name(l1_node, rec)
+        juniper_node?(l1_node) ? rec.interface.gsub(/(\d+)\.\d+/, '\1') : rec.interface
+      end
+
+      # @param [Netomox::PseudoDSL::PNode] l1_node Layer1 node
+      # @param [CSVMapper::IPOwnersTableRecord] rec A record of ip_owners table
+      # @return [Boolean] true if the record is LAG interface (parent/logical interface)
+      def lag_interface?(l1_node, rec)
+        l1_tp_name = select_physical_tp_name(l1_node, rec)
+        intf_prop_rec = @intf_props.find_record_by_node_intf(l1_node.name, l1_tp_name)
+        intf_prop_rec&.lag_parent? ? true : false
+      end
+
       # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
 
       # add unlinked interface which owns ip address (interface to external network/AS)
@@ -191,10 +207,10 @@ module NetomoxExp
           @ip_owners.find_all_records_by_node(l1_node.name).each do |rec|
             l1_link = @network.find_link_by_src_name(l1_node.name, rec.interface)
             # nothing to do if the term-point is linked (L1) or logical interface
-            next if l1_link || rec.loopback_interface?
+            next if l1_link || rec.loopback_interface? || lag_interface?(l1_node, rec)
 
             debug_print "    - find unlinked tp: #{rec.interface}"
-            l1_tp_name = juniper_node?(l1_node) ? rec.interface.gsub(/(\d+)\.\d+/, '\1') : rec.interface
+            l1_tp_name = select_physical_tp_name(l1_node, rec)
             add_node_tp(l1_node.name, l1_tp_name)
           end
         end
