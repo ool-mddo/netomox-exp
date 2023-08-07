@@ -41,7 +41,10 @@ module NetomoxExp
           @vrf = record[:vrf]
           @router_id = record[:router_id]
           @confederation_id = record[:confederation_id]
-          @confederation_members = parse_array_string(record[:confederation_members]).map(&:to_i)
+
+          cf_nums = record[:confederation_members]
+          @confederation_members = cf_nums.instance_of?(Integer) ? [cf_nums] : parse_array_string(cf_nums).map(&:to_i)
+
           @multipath_ebgp = true_string?(record[:multipath_ebgp])
           @multipath_ibgp = true_string?(record[:multipath_ebgp])
           @multipath_match_mode = record[:multipath_match_mode]
