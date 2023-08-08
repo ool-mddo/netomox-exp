@@ -60,54 +60,6 @@ module NetomoxExp
         [nil, nil]
       end
 
-      # @param [String] ip_str IP address string with prefix length ("a.b.c.d/nn")
-      # @return [String] IP address string without prefix length
-      def ip_str_wo_prefix(ip_str)
-        ip_str.sub(%r{/\d+$}, '')
-      end
-
-      # @param [String] ip_addr IP address ("a.b.c.d") without prefix length ("/nn")
-      def find_strict_match_ip_in_l3tp_attr(l3_tp, ip_addr)
-        l3_tp.attribute[:ip_addrs].find do |ip|
-          # layer3 ip addr format in :ip_addrs attr is "a.b.c.d/nn" (with prefix length)
-          ip_str_wo_prefix(ip) == ip_addr && IPAddr.new(ip).include?(ip_addr)
-        end
-      end
-
-      # @param [String] tp_ip IP address of a L3 term-point
-      # @return [Array(Netomox::PseudoDSL::PNode, Netomox::PseudoDSL::PTermPoint), Array(nil, nil)]
-      #   A pair of node and term-point that have the IP address
-      def find_l3_node_tp_by_ip(tp_ip)
-        @layer3p.nodes.reject { |node| node.attribute[:node_type] == 'segment' }.each do |node|
-          tp = node.tps.find { |term_point| find_strict_match_ip_in_l3tp_attr(term_point, tp_ip) }
-          next if tp.nil?
-
-          return [node, tp]
-        end
-        [nil, nil]
-      end
-
-      # rubocop:disable Metrics/AbcSize
-
-      # @param [Netomox::PseudoDSL::PNode] bgp_local_node Local node (BGP)
-      # @param [Netomox::PseudoDSL::PNode] l3_remote_node Remote node (L3)
-      # @param [Netomox::PseudoDSL::PTermPoint] l3_remote_tp Remote term-point (L3)
-      # @return [Netomox::PseudoDSL::PTermPoint, nil] Local term-point
-      def l3_local_tp_by_remote(bgp_local_node, l3_remote_node, l3_remote_tp)
-        l3_local_node = @layer3p.node(bgp_local_node.supports[0][1])
-        debug_print "#   - l3_local: #{l3_local_node.name}, l3_remote: #{l3_remote_node.name}[#{l3_remote_tp.name}]"
-        l3_remote_dst_edge = @layer3p.find_link_by_src_name(l3_remote_node.name, l3_remote_tp.name)&.dst
-        debug_print "#   - l3_remote_dst: #{l3_remote_dst_edge}"
-        # NOTE: No eBGP multi-hop assumed,
-        #   it finds the `local-node -- segment -- remote-node` relation in layer3
-        l3_local_link = @layer3p.find_all_links_by_src_name(l3_local_node.name)
-                                .find { |link| link.dst.node == l3_remote_dst_edge.node }
-        debug_print "#   - l3_local_link: #{l3_local_link}"
-        _, l3_local_tp = @layer3p.find_node_tp_by_edge(l3_local_link.src)
-        l3_local_tp
-      end
-      # rubocop:enable Metrics/AbcSize
-
       # @param [Netomox::PseudoDSL::PTermPoint] l3_tp Layer3 term-point
       # @param [String] ip_addr IP address ("a.b.c.d")
       # @return [String, nil] Found IP address ("a.b.c.d/nn" that includes ip_addr)
@@ -115,17 +67,70 @@ module NetomoxExp
         l3_tp.attribute[:ip_addrs].find { |ip| IPAddr.new(ip).include?(ip_addr) }
       end
 
-      # @param [Netomox::PseudoDSL::PTermPoint] l3_local_tp L3 Local term-point
-      # @param [String] remote_ip Peer IP address
-      # @return [String, nil] Local ip address (companion of remote_ip)
-      def l3_local_ip_by_remote_ip(l3_local_tp, remote_ip)
-        debug_print "#   - l3_local_tp: #{l3_local_tp.name}, attr: #{l3_local_tp.attribute}"
-        l3_local_ip = find_ip_in_l3_tp_includes(l3_local_tp, remote_ip)
-        l3_local_ip.nil? ? nil : ip_str_wo_prefix(l3_local_ip)
+      # @param [String] ip_string IP address string with prefix (ex: "192.168.0.3/24")
+      # @return [String] IP address string without prefix (ex: "192.168.0.3")
+      def ip_string_without_prefix(ip_string)
+        ip_string.gsub(%r{/\d+$}, '')
       end
 
-      # rubocop:disable Metrics/MethodLength, Metrics/AbcSize
+      # rubocop:disable Metrics/MethodLength
 
+      # @param [Netomox::PseudoDSL::PNode] bgp_local_node BGP node (local)
+      # @param [String] remote_ip Peer (remote) IP address of the BGP node
+      # @return [String] Local IP address
+      # @raise [StandardError] A BGP node does not have support L3 node
+      def find_local_ip_from_support_node(bgp_local_node, remote_ip)
+        if bgp_local_node.supports.empty?
+          raise StandardError, "bgp_local_node does not have support node: #{bgp_local_node.name}"
+        end
+
+        l3_local_node_name = bgp_local_node.supports[0][1]
+        l3_local_tp = find_l3_tp_by_ip(l3_local_node_name, remote_ip)
+        l3_local_ip = find_ip_in_l3_tp_includes(l3_local_tp, remote_ip)
+        if l3_local_ip.nil?
+          raise StandardError, "underlay L3 tp of #{l3_local_node_name}[#{l3_local_tp.name}] does not have IP?"
+        end
+
+        debug_print "#     -> l3_local_tp: #{l3_local_node_name}[#{l3_local_tp.name}] : l3_local_ip: #{l3_local_ip}"
+        ip_string_without_prefix(l3_local_ip)
+      end
+      # rubocop:enable Metrics/MethodLength
+
+      # @param [Netomox::PseudoDSL::PNode] bgp_local_node BGP node (local)
+      # @param [Netomox::PseudoDSL::PTermPoint] bgp_local_tp Term point of the BGP node (local)
+      # @return [void]
+      def add_bgp_tp_support_for_ebgp_peer(bgp_local_node, bgp_local_tp)
+        # for eBGP peer (external AS node),
+        # remote node data does not exist but local node knows remote_ip
+        #
+        #   external AS node
+        #   (not exist)
+        #
+        #   +----------+ Remote IP      +---------+
+        #   | (bgp     * o ---------- o * bgp     |
+        #   |  remote) | :  (local IP): | local   |
+        #   +----------+ :            : +---------+
+        #        :       :            :      :
+        #        V       :            :      V
+        #   +----------+ V            V +---------+
+        #   | (layer3  * o ---------- o * layer3  |
+        #   |  remote) |                | local   |
+        #   +----------+                +---------+
+        #
+        # So it assume that:
+        # * local_ip does not exists: eBGP peer
+        # * local_ip is a address of a tp in L3 supported node (L3 local)
+        #   and the tp owns ip addr that in same L3 segment of remote_ip
+        #
+        remote_ip = bgp_local_tp.attribute[:remote_ip]
+        debug_print "#   - (eBGP peer) remote_ip: #{remote_ip}"
+        l3_local_ip = find_local_ip_from_support_node(bgp_local_node, remote_ip)
+        add_bgp_tp_support(bgp_local_node, bgp_local_tp, l3_local_ip)
+      end
+
+      # rubocop:disable Metrics/MethodLength
+
+      # Complement support term-point info for all BGP term-points
       # @return [void]
       def complement_local_ip_in_tps
         debug_print '# complement_local_ip_in_tps'
@@ -139,22 +144,12 @@ module NetomoxExp
               next
             end
 
-            remote_ip = bgp_local_tp.attribute[:remote_ip]
-            debug_print "#   - remote_ip: #{remote_ip}"
-            l3_remote_node, l3_remote_tp = find_l3_node_tp_by_ip(remote_ip)
-            next if l3_remote_node.nil? || l3_remote_tp.nil?
-
-            l3_local_tp = l3_local_tp_by_remote(bgp_local_node, l3_remote_node, l3_remote_tp)
-            next if l3_local_tp.nil?
-
-            local_ip = l3_local_ip_by_remote_ip(l3_local_tp, remote_ip)
-            bgp_local_tp.attribute[:local_ip] = local_ip
-            debug_print "#   - bgp_local_tp: attr: #{bgp_local_tp.attribute}"
-            add_bgp_tp_support(bgp_local_node, bgp_local_tp, local_ip)
+            # eBGP peer (bgp_peer_conf record have remote_ip but not have local_ip)
+            add_bgp_tp_support_for_ebgp_peer(bgp_local_node, bgp_local_tp)
           end
         end
       end
-      # rubocop:enable Metrics/MethodLength, Metrics/AbcSize
+      # rubocop:enable Metrics/MethodLength
 
       # rubocop:disable Metrics/MethodLength, Metrics/AbcSize
 
@@ -208,7 +203,7 @@ module NetomoxExp
         raise StandardError("Found unknown layer3 node name: #{l3_node_name}") if l3_node.nil?
 
         l3_node.tps.find do |l3_tp|
-          debug_print "#    l3_tp: #{l3_tp.name}, #{l3_tp.attribute}"
+          debug_print "#     l3_tp: #{l3_tp.name}, #{l3_tp.attribute}"
           find_ip_in_l3_tp_includes(l3_tp, ip_addr)
         end
       end
@@ -227,8 +222,10 @@ module NetomoxExp
       # @param [String] local_ip Local ip address of the term-point
       # @return [void]
       def add_bgp_tp_support(bgp_node, bgp_tp, local_ip)
-        support_l3_node = bgp_node.supports[0] # ["layer3", "node-name"]
+        support_l3_node = bgp_node.supports[0] # => ["layer3", "node-name"]
         l3_tp = find_l3_tp_by_ip(support_l3_node[1], local_ip)
+
+        bgp_tp.attribute[:local_ip] = local_ip if bgp_tp.attribute[:local_ip].nil?
         bgp_tp.supports.push([*support_l3_node, l3_tp.name]) unless l3_tp.nil?
       end
 
@@ -261,6 +258,7 @@ module NetomoxExp
       # @return [void]
       def setup_bgp_node_tp
         debug_print '# setup node/tp'
+        # NOTE: Constructing this layer is based on bgp config (bgp topology), rather than L3 topology.
         @bgp_proc_conf.records.each { |rec| add_bgp_node_tp(rec) }
       end
 
