@@ -12,6 +12,7 @@ module NetomoxExp
           network, snapshot = %i[network snapshot].map { |key| params[key] }
           ns_converter = ns_converter_wo_topology(network)
           ns_converter.load_origin_topology(read_topology_file(network, snapshot))
+
           # response
           ns_converter.convert
         end

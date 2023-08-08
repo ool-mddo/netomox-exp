@@ -8,8 +8,8 @@ require_relative 'bgp_trial/layer3_ext'
 
 nws = Netomox::DSL::Networks.new
 
-register_bgp_as(nws)
-register_bgp_external(nws)
 register_layer3_external(nws)
+register_bgp_external(nws)
+register_bgp_as(nws)
 
 puts JSON.pretty_generate(nws.topo_data)

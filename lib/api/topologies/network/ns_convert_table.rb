@@ -28,6 +28,7 @@ module NetomoxExp
             ns_converter.reload_convert_table(params[:convert_table])
           end
           save_ns_convert_table(network, ns_converter.convert_table)
+
           # response
           {}
         end
@@ -41,6 +42,7 @@ module NetomoxExp
         desc 'Delete convert_table'
         delete do
           FileUtils.rm_f(ns_convert_table_file(params[:network]))
+
           # response
           ''
         end
@@ -60,6 +62,7 @@ module NetomoxExp
               resp[:origin_if] = if_name
               resp[:target_if] = ns_converter.tp_name_table.convert(host_name, if_name)
             end
+
             # response
             resp
           rescue StandardError

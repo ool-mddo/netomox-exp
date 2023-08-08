@@ -35,11 +35,15 @@ module NetomoxExp
           topology_dir = File.join(TOPOLOGIES_DIR, network, snapshot)
           topology_file = File.join(topology_dir, 'topology.json')
           save_json_file(topology_file, topology_data)
+
+          # response (echo-back saved data)
+          read_topology_file(network, snapshot)
         end
 
         desc 'Get topology data'
         get do
           network, snapshot = %i[network snapshot].map { |key| params[key] }
+
           # response
           read_topology_file(network, snapshot)
         end
@@ -48,6 +52,7 @@ module NetomoxExp
         get 'upper_layer3' do
           network, snapshot = %i[network snapshot].map { |key| params[key] }
           layer_filter = LayerFilter.new(read_topology_file(network, snapshot))
+
           # response
           layer_filter.filter
         end

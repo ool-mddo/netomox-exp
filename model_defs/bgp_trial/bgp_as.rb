@@ -8,6 +8,7 @@ def register_bgp_as(nws)
     network 'bgp_as' do
       type Netomox::NWTYPE_MDDO_L3 # temporary
       support 'bgp_external'
+      support 'bgp' # not exist in external-AS definition
       # attribute({})
 
       # self
@@ -15,15 +16,19 @@ def register_bgp_as(nws)
         # supporting nodes and term-points will be generated from original-asis configs
         term_point 'peer_172.16.0.5' do
           attribute({ description: 'from Edge-TK01 to PNI01' })
+          support %w[bgp 192.168.255.5 peer_172.16.0.5]
         end
         term_point 'peer_172.16.1.9' do
           attribute({ description: 'from Edge-TK02 to PNI01' })
+          support %w[bgp 192.168.255.6 peer_172.16.1.9]
         end
         term_point 'peer_192.168.0.10' do
           attribute({ description: 'from Edge-TK01 to POI-East' })
+          support %w[bgp 192.168.255.5 peer_192.168.0.10]
         end
         term_point 'peer_192.168.0.14' do
           attribute({ description: 'from Edge-TK02 to POI-East' })
+          support %w[bgp 192.168.255.6 peer_192.168.0.14]
         end
       end
 

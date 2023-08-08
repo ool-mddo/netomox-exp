@@ -2,6 +2,7 @@
 
 require 'grape'
 require_relative 'snapshot/converted_topology'
+require_relative 'snapshot/splice_topology'
 require_relative 'snapshot/topology/layer'
 require_relative 'snapshot/topology'
 
@@ -14,6 +15,7 @@ module NetomoxExp
       end
       resource ':snapshot' do
         mount ApiRoute::ConvertedTopology
+        mount ApiRoute::SpliceTopology
         mount ApiRoute::Topology
       end
     end
