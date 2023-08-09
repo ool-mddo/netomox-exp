@@ -4,15 +4,7 @@ require 'netomox'
 
 module Netomox
   module Topology
-    # reopen base object class to add method
-    class TopoObjectBase
-      # @return [String] Parent object name
-      def parent_name
-        @parent_path.split('__').last
-      end
-    end
-
-    # reopen node class to add meethod
+    # reopen node class to add method
     class Node < TopoObjectBase
       # @param [Node] node Node
       # @return [void]
@@ -26,7 +18,7 @@ module Netomox
       # @param [Node] node Node
       # @return [Hash] support data
       def support_data_by_node(node)
-        paths = node.path.split('__')
+        paths = node.path_list
         {
           'network-ref' => paths[0],
           'node-ref' => paths[1]
@@ -47,7 +39,7 @@ module Netomox
       # @param [String] segment Segment string (ex: "a.b.c.d/xx")
       # @param [TermPoint] tp1 TermPoint1 (src)
       # @param [TermPoint] tp2 TermPoint2 (dst)
-      # @return [Node]
+      # @return [Node] Target segment node
       def append_segment_node(segment, tp1, tp2)
         segment_node = find_node_by_name(segment_node_name(segment))
         # return it if found (exists already)
@@ -95,6 +87,7 @@ module Netomox
       end
 
       # rubocop:disable Metrics/MethodLength
+
       # @param [TermPoint] src_tp Source term-point (link edge)
       # @param [TermPoint] dst_tp Destination term-point (link edge)
       # @return [Hash] Link data (RFC8345 Hash)
