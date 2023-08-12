@@ -23,7 +23,7 @@ module NetomoxExp
       # @return [Netomox::PseudoDSL::PNetworks] Networks contains bgp topology
       def make_networks
         # setup bgp layer
-        @network = @networks.network('bgp')
+        @network = @networks.network('bgp_proc')
         @network.type = Netomox::NWTYPE_MDDO_BGP
         @network.attribute = { name: 'mddo-bgp-network' }
         # setup bgp layer
