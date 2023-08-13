@@ -24,7 +24,7 @@ module NetomoxExp
       def make_networks
         # setup bgp layer
         @network = @networks.network('bgp_proc')
-        @network.type = Netomox::NWTYPE_MDDO_BGP
+        @network.type = Netomox::NWTYPE_MDDO_BGP_PROC
         @network.attribute = { name: 'mddo-bgp-network' }
         # setup bgp layer
         setup_bgp_node_tp
