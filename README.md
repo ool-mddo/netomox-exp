@@ -120,6 +120,14 @@ Fetch topology data
 curl http://localhost:9292/topologies/pushed_configs/mddo_network/topology
 ```
 
+Fetch topology data (Upper layer3)
+
+* GET `/topologies/<network>/<snapshot>/topology/upper_layer3`
+
+```shell
+curl http://localhost:9292/topologies/mddo-ospf/original_asis/topology/upper_layer3
+```
+
 ### Operate namespace convert table
 
 Delete namespace convert table of a network

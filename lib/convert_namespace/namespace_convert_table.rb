@@ -15,9 +15,6 @@ module NetomoxExp
 
     def initialize
       super
-      # NOTE: initialized in #make_convert_table method:
-      #   used when construct convert table from topology data
-      @src_nws = nil
       # convert tables
       @node_name_table = NodeNameTable.new
       @tp_name_table = TermPointNameTable.new(@node_name_table)
@@ -33,12 +30,6 @@ module NetomoxExp
         'ospf_proc_id_table' => @ospf_proc_id_table.to_data,
         'static_route_tp_table' => @static_route_tp_table.to_data
       }
-    end
-
-    # @param [Netomox::Topology::Networks] topology_data Topology data
-    # @raise [StandardError]
-    def load_origin_topology(topology_data)
-      @src_nws = Netomox::Topology::Networks.new(topology_data)
     end
 
     # @param [Netomox::Topology::Networks] topology_data Topology data

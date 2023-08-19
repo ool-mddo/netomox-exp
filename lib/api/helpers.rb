@@ -17,7 +17,7 @@ module NetomoxExp
     end
 
     # @param [String] file_path File path to save
-    # @param [void]
+    # @return [void]
     def save_json_file(file_path, data)
       logger.warn "[save_json_file] path=#{file_path}"
       FileUtils.mkdir_p(File.dirname(file_path))
@@ -73,7 +73,9 @@ module NetomoxExp
         layer1: Netomox::NWTYPE_MDDO_L1,
         layer2: Netomox::NWTYPE_MDDO_L2,
         layer3: Netomox::NWTYPE_MDDO_L3,
-        ospf: Netomox::NWTYPE_MDDO_OSPF_AREA
+        ospf: Netomox::NWTYPE_MDDO_OSPF_AREA,
+        bgp_proc: Netomox::NWTYPE_MDDO_BGP_PROC,
+        bgp_as: Netomox::NWTYPE_MDDO_BGP_AS
       }
       layer_type_table[layer_type.intern]
     end

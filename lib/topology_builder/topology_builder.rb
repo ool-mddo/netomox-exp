@@ -20,6 +20,7 @@ module NetomoxExp
     def to_data(nws)
       nmx_nws = Netomox::DSL::Networks.new
       nmx_nws.networks = nws.map(&:interpret).map(&:networks).flatten
+      nmx_nws.networks.reject! { |nw| nw.nodes.empty? } # reject empty layer
       nmx_nws.topo_data
     end
 

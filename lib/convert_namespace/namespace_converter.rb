@@ -40,7 +40,7 @@ module NetomoxExp
 
     # @param [Netomox::Topology::Node] node
     def segment_node?(node)
-      node.attribute.node_type == 'segment'
+      (layer3_node?(node) || ospf_node?(node)) && node.attribute.node_type == 'segment'
     end
 
     # @param [Netomox::Topology::TermPoint] src_tp Source term-point (L3+)

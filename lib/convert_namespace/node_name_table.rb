@@ -42,14 +42,15 @@ module NetomoxExp
       @convert_table.key?(node_name)
     end
 
-    # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
+    # rubocop:disable Metrics:AbcSize
 
-    # @param [Netomox::Topology::Networks] src_nws Source networks
+    # @param [Netomox::Topology::Network] src_nw Source network (layer3)
     # @return [void]
-    def make_table(src_nws)
-      super(src_nws)
+    # @raise [StandardError] if target layer is not found
+    def make_layer3_node_table(src_nw)
+      raise StandardError, 'Network: layer3 is not found' if src_nw.nil?
+
       segment_node_count = -1
-      src_nw = @src_nws.find_network('layer3')
       src_nw.nodes.each do |src_node|
         segment_node_count += 1 if segment_node?(src_node)
         # forward (src -> dst) node name conversion
@@ -63,7 +64,34 @@ module NetomoxExp
         end
       end
     end
-    # rubocop:enable Metrics/AbcSize, Metrics/MethodLength
+    # rubocop:enable Metrics:AbcSize
+
+    # @param [Netomox::Topology::Network] src_nw Source network (bgp-proc/as)
+    # @return [void]
+    def make_pass_through_node_table(src_nw)
+      # nothing to do if target layer is not found
+      return if src_nw.nil?
+
+      src_nw.nodes.each do |src_node|
+        next if @convert_table.key?(src_node.name)
+
+        # pass-through (do not convert)
+        @convert_table[src_node.name] = pass_through_name_dict(src_node.name)
+      end
+    end
+
+    # @param [Netomox::Topology::Networks] src_nws Source networks
+    # @return [void]
+    def make_table(src_nws)
+      super(src_nws)
+      # convert table (for layer3, ospf-area)
+      make_layer3_node_table(@src_nws.find_network('layer3'))
+
+      # convert table (not converted: for bgp-proc, bgp-as)
+      %w[bgp_proc bgp_as].each do |nw_name|
+        make_pass_through_node_table(@src_nws.find_network(nw_name))
+      end
+    end
 
     private
 

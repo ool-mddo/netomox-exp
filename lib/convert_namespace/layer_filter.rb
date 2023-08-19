@@ -10,7 +10,7 @@ module NetomoxExp
     # @param [Hash] topology_data Topology data
     def initialize(topology_data)
       super()
-      @src_nws = Netomox::Topology::Networks.new(topology_data)
+      load_origin_topology(topology_data)
     end
 
     # @return [Hash]

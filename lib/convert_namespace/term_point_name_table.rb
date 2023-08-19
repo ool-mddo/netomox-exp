@@ -69,12 +69,10 @@ module NetomoxExp
       @convert_table.key?(node_name) && @convert_table[node_name].key?(tp_name)
     end
 
-    # @param [Netomox::Topology::Networks] src_nws Source networks
+    # @param [Netomox::Topology::Network] src_nw Source network (layer3)
     # @return [void]
-    # @raise [StandardError] if target layer (layer3) is not found
-    def make_table(src_nws)
-      super(src_nws)
-      src_nw = @src_nws.find_network('layer3')
+    # @raise [StandardError] if target layer is not found
+    def make_layer3_tp_table(src_nw)
       raise StandardError, 'Network: layer3 is not found' if src_nw.nil?
 
       make_table_for_actual(src_nw)
@@ -82,6 +80,39 @@ module NetomoxExp
       #   are used for the interface name of the segment node.
       #   Therefore, it is necessary to first create an interface name conversion table for the node.
       make_table_for_segment(src_nw)
+    end
+
+    # rubocop:disable Metrics/AbcSize
+
+    # @param [Netomox::Topology::Network] src_nw Source network (bgp-proc/as)
+    # @return [void]
+    # @raise [StandardError] if target layer is not found
+    def make_pass_through_tp_table(src_nw)
+      # nothing to do if target layer is not found
+      return if src_nw.nil?
+
+      src_nw.nodes.each do |node|
+        node.termination_points.each do |tp|
+          # node name is not converted in node table
+          @convert_table[node.name] = {} unless key_in_table?(node.name)
+          @convert_table[node.name][tp.name] = pass_through_name_dict(tp.name) unless key_in_table?(node.name, tp.name)
+        end
+      end
+    end
+    # rubocop:enable Metrics/AbcSize
+
+    # @param [Netomox::Topology::Networks] src_nws Source networks
+    # @return [void]
+    def make_table(src_nws)
+      super(src_nws)
+
+      # convert table (for layer3, ospf-area)
+      make_layer3_tp_table(@src_nws.find_network('layer3'))
+
+      # convert table (not converted: for bgp-proc, bgp-as)
+      %w[bgp_proc bgp_as].each do |nw_name|
+        make_pass_through_tp_table(@src_nws.find_network(nw_name))
+      end
     end
 
     private
