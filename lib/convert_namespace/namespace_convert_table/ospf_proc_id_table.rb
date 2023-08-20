@@ -17,8 +17,8 @@ module NetomoxExp
       # @return [String, Integer] Converted OSPF process id (integer or "default")
       # @raise [StandardError]
       def convert(src_node_name, proc_id)
-        raise StandardError, "Node: #{src_node_name} is not in ospf-proc-id-table" unless key_in_table?(src_node_name)
-        unless key_in_table?(src_node_name, proc_id)
+        raise StandardError, "Node: #{src_node_name} is not in ospf-proc-id-table" unless key?(src_node_name)
+        unless key?(src_node_name, proc_id)
           raise StandardError, "Proc-ID: #{proc_id} in #{src_node_name} is not in ospf-proc-id-table"
         end
 
@@ -29,7 +29,7 @@ module NetomoxExp
       # @param [String] node_name Node name (OSPF)
       # @param [String, Integer] proc_id OSPF process id
       # @return [Boolean] True if the node and proc_id are in ospf process id table key
-      def key_in_table?(node_name, proc_id = nil)
+      def key?(node_name, proc_id = nil)
         return @convert_table.key?(node_name) if proc_id.nil?
 
         @convert_table.key?(node_name) && @convert_table[node_name].key?(proc_id.to_s)
@@ -64,11 +64,11 @@ module NetomoxExp
       # @return [void]
       def add_ospf_proc_id_entry(src_node, src_proc_id, dst_node, dst_proc_id)
         # forward
-        @convert_table[src_node] = {} unless key_in_table?(src_node)
-        @convert_table[src_node][src_proc_id.to_s] = dst_proc_id.to_s unless key_in_table?(src_node, src_proc_id)
+        @convert_table[src_node] = {} unless key?(src_node)
+        @convert_table[src_node][src_proc_id.to_s] = dst_proc_id.to_s unless key?(src_node, src_proc_id)
         # reverse
-        @convert_table[dst_node] = {} unless key_in_table?(dst_node)
-        @convert_table[dst_node][dst_proc_id.to_s] = src_proc_id.to_s unless key_in_table?(dst_node, dst_proc_id)
+        @convert_table[dst_node] = {} unless key?(dst_node)
+        @convert_table[dst_node][dst_proc_id.to_s] = src_proc_id.to_s unless key?(dst_node, dst_proc_id)
       end
     end
   end

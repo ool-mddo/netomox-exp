@@ -10,7 +10,7 @@ module NetomoxExp
       # @return [Hash] node name dic
       # @raise [StandardError]
       def convert(src_node_name)
-        raise StandardError, "Node name: #{src_node_name} is not in node-table" unless key_in_table?(src_node_name)
+        raise StandardError, "Node name: #{src_node_name} is not in node-table" unless key?(src_node_name)
 
         # key string is "L3 model name"
         #
@@ -39,7 +39,7 @@ module NetomoxExp
 
       # @param [String] node_name Node name
       # @return [Boolean] True if the node name is in node table key
-      def key_in_table?(node_name)
+      def key?(node_name)
         @convert_table.key?(node_name)
       end
 
@@ -58,9 +58,9 @@ module NetomoxExp
           dst_node_dic = forward_convert_node_name(src_node, segment_node_count)
 
           # forward
-          @convert_table[src_node.name] = dst_node_dic unless key_in_table?(src_node.name)
+          @convert_table[src_node.name] = dst_node_dic unless key?(src_node.name)
           # reverse
-          unless key_in_table?(dst_node_dic['l3_model'])
+          unless key?(dst_node_dic['l3_model'])
             @convert_table[dst_node_dic['l3_model']] = emulated_name_dict(src_node.name)
           end
         end

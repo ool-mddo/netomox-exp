@@ -17,9 +17,8 @@ module NetomoxExp
       # @return [Hash] term-point name dic
       # @raise [StandardError]
       def convert(src_node_name, src_tp_name)
-        raise StandardError, "Node: #{src_node_name} is not in tp-table" unless key_in_table?(src_node_name)
-        raise StandardError, "TP: #{src_tp_name} is not in tp-table" unless key_in_table?(src_node_name,
-                                                                                          src_tp_name)
+        raise StandardError, "Node: #{src_node_name} is not in tp-table" unless key?(src_node_name)
+        raise StandardError, "TP: #{src_tp_name} is not in tp-table" unless key?(src_node_name, src_tp_name)
 
         # key string is "L3 model name"
         #
@@ -64,7 +63,7 @@ module NetomoxExp
       # @param [String] node_name Node name
       # @param [String] tp_name Term-point name
       # @return [Boolean] True if the node and term-point are in term-point table key
-      def key_in_table?(node_name, tp_name = nil)
+      def key?(node_name, tp_name = nil)
         return @convert_table.key?(node_name) if tp_name.nil?
 
         @convert_table.key?(node_name) && @convert_table[node_name].key?(tp_name)
@@ -95,9 +94,8 @@ module NetomoxExp
         src_nw.nodes.each do |node|
           node.termination_points.each do |tp|
             # node name is not converted in node table
-            @convert_table[node.name] = {} unless key_in_table?(node.name)
-            @convert_table[node.name][tp.name] = pass_through_name_dict(tp.name) unless key_in_table?(node.name,
-                                                                                                      tp.name)
+            @convert_table[node.name] = {} unless key?(node.name)
+            @convert_table[node.name][tp.name] = pass_through_name_dict(tp.name) unless key?(node.name, tp.name)
           end
         end
       end
@@ -126,9 +124,9 @@ module NetomoxExp
       # @return [void]
       def add_tp_name_entry(src_node_name, src_tp_name, dst_node_name, dst_tp_dic)
         # forward
-        @convert_table[src_node_name][src_tp_name] = dst_tp_dic unless key_in_table?(src_node_name, src_tp_name)
+        @convert_table[src_node_name][src_tp_name] = dst_tp_dic unless key?(src_node_name, src_tp_name)
         # reverse
-        return if key_in_table?(dst_node_name, dst_tp_dic['l3_model'])
+        return if key?(dst_node_name, dst_tp_dic['l3_model'])
 
         @convert_table[dst_node_name][dst_tp_dic['l3_model']] = emulated_name_dict(src_tp_name)
       end
@@ -138,9 +136,9 @@ module NetomoxExp
       # @return [void]
       def add_tp_name_hash(src_node_name, dst_node_name)
         # forward
-        @convert_table[src_node_name] = {} unless key_in_table?(src_node_name)
+        @convert_table[src_node_name] = {} unless key?(src_node_name)
         # reverse
-        @convert_table[dst_node_name] = {} unless key_in_table?(dst_node_name)
+        @convert_table[dst_node_name] = {} unless key?(dst_node_name)
       end
 
       # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
