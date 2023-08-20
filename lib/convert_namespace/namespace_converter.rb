@@ -4,7 +4,7 @@ require 'forwardable'
 require 'netomox'
 require 'ipaddr'
 require_relative 'namespace_converter_base'
-require_relative 'convert_table/convert_table'
+require_relative 'namespace_convert_table/convert_table'
 
 module NetomoxExp
   # rubocop:disable Metrics/ClassLength
@@ -19,7 +19,7 @@ module NetomoxExp
     def initialize
       super
 
-      @convert_table = NamespaceConvertTable.new
+      @convert_table = NamespaceConvertTable::ConvertTable.new
     end
 
     # @param [Hash] topology_data Topology data (RFC8345 Hash)
