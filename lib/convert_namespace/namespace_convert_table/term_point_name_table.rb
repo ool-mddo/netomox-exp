@@ -96,7 +96,8 @@ module NetomoxExp
           node.termination_points.each do |tp|
             # node name is not converted in node table
             @convert_table[node.name] = {} unless key_in_table?(node.name)
-            @convert_table[node.name][tp.name] = pass_through_name_dict(tp.name) unless key_in_table?(node.name, tp.name)
+            @convert_table[node.name][tp.name] = pass_through_name_dict(tp.name) unless key_in_table?(node.name,
+                                                                                                      tp.name)
           end
         end
       end

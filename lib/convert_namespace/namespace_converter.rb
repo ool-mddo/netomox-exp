@@ -76,8 +76,9 @@ module NetomoxExp
       src_tp.supports
             .find_all { |tp_sup| target_network?(tp_sup.ref_network) }
             .map do |tp_sup|
+        converted_node = @convert_table.node_name.convert(tp_sup.ref_node)['l3_model']
         converted_tp = @convert_table.tp_name.convert(tp_sup.ref_node, tp_sup.ref_tp)['l3_model']
-        [tp_sup.ref_network, @convert_table.node_name.convert(tp_sup.ref_node)['l3_model'], converted_tp]
+        [tp_sup.ref_network, converted_node, converted_tp]
       end
     end
 
@@ -85,7 +86,8 @@ module NetomoxExp
     # @param [Netomox::Topology::TermPoint] src_tp Source term-point (L3+)
     # @return [Netomox::PseudoDSL::PTermPoint]
     def rewrite_term_point(src_node, src_tp)
-      dst_tp = Netomox::PseudoDSL::PTermPoint.new(@convert_table.tp_name.convert(src_node.name, src_tp.name)['l3_model'])
+      converted_node = @convert_table.tp_name.convert(src_node.name, src_tp.name)['l3_model']
+      dst_tp = Netomox::PseudoDSL::PTermPoint.new(converted_node)
       dst_tp.attribute = convert_all_hash_keys(src_tp.attribute.to_data)
       dst_tp.supports = rewrite_tp_supports(src_tp)
       dst_tp
@@ -97,7 +99,10 @@ module NetomoxExp
       # ignore layer3 -> layer2 support info: these are not used in emulated env
       src_node.supports
               .find_all { |node_sup| target_network?(node_sup.ref_network) }
-              .map { |node_sup| [node_sup.ref_network, @convert_table.node_name.convert(node_sup.ref_node)['l3_model']] }
+              .map do |node_sup|
+        converted_node = @convert_table.node_name.convert(node_sup.ref_node)['l3_model']
+        [node_sup.ref_network, converted_node]
+      end
     end
 
     # @param [Netomox::PseudoDSL::PNode] node Node (destination)
@@ -120,7 +125,8 @@ module NetomoxExp
 
       # rewrite static route next-hop interface (if it is not 'dynamic')
       dst_node.attribute[:static_routes].each do |route|
-        route[:interface] = @convert_table.static_route_tp.convert(src_node.name, route[:prefix], route[:interface])
+        converted_tp = @convert_table.static_route_tp.convert(src_node.name, route[:prefix], route[:interface])
+        route[:interface] = converted_tp
       end
     end
 
@@ -129,7 +135,8 @@ module NetomoxExp
     # @return [void]
     def rewrite_ospf_node_attr(src_node, dst_node)
       # rewrite ospf process-id in node-attribute of ospf-layer
-      dst_node.attribute[:process_id] = @convert_table.ospf_proc_id.convert(src_node.name, src_node.attribute.process_id.to_s)
+      converted_proc_id = @convert_table.ospf_proc_id.convert(src_node.name, src_node.attribute.process_id.to_s)
+      dst_node.attribute[:process_id] = converted_proc_id
     end
 
     # @param [Netomox::Topology::Node] src_node Source node (L3+)
@@ -143,23 +150,27 @@ module NetomoxExp
       rewrite_ospf_node_attr(src_node, dst_node) if ospf_node?(src_node)
     end
 
+    # rubocop:disable Metrics/AbcSize
+
     # @param [Netomox::Topology::Node] src_node Source node (L3+)
     # @return [Netomox::PseudoDSL::PNode]
     def rewrite_node(src_node)
-      dst_node = Netomox::PseudoDSL::PNode.new(@convert_table.node_name.convert(src_node.name)['l3_model'])
+      converted_node = @convert_table.node_name.convert(src_node.name)['l3_model']
+      dst_node = Netomox::PseudoDSL::PNode.new(converted_node)
       dst_node.tps = src_node.termination_points.map { |src_tp| rewrite_term_point(src_node, src_tp) }
       dst_node.attribute = convert_all_hash_keys(src_node.attribute.to_data)
       dst_node.supports = rewrite_node_support(src_node)
       rewrite_node_attr(src_node, dst_node)
       dst_node
     end
+    # rubocop:enable Metrics/AbcSize
 
     # @param [Netomox::Topology::TpRef] orig_edge Original link edge
     # @return [Netomox::PseudoDSL::PLinkEdge]
     def rewrite_link_edge(orig_edge)
-      node = @convert_table.node_name.convert(orig_edge.node_ref)['l3_model']
-      tp = @convert_table.tp_name.convert(orig_edge.node_ref, orig_edge.tp_ref)['l3_model']
-      Netomox::PseudoDSL::PLinkEdge.new(node, tp)
+      converted_node = @convert_table.node_name.convert(orig_edge.node_ref)['l3_model']
+      converted_tp = @convert_table.tp_name.convert(orig_edge.node_ref, orig_edge.tp_ref)['l3_model']
+      Netomox::PseudoDSL::PLinkEdge.new(converted_node, converted_tp)
     end
 
     # @param [Netomox::Topology::Link] src_link Source link (L3+)
