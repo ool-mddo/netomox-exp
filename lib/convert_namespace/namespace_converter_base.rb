@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require 'json'
-
 module NetomoxExp
   # Base class of namespace converter
   class NamespaceConverterBase
@@ -33,14 +31,18 @@ module NetomoxExp
     }.freeze
 
     def initialize
-      # NOTE: initialized in #make_convert_table method:
-      #   used when construct convert table from topology data
+      # NOTE: initialized with #load_origin_topology
+      #   #convert_all_hash_keys and related methods are used in children: NamespaceConverter and UpperLayer3Filter.
+      #   Each class has different condition to initialize itself.
+      # @see NamespaceConvertTable#reload
+      #   It can make a instance of NamespaceConvertTable. It instance has two method to initialize:
+      #   1. Give it topology data (initialize from RFC8345 json)
+      #   2. Reload old convert table without topology data
       @src_nws = nil
     end
 
     # @param [Hash] topology_data Topology data (RFC8345 Hash)
     # @return [void]
-    # @raise [StandardError]
     def load_origin_topology(topology_data)
       @src_nws = Netomox::Topology::Networks.new(topology_data)
       @upper_l3_nw_names = upper_layer3_network_names
