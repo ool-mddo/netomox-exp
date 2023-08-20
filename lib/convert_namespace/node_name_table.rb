@@ -42,7 +42,7 @@ module NetomoxExp
       @convert_table.key?(node_name)
     end
 
-    # rubocop:disable Metrics:AbcSize
+    # rubocop:disable Metrics/AbcSize
 
     # @param [Netomox::Topology::Network] src_nw Source network (layer3)
     # @return [void]
@@ -64,7 +64,7 @@ module NetomoxExp
         end
       end
     end
-    # rubocop:enable Metrics:AbcSize
+    # rubocop:enable Metrics/AbcSize
 
     # @param [Netomox::Topology::Network] src_nw Source network (bgp-proc/as)
     # @return [void]

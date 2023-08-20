@@ -43,7 +43,7 @@ module NetomoxExp
     # @raise [StandardError]
     def load_origin_topology(topology_data)
       @src_nws = Netomox::Topology::Networks.new(topology_data)
-      @over_layer3_nw_names = upper_layer3_network_names
+      @upper_l3_nw_names = upper_layer3_network_names
     end
 
     protected
@@ -59,7 +59,7 @@ module NetomoxExp
     # @param [String] network_name Network (layer) name
     # @return [Boolean] True if the network_name matches one of TARGET_NW_REGEXP_LIST
     def target_network?(network_name)
-      @over_layer3_nw_names.include?(network_name)
+      @upper_l3_nw_names.include?(network_name)
     end
 
     # @param [Symbol] key Key to convert

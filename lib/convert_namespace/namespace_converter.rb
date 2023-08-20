@@ -40,6 +40,7 @@ module NetomoxExp
 
     # @param [Netomox::Topology::Node] node
     def segment_node?(node)
+      # segment node is only in L3 and OSPF_AREA network
       (layer3_node?(node) || ospf_node?(node)) && node.attribute.node_type == 'segment'
     end
 
