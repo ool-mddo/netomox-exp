@@ -77,7 +77,7 @@ module NetomoxExp
         end
 
         # @param [String] local_ip Local IP
-        # @param
+        # @param [String] remote_ip Remote IP
         # @return [Array<BgpPeerConfigurationTableRecord>] found records
         def find_all_recs_by_end_ip(local_ip, remote_ip)
           @records.find_all { |rec| rec.local_ip == local_ip && rec.remote_ip == remote_ip }

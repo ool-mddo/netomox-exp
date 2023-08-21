@@ -4,13 +4,13 @@ require 'netomox'
 require_relative 'namespace_converter_base'
 
 module NetomoxExp
-  # filter L3+ (over layer3...layer3 + OSPF areaN)
+  # filter L3+ (upper layer3...layer3 + OSPF-areaN + BGP-proc/as)
   # NOTE: it requires inherit NamespaceConverter to use convert_all_hash_keys
-  class LayerFilter < NamespaceConverterBase
+  class UpperLayer3Filter < NamespaceConverterBase
     # @param [Hash] topology_data Topology data
     def initialize(topology_data)
       super()
-      @src_nws = Netomox::Topology::Networks.new(topology_data)
+      load_origin_topology(topology_data)
     end
 
     # @return [Hash]

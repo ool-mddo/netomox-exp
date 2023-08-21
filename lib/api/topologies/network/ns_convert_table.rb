@@ -22,12 +22,12 @@ module NetomoxExp
           if params.key?(:origin_snapshot)
             snapshot = params[:origin_snapshot]
             logger.info "Initialize namespace convert table with snapshot: #{network}/#{snapshot}"
-            ns_converter.make_convert_table(read_topology_file(network, snapshot))
+            ns_converter.load_origin_topology(read_topology_file(network, snapshot))
           else
             logger.info "Update namespace convert table of network: #{network}"
-            ns_converter.reload_convert_table(params[:convert_table])
+            ns_converter.reload(params[:convert_table])
           end
-          save_ns_convert_table(network, ns_converter.convert_table)
+          save_ns_convert_table(network, ns_converter.to_hash)
 
           # response
           {}
