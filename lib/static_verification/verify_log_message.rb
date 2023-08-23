@@ -36,7 +36,7 @@ module NetomoxExp
       # @param [String,Symbol] base_severity Base severity
       # @return [Boolean] true if message severity is more severe than base severity
       def upper_severity?(base_severity)
-        base_priority = SEVERITIES.find_index(normalize_severity(base_severity)) || (severities.length - 1)
+        base_priority = SEVERITIES.find_index(normalize_severity(base_severity)) || (SEVERITIES.length - 1)
         message_priority = SEVERITIES.find_index(@severity) # normalized
         message_priority <= base_priority
       end
