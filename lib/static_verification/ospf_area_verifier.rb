@@ -17,8 +17,13 @@ module NetomoxExp
       # @return [Array<Hash>] Level-filtered description check results
       def verify(severity)
         verify_according_to_links
-        verify_according_to_nodes
-        verify_according_to_segments
+        verify_according_to_nodes do |node|
+          next unless segment_node?(node)
+
+          # for each segment-node
+          verify_ospf_params(node)
+        end
+
         @log_messages.filter { |msg| msg.upper_severity?(severity) }.map(&:to_hash)
       end
 
@@ -32,7 +37,6 @@ module NetomoxExp
       # @return [Boolean] true if all tp has same attribute value
       def uniq_value?(node_tps)
         values = node_tps.map { |tp| yield(tp.attribute) }
-        puts "# DEBUG: values:#{values} -> #{values.uniq.length}"
         values.uniq.length == 1
       end
 
@@ -74,13 +78,6 @@ module NetomoxExp
         add_log_message(:error, seg_node.path, 'Connected ospf-node has mismatch network-type')
       end
       # rubocop:enable Metrics/MethodLength, Metrics/AbcSize
-
-      # @return [void]
-      def verify_according_to_segments
-        @target_nw.nodes.filter { |node| segment_node?(node) }.each do |seg_node|
-          verify_ospf_params(seg_node)
-        end
-      end
     end
   end
 end
