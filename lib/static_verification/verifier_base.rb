@@ -8,16 +8,17 @@ module NetomoxExp
   class VerifierBase
     # @param [Netomox::Topology::Networks] networks Networks object
     # @param [String] layer Layer name to handle
-    def initialize(networks, layer)
+    # @param [String] network_type Layer (network) type
+    def initialize(networks, layer, network_type)
       network = networks.find_network(layer)
 
       raise StandardError, "Layer:#{layer} is not found" if network.nil?
-      unless network.network_types.keys.include?(Netomox::NWTYPE_MDDO_BGP_PROC)
-        raise StandardError, "Layer:#{layer} is not bgp-proc"
+      unless network.network_types.keys.include?(network_type)
+        raise StandardError, "Layer:#{layer} type is not #{network_type}"
       end
 
       @log_messages = [] # [Array<VerifyLogMessage>]
-      @bgp_proc_nw = network
+      @target_nw = network
     end
 
     protected
