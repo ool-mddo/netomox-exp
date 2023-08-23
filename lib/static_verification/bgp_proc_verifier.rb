@@ -8,13 +8,9 @@ module NetomoxExp
   class BgpProcVerifier < VerifierBase
     # @param [String] severity Base severity
     def verify(severity)
-      @bgp_proc_nw.links.each do |bgp_proc_link|
-        _, src_tp = find_node_tp_by_edge(bgp_proc_link.source)
-        _, dst_tp = find_node_tp_by_edge(bgp_proc_link.destination)
-        verify_link_pair(bgp_proc_link)
-        verify_peer_params(src_tp, dst_tp)
-      end
-      @log_messages.filter { |msg| upper_severity?(msg, severity) }
+      verify_according_to_links
+      verify_according_to_nodes
+      @log_messages.filter { |msg| msg.upper_severity?(severity) }.map(&:to_hash)
     end
 
     private
@@ -37,7 +33,7 @@ module NetomoxExp
     # @param [Netomox::Topology::TermPoint] src_tp Source term-point
     # @param [Netomox::Topology::TermPoint] dst_tp Destination term-point
     # @return [void]
-    def check_peer_asn_ip(src_tp, dst_tp)
+    def verify_peer_asn_ip(src_tp, dst_tp)
       # alias
       stp_attr = src_tp.attribute
       dtp_attr = dst_tp.attribute
@@ -59,21 +55,13 @@ module NetomoxExp
     # @param [Netomox::Topology::TermPoint] src_tp Source term-point
     # @param [Netomox::Topology::TermPoint] dst_tp Destination term-point
     # @return [void]
-    def check_timer(src_tp, dst_tp)
+    def verify_timer(src_tp, dst_tp)
       return if src_tp.attribute.timer == dst_tp.attribute.timer
 
       add_log_message(:error, tps_to_link_name(src_tp, dst_tp), 'Timer params does not correspond')
     end
 
-    # @param [Netomox::Topology::TermPoint] src_tp Source term-point
-    # @param [Netomox::Topology::TermPoint] dst_tp Destination term-point
-    # @return [void]
-    def verify_peer_params(src_tp, dst_tp)
-      check_peer_asn_ip(src_tp, dst_tp)
-      check_timer(src_tp, dst_tp)
-    end
-
-    # @param [Netomox::Topology::Link] link
+    # @param [Netomox::Topology::Link] link A link of bgp_proc network
     # @return [void]
     def verify_link_pair(link)
       # NOTE: search pair (reverse) link, because bgp-proc layer is spliced two topologies:
@@ -84,6 +72,45 @@ module NetomoxExp
       return if @bgp_proc_nw.find_link(link.destination, link.source)
 
       add_log_message(:error, link.name, 'Reverse link is not found')
+    end
+
+    # @param [Netomox::Topology::Link] link A link of bgp_proc network
+    # @return [void]
+    def verify_peer_params(link)
+      _, src_tp = find_node_tp_by_edge(link.source)
+      _, dst_tp = find_node_tp_by_edge(link.destination)
+      verify_peer_asn_ip(src_tp, dst_tp)
+      verify_timer(src_tp, dst_tp)
+    end
+
+    # @return [void]
+    def verify_according_to_links
+      @bgp_proc_nw.links.each do |bgp_proc_link|
+        verify_link_pair(bgp_proc_link)
+        verify_peer_params(bgp_proc_link)
+      end
+    end
+
+    # @param [Netomox::Topology::Node] node A node of bgp_proc network
+    # @param [Netomox::Topology::TermPoint] term_point A term-point of the node
+    # @return [void]
+    def verify_unlinked_tp(node, term_point)
+      return if @bgp_proc_nw.find_link_by_source(node.name, term_point.name)
+
+      add_log_message(
+        :warn,
+        "#{node.name}[#{term_point.name}]",
+        'Standalone peer config (does not connected)'
+      )
+    end
+
+    # @return [void]
+    def verify_according_to_nodes
+      @bgp_proc_nw.nodes.each do |bgp_proc_node|
+        bgp_proc_node.termination_points.each do |bgp_proc_tp|
+          verify_unlinked_tp(bgp_proc_node, bgp_proc_tp)
+        end
+      end
     end
   end
 end

@@ -23,7 +23,7 @@ module NetomoxExp
 
       namespace 'verify' do
         params do
-          optional :severity, type: String, desc: 'severity (warning/error)', default: 'warning'
+          optional :severity, type: String, desc: 'severity (warning/error)', default: 'debug'
         end
 
         desc 'Verify bgp peer-attributes'
