@@ -6,7 +6,7 @@ require 'lib/static_verification/static_verifier'
 module NetomoxExp
   module ApiRoute
     # namespace /verify
-    class StaticVerification < Grape::API
+    class VerifyLayer < Grape::API
       namespace 'verify' do
         desc 'Verify specified layer as its network-type'
         params do
@@ -20,6 +20,7 @@ module NetomoxExp
 
             verifier_class = StaticVerifier.verifier_by_network_type(target_layer)
             verifier = verifier_class.new(topology, layer)
+            # reply
             verifier.verify(severity)
           rescue StandardError => e
             error!("#{network}/#{snapshot}/#{layer} is insufficient: #{e}", 500)

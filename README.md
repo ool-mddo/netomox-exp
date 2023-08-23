@@ -270,9 +270,10 @@ curl -s http://localhost:9292/topologies/mddo-ospf/emulated_asis/topology/layer3
 
 ### Static Verification
 
-Verify a layer according to its network-type.
+Verify all layers or a layer according to its network-type.
 
-* GET `/topologies/<network>/<snapshot>/topology/<layer>/verify`
+* GET `/topologies/<network>/<snapshot>/topology/verify` : for all layers
+* GET `/topologies/<network>/<snapshot>/topology/<layer>/verify` : for a layer
 * option
   * `severity`: [optional] base severity (default: debug)
 
