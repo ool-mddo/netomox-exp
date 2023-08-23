@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
 require 'grape'
-require 'lib/static_verification/interface_descr/interface_descr_checker'
-require 'lib/static_verification/interface_descr/interface_descr_generator'
+require 'lib/static_verification/layer1_verifier'
+require 'lib/static_verification/layer1_ifdescr_generator'
 require 'lib/static_verification/bgp_proc_verifier'
 
 module NetomoxExp
@@ -13,7 +13,7 @@ module NetomoxExp
         get do
           network, snapshot, layer = %i[network snapshot layer].map { |key| params[key] }
           begin
-            generator = InterfaceDescrGenerator.new(read_topology_instance(network, snapshot), layer)
+            generator = Layer1IfDescrGenerator.new(read_topology_instance(network, snapshot), layer)
             generator.records
           rescue StandardError => e
             error!("#{network}/#{snapshot}/#{layer} is insufficient: #{e}", 500)
@@ -23,7 +23,7 @@ module NetomoxExp
 
       namespace 'verify' do
         params do
-          optional :severity, type: String, desc: 'severity (warning/error)', default: 'debug'
+          optional :severity, type: String, desc: 'severity', default: 'debug'
         end
 
         desc 'Verify bgp peer-attributes'
@@ -38,11 +38,11 @@ module NetomoxExp
         end
 
         desc 'Verify interface description'
-        get 'if_descr' do
+        get 'layer1' do
           network, snapshot, layer = %i[network snapshot layer].map { |key| params[key] }
           begin
-            verifier = InterfaceDescrChecker.new(read_topology_instance(network, snapshot), layer)
-            verifier.verify_description(params[:severity])
+            verifier = Layer1Verifier.new(read_topology_instance(network, snapshot), layer)
+            verifier.verify(params[:severity])
           rescue StandardError => e
             error!("#{network}/#{snapshot}/#{layer} is insufficient: #{e}", 500)
           end

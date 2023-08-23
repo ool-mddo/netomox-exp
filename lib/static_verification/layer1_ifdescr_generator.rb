@@ -1,11 +1,17 @@
 # frozen_string_literal: true
 
 require 'csv'
-require_relative 'interface_descr_ops_base'
+require_relative 'verifier_base'
 
 module NetomoxExp
   # Layer1 interface description maker
-  class InterfaceDescrGenerator < InterfaceDescrOpsBase
+  class Layer1IfDescrGenerator < VerifierBase
+    # @param [Netomox::Topology::Networks] networks Networks object
+    # @param [String] layer Layer name to handle
+    def initialize(networks, layer)
+      super(networks, layer, Netomox::NWTYPE_MDDO_L1)
+    end
+
     # @return [Array<Array<String>>] Table records (csv)
     def full_table
       header = %w[No. Source_Node Source_Interface Destination_Node Destination_Interface Source_Interface_Description]
@@ -20,7 +26,7 @@ module NetomoxExp
     private
 
     # @param [Hash] rec layer1_link_table record
-    # @return [String] Source itnerface description
+    # @return [String] Source interface description
     def src_ifdescr(rec)
       "to_#{normal_hostname(rec[:dst_node])}_#{rec[:dst_tp]}"
     end
@@ -54,7 +60,7 @@ module NetomoxExp
 
     # @return [Array<Hash>] layer1 interface description data
     def layer1_link_table
-      @l1_nw.links.map.with_index do |link, i|
+      @target_nw.links.map.with_index do |link, i|
         src = link.source
         dst = link.destination
         {
