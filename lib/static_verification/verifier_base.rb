@@ -24,6 +24,13 @@ module NetomoxExp
 
       protected
 
+      # @param [Netomox::Topology::Node] node L3 node
+      # @return [Boolean]
+      def segment_node?(node)
+        # NOTE: only L3 and OSPF_AREA has node_type attribute
+        node.attribute&.node_type == 'segment'
+      end
+
       # @param [Symbol] severity Severity of the log message
       # @param [String] target Target object (topology object)
       # @param [String] message Log message
@@ -55,9 +62,9 @@ module NetomoxExp
       # @param [Netomox::Topology::TpRef] edge Link edge
       # @return [Array(Netomox::Topology::Node, Netomox::Topology::TermPoint)]
       def find_node_tp_by_edge(edge)
-        bgp_proc_node = @target_nw.find_node_by_name(edge.node_ref)
-        bgp_proc_tp = bgp_proc_node.find_tp_by_name(edge.tp_ref)
-        [bgp_proc_node, bgp_proc_tp]
+        node = @target_nw.find_node_by_name(edge.node_ref)
+        term_point = node.find_tp_by_name(edge.tp_ref)
+        [node, term_point]
       end
 
       # @yield verify operations for each link
