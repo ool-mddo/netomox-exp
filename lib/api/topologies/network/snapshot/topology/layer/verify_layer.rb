@@ -23,6 +23,7 @@ module NetomoxExp
             # reply
             verifier.verify(severity)
           rescue StandardError => e
+            warn e, e.backtrace
             error!("#{network}/#{snapshot}/#{layer} is insufficient: #{e}", 500)
           end
         end

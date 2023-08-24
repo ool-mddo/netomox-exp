@@ -25,6 +25,7 @@ module NetomoxExp
             # reply
             log_table
           rescue StandardError => e
+            warn e, e.backtrace
             error!("#{network}/#{snapshot} is insufficient: #{e}", 500)
           end
         end

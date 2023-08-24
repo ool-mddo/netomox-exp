@@ -62,7 +62,7 @@ module NetomoxExp
       end
 
       # @param [Netomox::Topology::Node] node Node (L3, segment node)
-      # @return [Array<IPAddress>] Prefix of the node
+      # @return [Array<IPAddress::IPv4>] Prefix of the node
       def all_prefixes_of_node(node)
         # prefix string "a.b.c.d/nn" => IPAddress object
         node.attribute.prefixes.map(&:prefix).map { |prefix| IPAddress::IPv4.new(prefix) }
