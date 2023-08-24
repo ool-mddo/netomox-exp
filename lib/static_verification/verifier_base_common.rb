@@ -22,7 +22,7 @@ module NetomoxExp
       # @return [void]
       def verify_standalone_node(node)
         add_log_message(:error, node.path, 'Node does not have term-points') if node.termination_points.empty?
-        add_log_message(:warn, node.path, 'Node does not have any links to other nodes') if standalone_node?(node)
+        add_log_message(:warn, node.path, 'Standalone node (not connected)') if standalone_node?(node)
       end
 
       # @param [Netomox::Topology::TpRef] edge A link edge
@@ -56,7 +56,7 @@ module NetomoxExp
       def verify_unlinked_tp(node, term_point)
         return if @target_nw.find_link_by_source(node.name, term_point.name)
 
-        add_log_message(:warn, term_point.path, 'Standalone peer config (not connected)')
+        add_log_message(:warn, term_point.path, 'Unlinked term-point (not connected)')
       end
 
       # @param [Netomox::Topology::SupportingNetwork] support_nw
