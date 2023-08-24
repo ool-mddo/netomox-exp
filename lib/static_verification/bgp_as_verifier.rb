@@ -12,14 +12,6 @@ module NetomoxExp
       def initialize(networks, layer)
         super(networks, layer, Netomox::NWTYPE_MDDO_BGP_AS)
       end
-
-      # @param [String] severity Base severity
-      # @return [Array<Hash>] Level-filtered description check results
-      def verify(severity)
-        verify_according_to_links
-        verify_according_to_nodes
-        @log_messages.filter { |msg| msg.upper_severity?(severity) }.map(&:to_hash)
-      end
     end
   end
 end

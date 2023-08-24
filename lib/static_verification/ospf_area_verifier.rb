@@ -16,15 +16,16 @@ module NetomoxExp
       # @param [String] severity Base severity
       # @return [Array<Hash>] Level-filtered description check results
       def verify(severity)
-        verify_according_to_links
-        verify_according_to_nodes do |node|
+        super(severity)
+
+        verify_all_nodes do |node|
           next unless segment_node?(node)
 
           # for each segment-node
           verify_ospf_params(node)
         end
 
-        @log_messages.filter { |msg| msg.upper_severity?(severity) }.map(&:to_hash)
+        export_log_messages(severity:)
       end
 
       private

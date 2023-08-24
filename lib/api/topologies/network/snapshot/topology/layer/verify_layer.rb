@@ -17,6 +17,7 @@ module NetomoxExp
           begin
             topology = read_topology_instance(network, snapshot)
             target_layer = topology.find_network(layer)
+            error!("#{network}/#{layer} is not found", 404) if target_layer.nil?
 
             verifier_class = StaticVerifier.verifier_by_network_type(target_layer)
             verifier = verifier_class.new(topology, layer)

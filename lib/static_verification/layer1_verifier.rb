@@ -16,9 +16,17 @@ module NetomoxExp
       # @param [String] severity Base severity
       # @return [Array<Hash>] Level-filtered description check results
       def verify(severity)
-        verify_according_to_links
-        verify_according_to_nodes
-        @log_messages.filter { |msg| msg.upper_severity?(severity) }.map(&:to_hash)
+        super(severity)
+
+        verify_all_links do |l1_link|
+          # check only source interface because links are bidirectional
+          _, src_tp = find_node_tp_by_edge(l1_link.source)
+          return add_log_message(:error, target_str(src_tp, l1_link), 'term_point not found') unless src_tp
+
+          verify_description(src_tp, l1_link)
+        end
+
+        export_log_messages(severity:)
       end
 
       private
@@ -65,18 +73,6 @@ module NetomoxExp
         # ignore upper/loser case difference,
         # but abbreviated interface type is NOT allowed (e.g. GigabitEthernet0/0 <=> Gi0/0)
         descr_host&.downcase == facing_edge.node_ref.downcase && descr_tp&.downcase == facing_edge.tp_ref.downcase
-      end
-
-      # @return [void]
-      def verify_according_to_links
-        @target_nw.links.each do |l1_link|
-          # check only source interface because links are bidirectional
-          _, src_tp = find_node_tp_by_edge(l1_link.source)
-          return add_log_message(:error, target_str(src_tp, l1_link), 'term_point not found') unless src_tp
-
-          verify_link_pair(l1_link)
-          verify_description(src_tp, l1_link)
-        end
       end
     end
   end

@@ -16,8 +16,9 @@ module NetomoxExp
       # @param [String] severity Base severity
       # @return [Array<Hash>] Level-filtered description check results
       def verify(severity)
-        verify_according_to_links
-        verify_according_to_nodes do |node|
+        super(severity)
+
+        verify_all_nodes do |node|
           next unless segment_node?(node)
 
           # for each segment-node
@@ -26,7 +27,7 @@ module NetomoxExp
         end
         verify_segment_prefix_overlap
 
-        @log_messages.filter { |msg| msg.upper_severity?(severity) }.map(&:to_hash)
+        export_log_messages(severity:)
       end
 
       private
@@ -143,8 +144,8 @@ module NetomoxExp
 
         all_tps.each do |target_tp|
           all_ip_addrs_by_tp(target_tp).each do |target_ip|
-            # ignore itself (#equal? compares object_id) and find all tp which owned overlapped ip
-            overlap_tps = all_tps.reject { |tp| tp.equal?(target_tp) }.find_all do |tp|
+            # ignore itself and find all tp which owned overlapped ip
+            overlap_tps = all_tps.reject { |tp| tp.path == target_tp.path }.find_all do |tp|
               all_ip_addrs_by_tp(tp).any? { |ip| target_ip == ip }
             end
             next if overlap_tps.empty?
