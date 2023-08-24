@@ -25,17 +25,11 @@ module NetomoxExp
         add_log_message(:warn, node.path, 'Standalone node (not connected)') if standalone_node?(node)
       end
 
-      # @param [Netomox::Topology::TpRef] edge A link edge
-      # @return [Array<Netomox::Topology::Link>] Links that source is the edge
-      def find_all_links_by_edge(edge)
-        @target_nw.links.find_all { |link| link.source == edge }
-      end
-
       # @param [Netomox::Topology::Link] link A link of bgp_proc network
       # @return [void]
       def verify_link_count(link)
         # search irregular (multiple-link-connected) term-point
-        src_link_count = find_all_links_by_edge(link.source)&.length
+        src_link_count = @target_nw.find_all_links_by_source_edge(link.source)&.length
         return if src_link_count == 1
 
         add_log_message(:fatal, link.path, "Source term-point has many:#{src_link_count} links")
@@ -59,34 +53,18 @@ module NetomoxExp
         add_log_message(:warn, term_point.path, 'Unlinked term-point (not connected)')
       end
 
-      # @param [Netomox::Topology::SupportingNetwork] support_nw
+      # @param [Netomox::Topology::SupportingRefBase] support
       # @return [Boolean]
-      def exists_network_support?(support_nw)
-        !@topology.find_network(support_nw.ref_network).nil?
+      def exists_supporting_object?(support)
+        !@topology.find_object_by_support(support).nil?
       end
 
-      # @param [Netomox::Topology::SupportingNode] support_node
-      # @return [Boolean]
-      def exists_node_support?(support_node)
-        !@topology.find_network(support_node.ref_network)
-           &.find_node_by_name(support_node.ref_node).nil?
-      end
-
-      # @param [Netomox::Topology::SupportingTerminationPoint] support_tp
-      # @return [Boolean]
-      def exists_tp_support?(support_tp)
-        !@topology.find_network(support_tp.ref_network)
-           &.find_node_by_name(support_tp.ref_node)
-           &.find_tp_by_name(support_tp.ref_tp).nil?
-      end
-
-      # @param [Netomox::Topology::Network] network
       # @return [void]
-      def verify_network_support_existence(network)
-        network.supports.each do |s_nw|
-          next if exists_network_support?(s_nw)
+      def verify_network_support_existence
+        @target_nw.supports.each do |s_nw|
+          next if exists_supporting_object?(s_nw)
 
-          add_log_message(:error, network.path, "Support network:#{s_nw} is not found")
+          add_log_message(:error, @target_nw.path, "Support network:#{s_nw} is not found")
         end
       end
 
@@ -94,7 +72,7 @@ module NetomoxExp
       # @return [void]
       def verify_node_support_existence(node)
         node.supports.each do |s_node|
-          next if exists_node_support?(s_node)
+          next if exists_supporting_object?(s_node)
 
           add_log_message(:error, node.path, "Support node:#{s_node} is not found")
         end
@@ -105,7 +83,7 @@ module NetomoxExp
       def verify_tp_support_existence(term_point)
         term_point.supports.each do |s_tp|
           # check tp support ref
-          next if exists_tp_support?(s_tp)
+          next if exists_supporting_object?(s_tp)
 
           add_log_message(:error, term_point.path, "Support tp:#{s_tp} is not found")
         end
@@ -113,21 +91,20 @@ module NetomoxExp
 
       # @return [void]
       def verify_support_existence
-        @topology.networks.each do |network|
-          verify_network_support_existence(network)
-          network.nodes.each do |node|
-            verify_node_support_existence(node)
-            node.termination_points.each { |tp| verify_tp_support_existence(tp) }
-          end
+        # support network check
+        verify_network_support_existence
+
+        # support node/tp check
+        @target_nw.nodes.each do |node|
+          verify_node_support_existence(node)
+          node.termination_points.each { |tp| verify_tp_support_existence(tp) }
         end
       end
 
       # @param [Netomox::Topology::TpRef] edge Link edge
       # @return [Boolean] false if the edge referring object is not found
       def exists_link_edge_object?(edge)
-        !@topology.find_network(edge.network_ref)
-           &.find_node_by_name(edge.node_ref)
-           &.find_tp_by_name(edge.tp_ref).nil?
+        !@topology.find_tp_by_edge(edge).nil?
       end
 
       # @return [void]

@@ -16,9 +16,7 @@ module NetomoxExp
         network = networks.find_network(layer)
 
         raise StandardError, "Layer:#{layer} is not found" if network.nil?
-        unless network.network_types.keys.include?(network_type)
-          raise StandardError, "Layer:#{layer} type is not #{network_type}"
-        end
+        raise StandardError, "Layer:#{layer} type is not #{network_type}" unless network.network_type?(network_type)
 
         @log_messages = [] # [Array<VerifyLogMessage>]
         @topology = networks
@@ -62,14 +60,6 @@ module NetomoxExp
       # @return [void]
       def add_log_message(severity, target, message)
         @log_messages.push(VerifyLogMessage.new(severity:, target:, message:))
-      end
-
-      # @param [Netomox::Topology::TpRef] edge Link edge
-      # @return [Array(Netomox::Topology::Node, Netomox::Topology::TermPoint)]
-      def find_node_tp_by_edge(edge)
-        node = @target_nw.find_node_by_name(edge.node_ref)
-        term_point = node.find_tp_by_name(edge.tp_ref)
-        [node, term_point]
       end
 
       # @yield verify operations for each link

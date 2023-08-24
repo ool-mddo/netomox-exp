@@ -59,8 +59,8 @@ module NetomoxExp
       # @param [Netomox::Topology::Link] link A link of bgp_proc network
       # @return [void]
       def verify_peer_params(link)
-        _, src_tp = find_node_tp_by_edge(link.source)
-        _, dst_tp = find_node_tp_by_edge(link.destination)
+        _, src_tp = @target_nw.find_node_tp_by_edge(link.source)
+        _, dst_tp = @target_nw.find_node_tp_by_edge(link.destination)
         verify_peer_asn_ip(link.path, src_tp, dst_tp)
         verify_timer(link.path, src_tp, dst_tp)
       end

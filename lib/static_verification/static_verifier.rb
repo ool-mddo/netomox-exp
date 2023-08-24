@@ -19,7 +19,7 @@ module NetomoxExp
     # @return [Class] Verifier class
     # @raise [StandardError] if network-type of the network is unknown
     def verifier_by_network_type(network)
-      network_type = network.network_types.keys[0]
+      network_type = network.primary_network_type
       case network_type
       when Netomox::NWTYPE_MDDO_L1
         Layer1Verifier

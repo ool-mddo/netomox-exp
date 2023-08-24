@@ -44,7 +44,7 @@ module NetomoxExp
       # @param [Netomox::Topology::Link] seg_src_link A link that source is a segment node
       # @return [void]
       def verify_seg_prefix_and_tp_ip(seg_prefixes, seg_src_link)
-        _, node_tp = find_node_tp_by_edge(seg_src_link.destination)
+        _, node_tp = @target_nw.find_node_tp_by_edge(seg_src_link.destination)
         tp_ip_addrs = all_ip_addrs_by_tp(node_tp)
 
         add_log_message(:error, node_tp.path, 'Term-point has multiple ip-addresses') if tp_ip_addrs.length > 1
@@ -132,7 +132,7 @@ module NetomoxExp
       def all_node_tps_connected_segment(seg_node)
         seg_node.termination_points.map do |seg_tp|
           seg_src_link = @target_nw.find_link_by_source(seg_node.name, seg_tp.name)
-          _, node_tp = find_node_tp_by_edge(seg_src_link.destination)
+          _, node_tp = @target_nw.find_node_tp_by_edge(seg_src_link.destination)
           node_tp
         end
       end

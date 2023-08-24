@@ -50,7 +50,7 @@ module NetomoxExp
         end
 
         seg_src_links.map do |seg_src_link|
-          _, node_tp = find_node_tp_by_edge(seg_src_link.destination)
+          _, node_tp = @target_nw.find_node_tp_by_edge(seg_src_link.destination)
           node_tp
         end
       end
