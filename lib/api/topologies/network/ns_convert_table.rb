@@ -56,11 +56,11 @@ module NetomoxExp
           network, host_name = %i[network host_name].map { |key| params[key] }
           ns_converter = ns_converter_wo_topology(network)
           begin
-            resp = { origin_host: host_name, target_host: ns_converter.node_name_table.convert(host_name) }
+            resp = { origin_host: host_name, target_host: ns_converter.convert_table.node_name.convert(host_name) }
             if params.key?(:if_name)
               if_name = params[:if_name]
               resp[:origin_if] = if_name
-              resp[:target_if] = ns_converter.tp_name_table.convert(host_name, if_name)
+              resp[:target_if] = ns_converter.convert_table.tp_name.convert(host_name, if_name)
             end
 
             # response

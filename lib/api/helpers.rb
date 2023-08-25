@@ -86,8 +86,8 @@ module NetomoxExp
     def _node_hash(ns_converter, node)
       {
         node: node.name,
-        reverse: ns_converter.node_name_table.reverse_lookup(node.name),
-        alias: ns_converter.node_name_table.find_l1_alias(node.name),
+        reverse: ns_converter.convert_table.node_name.reverse_lookup(node.name),
+        alias: ns_converter.convert_table.node_name.find_l1_alias(node.name),
         attribute: node.attribute.to_data
       }
     end
@@ -107,8 +107,8 @@ module NetomoxExp
     def _interfaces_hash(ns_converter, node, term_point)
       {
         interface: term_point.name,
-        reverse: ns_converter.tp_name_table.reverse_lookup(node.name, term_point.name)[1],
-        alias: ns_converter.tp_name_table.find_l1_alias(node.name, term_point.name),
+        reverse: ns_converter.convert_table.tp_name.reverse_lookup(node.name, term_point.name)[1],
+        alias: ns_converter.convert_table.tp_name.find_l1_alias(node.name, term_point.name),
         attribute: term_point.attribute.to_data
       }
     end

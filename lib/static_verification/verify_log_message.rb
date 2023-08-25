@@ -48,7 +48,7 @@ module NetomoxExp
       # @param [String,Symbol] candidate_severity Severity info before normalizing
       # @return [Symbol] normalized severity
       def normalize_severity(candidate_severity)
-        candidate_severity = candidate_severity.is_a?(String) ? candidate_severity.to_sym : candidate_severity
+        candidate_severity = candidate_severity.to_sym if candidate_severity.is_a?(String)
         case candidate_severity
         when /fatal/i
           :fatal
