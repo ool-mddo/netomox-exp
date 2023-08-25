@@ -205,7 +205,7 @@ module NetomoxExp
     def rewrite_network(src_nw)
       dst_nw = Netomox::PseudoDSL::PNetwork.new(src_nw.name)
       # NOTE: network type is iterable hash
-      dst_nw.type = src_nw.network_types.keys[0]
+      dst_nw.type = src_nw.primary_network_type
       dst_nw.attribute = convert_all_hash_keys(src_nw.attribute.to_data) if src_nw.attribute
       dst_nw.supports = src_nw.supports.map(&:ref_network) if src_nw.supports
       dst_nw.nodes = src_nw.nodes.map { |src_node| rewrite_node(src_node) }

@@ -6,6 +6,7 @@ require 'lib/convert_namespace/upper_layer3_filter'
 require 'lib/topology_builder/topology_builder'
 require_relative 'topology/layer'
 require_relative 'topology/layer_type'
+require_relative 'topology/verify_layers'
 
 module NetomoxExp
   module ApiRoute
@@ -60,6 +61,7 @@ module NetomoxExp
         # NOTICE: url match sequence
         mount ApiRoute::LayerType # 1st match; /layer_type_:layer_type
         mount ApiRoute::Layer # 2nd match; /:layer
+        mount ApiRoute::VerifyLayers
       end
       # rubocop:enable Metrics/BlockLength
     end
