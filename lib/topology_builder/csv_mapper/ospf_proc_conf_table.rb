@@ -27,9 +27,9 @@ module NetomoxExp
           @node = record[:node]
           @vrf = record[:vrf]
           @process_id = record[:process_id]
-          @areas = parse_areas(record[:areas])
+          @areas = parse_array_string(record[:areas]).map(&:to_i)
           @router_id = record[:router_id]
-          @export_policy_sources = parse_policy_sources(record[:export_policy_sources])
+          @export_policy_sources = parse_array_string(record[:export_policy_sources])
           @area_border_router = record[:area_border_router]
         end
 
@@ -38,23 +38,6 @@ module NetomoxExp
           !!(@area_border_router =~ /true/i)
         end
         alias area_border_router area_border_router?
-
-        private
-
-        # rubocop:disable Security/Eval
-
-        # @param [String] areas_str A string of ospf-area array
-        # @return [Array<Integer>] Area number array
-        def parse_areas(areas_str)
-          eval(areas_str).map(&:to_i)
-        end
-
-        # @param [String] sources_str A string of policy_source array
-        # @return [Array<String>] Policy source array
-        def parse_policy_sources(sources_str)
-          eval(sources_str)
-        end
-        # rubocop:enable Security/Eval
       end
 
       # ospf process configuration table

@@ -17,6 +17,7 @@ module NetomoxExp
         delete do
           network_dir = File.join(TOPOLOGIES_DIR, params[:network])
           FileUtils.rm_rf(network_dir)
+
           # response
           ''
         end

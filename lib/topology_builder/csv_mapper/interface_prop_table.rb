@@ -60,7 +60,7 @@ module NetomoxExp
           @switchport_mode = record[:switchport_mode]
           @switchport_trunk_encapsulation = record[:switchport_trunk_encapsulation]
           @channel_group = record[:channel_group]
-          @channel_group_members = interfaces2array(record[:channel_group_members])
+          @channel_group_members = parse_array_string(record[:channel_group_members])
           @description = record[:description]
           @vrf = record[:vrf]
         end
@@ -126,15 +126,6 @@ module NetomoxExp
         end
 
         private
-
-        # rubocop:disable Security/Eval
-
-        # @param [String] interfaces Multiple-interface string
-        # @return [Array<String>] Array of interface
-        def interfaces2array(interfaces)
-          eval(interfaces).sort
-        end
-        # rubocop:enable Security/Eval
 
         # rubocop:disable Metrics/MethodLength
 

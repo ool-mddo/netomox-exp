@@ -22,18 +22,6 @@ module NetomoxExp
           @vlan_id = record[:vlan_id]
           @interfaces = extract_interfaces(record[:interfaces])
         end
-
-        private
-
-        # Convert interface list string to link-edge object.
-        #   ( array of `node[interface]` format string to link-edge)
-        # @param [String] interfaces_str Interface list string
-        # @return [Array<EdgeBase>] Array of link-edge
-        def extract_interfaces(interfaces_str)
-          interfaces_str =~ /\[(.+)\]/
-          content = Regexp.last_match(1)
-          content.split(/,\s*/).map { |str| EdgeBase.new(str) }
-        end
       end
 
       # switch-vlan-properties table

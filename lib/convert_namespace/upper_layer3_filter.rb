@@ -4,13 +4,13 @@ require 'netomox'
 require_relative 'namespace_converter_base'
 
 module NetomoxExp
-  # filter L3+ (over layer3...layer3 + OSPF areaN)
+  # filter L3+ (upper layer3...layer3 + OSPF-areaN + BGP-proc/as)
   # NOTE: it requires inherit NamespaceConverter to use convert_all_hash_keys
-  class LayerFilter < NamespaceConverterBase
+  class UpperLayer3Filter < NamespaceConverterBase
     # @param [Hash] topology_data Topology data
     def initialize(topology_data)
       super()
-      @src_nws = Netomox::Topology::Networks.new(topology_data)
+      load_origin_topology(topology_data)
     end
 
     # @return [Hash]
@@ -78,7 +78,7 @@ module NetomoxExp
     def filter_network(src_nw)
       dst_nw = Netomox::PseudoDSL::PNetwork.new(src_nw.name)
       # NOTE: network type is iterable hash
-      dst_nw.type = src_nw.network_types.keys[0]
+      dst_nw.type = src_nw.primary_network_type
       dst_nw.attribute = convert_all_hash_keys(src_nw.attribute.to_data) if src_nw.attribute
       dst_nw.supports = src_nw.supports.map(&:ref_network) if src_nw.supports
       dst_nw.nodes = src_nw.nodes.map { |src_node| filter_node(src_node) }

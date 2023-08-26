@@ -84,7 +84,7 @@ module NetomoxExp
     # @raise [StandardError] if specified source network is not layer3
     def check_network_type
       # NOTE: network type is iterable hash
-      nw_type = @src_network.network_types.keys[0]
+      nw_type = @src_network.primary_network_type
 
       raise StandardError, "Network:#{@src_network.name} is not layer3" if nw_type != Netomox::NWTYPE_MDDO_L3
     end

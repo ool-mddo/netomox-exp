@@ -103,7 +103,7 @@ module NetomoxExp
           node_type: 'ospf_proc',
           router_id: ospf_proc_conf_rec ? ospf_proc_conf_rec.router_id : '',
           process_id: ospf_proc_conf_rec ? ospf_proc_conf_rec.process_id : 'default',
-          redistribute: ospf_proc_conf_rec ? ospf_node_redistribute_attrs(ospf_proc_conf_rec) : []
+          redistribute_list: ospf_proc_conf_rec ? ospf_node_redistribute_attrs(ospf_proc_conf_rec) : []
           # NOTE: log-adjacency-changes : No information in ospf-proc conf table
         }
       end

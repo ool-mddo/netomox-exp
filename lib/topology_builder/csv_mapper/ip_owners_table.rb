@@ -34,7 +34,7 @@ module NetomoxExp
 
         # @return [Boolean] true if interface name seems loopback interface
         def loopback_interface?
-          %r{^lo(?:opback)?[-\d./:]*$}i.match?(@interface)
+          LO_INTERFACE_REGEXP.match?(@interface)
         end
 
         # @return [String]

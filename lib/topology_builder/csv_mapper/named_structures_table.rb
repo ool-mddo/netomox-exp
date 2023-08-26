@@ -31,7 +31,7 @@ module NetomoxExp
         # @raise [StandardError]
         def ospf_redistribute_protocols
           # replace quotes to convert "json" format string
-          definition = JSON.parse(@structure_definition.gsub(/"/, '\"').gsub(/'/, '"'))
+          definition = JSON.parse(@structure_definition.gsub('"', '\"').gsub("'", '"'))
           return [] unless definition
 
           protocols = definition['statements']

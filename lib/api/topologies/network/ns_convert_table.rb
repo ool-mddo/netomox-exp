@@ -22,12 +22,13 @@ module NetomoxExp
           if params.key?(:origin_snapshot)
             snapshot = params[:origin_snapshot]
             logger.info "Initialize namespace convert table with snapshot: #{network}/#{snapshot}"
-            ns_converter.make_convert_table(read_topology_file(network, snapshot))
+            ns_converter.load_origin_topology(read_topology_file(network, snapshot))
           else
             logger.info "Update namespace convert table of network: #{network}"
-            ns_converter.reload_convert_table(params[:convert_table])
+            ns_converter.reload(params[:convert_table])
           end
-          save_ns_convert_table(network, ns_converter.convert_table)
+          save_ns_convert_table(network, ns_converter.to_hash)
+
           # response
           {}
         end
@@ -41,6 +42,7 @@ module NetomoxExp
         desc 'Delete convert_table'
         delete do
           FileUtils.rm_f(ns_convert_table_file(params[:network]))
+
           # response
           ''
         end
@@ -54,12 +56,13 @@ module NetomoxExp
           network, host_name = %i[network host_name].map { |key| params[key] }
           ns_converter = ns_converter_wo_topology(network)
           begin
-            resp = { origin_host: host_name, target_host: ns_converter.node_name_table.convert(host_name) }
+            resp = { origin_host: host_name, target_host: ns_converter.convert_table.node_name.convert(host_name) }
             if params.key?(:if_name)
               if_name = params[:if_name]
               resp[:origin_if] = if_name
-              resp[:target_if] = ns_converter.tp_name_table.convert(host_name, if_name)
+              resp[:target_if] = ns_converter.convert_table.tp_name.convert(host_name, if_name)
             end
+
             # response
             resp
           rescue StandardError

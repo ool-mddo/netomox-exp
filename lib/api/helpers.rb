@@ -17,7 +17,7 @@ module NetomoxExp
     end
 
     # @param [String] file_path File path to save
-    # @param [void]
+    # @return [void]
     def save_json_file(file_path, data)
       logger.warn "[save_json_file] path=#{file_path}"
       FileUtils.mkdir_p(File.dirname(file_path))
@@ -62,7 +62,7 @@ module NetomoxExp
     # @return [NamespaceConverter] Namespace converter without topology data
     def ns_converter_wo_topology(network)
       ns_converter = NamespaceConverter.new
-      ns_converter.reload_convert_table(read_ns_convert_table(network))
+      ns_converter.reload(read_ns_convert_table(network))
       ns_converter
     end
 
@@ -73,7 +73,9 @@ module NetomoxExp
         layer1: Netomox::NWTYPE_MDDO_L1,
         layer2: Netomox::NWTYPE_MDDO_L2,
         layer3: Netomox::NWTYPE_MDDO_L3,
-        ospf: Netomox::NWTYPE_MDDO_OSPF_AREA
+        ospf: Netomox::NWTYPE_MDDO_OSPF_AREA,
+        bgp_proc: Netomox::NWTYPE_MDDO_BGP_PROC,
+        bgp_as: Netomox::NWTYPE_MDDO_BGP_AS
       }
       layer_type_table[layer_type.intern]
     end
@@ -84,8 +86,8 @@ module NetomoxExp
     def _node_hash(ns_converter, node)
       {
         node: node.name,
-        reverse: ns_converter.node_name_table.reverse_lookup(node.name),
-        alias: ns_converter.node_name_table.find_l1_alias(node.name),
+        reverse: ns_converter.convert_table.node_name.reverse_lookup(node.name),
+        alias: ns_converter.convert_table.node_name.find_l1_alias(node.name),
         attribute: node.attribute.to_data
       }
     end
@@ -105,8 +107,8 @@ module NetomoxExp
     def _interfaces_hash(ns_converter, node, term_point)
       {
         interface: term_point.name,
-        reverse: ns_converter.tp_name_table.reverse_lookup(node.name, term_point.name)[1],
-        alias: ns_converter.tp_name_table.find_l1_alias(node.name, term_point.name),
+        reverse: ns_converter.convert_table.tp_name.reverse_lookup(node.name, term_point.name)[1],
+        alias: ns_converter.convert_table.tp_name.find_l1_alias(node.name, term_point.name),
         attribute: term_point.attribute.to_data
       }
     end

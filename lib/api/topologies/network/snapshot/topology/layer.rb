@@ -4,7 +4,7 @@ require 'grape'
 require_relative 'layer/config_params'
 require_relative 'layer/convert_layer_topology'
 require_relative 'layer/layer_objects'
-require_relative 'layer/interface_description'
+require_relative 'layer/verify_layer'
 
 module NetomoxExp
   module ApiRoute
@@ -17,7 +17,7 @@ module NetomoxExp
         mount ApiRoute::ConfigParams
         mount ApiRoute::ConvertLayerTopology
         mount ApiRoute::LayerObjects
-        mount ApiRoute::InterfaceDescription
+        mount ApiRoute::VerifyLayer
       end
     end
   end

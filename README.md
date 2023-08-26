@@ -120,6 +120,14 @@ Fetch topology data
 curl http://localhost:9292/topologies/pushed_configs/mddo_network/topology
 ```
 
+Fetch topology data (Upper layer3)
+
+* GET `/topologies/<network>/<snapshot>/topology/upper_layer3`
+
+```shell
+curl http://localhost:9292/topologies/mddo-ospf/original_asis/topology/upper_layer3
+```
+
 ### Operate namespace convert table
 
 Delete namespace convert table of a network
@@ -260,22 +268,17 @@ curl -s http://localhost:9292/topologies/mddo-ospf/emulated_asis/topology/layer3
 
 </details>
 
-### L1 interface description check
+### Static Verification
 
-Generate interface description from layer1
+Verify all layers or a layer according to its network-type.
 
-* GET `/topologies/<network>/<snapshot>/topology/<layer>/interface_description`
-
-```shell
-curl -s http://localhost:15000/topologies/mddo-ospf/original_asis/topology/layer1/interface_description
-```
-
-Fetch check results of interface description in layer1
-
-* GET `/topologies/<network>/<snapshot>/topology/<layer>/interface_description/check`
+* GET `/topologies/<network>/<snapshot>/topology/verify` : for all layers
+* GET `/topologies/<network>/<snapshot>/topology/<layer>/verify` : for a layer
+* option
+  * `severity`: [optional] base severity (default: debug)
 
 ```shell
-curl -s http://localhost:15000/topologies/mddo-ospf/original_asis/topology/layer1/interface_description/check
+curl -s http://localhost:15000/topologies/mddo-ospf/original_asis/topology/layer1/verify
 ```
 
 ## Development

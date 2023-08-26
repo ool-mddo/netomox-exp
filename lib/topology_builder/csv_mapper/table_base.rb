@@ -35,6 +35,29 @@ module NetomoxExp
         def true_string?(value)
           value.downcase == 'true'
         end
+
+        # rubocop:disable Security/Eval
+
+        # @param [String] str Array string (like '["a","b","c"]')
+        # @return [Array<String>] Array of values (like ["a", "b", "c"])
+        # @raise [StandardError]
+        def parse_array_string(str)
+          return [] if str.nil? || str.empty?
+          raise StandardError, "Not array style string: #{str}" unless /\[.*\]/.match?(str)
+
+          eval(str)
+        end
+        # rubocop:enable Security/Eval
+
+        # Convert interface list string to link-edge object.
+        #   ( array of `node[interface]` format string to link-edge)
+        # @param [String] interfaces_str Interface list string
+        # @return [Array<EdgeBase>] Array of link-edge
+        def extract_interfaces(interfaces_str)
+          interfaces_str =~ /\[(.+)\]/
+          content = Regexp.last_match(1)
+          content.split(/,\s*/).map { |str| EdgeBase.new(str) }
+        end
       end
 
       # Base class of edges-table endpoint
