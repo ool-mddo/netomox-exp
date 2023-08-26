@@ -12,9 +12,25 @@ module NetomoxExp
   # namespace converter (original/emulated)
   class NamespaceConverter < NamespaceConverterBase
     extend Forwardable
-    delegate %i[reload to_hash] => :@convert_table
-
-    attr_reader :convert_table
+    # @!method reload(table_data)
+    #   @return [void]
+    #   @see NamespaceConvertTable::ConvertTable#reload
+    # @!method to_hash
+    #   @return [Hash]
+    #   @see NamespaceConvertTable::ConvertTable#to_hash
+    # @!method node_name
+    #   @return [NamespaceConvertTable::NodeNameTable]
+    #   @see NamespaceConvertTable::ConvertTable#node_name_table
+    # @!method tp_name
+    #   @return [NamespaceConvertTable::TermPointTable]
+    #   @see NamespaceConvertTable::ConvertTable#tp_name_table
+    # @!method ospf_proc_id
+    #   @return [NamespaceConvertTable::OspfProcIdTable]
+    #   @see NamespaceConvertTable::ConvertTable#ospf_proc_id_table
+    # @!method static_route_tp
+    #   @return [NamespaceConvertTable::StaticRouteTpTable]
+    #   @see NamespaceConvertTable::ConvertTable#static_route_tp_table
+    delegate %i[reload to_hash node_name tp_name ospf_proc_id static_route_tp] => :@convert_table
 
     def initialize
       super
@@ -76,8 +92,8 @@ module NetomoxExp
       src_tp.supports
             .find_all { |tp_sup| target_network?(tp_sup.ref_network) }
             .map do |tp_sup|
-        converted_node = @convert_table.node_name.convert(tp_sup.ref_node)['l3_model']
-        converted_tp = @convert_table.tp_name.convert(tp_sup.ref_node, tp_sup.ref_tp)['l3_model']
+        converted_node = node_name.convert(tp_sup.ref_node)['l3_model']
+        converted_tp = tp_name.convert(tp_sup.ref_node, tp_sup.ref_tp)['l3_model']
         [tp_sup.ref_network, converted_node, converted_tp]
       end
     end
@@ -86,7 +102,7 @@ module NetomoxExp
     # @param [Netomox::Topology::TermPoint] src_tp Source term-point (L3+)
     # @return [Netomox::PseudoDSL::PTermPoint]
     def rewrite_term_point(src_node, src_tp)
-      converted_node = @convert_table.tp_name.convert(src_node.name, src_tp.name)['l3_model']
+      converted_node = tp_name.convert(src_node.name, src_tp.name)['l3_model']
       dst_tp = Netomox::PseudoDSL::PTermPoint.new(converted_node)
       dst_tp.attribute = convert_all_hash_keys(src_tp.attribute.to_data)
       dst_tp.supports = rewrite_tp_supports(src_tp)
@@ -100,7 +116,7 @@ module NetomoxExp
       src_node.supports
               .find_all { |node_sup| target_network?(node_sup.ref_network) }
               .map do |node_sup|
-        converted_node = @convert_table.node_name.convert(node_sup.ref_node)['l3_model']
+        converted_node = node_name.convert(node_sup.ref_node)['l3_model']
         [node_sup.ref_network, converted_node]
       end
     end
@@ -125,7 +141,7 @@ module NetomoxExp
 
       # rewrite static route next-hop interface (if it is not 'dynamic')
       dst_node.attribute[:static_routes].each do |route|
-        converted_tp = @convert_table.static_route_tp.convert(src_node.name, route[:prefix], route[:interface])
+        converted_tp = static_route_tp.convert(src_node.name, route[:prefix], route[:interface])
         route[:interface] = converted_tp
       end
     end
@@ -135,7 +151,7 @@ module NetomoxExp
     # @return [void]
     def rewrite_ospf_node_attr(src_node, dst_node)
       # rewrite ospf process-id in node-attribute of ospf-layer
-      converted_proc_id = @convert_table.ospf_proc_id.convert(src_node.name, src_node.attribute.process_id.to_s)
+      converted_proc_id = ospf_proc_id.convert(src_node.name, src_node.attribute.process_id.to_s)
       dst_node.attribute[:process_id] = converted_proc_id
     end
 
@@ -155,7 +171,7 @@ module NetomoxExp
     # @param [Netomox::Topology::Node] src_node Source node (L3+)
     # @return [Netomox::PseudoDSL::PNode]
     def rewrite_node(src_node)
-      converted_node = @convert_table.node_name.convert(src_node.name)['l3_model']
+      converted_node = node_name.convert(src_node.name)['l3_model']
       dst_node = Netomox::PseudoDSL::PNode.new(converted_node)
       dst_node.tps = src_node.termination_points.map { |src_tp| rewrite_term_point(src_node, src_tp) }
       dst_node.attribute = convert_all_hash_keys(src_node.attribute.to_data)
@@ -168,8 +184,8 @@ module NetomoxExp
     # @param [Netomox::Topology::TpRef] orig_edge Original link edge
     # @return [Netomox::PseudoDSL::PLinkEdge]
     def rewrite_link_edge(orig_edge)
-      converted_node = @convert_table.node_name.convert(orig_edge.node_ref)['l3_model']
-      converted_tp = @convert_table.tp_name.convert(orig_edge.node_ref, orig_edge.tp_ref)['l3_model']
+      converted_node = node_name.convert(orig_edge.node_ref)['l3_model']
+      converted_tp = tp_name.convert(orig_edge.node_ref, orig_edge.tp_ref)['l3_model']
       Netomox::PseudoDSL::PLinkEdge.new(converted_node, converted_tp)
     end
 
@@ -190,9 +206,9 @@ module NetomoxExp
         target_node = target_nw.node(link.src.node)
 
         # Update target is source edge, Note: link is bidirectional
-        target_node_dic = @convert_table.node_name.find_l1_alias(link.dst.node)
+        target_node_dic = node_name.find_l1_alias(link.dst.node)
         target_tp = target_node.term_point(link.src.tp)
-        target_tp_dic = @convert_table.tp_name.find_l1_alias(link.dst.node, link.dst.tp)
+        target_tp_dic = tp_name.find_l1_alias(link.dst.node, link.dst.tp)
         target_tp.attribute[:description] = ['to', target_node_dic['l1_agent'], target_tp_dic['l1_agent']].join('_')
       end
     end
