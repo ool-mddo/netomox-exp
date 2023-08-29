@@ -38,11 +38,14 @@ module NetomoxExp
 
         # rubocop:disable Security/Eval
 
-        # @param [String] str Array string (like '["a","b","c"]')
+        # @param [String] str Array string (like '["a","b","c"]' or 'a,b,c')
         # @return [Array<String>] Array of values (like ["a", "b", "c"])
         # @raise [StandardError]
         def parse_array_string(str)
           return [] if str.nil? || str.empty?
+          # for bgp-proc confederation_members
+          return str.split(',') if /^\d+(,\s*\d+)*$/.match?(str)
+
           raise StandardError, "Not array style string: #{str}" unless /\[.*\]/.match?(str)
 
           eval(str)
