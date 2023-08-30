@@ -64,6 +64,9 @@ module NetomoxExp
       # @param [String] ip_addr IP address ("a.b.c.d")
       # @return [String, nil] Found IP address ("a.b.c.d/nn" that includes ip_addr)
       def find_ip_in_l3_tp_includes(l3_tp, ip_addr)
+        # NOTE: bgp-multihop or faulty L3 attribute case
+        return nil if l3_tp.nil? || l3_tp.attribute.nil? || !l3_tp.attribute.key?(:ip_addrs)
+
         l3_tp.attribute[:ip_addrs].find { |ip| IPAddr.new(ip).include?(ip_addr) }
       end
 
@@ -88,7 +91,9 @@ module NetomoxExp
         l3_local_tp = find_l3_tp_by_ip(l3_local_node_name, remote_ip)
         l3_local_ip = find_ip_in_l3_tp_includes(l3_local_tp, remote_ip)
         if l3_local_ip.nil?
-          raise StandardError, "underlay L3 tp of #{l3_local_node_name}[#{l3_local_tp.name}] does not have IP?"
+          # NOTE: bgp-multihop or faulty L3 attribute case
+          @logger.warn "underlay L3 tp of #{l3_local_node_name}[#{l3_local_tp.name}] does not have IP or bgp-multihop?"
+          return ''
         end
 
         debug_print "#     -> l3_local_tp: #{l3_local_node_name}[#{l3_local_tp.name}] : l3_local_ip: #{l3_local_ip}"
@@ -125,7 +130,7 @@ module NetomoxExp
         remote_ip = bgp_local_tp.attribute[:remote_ip]
         debug_print "#   - (eBGP peer) remote_ip: #{remote_ip}"
         l3_local_ip = find_local_ip_from_support_node(bgp_local_node, remote_ip)
-        add_bgp_tp_support(bgp_local_node, bgp_local_tp, l3_local_ip)
+        add_bgp_tp_support(bgp_local_node, bgp_local_tp, l3_local_ip) unless l3_local_ip.empty?
       end
 
       # rubocop:disable Metrics/MethodLength
@@ -156,6 +161,7 @@ module NetomoxExp
       # @return [void]
       def setup_bgp_link
         # complement local_ip attribute using layer3 info if possible
+        # TODO: bgp-multihop case
         complement_local_ip_in_tps
 
         @network.nodes.each do |local_node|
