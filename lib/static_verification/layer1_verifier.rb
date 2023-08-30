@@ -16,17 +16,15 @@ module NetomoxExp
       # @param [String] severity Base severity
       # @return [Array<Hash>] Level-filtered description check results
       def verify(severity)
-        super(severity)
+        verify_layer(severity) do
+          verify_all_links do |l1_link|
+            # check only source interface because links are bidirectional
+            _, src_tp = @target_nw.find_node_tp_by_edge(l1_link.source)
+            return add_log_message(:error, target_str(src_tp, l1_link), 'term_point not found') unless src_tp
 
-        verify_all_links do |l1_link|
-          # check only source interface because links are bidirectional
-          _, src_tp = @target_nw.find_node_tp_by_edge(l1_link.source)
-          return add_log_message(:error, target_str(src_tp, l1_link), 'term_point not found') unless src_tp
-
-          verify_description(src_tp, l1_link)
+            verify_description(src_tp, l1_link)
+          end
         end
-
-        export_log_messages(severity:)
       end
 
       private

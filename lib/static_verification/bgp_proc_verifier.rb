@@ -15,13 +15,29 @@ module NetomoxExp
 
       # @param [String] severity Base severity
       def verify(severity)
-        super(severity)
-
-        verify_all_links { |bgp_proc_link| verify_peer_params(bgp_proc_link) }
-        export_log_messages(severity:)
+        verify_layer(severity) do
+          verify_all_links { |bgp_proc_link| verify_peer_params(bgp_proc_link) }
+          verify_all_node_tps { |bgp_proc_node, bgp_proc_tp| verify_node_tp_asn(bgp_proc_node, bgp_proc_tp) }
+        end
       end
 
       private
+
+      # @param [Netomox::Topology::Node] node Node (bgp-proc)
+      # @param [Netomox::Topology::TermPoint] term_point TermPoint of the node (bgp-proc)
+      # @return [void]
+      def verify_node_tp_asn(node, term_point)
+        node_cfid = node.attribute.confederation_id
+        return unless node_cfid.positive?
+
+        unless node.attribute.confederation_members.include?(term_point.attribute.local_as)
+          add_log_message(:error, term_point.path, 'Peer confederation-id is not included node')
+        end
+
+        return unless node_cfid != term_point.attribute.confederation
+
+        add_log_message(:error, term_point.path, 'Peer confederation-id is mismatch with node')
+      end
 
       # @param [String] link_path Link path
       # @param [Netomox::Topology::TermPoint] src_tp Source term-point
