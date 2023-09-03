@@ -189,6 +189,7 @@ module NetomoxExp
           local_ip: peer_rec.local_ip,
           remote_as: peer_rec.remote_as,
           remote_ip: peer_rec.remote_ip,
+          description: peer_rec.description,
           confederation: peer_rec.confederation,
           route_reflector_client: peer_rec.route_reflector_client,
           cluster_id: peer_rec.cluster_id,
