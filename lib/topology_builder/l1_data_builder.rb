@@ -4,7 +4,6 @@ require_relative 'pseudo_model'
 require_relative 'csv_mapper/edges_layer1_table'
 require_relative 'csv_mapper/interface_prop_table'
 require_relative 'csv_mapper/node_props_table'
-require_relative 'csv_mapper/ip_owners_table'
 
 module NetomoxExp
   module TopologyBuilder
@@ -18,7 +17,6 @@ module NetomoxExp
         @l1_edges = CSVMapper::EdgesLayer1Table.new(target)
         @intf_props = CSVMapper::InterfacePropertiesTable.new(target)
         @node_props = CSVMapper::NodePropsTable.new(target)
-        @ip_owners = CSVMapper::IPOwnersTable.new(target)
         validate_l1_edges
       end
 
@@ -29,7 +27,6 @@ module NetomoxExp
         @network.attribute = { name: 'mddo-layer1-network' }
         setup_node_tp_link
         check_disconnected_node
-        add_unlinked_ip_owner_tp
         @networks
       end
 
@@ -173,49 +170,6 @@ module NetomoxExp
           add_node(node_name)
         end
       end
-
-      # @param [Netomox::PseudoDSL::PNode] l1_node Layer1 node
-      # @return [Boolean] True if the node os-type is juniper
-      def juniper_node?(l1_node)
-        l1_node.attribute[:os_type].downcase == 'juniper'
-      end
-
-      # @param [Netomox::PseudoDSL::PNode] l1_node Layer1 node
-      # @param [CSVMapper::IPOwnersTableRecord] rec A record of ip_owners table
-      # @return [String] physical interface name for junos (nothing to do for other OS)
-      def select_physical_tp_name(l1_node, rec)
-        juniper_node?(l1_node) ? rec.interface.gsub(/(\d+)\.\d+/, '\1') : rec.interface
-      end
-
-      # @param [Netomox::PseudoDSL::PNode] l1_node Layer1 node
-      # @param [CSVMapper::IPOwnersTableRecord] rec A record of ip_owners table
-      # @return [Boolean] true if the record is LAG interface (parent/logical interface)
-      def lag_interface?(l1_node, rec)
-        l1_tp_name = select_physical_tp_name(l1_node, rec)
-        intf_prop_rec = @intf_props.find_record_by_node_intf(l1_node.name, l1_tp_name)
-        intf_prop_rec&.lag_parent? ? true : false
-      end
-
-      # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
-
-      # add unlinked interface which owns ip address (interface to external network/AS)
-      # @return [void]
-      def add_unlinked_ip_owner_tp
-        debug_print '# add_unlinked_tp'
-        @network.nodes.each do |l1_node|
-          debug_print "  - target node: #{l1_node.name}"
-          @ip_owners.find_all_records_by_node(l1_node.name).each do |rec|
-            l1_link = @network.find_link_by_src_name(l1_node.name, rec.interface)
-            # nothing to do if the term-point is linked (L1) or logical interface
-            next if l1_link || rec.loopback_interface? || lag_interface?(l1_node, rec)
-
-            debug_print "    - find unlinked tp: #{rec.interface}"
-            l1_tp_name = select_physical_tp_name(l1_node, rec)
-            add_node_tp(l1_node.name, l1_tp_name)
-          end
-        end
-      end
-      # rubocop:enable Metrics/AbcSize, Metrics/MethodLength
     end
     # rubocop:enable Metrics/ClassLength
   end
