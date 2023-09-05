@@ -62,7 +62,7 @@ module NetomoxExp
       # @param [Array<InterfacePropertiesTableRecord>] unit_props Unit interface properties of phy_intf
       # @return [InterfacePropertiesTableRecord] Phy. interface property (as trunk port)
       def change_property_as_trunk(phy_prop, unit_props)
-        debug_print "    unit_props: #{unit_props}"
+        debug_print "    unit_props: #{unit_props.map(&:to_s)}"
         # NOTICE: L3 sub-interface : use encapsulation_vlan as vlan-id of the unit-interface
         phy_prop.allowed_vlans = unit_props.map(&:encapsulation_vlan)
         debug_print "    junos trunk port subif: phy:#{phy_prop}, allowed_vlans:#{phy_prop.allowed_vlans}"

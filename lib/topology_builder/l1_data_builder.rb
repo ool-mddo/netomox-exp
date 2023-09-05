@@ -7,8 +7,6 @@ require_relative 'csv_mapper/node_props_table'
 
 module NetomoxExp
   module TopologyBuilder
-    # rubocop:disable Metrics/ClassLength
-
     # L1 data builder
     class L1DataBuilder < DataBuilderBase
       # @param [String] target Target network (config) data name
@@ -171,6 +169,5 @@ module NetomoxExp
         end
       end
     end
-    # rubocop:enable Metrics/ClassLength
   end
 end

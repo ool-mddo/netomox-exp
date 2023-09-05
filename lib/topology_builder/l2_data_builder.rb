@@ -322,27 +322,41 @@ module NetomoxExp
         end
       end
 
+      # @param [Netomox::PseudoDSL::PNode] l1_node Node name (L1)
+      # @param [Netomox::PseudoDSL::PTermPoint] l1_tp Term-point name (of the L1 node)
+      # @return [Boolean] true if the term-point is linked
+      def linked_l1_tp?(l1_node, l1_tp)
+        l1_link = @layer1p.find_link_by_src_name(l1_node.name, l1_tp.name)
+        !l1_link.nil?
+      end
+
       # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
 
       # add unlinked interface which owns ip address (interface to external network/AS)
       # @return [void]
       def add_unlinked_ip_owner_tp
-        debug_print '# add_unlinked_tp'
+        debug_print '# add_unlinked_ip_owner_tp'
         @layer1p.nodes.each do |l1_node|
           debug_print "  - target node: #{l1_node.name}"
           l1_node.tps.each do |l1_tp|
-            l1_link = @layer1p.find_link_by_src_name(l1_node.name, l1_tp.name)
-            next if l1_link
+            # nothing to do if the term-point is linked (L1)
+            next if linked_l1_tp?(l1_node, l1_tp)
 
             debug_print "    - find unlinked L1 tp: #{l1_tp.name}"
             link_edge = Netomox::PseudoDSL::PLinkEdge.new(l1_node.name, l1_tp.name)
-            _, _, tp_prop = tp_prop_by_link_edge(link_edge)
+            # tp_prop = Lag parent prop if the l1_tp is a LAG member
+            _, parent_tp, tp_prop = tp_prop_by_link_edge(link_edge)
+            # for junos
+            # - aeX phy interface property (as trunk) for LAG
+            # - hoge.0 unit interface property for others
             tp_prop = choose_tp_prop(l1_node, tp_prop)
-            debug_print "    - tp prop: #{tp_prop}"
+            debug_print "    - tp prop: #{[tp_prop]}"
 
-            # unlinked interface is L3 (routed)
-            # @see [L1DataBuilder#add_unlinked_ip_owner_tp]
-            add_l2_node_tp(l1_node, l1_tp, tp_prop, 0)
+            if tp_prop.swp_trunk?
+              tp_prop.allowed_vlans.each { |vid| add_l2_node_tp(l1_node, parent_tp, tp_prop, vid) }
+            else
+              add_l2_node_tp(l1_node, l1_tp, tp_prop, tp_prop.access_vlan)
+            end
           end
         end
       end
