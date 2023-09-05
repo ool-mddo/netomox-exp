@@ -6,6 +6,9 @@ require_relative 'lib/api/rest_api_base'
 require_relative 'lib/api/topologies'
 
 module NetomoxExp
+  # Directory to load external-AS topology script
+  # NOTE: to `load` topology script, it must be absolute-path
+  CONFIGS_DIR = ENV.fetch('MDDO_CONFIGS_DIR', 'configs')
   # Directory to save batfish query answers
   QUERIES_DIR = ENV.fetch('MDDO_QUERIES_DIR', 'queries')
   # Directory to save topology json from batfish query answers
