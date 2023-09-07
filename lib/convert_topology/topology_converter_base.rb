@@ -62,7 +62,7 @@ module NetomoxExp
     # @param [String] type name type (l1_principal or l1_agent)
     # @return [String] Converted node name (emulated L1-principal/agent name)
     def converted_node(node_name, type)
-      @ns_converter.convert_table.node_name.find_l1_alias(node_name)[type]
+      @ns_converter.node_name.find_l1_alias(node_name)[type]
     end
 
     # @param [String] node_name Node name to convert (emulated L3-model name)
@@ -70,7 +70,7 @@ module NetomoxExp
     # @param [String] type name type (l1_principal or l1_agent)
     # @return [String] Converted term-point name (emulated L1-principal/agent name)
     def converted_tp(node_name, tp_name, type)
-      @ns_converter.convert_table.tp_name.find_l1_alias(node_name, tp_name)[type]
+      @ns_converter.tp_name.find_l1_alias(node_name, tp_name)[type]
     end
   end
 end
