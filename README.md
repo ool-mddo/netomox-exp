@@ -268,6 +268,16 @@ curl -s http://localhost:9292/topologies/mddo-ospf/emulated_asis/topology/layer3
 
 </details>
 
+### External-AS topology operation
+
+Fetch external-AS topology of the snapshot
+
+* GET `/topologies/<network>/<snapshot>/external_as_topology`
+
+```shell
+curl -s http://localhost:9292/topologies/biglobe_deform/original_asis/external_as_topology
+```
+
 ### Static Verification
 
 Verify all layers or a layer according to its network-type.
@@ -278,7 +288,7 @@ Verify all layers or a layer according to its network-type.
   * `severity`: [optional] base severity (default: debug)
 
 ```shell
-curl -s http://localhost:15000/topologies/mddo-ospf/original_asis/topology/layer1/verify
+curl -s http://localhost:9292/topologies/mddo-ospf/original_asis/topology/layer1/verify
 ```
 
 ## Development
