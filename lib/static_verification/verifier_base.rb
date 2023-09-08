@@ -23,9 +23,20 @@ module NetomoxExp
         @target_nw = network
       end
 
+      # Default (common) layer verification (Will be override)
       # @param [String] severity Base severity
       # @return [Array<Hash>] Level-filtered description check results
       def verify(severity)
+        verify_layer(severity)
+      end
+
+      protected
+
+      # @param [String] severity Base severity
+      # @yield Layer specific verifications
+      # @yieldreturn [void]
+      # @return [Array<Hash>] Level-filtered description check results
+      def verify_layer(severity, &)
         # verify common data structure
         verify_support_existence
         verify_link_existence
@@ -36,10 +47,11 @@ module NetomoxExp
         verify_all_node_tps { |node, tp| verify_unlinked_tp(node, tp) }
         verify_all_nodes { |node| verify_standalone_node(node) }
 
+        # layer specific verifications
+        yield if block_given?
+
         export_log_messages(severity:)
       end
-
-      protected
 
       # @param [String] severity Base severity (default: debug)
       # @return [Array<Hash>] Level-filtered description check results

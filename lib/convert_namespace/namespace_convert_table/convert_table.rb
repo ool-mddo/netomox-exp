@@ -9,6 +9,14 @@ module NetomoxExp
   module NamespaceConvertTable
     # convert table
     class ConvertTable
+      # @!attribute [r] node_name_table
+      #   @return [NodeNameTable]
+      # @!attribute [r] tp_name_table
+      #   @return [TermPointNameTable]
+      # @!attribute [r] ospf_proc_id_table
+      #   @return [OspfProcIdTable]
+      # @!attribute [r] static_route_tp_table
+      #   @return [StaticRouteTpTable]
       attr_reader :node_name_table, :tp_name_table, :ospf_proc_id_table, :static_route_tp_table
       alias node_name node_name_table
       alias tp_name tp_name_table

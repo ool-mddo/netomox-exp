@@ -16,18 +16,16 @@ module NetomoxExp
       # @param [String] severity Base severity
       # @return [Array<Hash>] Level-filtered description check results
       def verify(severity)
-        super(severity)
+        verify_layer(severity) do
+          verify_all_nodes do |node|
+            next unless segment_node?(node)
 
-        verify_all_nodes do |node|
-          next unless segment_node?(node)
-
-          # for each segment-node
-          verify_segment_prefix_ip(node)
-          verify_segment_ip_overlap(node)
+            # for each segment-node
+            verify_segment_prefix_ip(node)
+            verify_segment_ip_overlap(node)
+          end
+          verify_segment_prefix_overlap
         end
-        verify_segment_prefix_overlap
-
-        export_log_messages(severity:)
       end
 
       private

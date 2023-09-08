@@ -59,8 +59,10 @@ module NetomoxExp
     end
 
     # @param [String] network_name Network (layer) name
-    # @return [Boolean] True if the network_name matches one of TARGET_NW_REGEXP_LIST
+    # @return [Boolean] True if the network name is a one of upper layer3 network names
     def target_network?(network_name)
+      # NOTE: network NAME is used to detect the network is target or not.
+      #   because it must be detect supporting-foo, that is object reference.
       @upper_l3_nw_names.include?(network_name)
     end
 
