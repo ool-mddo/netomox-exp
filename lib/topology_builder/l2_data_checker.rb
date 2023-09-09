@@ -17,7 +17,7 @@ module NetomoxExp
 
       protected
 
-      # rubocop:disable Metrics/MethodLength
+      # rubocop:disable Metrics/MethodLength, Metrics/AbcSize
 
       # @param [Netomox::PseudoDSL::PNode] src_node Source layer1 node
       # @param [InterfacePropertiesTableRecord] src_tp_prop Term-point properties of source
@@ -27,6 +27,8 @@ module NetomoxExp
       def port_l2_config_check(src_node, src_tp_prop, dst_node, dst_tp_prop)
         target_src_tp_prop = choose_tp_prop(src_node, src_tp_prop)
         target_dst_tp_prop = choose_tp_prop(dst_node, dst_tp_prop)
+        debug_print "  - src_tp_prop: #{target_src_tp_prop}"
+        debug_print "  - dst_tp_prop: #{target_dst_tp_prop}"
         if target_src_tp_prop.nil? || target_dst_tp_prop.nil?
           return {
             type: :error,
@@ -53,7 +55,7 @@ module NetomoxExp
           }
         end
       end
-      # rubocop:enable Metrics/MethodLength
+      # rubocop:enable Metrics/MethodLength, Metrics/AbcSize
 
       private
 

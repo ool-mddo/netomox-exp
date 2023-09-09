@@ -47,6 +47,11 @@ module NetomoxExp
         def to_s
           [@node, @vrf, @interface, @ip, @mask].map(&:to_s).join(', ')
         end
+
+        # @return [Boolean] true if GRT ip info (not VRF instance)
+        def grt?
+          @vrf == 'default'
+        end
       end
 
       # ip-owners table

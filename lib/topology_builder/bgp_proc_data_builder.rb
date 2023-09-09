@@ -249,13 +249,19 @@ module NetomoxExp
       end
       # rubocop:disable Metrics/AbcSize
 
+      # @param [BgpProcessConfigurationTableRecord] proc_rec A record of BGP process configuration
+      # @return [String] Name of layer3 (underlay) node name
+      def l3_node_name(proc_rec)
+        proc_rec.grt? ? proc_rec.node : "#{proc_rec.node}_#{proc_rec.vrf}"
+      end
+
       # @param [BgpProcessConfigurationTableRecord] proc_rec BGP process configuration
       # return [void]
       def add_bgp_node_tp(proc_rec)
         debug_print "# node: #{proc_rec.node} (vrf=#{proc_rec.vrf}), router_id=#{proc_rec.router_id}"
         bgp_node = @network.node(proc_rec.router_id)
         bgp_node.attribute = bgp_node_attribute(proc_rec)
-        bgp_node.supports.push([@layer3p.name, proc_rec.node])
+        bgp_node.supports.push([@layer3p.name, l3_node_name(proc_rec)])
 
         # supporting node (NOTICE: vrf is not assumed)
         peer_recs = @bgp_peer_conf.find_all_recs_by_node_vrf(proc_rec.node, proc_rec.vrf)

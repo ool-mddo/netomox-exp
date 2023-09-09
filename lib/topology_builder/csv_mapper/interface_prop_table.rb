@@ -184,7 +184,7 @@ module NetomoxExp
         # @return [Array<InterfacePropertiesTableRecord>] Found records
         def find_all_unit_records_by_node_intf(node_name, intf_name)
           @records.find_all do |rec|
-            rec.node == node_name && rec.interface =~ /#{intf_name}.\d+/
+            rec.node == node_name && rec.interface =~ /#{intf_name}\.\d+/
           end
         end
       end

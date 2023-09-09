@@ -48,7 +48,7 @@ module NetomoxExp
       # @param [IPOwnersTableRecord] rec A record of IP-Owners table
       # @return [String] Name of layer3 node
       def l3_node_name(rec)
-        rec.vrf == 'default' ? rec.node : "#{rec.node}_#{rec.vrf}"
+        rec.grt? ? rec.node : "#{rec.node}_#{rec.vrf}"
       end
 
       # @param [IPOwnersTableRecord] rec A record of IP-Owners table
@@ -61,6 +61,7 @@ module NetomoxExp
         l3_node.attribute = {
           node_type: node_name =~ /.*svr\d+/i ? 'endpoint' : 'node' # TODO: ad-hoc node type detection...
         }
+        l3_node.attribute[:flags] = ["vrf:#{rec.vrf}"] unless rec.grt?
         l3_node
       end
 
@@ -150,7 +151,8 @@ module NetomoxExp
 
         if !linked_l2_tp?(l2_node, l2_tp) && rec.nil?
           # raise error for unlinked tp
-          raise StandardError, "Corresponding ip-owner interface is not found: #{l2_node.name}[#{l2_tp.name}]"
+          @logger.error "Corresponding ip-owner interface is not found: #{l2_node.name}[#{l2_tp.name}]"
+          return [nil, nil]
         end
 
         l3_node = add_l3_node(rec, l2_node)

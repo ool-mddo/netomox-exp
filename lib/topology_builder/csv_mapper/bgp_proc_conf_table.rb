@@ -53,6 +53,11 @@ module NetomoxExp
           @tie_breaker = record[:tie_breaker]
         end
         # rubocop:enable Metrics/MethodLength, Metrics/AbcSize
+
+        # @return [Boolean] true if GRT ip info (not VRF instance)
+        def grt?
+          @vrf == 'default'
+        end
       end
 
       # bgp process configuration table
