@@ -36,7 +36,7 @@ module NetomoxExp
       # @return [String] physical interface name for junos (nothing to do for other OS)
       def select_physical_tp_name(l1_node, rec)
         # e.g. xe-0/3/0:0.0, ge-0/0/1.0
-        juniper_node?(l1_node) ? rec.interface.gsub(/(\d+(?::\d+)?)\.\d+/, '\1') : rec.interface
+        juniper_node?(l1_node) ? rec.physical_interface : rec.interface
       end
 
       # @param [Netomox::PseudoDSL::PNode] l1_node Layer1 node

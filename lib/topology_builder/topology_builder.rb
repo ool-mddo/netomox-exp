@@ -13,6 +13,14 @@ module NetomoxExp
     # Regexp to check interface (term-point) name (loopback interface or not)
     LO_INTERFACE_REGEXP = %r{^lo(?:opback)?[-\d./:]*$}i
 
+    # juniper interface name (phy/unit)
+    #   example         JUNOS_INTERFACE_REGEXP.match(intf_str).to_a
+    #   string (=[0])   [1]          [2]
+    #   xe-0/3/0:0.0    xe-0/0/0:0   0
+    #   ge-0/10.1112    ge-0/10      1112
+    #   lo0.0           lo0          0
+    JUNOS_INTERFACE_REGEXP = %r{([\w-]+[\d+/]+(?::\d+)?)\.(\d+)}
+
     module_function
 
     # @param [Array<Netomox::PseudoDSL::PNetworks>] nws Networks
