@@ -59,6 +59,18 @@ module NetomoxExp
         intf_prop_rec.lag_member_interfaces
       end
 
+      # @param [NetomoxExp::CSVMapper::IPOwnersTableRecord] rec A record of ip-owner table
+      # @return [Boolean] true if found interface prop and active
+      def active_interface?(rec)
+        intf_prop_rec = @intf_props.find_record_by_node_intf(rec.node, rec.interface)
+        if intf_prop_rec.nil?
+          @logger.error "Correspond record is not found in interface props table: IPOwner:#{rec}"
+          return false
+        end
+
+        intf_prop_rec.active?
+      end
+
       # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
 
       # add unlinked interface which owns ip address (interface to external network/AS)
@@ -70,7 +82,9 @@ module NetomoxExp
           @ip_owners.find_all_records_by_node(l1_node.name).each do |rec|
             l1_link = @network.find_link_by_src_name(l1_node.name, rec.interface)
             # nothing to do if the term-point is linked (L1) or logical interface
-            next if l1_link || rec.loopback_interface?
+            # NOTE: batfish query deactivate management interface (but it keep unlinked interface active),
+            #   therefore, an inactive interface is ignored here.
+            next if l1_link || rec.loopback_interface? || !active_interface?(rec)
 
             debug_print "    - find unlinked tp: #{rec.interface}"
             # if aggregated interface (LAG), add its children
