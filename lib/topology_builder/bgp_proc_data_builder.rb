@@ -10,7 +10,7 @@ module NetomoxExp
     # rubocop:disable Metrics/ClassLength
 
     # BGP data builder
-    class BgpDataBuilder < DataBuilderBase
+    class BgpProcDataBuilder < DataBuilderBase
       # @param [String] target Target network (config) data name
       # @param [Netomox::PseudoDSL::PNetwork] layer3p Layer3 network topology
       def initialize(target:, layer3p:, debug: false)
@@ -89,14 +89,15 @@ module NetomoxExp
 
         l3_local_node_name = bgp_local_node.supports[0][1]
         l3_local_tp = find_l3_tp_by_ip(l3_local_node_name, remote_ip)
-        l3_local_ip = find_ip_in_l3_tp_includes(l3_local_tp, remote_ip)
-        if l3_local_ip.nil?
+        if l3_local_tp.nil?
           # NOTE: bgp-multihop or faulty L3 attribute case
-          @logger.warn "underlay L3 tp of #{l3_local_node_name}[#{l3_local_tp.name}] does not have IP or bgp-multihop?"
+          @logger.warn "underlay L3 of #{bgp_local_node.name}, #{l3_local_node_name} does not have remote-linked tp " \
+                       "or peer #{remote_ip} is bgp-multihop?"
           return ''
         end
 
-        debug_print "#     -> l3_local_tp: #{l3_local_node_name}[#{l3_local_tp.name}] : l3_local_ip: #{l3_local_ip}"
+        l3_local_ip = find_ip_in_l3_tp_includes(l3_local_tp, remote_ip)
+        debug_print "#     -> l3_local_tp: #{l3_local_node_name} : l3_local_ip: #{l3_local_ip}"
         ip_string_without_prefix(l3_local_ip)
       end
       # rubocop:enable Metrics/MethodLength
@@ -203,7 +204,7 @@ module NetomoxExp
 
       # @param [String] l3_node_name L3 node name to support
       # @param [String] ip_addr IP address
-      # @return [Netomox::PseudoDSL::PTermPoint] L3 term-point to support the bgp term-point
+      # @return [Netomox::PseudoDSL::PTermPoint,nil] L3 term-point to support the bgp term-point
       # @raise [StandardError]
       def find_l3_tp_by_ip(l3_node_name, ip_addr)
         l3_node = @layer3p.node(l3_node_name)
@@ -248,13 +249,19 @@ module NetomoxExp
       end
       # rubocop:disable Metrics/AbcSize
 
+      # @param [BgpProcessConfigurationTableRecord] proc_rec A record of BGP process configuration
+      # @return [String] Name of layer3 (underlay) node name
+      def l3_node_name(proc_rec)
+        proc_rec.grt? ? proc_rec.node : "#{proc_rec.node}_#{proc_rec.vrf}"
+      end
+
       # @param [BgpProcessConfigurationTableRecord] proc_rec BGP process configuration
       # return [void]
       def add_bgp_node_tp(proc_rec)
         debug_print "# node: #{proc_rec.node} (vrf=#{proc_rec.vrf}), router_id=#{proc_rec.router_id}"
         bgp_node = @network.node(proc_rec.router_id)
         bgp_node.attribute = bgp_node_attribute(proc_rec)
-        bgp_node.supports.push([@layer3p.name, proc_rec.node])
+        bgp_node.supports.push([@layer3p.name, l3_node_name(proc_rec)])
 
         # supporting node (NOTICE: vrf is not assumed)
         peer_recs = @bgp_peer_conf.find_all_recs_by_node_vrf(proc_rec.node, proc_rec.vrf)

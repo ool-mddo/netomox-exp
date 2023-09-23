@@ -48,7 +48,7 @@ module NetomoxExp
       # @param [IPOwnersTableRecord] rec A record of IP-Owners table
       # @return [String] Name of layer3 node
       def l3_node_name(rec)
-        rec.vrf == 'default' ? rec.node : "#{rec.node}_#{rec.vrf}"
+        rec.grt? ? rec.node : "#{rec.node}_#{rec.vrf}"
       end
 
       # @param [IPOwnersTableRecord] rec A record of IP-Owners table
@@ -59,8 +59,9 @@ module NetomoxExp
         l3_node = @network.node(node_name)
         l3_node.supports.push([@layer2p.name, l2_node.name])
         l3_node.attribute = {
-          node_type: node_name =~ /.*svr\d+/i ? 'endpoint' : 'node'
+          node_type: node_name =~ /.*svr\d+/i ? 'endpoint' : 'node' # TODO: ad-hoc node type detection...
         }
+        l3_node.attribute[:flags] = ["vrf:#{rec.vrf}"] unless rec.grt?
         l3_node
       end
 
@@ -80,18 +81,50 @@ module NetomoxExp
         l3_tp
       end
 
+      # rubocop:disable Metrics/MethodLength, Metrics/AbcSize
+
       # @param [Netomox::PseudoDSL::PNode] l2_node Layer2 node
       # @param [String] l2_tp_name Node name in the l2_node
       # @return [Array(CSVMapper::IPOwnersTableRecord, Netomox::PseudoDSL::PNode)]
       #   L3 (IPOwners) record and corresponding L2 node
+      #   NOTE: it will return nil as IPOwnersTableRecord if ip-owner record is not found
       def ip_rec_by_l2_node(l2_node, l2_tp_name)
-        rec = @ip_owners.find_record_by_node_intf(l2_node.attribute[:name], l2_tp_name)
-        # if rec not found, search virtual node (GRT/VRF)
-        rec ||= @ip_owners.find_vlan_intf_record_by_node(l2_node.attribute[:name], l2_node.attribute[:vlan_id])
-        # debug_print "  l2_edge=#{l2_edge}, rec=#{rec}"
+        # aliases
+        l1_node_name = l2_node.attribute[:name]
+        l2_vid = l2_node.attribute[:vlan_id]
 
-        [rec, l2_node]
+        # if "l1_node_name[l2_tp_name]" interface has ip address
+        debug_print "    ip_rec_by_l2_node, #{l2_node.name}, vid#{l2_vid} -> #{l1_node_name}, #{l2_tp_name}"
+        ip_owner_rec = @ip_owners.find_record_by_node_intf(l1_node_name, l2_tp_name)
+
+        # if rec not found, search virtual node (GRT/VRF)
+        ip_owner_rec ||= @ip_owners.find_vlan_intf_record_by_node(l1_node_name, l2_vid)
+
+        # if rec not found, search LAG parent
+        intf_prop_rec = @intf_props.find_record_by_node_intf(l1_node_name, l2_tp_name)
+        if intf_prop_rec&.lag_member?
+          lag_parent_name = intf_prop_rec.lag_parent_interface
+          debug_print "    LAG member: parent=#{l1_node_name}[#{lag_parent_name}]"
+          # if parent has ip
+          # - cisco, PoX
+          # - junos, aeX (without unit number)
+          ip_owner_rec ||= @ip_owners.find_record_by_node_intf(l1_node_name, lag_parent_name)
+          # if (the node is junos and) unit interface has ip
+          # NOTE:
+          # in interface-props table
+          #   (junos node)[aeX]     <parent> -> LAG members: [ge-X/Y,...]
+          #   (junos node)[ge-X/Y]  <member> -> LAG group: [aeX]
+          # in ip-owners table
+          #   (junos node)[aeX.P] ... unit number is independent with LAG
+          #   currently, .0 or vlan-id is used as unit number...but that is local naming policy
+          ip_owner_rec ||= @ip_owners.find_record_by_node_intf(l1_node_name, "#{lag_parent_name}.#{l2_vid}")
+          ip_owner_rec ||= @ip_owners.find_record_by_node_intf(l1_node_name, "#{lag_parent_name}.0")
+        end
+
+        debug_print "    ip_rec_by_node rec=#{ip_owner_rec}"
+        [ip_owner_rec, l2_node]
       end
+      # rubocop:enable Metrics/MethodLength, Metrics/AbcSize
 
       # @param [Netomox::PseudoDSL::PLinkEdge] l2_edge Layer2 link edge
       # @return [Array(CSVMapper::IPOwnersTableRecord, Netomox::PseudoDSL::PNode)]
@@ -101,19 +134,32 @@ module NetomoxExp
         ip_rec_by_l2_node(l2_node, l2_edge.tp)
       end
 
+      # rubocop:disable Metrics/AbcSize
+
       # @param [Netomox::PseudoDSL::PNode] l2_node Layer2 node
       # @param [Netomox::PseudoDSL::PTermPoint] l2_tp Layer2 term-point
       # @return [Array(Netomox::PseudoDSL::PNode, Netomox::PseudoDSL::PTermPoint)] Added L3-Node and term-point pair
+      # @raise StandardError if corresponding ip-owner term-point is not found for the unlinked-tp.
+      #   Because in L1, topology-builder insert term-points that is not linked but owns ip-address.
+      #   So, in L3, it must be found corresponding ip-owner tp info of unlinked term-point.
       def add_l3_node_tp_by_l2_node_tp(l2_node, l2_tp)
         rec, l2_node = ip_rec_by_l2_node(l2_node, l2_tp.name)
         debug_print "  - add_l3_node_tp: l2=#{l2_node.name}[#{l2_tp.name}], rec=#{rec}, l2_node=#{l2_node}"
 
-        return [nil, nil] unless rec
+        # ignore it for linked tp (L2 linked tp)
+        return [nil, nil] if linked_l2_tp?(l2_node, l2_tp) && rec.nil?
+
+        if !linked_l2_tp?(l2_node, l2_tp) && rec.nil?
+          # raise error for unlinked tp
+          @logger.error "Corresponding ip-owner interface is not found: #{l2_node.name}[#{l2_tp.name}]"
+          return [nil, nil]
+        end
 
         l3_node = add_l3_node(rec, l2_node)
         l3_tp = add_l3_tp(rec, l3_node, l2_node.name, l2_tp.name)
         [l3_node, l3_tp]
       end
+      # rubocop:enable Metrics/AbcSize
 
       # @param [Netomox::PseudoDSL::PNode] l3_seg_node Layer3 segment-node (L3/src)
       # @param [Netomox::PseudoDSL::PLink] l2_link Layer2 link (l2, node -> seg_node)
@@ -367,16 +413,23 @@ module NetomoxExp
         end
       end
 
+      # @param [Netomox::PseudoDSL::PNode] l2_node Node name (L2)
+      # @param [Netomox::PseudoDSL::PTermPoint] l2_tp Term-point name (of the L2 node)
+      # @return [Boolean] true if the term-point is linked
+      def linked_l2_tp?(l2_node, l2_tp)
+        l2_link = @layer2p.find_link_by_src_name(l2_node.name, l2_tp.name)
+        !l2_link.nil?
+      end
+
       # add unlinked interface which owns ip address (interface to external network/AS)
       # @return [void]
       def add_unlinked_ip_owner_tp
-        debug_print '# add_unlinked_tp'
+        debug_print '# add_unlinked_ip_owner_tp'
         @layer2p.nodes.each do |l2_node|
           debug_print "  - target node: #{l2_node.name}"
           l2_node.tps.each do |l2_tp|
-            l2_link = @layer2p.find_link_by_src_name(l2_node.name, l2_tp.name)
             # nothing to do if the term-point is linked (L2)
-            next if l2_link
+            next if linked_l2_tp?(l2_node, l2_tp)
 
             debug_print "    find unlinked tp: #{l2_tp.name}"
             add_l3_node_tp_by_l2_node_tp(l2_node, l2_tp)

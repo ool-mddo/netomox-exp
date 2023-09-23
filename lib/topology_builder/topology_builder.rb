@@ -1,17 +1,25 @@
 # frozen_string_literal: true
 
-require_relative 'l1_data_builder'
+require_relative 'l1_l3_data_builder'
 require_relative 'l2_data_builder'
 require_relative 'l3_data_builder'
 require_relative 'expanded_l3_data_builder'
 require_relative 'ospf_data_builder'
-require_relative 'bgp_data_builder'
+require_relative 'bgp_proc_data_builder'
 
 module NetomoxExp
   # Topology data builder
   module TopologyBuilder
     # Regexp to check interface (term-point) name (loopback interface or not)
     LO_INTERFACE_REGEXP = %r{^lo(?:opback)?[-\d./:]*$}i
+
+    # juniper interface name (phy/unit)
+    #   example         JUNOS_INTERFACE_REGEXP.match(intf_str).to_a
+    #   string (=[0])   [1]          [2]
+    #   xe-0/3/0:0.0    xe-0/0/0:0   0
+    #   ge-0/10.1112    ge-0/10      1112
+    #   lo0.0           lo0          0
+    JUNOS_INTERFACE_REGEXP = %r{([\w-]+[\d+/]+(?::\d+)?)\.(\d+)}
 
     module_function
 
@@ -40,7 +48,7 @@ module NetomoxExp
     # @return [Hash] RFC8345 topology data
     def generate_data(target, layer: 'layer1', debug: false)
       l1_debug = debug_layer?(debug, layer, 1)
-      l1_builder = L1DataBuilder.new(target:, debug: l1_debug)
+      l1_builder = L1L3DataBuilder.new(target:, debug: l1_debug)
       layer1_nws = l1_builder.make_networks
       if l1_debug
         layer1_nws.dump
@@ -93,7 +101,7 @@ module NetomoxExp
       to_data([ospf_nws, layer3_nws, layer2_nws, layer1_nws])
 
       bgp_debug = debug_layer?(debug, layer, 'bgp')
-      bgp_builder = BgpDataBuilder.new(
+      bgp_builder = BgpProcDataBuilder.new(
         target:,
         layer3p: layer3_nws.find_network_by_name('layer3'),
         debug: bgp_debug

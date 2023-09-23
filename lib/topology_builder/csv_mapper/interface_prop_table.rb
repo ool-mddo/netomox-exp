@@ -117,7 +117,7 @@ module NetomoxExp
         # Unit interface number (for junos interface)
         # @return [nil, String] unit number string
         def unit_number
-          %r{[-/\w]+\d+(?::\d+)?\.(\d+)}.match(interface).to_a[1]
+          JUNOS_INTERFACE_REGEXP.match(interface).to_a[2]
         end
 
         # @return [String]
@@ -184,7 +184,7 @@ module NetomoxExp
         # @return [Array<InterfacePropertiesTableRecord>] Found records
         def find_all_unit_records_by_node_intf(node_name, intf_name)
           @records.find_all do |rec|
-            rec.node == node_name && rec.interface =~ /#{intf_name}.\d+/
+            rec.node == node_name && rec.interface =~ /#{intf_name}\.\d+/
           end
         end
       end
