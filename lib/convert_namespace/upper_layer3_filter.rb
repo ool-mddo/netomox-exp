@@ -5,7 +5,6 @@ require_relative 'namespace_converter_base'
 
 module NetomoxExp
   # filter L3+ (upper layer3...layer3 + OSPF-areaN + BGP-proc/as)
-  # NOTE: it requires inherit NamespaceConverter to use convert_all_hash_keys
   class UpperLayer3Filter < NamespaceConverterBase
     # @param [Hash] topology_data Topology data
     def initialize(topology_data)
@@ -35,7 +34,7 @@ module NetomoxExp
     # @return [Netomox::PseudoDSL::PTermPoint]
     def filter_term_point(src_tp)
       dst_tp = Netomox::PseudoDSL::PTermPoint.new(src_tp.name)
-      dst_tp.attribute = convert_all_hash_keys(src_tp.attribute.to_data)
+      dst_tp.attribute = Netomox.convert_attr_topo2dsl(src_tp.attribute.to_data)
       dst_tp.supports = filter_tp_support(src_tp)
       dst_tp
     end
@@ -53,7 +52,7 @@ module NetomoxExp
     def filter_node(src_node)
       dst_node = Netomox::PseudoDSL::PNode.new(src_node.name)
       dst_node.tps = src_node.termination_points.map { |src_tp| filter_term_point(src_tp) }
-      dst_node.attribute = convert_all_hash_keys(src_node.attribute.to_data)
+      dst_node.attribute = Netomox.convert_attr_topo2dsl(src_node.attribute.to_data)
       dst_node.supports = filter_node_support(src_node)
       dst_node
     end
@@ -79,7 +78,7 @@ module NetomoxExp
       dst_nw = Netomox::PseudoDSL::PNetwork.new(src_nw.name)
       # NOTE: network type is iterable hash
       dst_nw.type = src_nw.primary_network_type
-      dst_nw.attribute = convert_all_hash_keys(src_nw.attribute.to_data) if src_nw.attribute
+      dst_nw.attribute = Netomox.convert_attr_topo2dsl(src_nw.attribute.to_data) if src_nw.attribute
       dst_nw.supports = src_nw.supports.map(&:ref_network) if src_nw.supports
       dst_nw.nodes = src_nw.nodes.map { |src_node| filter_node(src_node) }
       dst_nw.links = src_nw.links.map { |src_link| filter_link(src_link) }
