@@ -3,7 +3,6 @@
 module NetomoxExp
   # Base class of namespace converter
   class NamespaceConverterBase
-
     def initialize
       # NOTE: initialized with #load_origin_topology
       #   #convert_all_hash_keys and related methods are used in children: NamespaceConverter and UpperLayer3Filter.
