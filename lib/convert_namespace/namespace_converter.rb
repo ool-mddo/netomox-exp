@@ -104,7 +104,7 @@ module NetomoxExp
     def rewrite_term_point(src_node, src_tp)
       converted_node = tp_name.convert(src_node.name, src_tp.name)['l3_model']
       dst_tp = Netomox::PseudoDSL::PTermPoint.new(converted_node)
-      dst_tp.attribute = convert_all_hash_keys(src_tp.attribute.to_data)
+      dst_tp.attribute = Netomox.convert_attr_topo2dsl(src_tp.attribute.to_data)
       dst_tp.supports = rewrite_tp_supports(src_tp)
       dst_tp
     end
@@ -174,7 +174,7 @@ module NetomoxExp
       converted_node = node_name.convert(src_node.name)['l3_model']
       dst_node = Netomox::PseudoDSL::PNode.new(converted_node)
       dst_node.tps = src_node.termination_points.map { |src_tp| rewrite_term_point(src_node, src_tp) }
-      dst_node.attribute = convert_all_hash_keys(src_node.attribute.to_data)
+      dst_node.attribute = Netomox.convert_attr_topo2dsl(src_node.attribute.to_data)
       dst_node.supports = rewrite_node_support(src_node)
       rewrite_node_attr(src_node, dst_node)
       dst_node
@@ -222,7 +222,7 @@ module NetomoxExp
       dst_nw = Netomox::PseudoDSL::PNetwork.new(src_nw.name)
       # NOTE: network type is iterable hash
       dst_nw.type = src_nw.primary_network_type
-      dst_nw.attribute = convert_all_hash_keys(src_nw.attribute.to_data) if src_nw.attribute
+      dst_nw.attribute = Netomox.convert_attr_topo2dsl(src_nw.attribute.to_data) if src_nw.attribute
       dst_nw.supports = src_nw.supports.map(&:ref_network) if src_nw.supports
       dst_nw.nodes = src_nw.nodes.map { |src_node| rewrite_node(src_node) }
       dst_nw.links = src_nw.links.map { |src_link| rewrite_link(src_link) }
