@@ -58,9 +58,9 @@ module NetomoxExp
         node_name = l3_node_name(rec)
         l3_node = @network.node(node_name)
         l3_node.supports.push([@layer2p.name, l2_node.name])
-        l3_node.attribute = {
-          node_type: node_name =~ /.*svr\d+/i ? 'endpoint' : 'node' # TODO: ad-hoc node type detection...
-        }
+        l3_node.attribute = {} unless l3_node.attribute
+        # TODO: ad-hoc node type detection...
+        l3_node.attribute[:node_type] = node_name =~ /.*svr\d+/i ? 'endpoint' : 'node'
         l3_node.attribute[:flags] = ["vrf:#{rec.vrf}"] unless rec.grt?
         l3_node
       end
@@ -383,7 +383,7 @@ module NetomoxExp
       end
 
       # @param [Netomox::PseudoDSL::PNode] l3_node Update target node
-      # @return [void]
+      # @return [Array<Hash>]
       def node_static_routes_at_l3_node(l3_node)
         @routes.find_all_records_by_node_proto(l3_node.name, 'static').map do |route|
           {
@@ -400,6 +400,7 @@ module NetomoxExp
       # @return [void]
       def update_node_static_route_attr(l3_node)
         static_routes = node_static_routes_at_l3_node(l3_node)
+        debug_print "- node: #{l3_node.name}, static-routes: #{static_routes.length}"
         l3_node.attribute[:static_routes] = static_routes
       end
 
