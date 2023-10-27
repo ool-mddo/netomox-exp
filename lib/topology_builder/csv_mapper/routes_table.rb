@@ -47,6 +47,11 @@ module NetomoxExp
         def protocol?(protocol)
           @protocol == protocol.downcase
         end
+
+        # @return [String]
+        def to_s
+          "#{@node}, #{@network}, #{@next_hop_ip}(#{@next_hop_interface})"
+        end
       end
 
       # routes table
