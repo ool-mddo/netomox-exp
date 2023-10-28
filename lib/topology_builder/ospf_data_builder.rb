@@ -85,7 +85,7 @@ module NetomoxExp
       def ospf_node_redistribute_attrs(ospf_proc_conf_rec)
         debug_print "  # ospf-export: #{ospf_proc_conf_rec.export_policy_sources}"
         redistribute_protocols = ospf_proc_conf_rec.export_policy_sources.map do |policy_source|
-          rec = @named_structures.find_record_by_node_structure(ospf_proc_conf_rec.node, policy_source)
+          rec = @named_structures.find_record_by_node_structure_name(ospf_proc_conf_rec.node, policy_source)
           rec ? rec.ospf_redistribute_protocols : []
         end
         debug_print "  # ospf-redistribute: #{redistribute_protocols.flatten}"

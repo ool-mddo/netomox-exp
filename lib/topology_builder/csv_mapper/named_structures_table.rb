@@ -31,13 +31,19 @@ module NetomoxExp
         # @raise [StandardError]
         def ospf_redistribute_protocols
           # replace quotes to convert "json" format string
-          definition = JSON.parse(@structure_definition.gsub('"', '\"').gsub("'", '"'))
+          definition = structure_data
           return [] unless definition
 
           protocols = definition['statements']
                       .filter { |s| s['class'] == 'org.batfish.datamodel.routing_policy.statement.If' }
                       .map { |s| extract_protocols_in_statement(s) }
           protocols.reject(&:empty?).flatten
+        end
+
+        # Structure definition (string) to data object
+        # @return [Hash,Array]
+        def structure_data
+          JSON.parse(@structure_definition.gsub('"', '\"').gsub("'", '"'))
         end
 
         private
@@ -68,8 +74,15 @@ module NetomoxExp
         # @param [String] node_name Node name
         # @param [String] structure_name Structure name
         # @return [nil, NamedStructuresTableRecord] Record if found or nil if not found
-        def find_record_by_node_structure(node_name, structure_name)
+        def find_record_by_node_structure_name(node_name, structure_name)
           @records.find { |r| r.node == node_name && r.structure_name == structure_name }
+        end
+
+        # @param [String] node_name Node name
+        # @param [String] structure_type Structure type
+        # @return [Array<NamedStructuresTableRecord>] Record if found or nil if not found
+        def find_all_record_by_node_structure_type(node_name, structure_type)
+          @records.find_all { |r| r.node == node_name && r.structure_type == structure_type }
         end
       end
     end
