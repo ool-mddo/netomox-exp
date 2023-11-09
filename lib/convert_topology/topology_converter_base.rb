@@ -12,6 +12,7 @@ module NetomoxExp
     # @param [Hash] options Other options
     # @option options [String] :env_name Environment name (for cLab)
     # @option options [String] :bind_license Bind configs to add license key (for cLab/cRPD)
+    # @option options [String] :license License file path
     # @raise [StandardError]
     def initialize(topology_data, src_network, ns_converter, options = {})
       @networks = Netomox::Topology::Networks.new(topology_data)

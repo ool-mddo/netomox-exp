@@ -18,6 +18,7 @@ module NetomoxExp
         @layer3p = layer3p
         @bgp_peer_conf = CSVMapper::BgpPeerConfigurationTable.new(target)
         @bgp_proc_conf = CSVMapper::BgpProcessConfigurationTable.new(target)
+        @named_structures = CSVMapper::NamedStructuresTable.new(target)
       end
 
       # @return [Netomox::PseudoDSL::PNetworks] Networks contains bgp topology
@@ -195,9 +196,45 @@ module NetomoxExp
           route_reflector_client: peer_rec.route_reflector_client,
           cluster_id: peer_rec.cluster_id,
           peer_group: peer_rec.peer_group,
-          import_policies: peer_rec.import_policy,
-          export_policies: peer_rec.export_policy
+          import_policies: reject_referred_policy(peer_rec.node, peer_rec.import_policy),
+          export_policies: reject_referred_policy(peer_rec.node, peer_rec.export_policy)
         }
+      end
+
+      # @param [Array<CSVMapper::NamedStructuresTableRecord>] routing_policy_recs Named structure (routing-policy) recs
+      # @param [String] policy_name BGP policy name
+      # @return [Array] List of subroutines in named-structure data (BGP Routing_Policy data)
+      def find_all_subroutines_from_policy(routing_policy_recs, policy_name)
+        named_rec = routing_policy_recs.find { |r| r.structure_name == policy_name }
+        return [] if named_rec.nil?
+
+        policy_data = named_rec.structure_data
+        policy_statements = policy_data['statements']
+        # debug_print "#   - policy_data = #{JSON.pretty_generate(policy_statements)}"
+        policy_statements.find_all { |s| s['guard']&.key?('subroutines') }
+                         .map { |s| s['guard']['subroutines'] }
+      end
+
+      # @param [String] node Node name
+      # @param [Array<String>] policies BGP policy names
+      # @return [Array<String>] policies resolved inter-policy reference
+      def reject_referred_policy(node, policies)
+        debug_print "# node = #{node}, bgp-policies = #{policies}"
+        routing_policy_recs = @named_structures.find_all_record_by_node_structure_type(node, 'Routing_Policy')
+        return [] unless routing_policy_recs
+
+        policy_ref_table = {}
+        policies.each do |policy|
+          subroutines = find_all_subroutines_from_policy(routing_policy_recs, policy)
+          debug_print "#   - subroutines = #{subroutines}"
+          subroutines.flatten.each do |sub|
+            # table = callee : caller
+            policy_ref_table[sub['calledPolicyName']] = policy
+          end
+          debug_print "#   - policy_ref_table: #{policy_ref_table}"
+        end
+
+        policies.reject { |policy| policy_ref_table.key?(policy) }
       end
 
       # rubocop:enable Metrics/MethodLength

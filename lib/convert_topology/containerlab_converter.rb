@@ -49,15 +49,19 @@ module NetomoxExp
     # @param [String] kind Container type
     # @param [String] image Container image name
     # @param [String] config Startup-config file name
-    # @param [Array<String>] bind_configs
+    # @param [Array<String>] bind_configs Volume mount string to bind license file into container
+    # @param [String] license License file path
     # @return [Hash]
-    def define_node_data(kind, image: nil, config: nil, bind_configs: [])
+    def define_node_data(kind, image: nil, config: nil, bind_configs: [], license: '')
       data = { 'kind' => kind }
       data['image'] = image unless image.nil?
       data['startup-config'] = config unless config.nil?
       data['binds'] = bind_configs unless bind_configs.empty?
+      data['license'] = license unless license.empty?
       data
     end
+
+    # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
 
     # @param [Netomox::Topology::Node] node
     # @return [Hash]
@@ -67,13 +71,18 @@ module NetomoxExp
       case node.attribute.node_type
       when 'segment'
         define_node_data('ovs-bridge')
-      when 'node', 'endpoint'
-        define_node_data('juniper_crpd', image: 'crpd:22.1R1.10', config: "#{node_name}.conf",
-                                         bind_configs: [@options[:bind_license]])
+      when 'node'
+        opts = { image: 'crpd:22.1R1.10', config: "#{node_name}.conf" }
+        opts[:bind_configs] = [@options[:bind_license]] if @options.key?(:bind_license)
+        opts[:license] = @options[:license] if @options.key?(:license)
+        define_node_data('juniper_crpd', **opts)
+      when 'endpoint'
+        define_node_data('linux', image: 'ghcr.io/ool-mddo/ool-iperf:main')
       else
         raise StandardError, "Unknown node type: #{node.name}, type=#{node.attribute.node_type}"
       end
     end
+    # rubocop:enable Metrics/AbcSize, Metrics/MethodLength
 
     # @return [Hash<Hash>] node data
     def node_data

@@ -197,9 +197,13 @@ Convert specified layer topology to clab-topo.yaml for container-lab
 
 * GET `/topologies/<network>/<snapshot>/topology/<layer>/containerlab_topology`
   * NOTE: It returns json data. Convert it to yaml using other tool
+  * option
+    * env_name: containerlab environment name (default: "emulated")
+    * bind_license: docker volume mount format string to bind license file into a container
+    * license: file path of license file
 
 ```shell
-curl -s http://localhost:9292/topologies/mddo-ospf/emulated_asis/topology/layer3/containerlab_topology \
+curl -s "http://localhost:9292/topologies/mddo-ospf/emulated_asis/topology/layer3/containerlab_topology?bind_license=license.key:/tmp/license.key:ro" \
   | ruby -r json -r yaml -e "puts YAML.dump_stream(JSON.parse(STDIN.read))"
 ```
 

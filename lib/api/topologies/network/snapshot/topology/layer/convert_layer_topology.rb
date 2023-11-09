@@ -23,14 +23,15 @@ module NetomoxExp
       params do
         optional :env_name, type: String, desc: 'Environment name (for container-lab)', default: 'emulated'
         optional :bind_license, type: String, desc: 'Bind configs (like "license.key:/tmp/license.key")'
+        optional :license, type: String, desc: 'License file path for container'
       end
       get 'containerlab_topology' do
         network, snapshot, layer = %i[network snapshot layer].map { |key| params[key] }
 
         topology_data = read_topology_file(network, snapshot)
         ns_converter = ns_converter_wo_topology(network)
-        opts = {}
-        %i[env_name bind_license].map { |key| opts[key] = params[key] }
+        opts = %i[env_name bind_license license].select { |key| params.key?(key) }
+                                                .to_h { |key| [key, params[key]] }
         clab_converter = ContainerLabConverter.new(topology_data, layer, ns_converter, opts)
 
         # response
