@@ -203,39 +203,49 @@ module NetomoxExp
 
       # @param [Array<CSVMapper::NamedStructuresTableRecord>] routing_policy_recs Named structure (routing-policy) recs
       # @param [String] policy_name BGP policy name
-      # @return [Array] List of subroutines in named-structure data (BGP Routing_Policy data)
-      def find_all_subroutines_from_policy(routing_policy_recs, policy_name)
+      # @return [Array] List of statements in named-structure data (BGP Routing_Policy data)
+      def find_all_statements_from_policy(routing_policy_recs, policy_name)
         named_rec = routing_policy_recs.find { |r| r.structure_name == policy_name }
         return [] if named_rec.nil?
 
         policy_data = named_rec.structure_data
-        policy_statements = policy_data['statements']
-        # debug_print "#   - policy_data = #{JSON.pretty_generate(policy_statements)}"
+        policy_data['statements']
+      end
+
+      # @param [Array<CSVMapper::NamedStructuresTableRecord>] routing_policy_recs Named structure (routing-policy) recs
+      # @param [String] policy_name BGP policy name
+      # @return [Array] List of subroutines in named-structure data (BGP Routing_Policy data)
+      def find_all_subroutines_from_policy(routing_policy_recs, policy_name)
+        policy_statements = find_all_statements_from_policy(routing_policy_recs, policy_name)
         policy_statements.find_all { |s| s['guard']&.key?('subroutines') }
                          .map { |s| s['guard']['subroutines'] }
       end
+
+      # rubocop:disable Metrics/AbcSize
 
       # @param [String] node Node name
       # @param [Array<String>] policies BGP policy names
       # @return [Array<String>] policies resolved inter-policy reference
       def reject_referred_policy(node, policies)
-        debug_print "# node = #{node}, bgp-policies = #{policies}"
+        debug_print "# reject_referred_policy: node = #{node}, bgp-policies = #{policies}"
         routing_policy_recs = @named_structures.find_all_record_by_node_structure_type(node, 'Routing_Policy')
         return [] unless routing_policy_recs
 
-        policy_ref_table = {}
+        policy_ref_table = {} # callee : caller
         policies.each do |policy|
+          # for juniper bgp-policy
           subroutines = find_all_subroutines_from_policy(routing_policy_recs, policy)
-          debug_print "#   - subroutines = #{subroutines}"
-          subroutines.flatten.each do |sub|
-            # table = callee : caller
-            policy_ref_table[sub['calledPolicyName']] = policy
-          end
+          subroutines.flatten.each { |sub| policy_ref_table[sub['calledPolicyName']] = policy }
+          # for cisco-ios-xr bgp-policy
+          statements = find_all_statements_from_policy(routing_policy_recs, policy)
+          statements.flatten.each { |sta| policy_ref_table[sta['calledPolicyName']] = policy }
+
           debug_print "#   - policy_ref_table: #{policy_ref_table}"
         end
 
         policies.reject { |policy| policy_ref_table.key?(policy) }
       end
+      # rubocop:enable Metrics/AbcSize
 
       # rubocop:enable Metrics/MethodLength
 
