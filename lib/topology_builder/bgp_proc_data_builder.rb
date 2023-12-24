@@ -209,7 +209,24 @@ module NetomoxExp
         return [] if named_rec.nil?
 
         policy_data = named_rec.structure_data
-        policy_data['statements']
+        policy_data['statements'].flatten
+      end
+
+      # @param [Array<Hash>] policy_statements BGP policy statements
+      # @return [Array<Hash>] subroutines section data (reference to other policy)
+      def find_subroutines(policy_statements)
+        policy_statements.find_all { |s| s['guard']&.key?('subroutines') }
+                         .map { |s| s['guard']['subroutines'] }
+      end
+
+      # @param [Array<Hash>] policy_statements BGP policy statements
+      # @return [Array<Hash>] subroutines section data (reference to other policy)
+      def find_subroutines_with_conjuncts(policy_statements)
+        policy_statements.find_all { |s| s['guard']&.key?('conjuncts') }
+                         .map { |s| s['guard']['conjuncts'] }
+                         .flatten
+                         .find_all { |ss| ss.key?('subroutines') }
+                         .map { |ss| ss['subroutines'] }
       end
 
       # @param [Array<CSVMapper::NamedStructuresTableRecord>] routing_policy_recs Named structure (routing-policy) recs
@@ -217,8 +234,12 @@ module NetomoxExp
       # @return [Array] List of subroutines in named-structure data (BGP Routing_Policy data)
       def find_all_subroutines_from_policy(routing_policy_recs, policy_name)
         policy_statements = find_all_statements_from_policy(routing_policy_recs, policy_name)
-        policy_statements.find_all { |s| s['guard']&.key?('subroutines') }
-                         .map { |s| s['guard']['subroutines'] }
+        # statements-guard-subroutines case
+        case1 = find_subroutines(policy_statements)
+        # statements-guard-conjuncts-subroutines case
+        case2 = find_subroutines_with_conjuncts(policy_statements)
+
+        (case1 + case2).flatten
       end
 
       # rubocop:disable Metrics/AbcSize
@@ -227,7 +248,7 @@ module NetomoxExp
       # @param [Array<String>] policies BGP policy names
       # @return [Array<String>] policies resolved inter-policy reference
       def reject_referred_policy(node, policies)
-        debug_print "# reject_referred_policy: node = #{node}, bgp-policies = #{policies}"
+        debug_print "    - reject_referred_policy: node = #{node}, bgp-policies = #{policies}"
         routing_policy_recs = @named_structures.find_all_record_by_node_structure_type(node, 'Routing_Policy')
         return [] unless routing_policy_recs
 
@@ -235,12 +256,12 @@ module NetomoxExp
         policies.each do |policy|
           # for juniper bgp-policy
           subroutines = find_all_subroutines_from_policy(routing_policy_recs, policy)
-          subroutines.flatten.each { |sub| policy_ref_table[sub['calledPolicyName']] = policy }
+          subroutines.each { |sub| policy_ref_table[sub['calledPolicyName']] = policy }
           # for cisco-ios-xr bgp-policy
           statements = find_all_statements_from_policy(routing_policy_recs, policy)
-          statements.flatten.each { |sta| policy_ref_table[sta['calledPolicyName']] = policy }
+          statements.each { |sta| policy_ref_table[sta['calledPolicyName']] = policy }
 
-          debug_print "#   - policy_ref_table: #{policy_ref_table}"
+          debug_print "      - policy_ref_table: #{policy_ref_table}"
         end
 
         policies.reject { |policy| policy_ref_table.key?(policy) }
@@ -267,7 +288,7 @@ module NetomoxExp
       # @param [BgpPeerConfigurationTableRecord] peer_rec A peer configuration of the bgp node
       # @return [void]
       def add_bgp_tp(bgp_node, peer_rec)
-        debug_print "#  peer: from #{peer_rec.local_ip} to #{peer_rec.remote_ip}"
+        debug_print "  - peer: from #{peer_rec.local_ip} to #{peer_rec.remote_ip}"
         bgp_tp = bgp_node.term_point(peer_tp_name(peer_rec.remote_ip))
         bgp_tp.attribute = bgp_tp_attribute(peer_rec)
       end
@@ -305,7 +326,7 @@ module NetomoxExp
       # @param [BgpProcessConfigurationTableRecord] proc_rec BGP process configuration
       # return [void]
       def add_bgp_node_tp(proc_rec)
-        debug_print "# node: #{proc_rec.node} (vrf=#{proc_rec.vrf}), router_id=#{proc_rec.router_id}"
+        debug_print "* node: #{proc_rec.node} (vrf=#{proc_rec.vrf}), router_id=#{proc_rec.router_id}"
         bgp_node = @network.node(proc_rec.router_id)
         bgp_node.attribute = bgp_node_attribute(proc_rec)
         bgp_node.supports.push([@layer3p.name, l3_node_name(proc_rec)])
