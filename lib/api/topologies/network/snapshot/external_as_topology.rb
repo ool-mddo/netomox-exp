@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
 require 'grape'
-require 'json'
-require 'open3'
 
 module NetomoxExp
   module ApiRoute
@@ -10,19 +8,26 @@ module NetomoxExp
     class ExternalAsTopology < Grape::API
       # namespace /external_as_topology
       resource 'external_as_topology' do
-        get do
+        params do
+          requires :usecase, type: String, desc: 'Usecase name'
+          optional :options, type: Hash, desc: 'Option parameters to generate external-AS topology'
+        end
+        post do
           network, snapshot = %i[network snapshot].map { |key| params[key] }
+          usecase = params[:usecase]
+          options = params.key?(:options) ? params[:options] : {}
+
           # NOTE: absolute-path of external_as_script
-          ext_topo_dir = File.join(CONFIGS_DIR, network, snapshot, 'external_as_topology')
-          error!("#{network}/#{snapshot} does not have external-AS topology dir", 404) unless Dir.exist?(ext_topo_dir)
+          ext_topo_dir = File.join(CONFIGS_DIR, network, snapshot, 'external_as_topology', usecase)
+          unless Dir.exist?(ext_topo_dir)
+            error!("External-AS topology dir: #{network}/#{snapshot}/external_as_topology/#{usecase} is not found", 404)
+          end
 
           ext_topo_script = File.join(ext_topo_dir, 'main.rb')
           error!("External-AS topology script is not found in #{ext_topo_dir}", 404) unless File.exist?(ext_topo_script)
 
-          command = "ruby #{ext_topo_script}"
-          logger.info "Call external script: #{command}"
-          output, _status = Open3.capture2(command)
-          JSON.parse(output)
+          load ext_topo_script
+          generate_topology(options) # defined in ext_topo_script
         end
       end
     end
