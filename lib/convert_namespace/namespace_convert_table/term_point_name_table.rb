@@ -177,8 +177,8 @@ module NetomoxExp
       # @return [Hash] Converted term-point (loopback) name
       def forward_convert_actual_lo_name(src_tp_name)
         # pick last number e.g. loX.Y -> Y
-        index = src_tp_name.match(/(\d+)/)[-1]
-        emulated_name_dict("lo.#{index}") # cRPD loopback
+        index = src_tp_name.match(/(\d+)$/)[-1]
+        emulated_name_dict("lo0.#{index}") # cRPD loopback
       end
 
       # @param [Integer] index Term-point index
