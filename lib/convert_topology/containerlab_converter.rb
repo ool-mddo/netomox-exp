@@ -72,7 +72,7 @@ module NetomoxExp
       when 'segment'
         define_node_data('ovs-bridge')
       when 'node'
-        opts = { image: 'crpd:22.1R1.10', config: "#{node_name}.conf" }
+        opts = { image: @options[:image], config: "#{node_name}.conf" }
         opts[:bind_configs] = [@options[:bind_license]] if @options.key?(:bind_license)
         opts[:license] = @options[:license] if @options.key?(:license)
         define_node_data('juniper_crpd', **opts)
