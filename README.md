@@ -45,6 +45,7 @@ Data directory:
 
 * `MDDO_QUERIES_DIR`: query result directory (default: `./queries`)
 * `MDDO_TOPOLOGIES_DIR`: topology data directory (for netoviz; default: `./topologies`)
+* `MDDO_CONFIGS_DIR`: batfish snapshot directory (default: `./configs`)
 
 Log level variable:
 
@@ -275,13 +276,25 @@ curl -s http://localhost:9292/topologies/mddo-ospf/emulated_asis/topology/layer3
 
 ### External-AS topology operation
 
-Fetch external-AS topology of the snapshot
+Generate external-AS topology of the snapshot.
+It calls `generate_topology` function defined in `$MDDO_CONFIGS_DIR/<network>/<snapshot>/external_as_topology/<usecase>/main.rb`.
 
-* GET `/topologies/<network>/<snapshot>/external_as_topology`
+* POST `/topologies/<network>/<snapshot>/external_as_topology`
+* option
+  * `usecase`: Usecase name
+  * `options`: [optional] Option parameters (Hash) for a function to generate external-AS topology
 
 ```shell
-curl -s http://localhost:9292/topologies/biglobe_deform/original_asis/external_as_topology
+curl -s -X POST -H 'Content-Type: application/json' \
+  -d '{"usecase": "pni_te", "options": {}}' \
+  http://localhost:9292/topologies/mddo-bgp/original_asis/external_as_topology
 ```
+
+`generate_topology` requirements:
+
+* accept `options` as an argument
+* returns topology data (RFC8345) of external-AS
+* NOTE: use `load` in `main.rb` to update these scripts without reloading netomox-exp process.
 
 ### Static Verification
 
