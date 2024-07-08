@@ -43,7 +43,9 @@ module NetomoxExp
         # Structure definition (string) to data object
         # @return [Hash,Array]
         def structure_data
-          JSON.parse(@structure_definition.gsub('"', '\"').gsub("'", '"'))
+          json_text = @structure_definition.gsub('"', '\"').gsub("'", '"')
+                                           .gsub(/:\s*True/, ': true').gsub(/:\s*False/, ': false')
+          JSON.parse(json_text)
         end
 
         private
