@@ -388,7 +388,7 @@ module NetomoxExp
         @routes.find_all_records_by_node_proto(l3_node.name, 'static').map do |route|
           {
             prefix: route.network,
-            next_hop: route.next_hop,
+            next_hop: route.next_hop == 'discard' ? 'discard' : route.next_hop_ip,
             interface: route.next_hop_interface,
             metric: route.metric,
             preference: route.admin_distance
