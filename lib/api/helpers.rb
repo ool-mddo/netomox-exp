@@ -90,7 +90,8 @@ module NetomoxExp
         node: node.name,
         reverse: ns_converter.node_name.reverse_lookup(node.name),
         alias: ns_converter.node_name.find_l1_alias(node.name),
-        attribute: node.attribute.to_data
+        attribute: node.attribute.to_data,
+        supports: node.supports.map(&:to_data)
       }
     end
 
@@ -111,7 +112,8 @@ module NetomoxExp
         interface: term_point.name,
         reverse: ns_converter.tp_name.reverse_lookup(node.name, term_point.name)[1],
         alias: ns_converter.tp_name.find_l1_alias(node.name, term_point.name),
-        attribute: term_point.attribute.to_data
+        attribute: term_point.attribute.to_data,
+        supports: term_point.supports.map(&:to_data)
       }
     end
 

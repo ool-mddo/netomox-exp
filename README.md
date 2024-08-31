@@ -208,14 +208,10 @@ curl -s "http://localhost:9292/topologies/mddo-ospf/emulated_asis/topology/layer
   | ruby -r json -r yaml -e "puts YAML.dump_stream(JSON.parse(STDIN.read))"
 ```
 
-Fetch a network, all networks by network type (RFC8345-based json)
+Fetch a network, all networks by a network type (RFC8345-based json)
 
 * GET `/topologies/<network>/<snapshot>/topology/<layer>`
 * GET `/topologies/<network>/<snapshot>/topology/layer_type_<layer_type>`
-* option (node filter)
-  * `node_type`: [optional] select specified type nodes (segment/node/endpoint)
-  * `exc_node_type`: [optional] reject specified type nodes (segment/node/endpoint)
-  * [NOTE] `node_type` and `exc_node_type` are mutually exclusive
 
 ```shell
 curl -s http://localhost:9292/topologies/mddo-ospf/emulated_asis/topology/ospf_area0
@@ -223,6 +219,7 @@ curl -s http://localhost:9292/topologies/mddo-ospf/emulated_asis/topology/layer_
 ```
 
 Fetch all nodes and its attributes with namespace-converted names in a layer of the topology data
+[NOTE]: NOT RFC8345 format, it returns simplified and including additional node-table info
 
 * GET `/topologies/<network>/<snapshot>/topology/<layer>/nodes` (single layer)
 * GET `/topologies/<network>/<snapshot>/topology/layer_type_<layer_type>/nodes` (multiple layers)
@@ -237,6 +234,7 @@ curl -s http://localhost:9292/topologies/mddo-ospf/emulated_asis/topology/layer_
 ```
 
 Fetch all interfaces and its attributes with namespace-converted names in a layer of the topology data
+[NOTE]: NOT RFC8345 format, it returns simplified and including additional node- and interface-table info
 
 * GET `/topologies/<network>/<snapshot>/topology/<layer>/interfaces` (single layer)
 * GET `/topologies/<network>/<snapshot>/topology/layer_type_<layer_type>/interfaces` (multiple layers)
