@@ -4,11 +4,35 @@ require 'grape'
 
 module NetomoxExp
   module ApiRoute
-    # api /nodes, /interfaces
+    # fetch/filter single layer parameters
     class LayerObjects < Grape::API
+      # layer itself: a (network) layer in topology data (RFC8345 based json)
+      desc 'Get topology data (specified layer)'
+      params do
+        optional :node_type, type: String, desc: 'Node type (segment/node/endpoint)'
+        optional :exc_node_type, type: String, desc: 'Exclude node type (segment/node/endpoint)'
+        mutually_exclusive :node_type, :exc_node_type
+      end
+      get do
+        network, snapshot, layer = %i[network snapshot layer].map { |key| params[key] }
+        nws = read_topology_instance(network, snapshot)
+        nw = nws.find_network(layer)
+        error!("#{network}/#{snapshot}/#{layer} not found", 404) if nw.nil?
+
+        nw.nodes.select! { |n| n.attribute.node_type == params[:node_type] } if params.key?(:node_type)
+        nw.nodes.reject! { |n| n.attribute.node_type == params[:exc_node_type] } if params.key?(:exc_node_type)
+
+        # response
+        nw.to_data
+      end
+
+      # api /nodes, /interfaces
+
       desc 'Get all nodes in the layer'
       params do
         optional :node_type, type: String, desc: 'Node type (segment/node/endpoint)'
+        optional :exc_node_type, type: String, desc: 'Exclude node type (segment/node/endpoint)'
+        mutually_exclusive :node_type, :exc_node_type
       end
       get 'nodes' do
         network, snapshot, layer = %i[network snapshot layer].map { |key| params[key] }
@@ -17,7 +41,8 @@ module NetomoxExp
         error!("#{network}/#{snapshot}/#{layer} not found", 404) if nw.nil?
 
         nodes = nw.nodes
-        nodes = nw.nodes.select { |n| n.attribute.node_type == params[:node_type] } if params.key?(:node_type)
+        nodes.select! { |n| n.attribute.node_type == params[:node_type] } if params.key?(:node_type)
+        nodes.reject! { |n| n.attribute.node_type == params[:exc_node_type] } if params.key?(:exc_node_type)
 
         # response
         {
@@ -30,6 +55,8 @@ module NetomoxExp
       desc 'Get all interfaces in the layer'
       params do
         optional :node_type, type: String, desc: 'Node type (segment/node/endpoint)'
+        optional :exc_node_type, type: String, desc: 'Exclude node type (segment/node/endpoint)'
+        mutually_exclusive :node_type, :exc_node_type
       end
       get 'interfaces' do
         network, snapshot, layer = %i[network snapshot layer].map { |key| params[key] }
@@ -38,7 +65,8 @@ module NetomoxExp
         error!("#{network}/#{snapshot}/#{layer} not found", 404) if nw.nil?
 
         nodes = nw.nodes
-        nodes = nw.nodes.select { |n| n.attribute.node_type == params[:node_type] } if params.key?(:node_type)
+        nodes.select! { |n| n.attribute.node_type == params[:node_type] } if params.key?(:node_type)
+        nodes.reject! { |n| n.attribute.node_type == params[:exc_node_type] } if params.key?(:exc_node_type)
 
         # response
         {
