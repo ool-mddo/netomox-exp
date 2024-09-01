@@ -1,8 +1,10 @@
 # frozen_string_literal: true
 
+require 'csv'
 require 'json'
 require 'fileutils'
 require 'netomox'
+require 'yaml'
 require 'lib/convert_namespace/namespace_converter'
 
 module NetomoxExp
@@ -21,9 +23,24 @@ module NetomoxExp
     # @param [String] file_path File path to read
     # @return [Object]
     def read_json_file(file_path)
-      error!("Not found: topology file: #{file_path}", 404) unless File.exist?(file_path)
+      error!("Not found: #{file_path}", 404) unless File.exist?(file_path)
 
       JSON.parse(File.read(file_path))
+    end
+
+    # @param [String] file_path File path to read
+    # @return [Object]
+    def read_yaml_file(file_path)
+      error!("Not found: #{file_path}, 404") unless File.exist?(file_path)
+
+      YAML.load_file(file_path)
+    end
+
+    # @param [String] file_path File path to read
+    # @return [Object]
+    def read_csv_file(file_path)
+      csv_data = CSV.read(file_path, headers: true)
+      csv_data.map(&:to_h)
     end
 
     # @param [String] file_path File path to save

@@ -4,6 +4,7 @@ $LOAD_PATH.unshift File.dirname(__FILE__)
 
 require_relative 'lib/api/rest_api_base'
 require_relative 'lib/api/topologies'
+require_relative 'lib/api/usecases'
 
 module NetomoxExp
   # Directory to save batfish query answers
@@ -16,5 +17,6 @@ module NetomoxExp
   # Netomox REST API definition
   class NetomoxRestApi < RestApiBase
     mount ApiRoute::Topologies
+    mount ApiRoute::Usecases
   end
 end
