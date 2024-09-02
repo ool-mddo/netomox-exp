@@ -4,6 +4,7 @@ require 'grape'
 require 'json'
 require 'httpclient'
 require 'open3'
+require 'lib/usecase_deliverer/iperf_command_generator'
 
 module NetomoxExp
   # patch for helpers (see helpers.rb)
@@ -22,28 +23,37 @@ module NetomoxExp
       }
     end
 
-    # request to batfish-wrapper to call python script
     # @param [String] usecase Usecase name
-    # @return [Object] result data
-    def get_bfw_iperf_commands(usecase)
-      bfw_host = ENV.fetch('BATFISH_WRAPPER_HOST', 'batfish-wrapper:5000')
-      http_client = HTTPClient.new
-      response = http_client.get("http://#{bfw_host}/usecases/#{usecase}/iperf_commands")
-      error!('Unexpected batfish-wrapper call', 500) unless response.status / 100 == 2
+    # @return [Array<Hash>] flow data
+    def read_flow_data(usecase)
+      ucf = usecase_file(usecase)
+      error!("Not found usecase flowdata: #{ucf[:flow_data_file]}", 404) unless File.exist?(ucf[:flow_data_file])
 
-      JSON.parse(response.body)
+      read_csv_file(ucf[:flow_data_file])
     end
 
-    # @param [String] usecase Usecase name
-    # @param [String] filename File name (to save)
-    # @param [Object] data
-    # @return [void]
-    def save_json_file_for_usecase(usecase, filename, data)
-      file_dir = File.join(USECASE_DIR, usecase)
-      error!("Usecase dir: #{file_dir} is not found", 404) unless Dir.exist? file_dir
+    # param [String] usecase Usecase name
+    # @return [Hash] usecase params
+    def read_params(usecase)
+      ucf = usecase_file(usecase)
+      error!("Not found usecase params: #{ucf[:params_file]}", 404) unless File.exist?(ucf[:params_file])
 
-      file_path = File.join(file_dir, filename)
-      File.write(file_path, JSON.generate(data))
+      read_yaml_file(ucf[:params_file])
+    end
+
+    # @param [String] network Network name
+    # @param [String] snapshot Snapshot name
+    # @return [Array<Hash>] L3 endpoint list
+    def fetch_l3endpoint_list(network, snapshot)
+      http_client = HTTPClient.new
+      url = "topologies/#{network}/#{snapshot}/topology/layer3/interfaces"
+      params = { node_type: 'endpoint' }
+      # NOTE: query myself: port number was hard-coded
+      response = http_client.get("http://localhost:9292/#{url}", params)
+      error!("Unexpected call for #{url}", 500) unless response.status / 100 == 2
+
+      layer3 = JSON.parse(response.body)
+      layer3['nodes']
     end
   end
 
@@ -69,44 +79,28 @@ module NetomoxExp
       end
 
       desc 'Get iperf commands'
+      params do
+        requires :network, type: String, desc: 'Network name'
+        requires :snapshot, type: String, desc: 'Snapshot name'
+      end
       get 'iperf_commands' do
-        # NOTE: proxy to batfish-wrapper, because script to generate iperf commands is written in python...
-        get_bfw_iperf_commands(params[:usecase])
+        # # NOTE: proxy to batfish-wrapper, because script to generate iperf commands is written in python...
+        # get_bfw_iperf_commands(params[:usecase])
+
+        flow_data_list = read_flow_data(params[:usecase])
+        l3endpoint_list = fetch_l3endpoint_list(params[:network], params[:snapshot])
+        iperf_command_generator = UsecaseDeliverer::IperfCommandGenerator.new(flow_data_list, l3endpoint_list)
+        iperf_command_generator.generate_iperf_commands
       end
 
       desc 'Get flow data (csv -> json)'
       get 'flow_data' do
-        usecase = params[:usecase]
-
-        ucf = usecase_file(usecase)
-        error!("Not found usecase flowdata: #{ucf[:flow_data_file]}", 404) unless File.exist?(ucf[:flow_data_file])
-
-        # response
-        read_csv_file(ucf[:flow_data_file])
+        read_flow_data(params[:usecase])
       end
 
       desc 'Get usecase params (yaml -> json)'
       get 'params' do
-        usecase = params[:usecase]
-
-        ucf = usecase_file(usecase)
-        error!("Not found usecase params: #{ucf[:params_file]}", 404) unless File.exist?(ucf[:params_file])
-
-        # response
-        read_yaml_file(ucf[:params_file])
-      end
-
-      desc 'Post static-route data'
-      params do
-        requires :static_routes, type: Array, desc: 'Static-route data'
-      end
-      post 'static_routes' do
-        usecase = params[:usecase]
-        static_routes = params[:static_routes]
-
-        save_json_file_for_usecase(usecase, '_static_routes.json', static_routes)
-        # response
-        {}
+        read_params(params[:usecase])
       end
     end
   end
