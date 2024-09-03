@@ -42,7 +42,7 @@ module NetomoxExp
       # @param [Netomox::Topology::Networks] src_nws Source networks
       # @return [void]
       def make_table(src_nws)
-        super(src_nws)
+        super
         src_nw = @src_nws.find_network('layer3')
         src_nw.nodes.each do |src_node|
           src_node.attribute.static_routes.each { |route| add_static_route_entry(src_node, route) }

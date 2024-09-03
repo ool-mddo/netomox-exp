@@ -104,7 +104,7 @@ module NetomoxExp
       # @param [Netomox::Topology::Networks] src_nws Source networks
       # @return [void]
       def make_table(src_nws)
-        super(src_nws)
+        super
 
         # convert table (for layer3, ospf-area)
         make_layer3_tp_table(@src_nws.find_network('layer3'))

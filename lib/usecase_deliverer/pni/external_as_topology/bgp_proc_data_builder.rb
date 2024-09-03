@@ -59,7 +59,7 @@ class BgpProcDataBuilder < Layer3DataBuilder
   def bgp_proc_ibgp_router_pairs(bgp_proc_core_node)
     @peer_list.map { |peer_item| peer_item[:bgp_proc] }
               .append({ node_name: bgp_proc_core_node.name, node: bgp_proc_core_node })
-              .concat(find_all_bgp_proc_ebgp_candidate_routers.map { |node| { node_name: node.name, node: node } })
+              .concat(find_all_bgp_proc_ebgp_candidate_routers.map { |node| { node_name: node.name, node: } })
               .combination(2)
               .to_a
   end

@@ -42,7 +42,7 @@ module NetomoxExp
     # @return [void]
     # @raise [StandardError] if @src_nws is not initialized
     def load_origin_topology(topology_data)
-      super(topology_data)
+      super
 
       @convert_table.load_from_topology(topology_data)
     end

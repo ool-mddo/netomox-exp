@@ -13,7 +13,7 @@ class BgpProcDataBuilder < Layer3DataBuilder
 
   private
 
-  # rubocop:disable Metrics/AbcSize
+  # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
 
   # @param [Netomox::PseudoDSL::PNode] bgp_proc_node1 bgp-proc node
   # @param [Netomox::PseudoDSL::PNode] bgp_proc_node2 bgp-proc node
@@ -33,7 +33,7 @@ class BgpProcDataBuilder < Layer3DataBuilder
       raise StandardError, "Layer3 link not found between: #{link_str}"
     end
   end
-  # rubocop:enable Metrics/AbcSize
+  # rubocop:enable Metrics/AbcSize, Metrics/MethodLength
 
   # @param [String] local_ip
   # @param [String] remote_ip
@@ -41,9 +41,9 @@ class BgpProcDataBuilder < Layer3DataBuilder
   def bgp_proc_tp_ibgp_attribute(local_ip, remote_ip)
     {
       local_as: @as_state[:ext_asn],
-      local_ip: local_ip,
+      local_ip:,
       remote_as: @as_state[:ext_asn], # iBGP
-      remote_ip: remote_ip,
+      remote_ip:,
       import_policies: [POLICY_PASS_ALL[:name]],
       export_policies: [POLICY_ADV_ALL_PREFIXES[:name]]
     }

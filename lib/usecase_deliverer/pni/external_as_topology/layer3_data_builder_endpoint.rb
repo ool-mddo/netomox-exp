@@ -4,6 +4,8 @@
 class Layer3DataBuilder < IntASDataBuilder
   private
 
+  # rubocop:disable Metrics/MethodLength
+
   # @param [String] flow_prefix Prefix (e.g. a.b.c.d/xx)
   # @return [Hash] Segment ip address table
   # @raise [StandardError] Endpoint segment is too small
@@ -23,6 +25,7 @@ class Layer3DataBuilder < IntASDataBuilder
       endpoint_addr_prefix: "#{endpoint_addr}/#{endpoint_addr.prefix}"
     }
   end
+  # rubocop:enable Metrics/MethodLength
 
   # @param [Netomox::PseudoDSL::PNode] layer3_core_node Core router
   # @param [Hash] addrs Segment ip address table
@@ -39,6 +42,8 @@ class Layer3DataBuilder < IntASDataBuilder
 
     [layer3_core_node, layer3_core_tp]
   end
+
+  # rubocop:disable Metrics/MethodLength
 
   # @param [String] ep_name Endpoint node name
   # @param [Hash] addrs Segment ip address table
@@ -60,6 +65,7 @@ class Layer3DataBuilder < IntASDataBuilder
 
     [layer3_endpoint_node, layer3_endpoint_tp]
   end
+  # rubocop:enable Metrics/MethodLength
 
   # @param [String] tp1_name Name of term-point1
   # @param [String] tp2_name Name of term-point2

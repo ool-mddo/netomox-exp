@@ -44,7 +44,7 @@ class Layer3DataBuilder < IntASDataBuilder
     layer3_core_node
   end
 
-  # rubocop:disable Metrics/AbcSize
+  # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
 
   # @param [Hash] peer_item Peer-item
   # @param [Integer] peer_index
@@ -70,7 +70,7 @@ class Layer3DataBuilder < IntASDataBuilder
     # memo to peer_item
     peer_item[:layer3][:node] = layer3_node
   end
-  # rubocop:enable Metrics/AbcSize
+  # rubocop:enable Metrics/AbcSize, Metrics/MethodLength
 
   # @param [Hash] peer_item Peer-item
   # @param [Integer] peer_index
@@ -83,6 +83,8 @@ class Layer3DataBuilder < IntASDataBuilder
     # layer3 edge-router node/tp
     add_layer3_edge_router_node_tp(peer_item, peer_index, segment_ip)
   end
+
+  # rubocop:disable Metrics/MethodLength
 
   # @param [Hash] add_link One of a parameter from @params['add_links']
   # @param [IPAddr] link_segment_ip IP Address of eBGP link segment
@@ -106,6 +108,7 @@ class Layer3DataBuilder < IntASDataBuilder
 
     [layer3_ext_node, layer3_ext_tp]
   end
+  # rubocop:enable Metrics/MethodLength
 
   # @param [Hash] add_link One of a parameter from @params['add_links']
   # @return [Array(Netomox::Topology::Node, Netomox::Topology::TermPoint)] found node/tp

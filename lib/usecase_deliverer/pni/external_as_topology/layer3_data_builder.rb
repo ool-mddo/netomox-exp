@@ -75,7 +75,7 @@ class Layer3DataBuilder < IntASDataBuilder
   def layer3_ibgp_router_pairs(layer3_core_node)
     @peer_list.map { |peer_item| peer_item[:layer3] }
               .append({ node_name: layer3_core_node.name, node: layer3_core_node })
-              .concat(find_all_layer3_ebgp_candidate_routers.map { |node| { node_name: node.name, node: node } })
+              .concat(find_all_layer3_ebgp_candidate_routers.map { |node| { node_name: node.name, node: } })
               .combination(2)
               .to_a
   end
