@@ -75,7 +75,6 @@ module NetomoxExp
             target_iperf_command['clients'].append(source_info)
           end
         end
-        warn "# DEBUG: iperf_commands: #{iperf_commands}"
         iperf_commands
       end
       # rubocop:enable Metrics/MethodLength
@@ -127,7 +126,6 @@ module NetomoxExp
         #   "10.0.1.0/24" => { "node" => "as65550-endpoint00", "ip_addr" => "10.0.1.100" },
         #   ...
         # }
-        warn "# DEBUG: l3endpoint_dict: #{l3endpoint_dict}"
         l3endpoint_dict
       end
     end

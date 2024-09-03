@@ -3,8 +3,8 @@
 require 'grape'
 require 'json'
 require 'httpclient'
-require 'open3'
-require 'lib/usecase_deliverer/iperf_command_generator'
+require 'lib/usecase_deliverer/pni/iperf_command_generator'
+require 'lib/usecase_deliverer/pni/external_as_topology/bgp_as_data_builder'
 
 module NetomoxExp
   # patch for helpers (see helpers.rb)
@@ -55,6 +55,19 @@ module NetomoxExp
       layer3 = JSON.parse(response.body)
       layer3['nodes']
     end
+
+    # @param [String] network Network name
+    # @param [String] snapshot Snapshot name
+    # @return [Netomox::Topology::Networks] topology data
+    def fetch_topology_object(network, snapshot)
+      http_client = HTTPClient.new
+      url = "topologies/#{network}/#{snapshot}/topology"
+      # NOTE: query myself: port number was hard-coded
+      response = http_client.get("http://localhost:9292/#{url}")
+      error!("Unexpected call for #{url}", 500) unless response.status / 100 == 2
+
+      Netomox::Topology::Networks.new(JSON.parse(response.body))
+    end
   end
 
   module ApiRoute
@@ -63,19 +76,18 @@ module NetomoxExp
       desc 'Get external-AS topology'
       params do
         requires :network, type: String, desc: 'Network name'
+        optional :snapshot, type: String, desc: 'Snapshot name', default: 'original_asis'
       end
       get 'external_as_topology' do
-        usecase, network = %i[usecase network].map { |key| params[key] }
+        usecase, network, snapshot = %i[usecase network snapshot].map { |key| params[key] }
 
-        ucf = usecase_file(usecase)
-        error!("Not found usecase params: #{ucf[:params_file]}", 404) unless File.exist?(ucf[:params_file])
-        error!("Not found usecase flowdata: #{ucf[:flow_data_file]}", 404) unless File.exist?(ucf[:flow_data_file])
-
-        cmd = "ruby #{ucf[:ext_as_file]} -n #{network} -f #{ucf[:flow_data_file]} -p #{ucf[:params_file]}"
-        output, _status = Open3.capture3(cmd)
+        usecase_flows = read_flow_data(usecase)
+        usecase_params = read_params(usecase)
+        int_as_topology = fetch_topology_object(network, snapshot)
+        ext_as_topology_builder = BgpASDataBuilder.new(usecase_params, usecase_flows, int_as_topology)
 
         # response
-        JSON.parse(output)
+        ext_as_topology_builder.build_topology
       end
 
       desc 'Get iperf commands'
