@@ -88,7 +88,7 @@ module NetomoxExp
     # @param [String] network Network name
     # @return [NamespaceConverter] Namespace converter without topology data
     def ns_converter_wo_topology(network)
-      ns_converter = NamespaceConverter.new
+      ns_converter = ConvertNamespace::NamespaceConverter.new
       ns_converter.reload(read_ns_convert_table(network))
       ns_converter
     end

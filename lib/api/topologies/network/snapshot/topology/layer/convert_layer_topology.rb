@@ -13,7 +13,7 @@ module NetomoxExp
         network, snapshot, layer = %i[network snapshot layer].map { |key| params[key] }
         topology_data = read_topology_file(network, snapshot)
         ns_converter = ns_converter_wo_topology(network)
-        bf_converter = BatfishConverter.new(topology_data, layer, ns_converter)
+        bf_converter = ConvertTopology::BatfishConverter.new(topology_data, layer, ns_converter)
 
         # response
         bf_converter.convert
@@ -33,7 +33,7 @@ module NetomoxExp
         ns_converter = ns_converter_wo_topology(network)
         opts = %i[env_name bind_license license image].select { |key| params.key?(key) }
                                                       .to_h { |key| [key, params[key]] }
-        clab_converter = ContainerLabConverter.new(topology_data, layer, ns_converter, opts)
+        clab_converter = ConvertTopology::ContainerLabConverter.new(topology_data, layer, ns_converter, opts)
 
         # response
         clab_converter.convert

@@ -3,7 +3,7 @@
 require_relative 'convert_table_base'
 
 module NetomoxExp
-  module NamespaceConvertTable
+  module ConvertNamespace
     # Node name convert table
     class NodeNameTable < ConvertTableBase
       # @param [String] src_node_name Source node name

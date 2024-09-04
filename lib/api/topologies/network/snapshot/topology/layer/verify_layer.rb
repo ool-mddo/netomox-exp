@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 require 'grape'
-require 'lib/static_verification/static_verifier'
+require 'lib/static_verifier/static_verifier'
 
 module NetomoxExp
   module ApiRoute

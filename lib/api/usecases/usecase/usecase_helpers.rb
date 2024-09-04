@@ -9,9 +9,7 @@ module NetomoxExp
     # @param [String] usecase Usecase name
     # @return [Hash] file path data for usecase
     def usecase_file(usecase)
-      common_usecase = usecase.split('_')[0] # "pni" for "pni_te", "pni_addlink" usecase
       {
-        ext_as_file: File.join(USECASE_DIR, common_usecase, 'external_as_topology', 'main.rb'),
         params_file: File.join(USECASE_DIR, usecase, 'params.yaml'),
         flow_data_file: File.join(USECASE_DIR, usecase, 'flowdata.csv')
       }

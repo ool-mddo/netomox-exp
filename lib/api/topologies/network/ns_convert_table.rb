@@ -18,7 +18,7 @@ module NetomoxExp
         end
         post do
           network = params[:network]
-          ns_converter = NamespaceConverter.new
+          ns_converter = ConvertNamespace::NamespaceConverter.new
           if params.key?(:origin_snapshot)
             snapshot = params[:origin_snapshot]
             logger.info "Initialize namespace convert table with snapshot: #{network}/#{snapshot}"

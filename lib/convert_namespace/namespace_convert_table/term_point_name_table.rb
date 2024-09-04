@@ -3,7 +3,7 @@
 require_relative 'convert_table_base'
 
 module NetomoxExp
-  module NamespaceConvertTable
+  module ConvertNamespace
     # Term-point name convert table
     class TermPointNameTable < ConvertTableBase
       # @param [NodeNameTable] node_name_table

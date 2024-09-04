@@ -13,7 +13,7 @@ module NetomoxExp
         @l3endpoint_list = l3endpoint_list
       end
 
-      # @return [Array] iperf_commands
+      # @return [Array<Hash>] iperf_commands iPerf commands
       def generate_iperf_commands
         # combine L3 endpoint information with flow data
         l3endpoint = create_l3endpoint_dict
@@ -23,7 +23,7 @@ module NetomoxExp
 
       private
 
-      # @param [Array] iperf_commands
+      # @param [Array<Hash>] iperf_commands iPerf commands
       # @return [Array] updated iperf_commands
       def assign_port_number(iperf_commands)
         sorted_iperf_commands = iperf_commands.sort_by { |iperf_cmd| iperf_cmd['server_node'] }
@@ -39,16 +39,16 @@ module NetomoxExp
         sorted_iperf_commands
       end
 
-      # @param [Array] iperf_commands
-      # @param [String] dst_node_name
-      # @return [nil, Hash]
-      def find_iperf_cmd_by_node_id(iperf_commands, dst_node_name)
+      # @param [Array<Hash>] iperf_commands iPerf commands
+      # @param [String] dst_node_name Destination node name
+      # @return [nil, Hash] iPerf command which server_node is dst_node_name
+      def find_iperf_cmd_by_node_name(iperf_commands, dst_node_name)
         iperf_commands.find { |iperf_cmd| iperf_cmd['server_node'] == dst_node_name }
       end
 
-      # @param [] flow_data
-      # @param [Hash] l3endpoint_dict
-      # @return [Hash]
+      # @param [Array<Hash>] flow_data Flow data
+      # @param [Hash] l3endpoint_dict Layer3 endpoint data (single node)
+      # @return [Hash] iPerf command
       def source_info(flow_data, l3endpoint_dict)
         {
           'client_node' => l3endpoint_dict[flow_data['source']]['node'],
@@ -60,13 +60,13 @@ module NetomoxExp
 
       # rubocop:disable Metrics/MethodLength
 
-      # @param [Hash] l3endpoint_dict
-      # @return [Array] iperf_commands
+      # @param [Hash] l3endpoint_dict Layer3 endpoint dictionary
+      # @return [Array<Hash>] iperf commands iPerf commands
       def create_iperf_commands(l3endpoint_dict)
         iperf_commands = []
         @flow_data_list.each do |flow_data|
           dst_node_name = l3endpoint_dict[flow_data['dest']]['node']
-          target_iperf_command = find_iperf_cmd_by_node_id(iperf_commands, dst_node_name)
+          target_iperf_command = find_iperf_cmd_by_node_name(iperf_commands, dst_node_name)
           source_info = source_info(flow_data, l3endpoint_dict)
 
           if target_iperf_command.nil?
@@ -79,7 +79,7 @@ module NetomoxExp
       end
       # rubocop:enable Metrics/MethodLength
 
-      # @param [Hash] l3endpoint L3 endpoint data
+      # @param [Hash] l3endpoint L3 endpoint data (single node)
       # @return [String] ip address of a L3 endpoint data
       def ip_addr_from_l3endpoint(l3endpoint)
         # NOTE: endpoint has only one interface in pni usecase...
@@ -95,7 +95,7 @@ module NetomoxExp
       end
 
       # @param [Hash] l3endpoint L3 endpoint data
-      # return [Boolean]
+      # return [Boolean] true if l3endpiont is in subnet_addr
       def l3endpoint_in_subnet?(l3endpoint, subnet_addr)
         l3endpoint_ip_str = ip_addr_from_l3endpoint(l3endpoint)
         l3endpoint_ip = IPAddr.new(l3endpoint_ip_str)
@@ -110,7 +110,7 @@ module NetomoxExp
         extract_l3endpoint_data(l3ep)
       end
 
-      # return [Hash<Hash>] Layer3 endpoint Dictionary
+      # return [Hash<Hash>] Layer3 endpoint dictionary
       def create_l3endpoint_dict
         # NOTE: There is one iperf endpoint for each source/destination subnet in the flow_data.
         l3endpoint_dict = {}

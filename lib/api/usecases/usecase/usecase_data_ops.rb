@@ -22,7 +22,7 @@ module NetomoxExp
         usecase_flows = read_flow_data(usecase)
         usecase_params = read_params(usecase)
         int_as_topology = fetch_topology_object(network, snapshot)
-        ext_as_topology_builder = BgpASDataBuilder.new(usecase_params, usecase_flows, int_as_topology)
+        ext_as_topology_builder = UsecaseDeliverer::BgpAsDataBuilder.new(usecase_params, usecase_flows, int_as_topology)
 
         # response
         ext_as_topology_builder.build_topology

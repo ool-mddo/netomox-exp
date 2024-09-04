@@ -6,7 +6,7 @@ require_relative 'ospf_proc_id_table'
 require_relative 'static_route_tp_table'
 
 module NetomoxExp
-  module NamespaceConvertTable
+  module ConvertNamespace
     # convert table
     class ConvertTable
       # @!attribute [r] node_name_table

@@ -66,7 +66,7 @@ For development: `rerun` watches file update and reload the server.
 rerun [--force-polling] bundle exec rackup -s webrick -o 0.0.0.0 -p 9292
 ```
 
-## REST API
+## REST API (`topologies` space)
 
 ### Operate netoviz
 
@@ -303,6 +303,32 @@ Verify all layers or a layer according to its network-type.
 ```shell
 curl -s http://localhost:9292/topologies/mddo-ospf/original_asis/topology/layer1/verify
 ```
+
+## REST API (`usecases` space)
+
+### PNI usecase
+
+Generate external-AS topology data
+
+* GET `/usecases/<usecase>/external_as_topology`
+* option
+  * `network`: Network name
+  * `snapshot`: [optional] Snapshot name (default: 'original_asis')
+
+```shell
+curl -s http://localhost:9292/usecases/pni_te/external_as_topology?network=mddo-bgp
+```
+
+Generate iperf commands
+
+* GET `/usecases/<usecase>/iperf_commands?network=mddo-bgp`
+  * `network`: Network name
+  * `snapshot`: Snapshot name
+
+```shell
+curl -s "http://localhost:9292/usecases/pni_te/iperf_commands?network=mddo-bgp&snapshot=emulated_asis"
+```
+
 
 ## Development
 
