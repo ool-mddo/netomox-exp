@@ -3,7 +3,7 @@
 require_relative 'convert_table_base'
 
 module NetomoxExp
-  module NamespaceConvertTable
+  module ConvertNamespace
     # Term-point name convert table
     class OspfProcIdTable < ConvertTableBase
       # @param [NodeNameTable] node_name_table
@@ -40,7 +40,7 @@ module NetomoxExp
       # @param [Netomox::Topology::Networks] src_nws Source networks
       # @return [void]
       def make_table(src_nws)
-        super(src_nws)
+        super
         src_nw_list = @src_nws.find_all_networks_by_type(Netomox::NWTYPE_MDDO_OSPF_AREA)
         return if src_nw_list.empty?
 

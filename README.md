@@ -66,7 +66,7 @@ For development: `rerun` watches file update and reload the server.
 rerun [--force-polling] bundle exec rackup -s webrick -o 0.0.0.0 -p 9292
 ```
 
-## REST API
+## REST API (`topologies` space)
 
 ### Operate netoviz
 
@@ -201,19 +201,32 @@ Convert specified layer topology to clab-topo.yaml for container-lab
     * `env_name`: containerlab environment name (default: "emulated")
   * options for router node (cRPD)
     * `image`: image name
-    * [optional] `bind_license`: docker volume mount string to bind license file into a container
-    * [optional] `license`: file path of license file
+    * `bind_license`: [optional] docker volume mount string to bind license file into a container
+    * `license`: [optional] file path of license file
 ```shell
 curl -s "http://localhost:9292/topologies/mddo-ospf/emulated_asis/topology/layer3/containerlab_topology?image=crpd:22.1R1.10&bind_license=license.key:/tmp/license.key:ro" \
   | ruby -r json -r yaml -e "puts YAML.dump_stream(JSON.parse(STDIN.read))"
 ```
 
+Fetch a network, all networks by a network type (RFC8345-based json)
+
+* GET `/topologies/<network>/<snapshot>/topology/<layer>`
+* GET `/topologies/<network>/<snapshot>/topology/layer_type_<layer_type>`
+
+```shell
+curl -s http://localhost:9292/topologies/mddo-ospf/emulated_asis/topology/ospf_area0
+curl -s http://localhost:9292/topologies/mddo-ospf/emulated_asis/topology/layer_type_ospf
+```
+
 Fetch all nodes and its attributes with namespace-converted names in a layer of the topology data
+[NOTE]: NOT RFC8345 format, it returns simplified and including additional node-table info
 
 * GET `/topologies/<network>/<snapshot>/topology/<layer>/nodes` (single layer)
 * GET `/topologies/<network>/<snapshot>/topology/layer_type_<layer_type>/nodes` (multiple layers)
-* option
-  * `node_type`: filter specified type nodes (segment/node/endpoint)
+* option (node filter)
+  * `node_type`: [optional] select specified type nodes (segment/node/endpoint)
+  * `exc_node_type`: [optional] reject specified type nodes (segment/node/endpoint)
+  * [NOTE] `node_type` and `exc_node_type` are mutually exclusive
 
 ```shell
 curl -s http://localhost:9292/topologies/mddo-ospf/emulated_asis/topology/ospf_area0/nodes
@@ -221,11 +234,14 @@ curl -s http://localhost:9292/topologies/mddo-ospf/emulated_asis/topology/layer_
 ```
 
 Fetch all interfaces and its attributes with namespace-converted names in a layer of the topology data
+[NOTE]: NOT RFC8345 format, it returns simplified and including additional node- and interface-table info
 
 * GET `/topologies/<network>/<snapshot>/topology/<layer>/interfaces` (single layer)
 * GET `/topologies/<network>/<snapshot>/topology/layer_type_<layer_type>/interfaces` (multiple layers)
-* option
-  * `node_type`: filter specified type nodes (segment/node/endpoint)
+* option (node filter)
+  * `node_type`: [optional] select specified type nodes (segment/node/endpoint)
+  * `exc_node_type`: [optional] reject specified type nodes (segment/node/endpoint)
+  * [NOTE] `node_type` and `exc_node_type` are mutually exclusive
 
 ```shell
 curl -s http://localhost:9292/topologies/mddo-ospf/emulated_asis/topology/ospf_area0/interfaces
@@ -235,7 +251,9 @@ curl -s http://localhost:9292/topologies/mddo-ospf/emulated_asis/topology/layer_
 Fetch all nodes and interface parameters to generate CNF configurations
 
 * GET `/topologies/<network>/<snapshot>/topology/<layer>/config_params`
-  * `node_type`: filter specified type nodes (segment/node/endpoint)
+  * `node_type`: [optional] select specified type nodes (segment/node/endpoint)
+  * `exc_node_type`: [optional] reject specified type nodes (segment/node/endpoint)
+  * [NOTE] `node_type` and `exc_node_type` are mutually exclusive
 
 ```shell
 curl -s http://localhost:9292/topologies/mddo-ospf/emulated_asis/topology/layer3/config_params
@@ -285,6 +303,32 @@ Verify all layers or a layer according to its network-type.
 ```shell
 curl -s http://localhost:9292/topologies/mddo-ospf/original_asis/topology/layer1/verify
 ```
+
+## REST API (`usecases` space)
+
+### PNI usecase
+
+Generate external-AS topology data
+
+* GET `/usecases/<usecase>/external_as_topology`
+* option
+  * `network`: Network name
+  * `snapshot`: [optional] Snapshot name (default: 'original_asis')
+
+```shell
+curl -s http://localhost:9292/usecases/pni_te/external_as_topology?network=mddo-bgp
+```
+
+Generate iperf commands
+
+* GET `/usecases/<usecase>/iperf_commands?network=mddo-bgp`
+  * `network`: Network name
+  * `snapshot`: Snapshot name
+
+```shell
+curl -s "http://localhost:9292/usecases/pni_te/iperf_commands?network=mddo-bgp&snapshot=emulated_asis"
+```
+
 
 ## Development
 

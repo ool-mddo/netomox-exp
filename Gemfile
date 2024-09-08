@@ -11,6 +11,7 @@ group :production do
 
   gem 'grape', '>= 1.7.0'
   gem 'hashie', '>= 4.1.0'
+  gem 'httpclient', '>= 2.8.3'
   gem 'ipaddress', '~> 0.8.3'
   gem 'rack', '>= 1.3.0', '< 3' # grape restriction
   gem 'rake', '>= 13.0.6'

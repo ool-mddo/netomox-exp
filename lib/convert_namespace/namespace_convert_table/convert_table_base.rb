@@ -3,7 +3,7 @@
 require 'forwardable'
 
 module NetomoxExp
-  module NamespaceConvertTable
+  module ConvertNamespace
     # Base class of a convert table
     class ConvertTableBase
       extend Forwardable

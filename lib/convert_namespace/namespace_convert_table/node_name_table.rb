@@ -3,7 +3,7 @@
 require_relative 'convert_table_base'
 
 module NetomoxExp
-  module NamespaceConvertTable
+  module ConvertNamespace
     # Node name convert table
     class NodeNameTable < ConvertTableBase
       # @param [String] src_node_name Source node name
@@ -84,7 +84,7 @@ module NetomoxExp
       # @param [Netomox::Topology::Networks] src_nws Source networks
       # @return [void]
       def make_table(src_nws)
-        super(src_nws)
+        super
         # convert table (for layer3, ospf-area)
         make_layer3_node_table(@src_nws.find_network('layer3'))
 

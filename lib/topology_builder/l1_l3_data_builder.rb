@@ -10,14 +10,14 @@ module NetomoxExp
     class L1L3DataBuilder < L1DataBuilder
       # @param [String] target Target network (config) data name
       def initialize(target:, debug: false)
-        super(target:, debug:)
+        super
 
         @ip_owners = CSVMapper::IPOwnersTable.new(target)
       end
 
       # @return [Netomox::PseudoDSL::PNetworks] Networks contains only layer1 network topology
       def make_networks
-        super()
+        super
 
         add_unlinked_ip_owner_tp
         @networks

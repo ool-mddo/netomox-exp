@@ -1,8 +1,10 @@
 # frozen_string_literal: true
 
+require 'csv'
 require 'json'
 require 'fileutils'
 require 'netomox'
+require 'yaml'
 require 'lib/convert_namespace/namespace_converter'
 
 module NetomoxExp
@@ -21,9 +23,24 @@ module NetomoxExp
     # @param [String] file_path File path to read
     # @return [Object]
     def read_json_file(file_path)
-      error!("Not found: topology file: #{file_path}", 404) unless File.exist?(file_path)
+      error!("Not found: #{file_path}", 404) unless File.exist?(file_path)
 
       JSON.parse(File.read(file_path))
+    end
+
+    # @param [String] file_path File path to read
+    # @return [Object]
+    def read_yaml_file(file_path)
+      error!("Not found: #{file_path}, 404") unless File.exist?(file_path)
+
+      YAML.load_file(file_path)
+    end
+
+    # @param [String] file_path File path to read
+    # @return [Object]
+    def read_csv_file(file_path)
+      csv_data = CSV.read(file_path, headers: true)
+      csv_data.map(&:to_h)
     end
 
     # @param [String] file_path File path to save
@@ -71,7 +88,7 @@ module NetomoxExp
     # @param [String] network Network name
     # @return [NamespaceConverter] Namespace converter without topology data
     def ns_converter_wo_topology(network)
-      ns_converter = NamespaceConverter.new
+      ns_converter = ConvertNamespace::NamespaceConverter.new
       ns_converter.reload(read_ns_convert_table(network))
       ns_converter
     end
@@ -90,7 +107,8 @@ module NetomoxExp
         node: node.name,
         reverse: ns_converter.node_name.reverse_lookup(node.name),
         alias: ns_converter.node_name.find_l1_alias(node.name),
-        attribute: node.attribute.to_data
+        attribute: node.attribute.to_data,
+        supports: node.supports.map(&:to_data)
       }
     end
 
@@ -111,7 +129,8 @@ module NetomoxExp
         interface: term_point.name,
         reverse: ns_converter.tp_name.reverse_lookup(node.name, term_point.name)[1],
         alias: ns_converter.tp_name.find_l1_alias(node.name, term_point.name),
-        attribute: term_point.attribute.to_data
+        attribute: term_point.attribute.to_data,
+        supports: term_point.supports.map(&:to_data)
       }
     end
 
