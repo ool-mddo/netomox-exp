@@ -13,7 +13,7 @@ module NetomoxExp
   module UsecaseDeliverer
     # Layer3 network data builder
     class Layer3DataBuilder < IntAsDataBuilder
-      # @param [Symbol] as_type (enum: [source_as, :dest_as])
+      # @param [Symbol] as_type (enum: [:source_as, :dest_as])
       # @param [Hash] usecase_params Params data
       # @param [Array<Hash>] usecase_flows Flow data
       # @param [Netomox::Topology::Networks] int_as_topology Internal AS topology (original_asis)
@@ -23,7 +23,10 @@ module NetomoxExp
         @flow_prefixes = column_items_from_flows(usecase_flows)
 
         ipam = TinyIPAM.instance # singleton
-        ipam.assign_base_prefix(@params['subnet'])
+        # NOTE: 'subnet' key is optional in source/dest-as parameters.
+        #   default: 169.254.[0|1].0/23
+        base_prefix = @params['subnet'] || "169.254.#{as_type == :source_as ? 0 : 1}.0/23"
+        ipam.assign_base_prefix(base_prefix)
 
         # target external-AS topology (empty)
         @ext_as_topology = Netomox::PseudoDSL::PNetworks.new
