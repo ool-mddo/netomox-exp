@@ -306,7 +306,18 @@ curl -s http://localhost:9292/topologies/mddo-ospf/original_asis/topology/layer1
 
 ## REST API (`usecases` space)
 
+### Common
+
+Fetch usecase params
+
+* GET `/usecases/<usecase>/params`
+
+
 ### PNI usecase
+
+Fetch flow data
+
+* Get `/usecases/<usecase>/flow_data`
 
 Generate external-AS topology data
 
