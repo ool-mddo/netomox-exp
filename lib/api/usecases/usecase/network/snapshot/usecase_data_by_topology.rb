@@ -34,8 +34,8 @@ module NetomoxExp
 
         usecase_flows = read_flow_data(usecase, network, flow_data)
         usecase_params = read_params(usecase, network)
-        l3endpoint_list = fetch_l3endpoint_list(network, snapshot)
-        generator = UsecaseDeliverer::IperfCommandGenerator.new(usecase_params, usecase_flows, l3endpoint_list)
+        l3_endpoints = fetch_l3_endpoints(network, snapshot)
+        generator = UsecaseDeliverer::IperfCommandGenerator.new(usecase_params, usecase_flows, l3_endpoints)
         generator.generate_iperf_commands
       end
     end

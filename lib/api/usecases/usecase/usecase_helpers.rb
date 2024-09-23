@@ -34,7 +34,7 @@ module NetomoxExp
     # @param [String] network Network name
     # @param [String] snapshot Snapshot name
     # @return [Array<Hash>] L3 endpoint list
-    def fetch_l3endpoint_list(network, snapshot)
+    def fetch_l3_endpoints(network, snapshot)
       http_client = HTTPClient.new
       url = "topologies/#{network}/#{snapshot}/topology/layer3/interfaces"
       params = { node_type: 'endpoint' }
