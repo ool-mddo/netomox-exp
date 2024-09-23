@@ -19,10 +19,10 @@ module NetomoxExp
         usecase_flows = read_flow_data(usecase, network, flow_data)
         usecase_params = read_params(usecase, network)
         int_as_topology = fetch_topology_object(network, snapshot)
-        ext_as_topology_builder = UsecaseDeliverer::BgpAsDataBuilder.new(usecase_params, usecase_flows, int_as_topology)
+        builder = UsecaseDeliverer::BgpAsDataBuilder.new(usecase_params, usecase_flows, int_as_topology)
 
         # response
-        ext_as_topology_builder.build_topology
+        builder.build_topology
       end
 
       desc 'Get iperf commands'
@@ -32,10 +32,11 @@ module NetomoxExp
       get 'iperf_commands' do
         usecase, network, snapshot, flow_data = %i[usecase network snapshot flow_data].map { |key| params[key] }
 
-        flow_data_list = read_flow_data(usecase, network, flow_data)
+        usecase_flows = read_flow_data(usecase, network, flow_data)
+        usecase_params = read_params(usecase, network)
         l3endpoint_list = fetch_l3endpoint_list(network, snapshot)
-        iperf_command_generator = UsecaseDeliverer::IperfCommandGenerator.new(flow_data_list, l3endpoint_list)
-        iperf_command_generator.generate_iperf_commands
+        generator = UsecaseDeliverer::IperfCommandGenerator.new(usecase_params, usecase_flows, l3endpoint_list)
+        generator.generate_iperf_commands
       end
     end
   end

@@ -6,10 +6,12 @@ module NetomoxExp
   module UsecaseDeliverer
     # iperf command generator for pni_te/pni_addlink usecase
     class IperfCommandGenerator
-      # @param [Array] flow_data_list Flow data
-      # @param [Array] l3endpoint_list L3 endpoint list
-      def initialize(flow_data_list, l3endpoint_list)
-        @flow_data_list = flow_data_list
+      # @param [Hash] usecase_params Param table
+      # @param [Array<Hash>] usecase_flows Flow data
+      # @param [Array<Hash>] l3endpoint_list L3 endpoint list
+      def initialize(usecase_params, usecase_flows, l3endpoint_list)
+        @scale = usecase_params['expected_traffic']['emulated_traffic']['scale'].to_f
+        @usecase_flows = usecase_flows
         @l3endpoint_list = l3endpoint_list
       end
 
@@ -50,11 +52,12 @@ module NetomoxExp
       # @param [Hash] l3endpoint_dict Layer3 endpoint data (single node)
       # @return [Hash] iPerf command
       def source_info(flow_data, l3endpoint_dict)
+        rate_bps = flow_data['rate'].to_f * 1e6 # Mbps to bps
         {
           'client_node' => l3endpoint_dict[flow_data['source']]['node'],
           'server_address' => l3endpoint_dict[flow_data['dest']]['ip_addr'],
           'server_port' => 0, # define later
-          'rate' => flow_data['rate'].to_f
+          'rate' => rate_bps * @scale
         }
       end
 
@@ -64,7 +67,7 @@ module NetomoxExp
       # @return [Array<Hash>] iperf commands iPerf commands
       def create_iperf_commands(l3endpoint_dict)
         iperf_commands = []
-        @flow_data_list.each do |flow_data|
+        @usecase_flows.each do |flow_data|
           dst_node_name = l3endpoint_dict[flow_data['dest']]['node']
           target_iperf_command = find_iperf_cmd_by_node_name(iperf_commands, dst_node_name)
           source_info = source_info(flow_data, l3endpoint_dict)
@@ -114,7 +117,7 @@ module NetomoxExp
       def create_l3endpoint_dict
         # NOTE: There is one iperf endpoint for each source/destination subnet in the flow_data.
         l3endpoint_dict = {}
-        @flow_data_list.each do |flow_data|
+        @usecase_flows.each do |flow_data|
           %w[source dest].each do |flow_end|
             next unless l3endpoint_dict[flow_end].nil?
 
