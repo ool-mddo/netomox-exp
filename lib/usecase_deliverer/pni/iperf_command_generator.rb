@@ -52,12 +52,13 @@ module NetomoxExp
       # @param [Hash] l3endpoint_dict Layer3 endpoint data (single node)
       # @return [Hash] iPerf command
       def source_info(flow_data, l3endpoint_dict)
-        rate_bps = flow_data['rate'].to_f * 1e6 # Mbps to bps
+        # NOTE:                      Mbps -> bps -> scale -> Kbps
+        rate_kbps = flow_data['rate'].to_f * 1e6 * @scale * 1e-3
         {
           'client_node' => l3endpoint_dict[flow_data['source']]['node'],
           'server_address' => l3endpoint_dict[flow_data['dest']]['ip_addr'],
           'server_port' => 0, # define later
-          'rate' => rate_bps * @scale
+          'rate' => rate_kbps
         }
       end
 
