@@ -306,29 +306,46 @@ curl -s http://localhost:9292/topologies/mddo-ospf/original_asis/topology/layer1
 
 ## REST API (`usecases` space)
 
+### Common
+
+Fetch usecase params
+
+* GET `/usecases/<usecase>/<network>/params`
+
+```shell
+curl -s http://localhost:9292/usecases/pni_te/mddo-bgp/params
+```
+
 ### PNI usecase
+
+Fetch flow data
+
+* Get `/usecases/<usecase>/<network>/flows/<flow_data>`
+
+```shell
+# get usecases/pni_te/mddo-bgp/flows/normal.csv as json
+curl -s http://localhost:9292/usecases/pni_te/mddo-bgp/flows/normal
+```
 
 Generate external-AS topology data
 
-* GET `/usecases/<usecase>/external_as_topology`
+* GET `/usecases/<usecase>/<network>/<snapshot>external_as_topology`
 * option
-  * `network`: Network name
-  * `snapshot`: [optional] Snapshot name (default: 'original_asis')
+  * `flow_data`: flow data (file name)
 
 ```shell
-curl -s http://localhost:9292/usecases/pni_te/external_as_topology?network=mddo-bgp
+curl -s http://localhost:9292/usecases/pni_te/mddo-bgp/original_asis/external_as_topology?flow_data=normal
 ```
 
 Generate iperf commands
 
-* GET `/usecases/<usecase>/iperf_commands?network=mddo-bgp`
-  * `network`: Network name
-  * `snapshot`: Snapshot name
+* GET `/usecases/<usecase>/<network>/<snapshot>/iperf_commands`
+* option
+  * `flow_data`: flow data (file name)
 
 ```shell
-curl -s "http://localhost:9292/usecases/pni_te/iperf_commands?network=mddo-bgp&snapshot=emulated_asis"
+curl -s http://localhost:9292/usecases/pni_te/mddo-bgp/emulated_asis/iperf_commands?flow_data=normal
 ```
-
 
 ## Development
 
@@ -366,3 +383,4 @@ bundle exec rake rubocop
 # or
 bundle exec rake rubocop:auto_correct
 ```
+/

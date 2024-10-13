@@ -13,21 +13,19 @@ module NetomoxExp
   module UsecaseDeliverer
     # Layer3 network data builder
     class Layer3DataBuilder < IntAsDataBuilder
-      # @param [Symbol] as_type (enum: [source_as, :dest_as])
+      # @param [Symbol] as_type (enum: [:source_as, :dest_as])
       # @param [Hash] usecase_params Params data
       # @param [Array<Hash>] usecase_flows Flow data
       # @param [Netomox::Topology::Networks] int_as_topology Internal AS topology (original_asis)
       def initialize(as_type, usecase_params, usecase_flows, int_as_topology)
         super(as_type, usecase_params, int_as_topology)
 
+        # list endpoint (iperf-node) info from flow data
         @flow_prefixes = column_items_from_flows(usecase_flows)
-
-        ipam = TinyIPAM.instance # singleton
-        ipam.assign_base_prefix(@params['subnet'])
-
+        # assign base prefix to ipam
+        ipam_assign_base_prefix(as_type)
         # target external-AS topology (empty)
         @ext_as_topology = Netomox::PseudoDSL::PNetworks.new
-
         # layer3 network
         @layer3_nw = @ext_as_topology.network('layer3')
         @layer3_nw.type = Netomox::NWTYPE_MDDO_L3
@@ -37,6 +35,16 @@ module NetomoxExp
       end
 
       private
+
+      # @param [Symbol] as_type (enum: [:source_as, :dest_as])
+      # @return [void]
+      def ipam_assign_base_prefix(as_type)
+        ipam = TinyIPAM.instance # singleton
+        # NOTE: 'subnet' key is optional in source/dest-as parameters.
+        #   default: 169.254.[0|2].0/23
+        base_prefix = @params['subnet'] || "169.254.#{as_type == :source_as ? 0 : 2}.0/23"
+        ipam.assign_base_prefix(base_prefix)
+      end
 
       # @yield Operations using same link address
       # @yieldparam [String] current_link_ip_str Current link (segment) ip address

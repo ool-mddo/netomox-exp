@@ -1,5 +1,9 @@
 # frozen_string_literal: true
 
+require 'httpclient'
+require 'json'
+require 'netomox'
+
 module NetomoxExp
   # patch for helpers (see helpers.rb)
   module Helpers
@@ -7,36 +11,30 @@ module NetomoxExp
     USECASE_DIR = ENV.fetch('MDDO_USECASES_DIR', '/mddo/usecases')
 
     # @param [String] usecase Usecase name
-    # @return [Hash] file path data for usecase
-    def usecase_file(usecase)
-      {
-        params_file: File.join(USECASE_DIR, usecase, 'params.yaml'),
-        flow_data_file: File.join(USECASE_DIR, usecase, 'flowdata.csv')
-      }
+    # @param [String] network Network name
+    # @param [String] flow_file File name of a flow data
+    # @return [Array<Hash>] flow data
+    def read_flow_data(usecase, network, flow_file)
+      flow_file_path = File.join(USECASE_DIR, usecase, network, 'flows', "#{flow_file}.csv")
+      error!("Not found usecase flow-data: #{flow_file_path}", 404) unless File.exist?(flow_file_path)
+
+      read_csv_file(flow_file_path)
     end
 
     # @param [String] usecase Usecase name
-    # @return [Array<Hash>] flow data
-    def read_flow_data(usecase)
-      ucf = usecase_file(usecase)
-      error!("Not found usecase flowdata: #{ucf[:flow_data_file]}", 404) unless File.exist?(ucf[:flow_data_file])
-
-      read_csv_file(ucf[:flow_data_file])
-    end
-
-    # param [String] usecase Usecase name
+    # @param [String] network Network name
     # @return [Hash] usecase params
-    def read_params(usecase)
-      ucf = usecase_file(usecase)
-      error!("Not found usecase params: #{ucf[:params_file]}", 404) unless File.exist?(ucf[:params_file])
+    def read_params(usecase, network)
+      param_file_path = File.join(USECASE_DIR, usecase, network, 'params.yaml')
+      error!("Not found usecase params: #{param_file_path}", 404) unless File.exist?(param_file_path)
 
-      read_yaml_file(ucf[:params_file])
+      read_yaml_file(param_file_path)
     end
 
     # @param [String] network Network name
     # @param [String] snapshot Snapshot name
     # @return [Array<Hash>] L3 endpoint list
-    def fetch_l3endpoint_list(network, snapshot)
+    def fetch_l3_endpoints(network, snapshot)
       http_client = HTTPClient.new
       url = "topologies/#{network}/#{snapshot}/topology/layer3/interfaces"
       params = { node_type: 'endpoint' }
