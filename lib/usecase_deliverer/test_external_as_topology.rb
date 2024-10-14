@@ -41,6 +41,7 @@ def read_topology_object(network, snapshot)
   Netomox::Topology::Networks.new(topology_data)
 end
 
+# rubocop:disable Metrics/AbcSize, Metrics/MethodLength
 def merge_ext_topology(layers, src_builder, dst_builder)
   # whole networks
   ext_as_topology = Netomox::PseudoDSL::PNetworks.new
@@ -67,6 +68,7 @@ def merge_ext_topology(layers, src_builder, dst_builder)
 
   ext_as_topology.interpret.topo_data
 end
+# rubocop:enable Metrics/AbcSize, Metrics/MethodLength
 
 # main
 
@@ -101,7 +103,7 @@ begin
   end
 
   # debug
-  network, snapshot, usecase = %i[network snapshot usecase].map { |key| options[key]}
+  network, snapshot, usecase = %i[network snapshot usecase].map { |key| options[key] }
   warn "Network: #{network}"
   warn "Snapshot: #{snapshot}"
   warn "Usecase: #{usecase}"
@@ -114,18 +116,23 @@ begin
   # build ext-as topology data
   if options[:layer] == 'layer3'
     # debug layer3
-    src_topo_builder = NetomoxExp::UsecaseDeliverer::Layer3DataBuilder.new(usecase,:source_as, usecase_params, usecase_flows, int_as_topology)
-    dst_topo_builder = NetomoxExp::UsecaseDeliverer::Layer3DataBuilder.new(usecase, :dest_as, usecase_params, usecase_flows, int_as_topology)
+    src_topo_builder = NetomoxExp::UsecaseDeliverer::Layer3DataBuilder.new(usecase, :source_as, usecase_params,
+                                                                           usecase_flows, int_as_topology)
+    dst_topo_builder = NetomoxExp::UsecaseDeliverer::Layer3DataBuilder.new(usecase, :dest_as, usecase_params,
+                                                                           usecase_flows, int_as_topology)
     puts JSON.generate(merge_ext_topology(%w[layer3], src_topo_builder, dst_topo_builder))
   elsif options[:layer] == 'bgp_proc'
     # debug bgp_proc (includes layer3)
-    src_topo_builder = NetomoxExp::UsecaseDeliverer::BgpProcDataBuilder.new(usecase, :source_as, usecase_params, usecase_flows, int_as_topology)
-    dst_topo_builder = NetomoxExp::UsecaseDeliverer::BgpProcDataBuilder.new(usecase, :dest_as, usecase_params, usecase_flows, int_as_topology)
+    src_topo_builder = NetomoxExp::UsecaseDeliverer::BgpProcDataBuilder.new(usecase, :source_as, usecase_params,
+                                                                            usecase_flows, int_as_topology)
+    dst_topo_builder = NetomoxExp::UsecaseDeliverer::BgpProcDataBuilder.new(usecase, :dest_as, usecase_params,
+                                                                            usecase_flows, int_as_topology)
     puts JSON.generate(merge_ext_topology(%w[bgp_proc layer3], src_topo_builder, dst_topo_builder))
   else
     # default
     # debug bgp-as (includes bgp-proc, layer3)
-    builder = NetomoxExp::UsecaseDeliverer::BgpAsDataBuilder.new(usecase, usecase_params, usecase_flows, int_as_topology)
+    builder = NetomoxExp::UsecaseDeliverer::BgpAsDataBuilder.new(usecase, usecase_params, usecase_flows,
+                                                                 int_as_topology)
     puts JSON.generate(builder.build_topology)
   end
 rescue OptionParser::InvalidOption, OptionParser::MissingArgument => e

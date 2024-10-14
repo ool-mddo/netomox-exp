@@ -88,13 +88,13 @@ module NetomoxExp
       # return [Hash] empty hash if not found
       def find_peer_by_remote_ip(remote_ip)
         @params['regions'].each do |region|
-          peer = region['allowed_peers'].find { |peer| peer['peer'] == remote_ip }
-          next if peer.nil?
+          allowed_peer = region['allowed_peers'].find { |peer| peer['peer'] == remote_ip }
+          next if allowed_peer.nil?
 
           return {
             type: :region,
             region: region['region'],
-            peer_type: peer['type']
+            peer_type: allowed_peer['type']
           }
         end
         {} # not found

@@ -11,6 +11,8 @@ require_relative 'layer3_data_builder_endpoint'
 
 module NetomoxExp
   module UsecaseDeliverer
+    # rubocop:disable Metrics/ClassLength
+
     # Layer3 network data builder
     class Layer3DataBuilder < IntAsDataBuilder
       # @!attribute [r] layer3_nw (for debugging)
@@ -166,6 +168,8 @@ module NetomoxExp
         end
       end
 
+      # rubocop:disable Metrics/MethodLength
+
       # @param [Netomox::PseudoDSL::PNode] layer3_core_node Layer3 core node
       # @return [void]
       def make_layer3_topology_region_as(layer3_core_node)
@@ -189,6 +193,7 @@ module NetomoxExp
           add_layer3_core_to_endpoint_links(layer3_rcore_node, flow_prefix, flow_index)
         end
       end
+      # rubocop:enable Metrics/MethodLength
 
       # @return [void]
       def make_layer3_topology!
@@ -213,5 +218,6 @@ module NetomoxExp
         flow_data.map { |flow| flow[column] }.uniq
       end
     end
+    # rubocop:enable Metrics/ClassLength
   end
 end

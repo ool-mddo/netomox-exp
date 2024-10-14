@@ -14,7 +14,7 @@ module NetomoxExp
       # @param [Netomox::Topology::Networks] int_as_topology Internal AS topology (original_asis)
       def initialize(usecase, usecase_params, usecase_flows, int_as_topology)
         # each external-AS topology which contains layer3/bgp_proc layer
-        @src_topo_builder = BgpProcDataBuilder.new(usecase,:source_as, usecase_params, usecase_flows, int_as_topology)
+        @src_topo_builder = BgpProcDataBuilder.new(usecase, :source_as, usecase_params, usecase_flows, int_as_topology)
         @dst_topo_builder = BgpProcDataBuilder.new(usecase, :dest_as, usecase_params, usecase_flows, int_as_topology)
 
         # target external-AS topology (empty)

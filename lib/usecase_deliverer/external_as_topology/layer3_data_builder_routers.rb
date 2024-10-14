@@ -2,6 +2,8 @@
 
 module NetomoxExp
   module UsecaseDeliverer
+    # rubocop:disable Metrics/ClassLength
+
     # Layer3 network data builder
     class Layer3DataBuilder < IntAsDataBuilder
       # Loopback interface name
@@ -198,5 +200,6 @@ module NetomoxExp
         add_layer3_inter_as_link(layer3_int_node, layer3_int_tp, layer3_ext_node, layer3_ext_tp, link_segment_ip)
       end
     end
+    # rubocop:enable Metrics/ClassLength
   end
 end
