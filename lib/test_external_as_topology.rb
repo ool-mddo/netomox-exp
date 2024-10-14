@@ -5,10 +5,10 @@ require 'optparse'
 require 'json'
 require 'yaml'
 require 'csv'
-require_relative 'external_as_topology/bgp_as_data_builder'
+require_relative 'usecase_deliverer/external_as_topology/bgp_as_data_builder'
 
-USECASE_DIR = ENV['USECASE_DIR'] || "#{__dir__}/../../../../usecases" # playground/usecases
-TOPOLOGY_DIR = ENV['TOPOLOGY_DIR'] || "#{__dir__}/../../../../topologies" # playground/topologies
+USECASE_DIR = ENV['USECASE_DIR'] || "#{__dir__}/../../../usecases" # playground/usecases
+TOPOLOGY_DIR = ENV['TOPOLOGY_DIR'] || "#{__dir__}/../../../topologies" # playground/topologies
 
 # helpers
 
