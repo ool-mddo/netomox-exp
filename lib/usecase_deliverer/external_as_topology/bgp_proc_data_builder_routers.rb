@@ -99,7 +99,7 @@ module NetomoxExp
 
       # @return [Netomox::PseudoDSL::PNode] bgp_proc core router node
       def add_bgp_proc_core_router
-        layer3_core_node_name = layer3_router_name('core')
+        layer3_core_node_name = layer3_router_name('core00')
         loopback_ip_str = find_layer3_loopback_tp_ip(@layer3_nw.node(layer3_core_node_name))
         bgp_proc_core_node = @bgp_proc_nw.node(loopback_ip_str)
         bgp_proc_core_node.attribute = {

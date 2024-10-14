@@ -38,7 +38,7 @@ module NetomoxExp
       # @return [Netomox::PseudoDSL::PNode] layer3 core router node
       def add_layer3_core_router
         # node
-        layer3_core_node = @layer3_nw.node(layer3_router_name('core'))
+        layer3_core_node = @layer3_nw.node(layer3_router_name('core00'))
         layer3_core_node.attribute = { node_type: 'node' }
         # term-point (loopback)
         add_loopback_to_layer3_node(layer3_core_node)

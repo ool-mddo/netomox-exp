@@ -2,8 +2,8 @@
 
 require 'netomox'
 
-require_relative 'layer3_data_builder'
 require_relative 'p_network'
+require_relative 'layer3_data_builder'
 require_relative 'bgp_proc_data_builder_routers'
 require_relative 'bgp_proc_data_builder_ibgp_links'
 
@@ -36,11 +36,12 @@ module NetomoxExp
       # default policies to set external-as node
       DEFAULT_POLICIES = [POLICY_ADV_ALL_PREFIXES, POLICY_PASS_ALL, POLICY_PASS_ALL_LP200].freeze
 
+      # @param [String] usecase Usecase name
       # @param [Symbol] as_type (enum: [source_as, :dest_as])
       # @param [Hash] usecase_params Params data
       # @param [Array<Hash>] usecase_flows Flow data
       # @param [Netomox::Topology::Networks] int_as_topology Internal AS topology (original_asis)
-      def initialize(as_type, usecase_params, usecase_flows, int_as_topology)
+      def initialize(usecase, as_type, usecase_params, usecase_flows, int_as_topology)
         super
 
         # bgp_proc network

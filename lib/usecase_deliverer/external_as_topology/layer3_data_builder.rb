@@ -3,8 +3,8 @@
 require 'ipaddr'
 require 'netomox'
 
-require_relative 'int_as_data_builder'
 require_relative 'tiny_ipam'
+require_relative 'int_as_data_builder'
 require_relative 'layer3_data_builder_routers'
 require_relative 'layer3_data_builder_ibgp_links'
 require_relative 'layer3_data_builder_endpoint'
@@ -13,12 +13,13 @@ module NetomoxExp
   module UsecaseDeliverer
     # Layer3 network data builder
     class Layer3DataBuilder < IntAsDataBuilder
+      # @param [String] usecase Usecase name
       # @param [Symbol] as_type (enum: [:source_as, :dest_as])
       # @param [Hash] usecase_params Params data
       # @param [Array<Hash>] usecase_flows Flow data
       # @param [Netomox::Topology::Networks] int_as_topology Internal AS topology (original_asis)
-      def initialize(as_type, usecase_params, usecase_flows, int_as_topology)
-        super(as_type, usecase_params, int_as_topology)
+      def initialize(usecase, as_type, usecase_params, usecase_flows, int_as_topology)
+        super(usecase, as_type, usecase_params, int_as_topology)
 
         # list endpoint (iperf-node) info from flow data
         @flow_prefixes = column_items_from_flows(usecase_flows)

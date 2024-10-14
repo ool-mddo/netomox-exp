@@ -8,13 +8,14 @@ module NetomoxExp
   module UsecaseDeliverer
     # bgp_as network data builder
     class BgpAsDataBuilder
+      # @param [String] usecase Usecase name
       # @param [Hash] usecase_params Params data
       # @param [Array<Hash>] usecase_flows Flow data
       # @param [Netomox::Topology::Networks] int_as_topology Internal AS topology (original_asis)
-      def initialize(usecase_params, usecase_flows, int_as_topology)
+      def initialize(usecase, usecase_params, usecase_flows, int_as_topology)
         # each external-AS topology which contains layer3/bgp_proc layer
-        @src_topo_builder = BgpProcDataBuilder.new(:source_as, usecase_params, usecase_flows, int_as_topology)
-        @dst_topo_builder = BgpProcDataBuilder.new(:dest_as, usecase_params, usecase_flows, int_as_topology)
+        @src_topo_builder = BgpProcDataBuilder.new(usecase,:source_as, usecase_params, usecase_flows, int_as_topology)
+        @dst_topo_builder = BgpProcDataBuilder.new(usecase, :dest_as, usecase_params, usecase_flows, int_as_topology)
 
         # target external-AS topology (empty)
         # src/dst ext-AS topology (layer3/bgp-proc) are merged into it with a new layer, bgp_as.
