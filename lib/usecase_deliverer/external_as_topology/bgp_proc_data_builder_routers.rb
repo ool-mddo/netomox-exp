@@ -75,7 +75,8 @@ module NetomoxExp
         peer_item[:bgp_proc][:node] = bgp_proc_node # memo
         bgp_proc_node.attribute = {
           router_id: loopback_ip_str,
-          policies: DEFAULT_POLICIES
+          policies: DEFAULT_POLICIES,
+          flags: %w[ebgp-router]
         }
         bgp_proc_node.supports.push([@layer3_nw.name, layer3_node.name])
         # bgp-proc edge-router term-point
@@ -104,7 +105,8 @@ module NetomoxExp
         bgp_proc_core_node = @bgp_proc_nw.node(loopback_ip_str)
         bgp_proc_core_node.attribute = {
           router_id: loopback_ip_str,
-          policies: DEFAULT_POLICIES
+          policies: DEFAULT_POLICIES,
+          flags: %w[core-router]
         }
         bgp_proc_core_node.supports.push([@layer3_nw.name, layer3_core_node_name])
 
@@ -125,6 +127,23 @@ module NetomoxExp
           flags: %w[ebgp-candidate-router]
         }
         bgp_proc_node.supports.push([@layer3_nw.name, layer3_ebgp_candidate_router.name])
+      end
+
+      # @param [Netomox::PseudoDSL::PNode] layer3_rcore_router Region core router (layer3, iBGP peer with core)
+      # @return [Netomox::PseudoDSL::PNode] bgp_proc region-core router node
+      def add_bgp_proc_region_core_router(layer3_rcore_router)
+        loopback_ip_str = find_layer3_loopback_tp_ip(layer3_rcore_router)
+
+        # the node is ibgp-speaker
+        bgp_proc_rcore_node = @bgp_proc_nw.node(loopback_ip_str)
+        bgp_proc_rcore_node.attribute = {
+          router_id: loopback_ip_str,
+          policies: DEFAULT_POLICIES,
+          flags: layer3_rcore_router.attribute[:flags].dup # region-core-router & region=(region name)
+        }
+        bgp_proc_rcore_node.supports.push([@layer3_nw.name, layer3_rcore_router.name])
+
+        bgp_proc_rcore_node
       end
     end
   end

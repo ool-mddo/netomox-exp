@@ -13,7 +13,7 @@ module NetomoxExp
   module UsecaseDeliverer
     # Layer3 network data builder
     class Layer3DataBuilder < IntAsDataBuilder
-      # @!attribute layer3_nw (for debugging)
+      # @!attribute [r] layer3_nw (for debugging)
       #   @return [Netomox::PseudoDSL::PNetworks]
       attr_reader :layer3_nw
 
@@ -118,7 +118,7 @@ module NetomoxExp
           layer3_rcore_node = @layer3_nw.node(layer3_router_name(format('core%02d', index + 1)))
           layer3_rcore_node.attribute = {
             node_type: 'node',
-            flags: ['region-core-router', "region=#{region['region']}"]
+            flags: %W[region-core-router region=#{region['region']}]
           }
           # term-point (loopback)
           add_loopback_to_layer3_node(layer3_rcore_node)
@@ -150,7 +150,7 @@ module NetomoxExp
       # @param [Netomox::PseudoDSL::PNode] layer3_rcore_node Layer3 region core node
       # @param [String] flow_prefix Flow prefix (e.g. a.b.c.d/xx)
       # @return [Boolean] true if the region core node has the flow prefix
-      def rcore_has_prefix?(layer3_rcore_node, flow_prefix)
+      def prefix_under_rcore?(layer3_rcore_node, flow_prefix)
         flow_prefix_obj = IPAddr.new(flow_prefix)
         region_params = params_by_rcore(layer3_rcore_node)
         region_params['prefixes'].map { |prefix| IPAddr.new(prefix) }.any? do |region_prefix_obj|
@@ -162,7 +162,7 @@ module NetomoxExp
       # @return [nil, Netomox::PseudoDSL::PNode]
       def find_rcore_by_flow_prefix(flow_prefix)
         find_all_layer3_region_core_routers.find do |layer3_rcore_node|
-          rcore_has_prefix?(layer3_rcore_node, flow_prefix)
+          prefix_under_rcore?(layer3_rcore_node, flow_prefix)
         end
       end
 
@@ -196,7 +196,7 @@ module NetomoxExp
         layer3_core_node = add_layer3_core_router
         # add edge-router (ebgp speaker and inter-AS links)
         @peer_list.each_with_index { |peer_item, peer_index| add_layer3_edge_router(peer_item, peer_index) }
-        # add edge-candidate-router (NOT ebgp edge yet, but will be ebgp edge)
+        # add edge-candidate-router (NOT ebgp speaker yet, but will be ebgp speaker)
         @params['add_links']&.each { |add_link| add_layer3_ebgp_candidate_router(add_link) }
 
         if region_as_params?

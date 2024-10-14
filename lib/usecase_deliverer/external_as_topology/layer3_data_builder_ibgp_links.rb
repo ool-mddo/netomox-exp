@@ -8,6 +8,7 @@ module NetomoxExp
     class Layer3DataBuilder < IntAsDataBuilder
       protected
 
+      # @return [Array<Netomox::PseudoDSL::PNode>] ebgp-routers
       def find_all_layer3_ebgp_routers
         @layer3_nw.nodes.find_all do |node|
           node.flags_include?('ebgp-router')

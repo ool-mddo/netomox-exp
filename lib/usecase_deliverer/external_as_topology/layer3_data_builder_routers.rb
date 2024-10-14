@@ -39,7 +39,7 @@ module NetomoxExp
       def add_layer3_core_router
         # node
         layer3_core_node = @layer3_nw.node(layer3_router_name('core00'))
-        layer3_core_node.attribute = { node_type: 'node', flags: ['core-router'] }
+        layer3_core_node.attribute = { node_type: 'node', flags: %w[core-router] }
         # term-point (loopback)
         add_loopback_to_layer3_node(layer3_core_node)
 
@@ -58,8 +58,8 @@ module NetomoxExp
         layer3_node = @layer3_nw.node(node_name)
         layer3_node.attribute = {
           node_type: 'node',
-          prefixes: [{ prefix: "#{segment_ip}/#{segment_ip.prefix}", metric: 0, flags: ['connected'] }],
-          flags: ['ebgp-router']
+          prefixes: [{ prefix: "#{segment_ip}/#{segment_ip.prefix}", metric: 0, flags: %w[connected] }],
+          flags: %w[ebgp-router]
         }
         # term-point (loopback)
         add_loopback_to_layer3_node(layer3_node)
@@ -67,7 +67,7 @@ module NetomoxExp
         layer3_tp = layer3_node.term_point('Ethernet0')
         layer3_tp.attribute = {
           ip_addrs: ["#{peer_item[:bgp_proc][:remote_ip]}/#{segment_ip.prefix}"],
-          flags: ["ebgp-peer=#{peer_item[:layer3][:node_name]}[#{peer_item[:layer3][:tp_name]}]"]
+          flags: %W[ebgp-peer=#{peer_item[:layer3][:node_name]}[#{peer_item[:layer3][:tp_name]}]]
         }
 
         # memo to peer_item
@@ -97,8 +97,8 @@ module NetomoxExp
         layer3_ext_node = @layer3_nw.node(layer3_router_name(format('edge%02d', @layer3_nw.nodes.length)))
         layer3_ext_node.attribute = {
           node_type: 'node',
-          prefixes: [{ prefix: ipaddr_to_full_str(link_segment_ip), metric: 0, flags: ['connected'] }],
-          flags: ['ebgp-candidate-router']
+          prefixes: [{ prefix: ipaddr_to_full_str(link_segment_ip), metric: 0, flags: %w[connected] }],
+          flags: %w[ebgp-candidate-router]
         }
         # term-point (loopback)
         add_loopback_to_layer3_node(layer3_ext_node)
@@ -106,7 +106,7 @@ module NetomoxExp
         layer3_ext_tp = layer3_ext_node.term_point("Ethernet#{layer3_ext_node.tps.length}")
         layer3_ext_tp.attribute = {
           ip_addrs: ["#{add_link['remote_ip']}/#{link_segment_ip.prefix}"],
-          flags: ["ebgp-peer=#{add_link['node']}[#{add_link['interface']}]", 'ebgp-candidate-interface']
+          flags: %W[ebgp-peer=#{add_link['node']}[#{add_link['interface']}] ebgp-candidate-interface]
         }
 
         [layer3_ext_node, layer3_ext_tp]

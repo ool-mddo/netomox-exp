@@ -41,17 +41,29 @@ def read_topology_object(network, snapshot)
   Netomox::Topology::Networks.new(topology_data)
 end
 
-def merge_ext_layer3_topology(src_builder, dst_builder)
-  src_l3nw = src_builder.layer3_nw
-  dst_l3nw = dst_builder.layer3_nw
+def merge_ext_topology(layers, src_builder, dst_builder)
   # whole networks
   ext_as_topology = Netomox::PseudoDSL::PNetworks.new
-  ext_as_l3nw = ext_as_topology.network('layer3')
-  ext_as_l3nw.type = Netomox::NWTYPE_MDDO_L3
-  ext_as_l3nw.attribute = { name: 'mddo-layer3-network' }
   # merge
-  ext_as_l3nw.nodes = [src_l3nw.nodes, dst_l3nw.nodes].flatten
-  ext_as_l3nw.links = [src_l3nw.links, dst_l3nw.links].flatten
+  layers.each do |layer|
+    if layer == 'layer3'
+      ext_as_layer = ext_as_topology.network(layer)
+      src_layer = src_builder.layer3_nw
+      dst_layer = dst_builder.layer3_nw
+      ext_as_layer.type = Netomox::NWTYPE_MDDO_L3
+      ext_as_layer.attribute = { name: 'mddo-layer3-network' }
+      ext_as_layer.nodes = [src_layer.nodes, dst_layer.nodes].flatten
+      ext_as_layer.links = [src_layer.links, dst_layer.links].flatten
+    elsif layer == 'bgp_proc'
+      ext_as_layer = ext_as_topology.network(layer)
+      src_layer = src_builder.bgp_proc_nw
+      dst_layer = dst_builder.bgp_proc_nw
+      ext_as_layer.type = Netomox::NWTYPE_MDDO_BGP_PROC
+      ext_as_layer.attribute = { name: 'mddo-bgp-network' }
+      ext_as_layer.nodes = [src_layer.nodes, dst_layer.nodes].flatten
+      ext_as_layer.links = [src_layer.links, dst_layer.links].flatten
+    end
+  end
 
   ext_as_topology.interpret.topo_data
 end
@@ -74,7 +86,7 @@ begin
       options[:usecase] = usecase
     end
     opts.on('-l', '--layer LAYER', 'Layer (optional)') do |layer|
-      options[:layer] = layer.to_sym
+      options[:layer] = layer
     end
   end
 
@@ -100,14 +112,16 @@ begin
   int_as_topology = read_topology_object(network, snapshot)
 
   # build ext-as topology data
-  if options[:layer] == :layer3
+  if options[:layer] == 'layer3'
     # debug layer3
     src_topo_builder = NetomoxExp::UsecaseDeliverer::Layer3DataBuilder.new(usecase,:source_as, usecase_params, usecase_flows, int_as_topology)
     dst_topo_builder = NetomoxExp::UsecaseDeliverer::Layer3DataBuilder.new(usecase, :dest_as, usecase_params, usecase_flows, int_as_topology)
-    puts JSON.generate(merge_ext_layer3_topology(src_topo_builder, dst_topo_builder))
-  elsif options[:layer] == :bgp_proc
-    # TBA
+    puts JSON.generate(merge_ext_topology(%w[layer3], src_topo_builder, dst_topo_builder))
+  elsif options[:layer] == 'bgp_proc'
     # debug bgp_proc (includes layer3)
+    src_topo_builder = NetomoxExp::UsecaseDeliverer::BgpProcDataBuilder.new(usecase, :source_as, usecase_params, usecase_flows, int_as_topology)
+    dst_topo_builder = NetomoxExp::UsecaseDeliverer::BgpProcDataBuilder.new(usecase, :dest_as, usecase_params, usecase_flows, int_as_topology)
+    puts JSON.generate(merge_ext_topology(%w[bgp_proc layer3], src_topo_builder, dst_topo_builder))
   else
     # default
     # debug bgp-as (includes bgp-proc, layer3)

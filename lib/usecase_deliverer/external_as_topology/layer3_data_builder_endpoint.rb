@@ -33,7 +33,7 @@ module NetomoxExp
       # @param [Hash] addrs Segment ip address table
       # @return [Array(Netomox::PseudoDSL::PNode, Netomox::PseudoDSL::PTermPoint)] Added node/tp
       def add_core_node_tp_for_endpoint(layer3_core_node, addrs)
-        node_attr_prefix = { prefix: addrs[:seg_addr_prefix], metric: 0, flags: ['connected'] }
+        node_attr_prefix = { prefix: addrs[:seg_addr_prefix], metric: 0, flags: %w[connected] }
         # update node attribute
         layer3_core_node.attribute[:prefixes] = [] unless layer3_core_node.attribute.key?(:prefixes)
         layer3_core_node.attribute[:prefixes].push(node_attr_prefix)
@@ -51,7 +51,7 @@ module NetomoxExp
       # @param [Hash] addrs Segment ip address table
       # @return [Array(Netomox::PseudoDSL::PNode, Netomox::PseudoDSL::PTermPoint)] Added node/tp
       def add_layer3_endpoint_node_tp(ep_name, addrs)
-        node_attr_prefix = { prefix: addrs[:seg_addr_prefix], metric: 0, flags: ['connected'] }
+        node_attr_prefix = { prefix: addrs[:seg_addr_prefix], metric: 0, flags: %w[connected] }
         # node
         layer3_endpoint_node = @layer3_nw.node(ep_name)
         layer3_endpoint_node.attribute = {
