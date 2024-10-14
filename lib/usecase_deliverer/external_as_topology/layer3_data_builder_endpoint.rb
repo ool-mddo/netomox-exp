@@ -89,6 +89,7 @@ module NetomoxExp
       # @param [Netomox::PseudoDSL::PNode] layer3_core_node Layer3 core node
       # @param [String] flow_prefix Flow prefix (e.g. a.b.c.d/xx)
       # @param [Integer] flow_index Flow index
+      # @return [void]
       def add_layer3_core_to_endpoint_links(layer3_core_node, flow_prefix, flow_index)
         addrs = flow_addr_table(flow_prefix)
 

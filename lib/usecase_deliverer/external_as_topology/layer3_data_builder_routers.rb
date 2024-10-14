@@ -39,7 +39,7 @@ module NetomoxExp
       def add_layer3_core_router
         # node
         layer3_core_node = @layer3_nw.node(layer3_router_name('core00'))
-        layer3_core_node.attribute = { node_type: 'node' }
+        layer3_core_node.attribute = { node_type: 'node', flags: ['core-router'] }
         # term-point (loopback)
         add_loopback_to_layer3_node(layer3_core_node)
 
@@ -58,7 +58,8 @@ module NetomoxExp
         layer3_node = @layer3_nw.node(node_name)
         layer3_node.attribute = {
           node_type: 'node',
-          prefixes: [{ prefix: "#{segment_ip}/#{segment_ip.prefix}", metric: 0, flags: ['connected'] }]
+          prefixes: [{ prefix: "#{segment_ip}/#{segment_ip.prefix}", metric: 0, flags: ['connected'] }],
+          flags: ['ebgp-router']
         }
         # term-point (loopback)
         add_loopback_to_layer3_node(layer3_node)

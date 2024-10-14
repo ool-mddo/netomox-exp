@@ -13,6 +13,10 @@ module NetomoxExp
   module UsecaseDeliverer
     # Layer3 network data builder
     class Layer3DataBuilder < IntAsDataBuilder
+      # @!attribute layer3_nw (for debugging)
+      #   @return [Netomox::PseudoDSL::PNetworks]
+      attr_reader :layer3_nw
+
       # @param [String] usecase Usecase name
       # @param [Symbol] as_type (enum: [:source_as, :dest_as])
       # @param [Hash] usecase_params Params data
@@ -91,15 +95,9 @@ module NetomoxExp
                   .to_a
       end
 
+      # @param [Netomox::PseudoDSL::PNode] layer3_core_node Layer3 core node
       # @return [void]
-      def make_layer3_topology!
-        # add core (aggregation) router
-        layer3_core_node = add_layer3_core_router
-        # add edge-router (ebgp speaker and inter-AS links)
-        @peer_list.each_with_index { |peer_item, peer_index| add_layer3_edge_router(peer_item, peer_index) }
-        # add edge-candidate-router (NOT ebgp yet, but will be ebgp)
-        @params['add_links']&.each { |add_link| add_layer3_ebgp_candidate_router(add_link) }
-
+      def make_layer3_topology_simple_as(layer3_core_node)
         # iBGP mesh
         # router [] -- [tp1] Seg_x.x.x.x [tp2] -- [] router
         layer3_ibgp_router_pairs(layer3_core_node).each do |peer_item_l3_pair|
@@ -110,6 +108,101 @@ module NetomoxExp
         # endpoint [] -- [tp1] Seg_y.y.y.y [tp2] -- [] core
         @flow_prefixes.each_with_index do |flow_prefix, flow_index|
           add_layer3_core_to_endpoint_links(layer3_core_node, flow_prefix, flow_index)
+        end
+      end
+
+      # @return [Array<Netomox::PseudoDSL::PNode>] layer3 region core router nodes
+      def add_layer3_region_core_routers
+        @params['regions'].map.with_index do |region, index|
+          # node
+          layer3_rcore_node = @layer3_nw.node(layer3_router_name(format('core%02d', index + 1)))
+          layer3_rcore_node.attribute = {
+            node_type: 'node',
+            flags: ['region-core-router', "region=#{region['region']}"]
+          }
+          # term-point (loopback)
+          add_loopback_to_layer3_node(layer3_rcore_node)
+
+          layer3_rcore_node
+        end
+      end
+
+      # @param [Netomox::PseudoDSL::PNode] layer3_core_node Layer3 core node
+      # @param [Array<Netomox::PseudoDSL::PNode>] layer3_rcore_nodes Layer3 region core nodes
+      # @return [Array<Array(Hash, Hash)>] pair to connected ibgp (RR hub-spoke)
+      def layer3_ibgp_rr_pairs(layer3_core_node, layer3_rcore_nodes)
+        core_hash = { node_name: layer3_core_node.name, node: layer3_core_node }
+        find_all_layer3_ebgp_routers
+          .concat(find_all_layer3_ebgp_candidate_routers)
+          .concat(layer3_rcore_nodes)
+          .map { |node| { node_name: node.name, node: } }
+          .map { |node_hash| [core_hash, node_hash] }
+      end
+
+      # @param [Netomox::PseudoDSL::PNode] layer3_rcore_node Layer3 region core node
+      # @return [Hash] region params of the region-core node
+      def params_by_rcore(layer3_rcore_node)
+        region_attr = layer3_rcore_node.attribute[:flags].find { |flag| flag =~ /region=.+/ }
+        region_str = region_attr.split('=').last
+        @params['regions'].find { |region| region['region'] == region_str }
+      end
+
+      # @param [Netomox::PseudoDSL::PNode] layer3_rcore_node Layer3 region core node
+      # @param [String] flow_prefix Flow prefix (e.g. a.b.c.d/xx)
+      # @return [Boolean] true if the region core node has the flow prefix
+      def rcore_has_prefix?(layer3_rcore_node, flow_prefix)
+        flow_prefix_obj = IPAddr.new(flow_prefix)
+        region_params = params_by_rcore(layer3_rcore_node)
+        region_params['prefixes'].map { |prefix| IPAddr.new(prefix) }.any? do |region_prefix_obj|
+          region_prefix_obj.include?(flow_prefix_obj) || flow_prefix_obj.include?(region_prefix_obj)
+        end
+      end
+
+      # @param [String] flow_prefix Flow prefix (e.g. a.b.c.d/xx)
+      # @return [nil, Netomox::PseudoDSL::PNode]
+      def find_rcore_by_flow_prefix(flow_prefix)
+        find_all_layer3_region_core_routers.find do |layer3_rcore_node|
+          rcore_has_prefix?(layer3_rcore_node, flow_prefix)
+        end
+      end
+
+      # @param [Netomox::PseudoDSL::PNode] layer3_core_node Layer3 core node
+      # @return [void]
+      def make_layer3_topology_region_as(layer3_core_node)
+        # Add region core node
+        layer3_rcore_nodes = add_layer3_region_core_routers
+        # iBGP (RR) links: hub=core00, spoke=ebgp+region-core nodes
+        layer3_ibgp_rr_pairs(layer3_core_node, layer3_rcore_nodes).each do |peer_item_l3_pair|
+          add_layer3_ibgp_links(peer_item_l3_pair)
+        end
+
+        # endpoint = iperf node
+        # endpoint [] -- [] Seg [] -- [] region-core
+        @flow_prefixes.each_with_index do |flow_prefix, flow_index|
+          # target region core
+          layer3_rcore_node = find_rcore_by_flow_prefix(flow_prefix)
+          if layer3_rcore_node.nil?
+            NetomoxExp.logger.error "Flow prefix: #{flow_prefix} not found in regions (usecase params mismatch)"
+            next
+          end
+
+          add_layer3_core_to_endpoint_links(layer3_rcore_node, flow_prefix, flow_index)
+        end
+      end
+
+      # @return [void]
+      def make_layer3_topology!
+        # add core (aggregation) router
+        layer3_core_node = add_layer3_core_router
+        # add edge-router (ebgp speaker and inter-AS links)
+        @peer_list.each_with_index { |peer_item, peer_index| add_layer3_edge_router(peer_item, peer_index) }
+        # add edge-candidate-router (NOT ebgp edge yet, but will be ebgp edge)
+        @params['add_links']&.each { |add_link| add_layer3_ebgp_candidate_router(add_link) }
+
+        if region_as_params?
+          make_layer3_topology_region_as(layer3_core_node)
+        else
+          make_layer3_topology_simple_as(layer3_core_node)
         end
       end
 

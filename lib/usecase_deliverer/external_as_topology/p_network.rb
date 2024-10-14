@@ -40,5 +40,14 @@ module Netomox
         node(support[1])
       end
     end
+
+    # pseudo node
+    class PNode
+      # @param [String] flag_str String in flags
+      # @return flags in the node attribute includes specified flag
+      def flags_include?(flag_str)
+        @attribute.key?(:flags) && @attribute[:flags].include?(flag_str)
+      end
+    end
   end
 end
