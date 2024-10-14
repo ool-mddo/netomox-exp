@@ -78,10 +78,16 @@ module NetomoxExp
           policies: DEFAULT_POLICIES,
           flags: %w[ebgp-router]
         }
+        bgp_proc_node.attribute[:flags].push("region=#{peer_item[:bgp_proc][:region]}") if region_as_params?
         bgp_proc_node.supports.push([@layer3_nw.name, layer3_node.name])
+
         # bgp-proc edge-router term-point
         bgp_proc_tp = bgp_proc_node.term_point("peer_#{peer_item[:bgp_proc][:local_ip]}")
         bgp_proc_tp.attribute = bgp_proc_tp_ebgp_attribute(peer_item, preferred_peer, layer3_tp)
+        if region_as_params?
+          flags = %W[region=#{peer_item[:bgp_proc][:region]} peer_type=#{peer_item[:bgp_proc][:peer_type]}]
+          bgp_proc_tp.attribute[:flags].push(*flags)
+        end
         bgp_proc_tp.supports.push([@layer3_nw.name, layer3_node.name, layer3_tp.name])
 
         [bgp_proc_node, bgp_proc_tp]
@@ -98,16 +104,24 @@ module NetomoxExp
         add_bgp_proc_edge_router_node_tp(peer_item, @params['preferred_peer'], layer3_node, layer3_tp)
       end
 
+      # @param [String] loopback_ip_str Loopback ip string
+      # @return [Hash] node attribute of core-router
+      def bgp_proc_core_router_attribute(loopback_ip_str)
+        {
+          router_id: loopback_ip_str,
+          policies: DEFAULT_POLICIES,
+          flags: %w[core-router]
+        }
+      end
+
       # @return [Netomox::PseudoDSL::PNode] bgp_proc core router node
       def add_bgp_proc_core_router
         layer3_core_node_name = layer3_router_name('core00')
         loopback_ip_str = find_layer3_loopback_tp_ip(@layer3_nw.node(layer3_core_node_name))
         bgp_proc_core_node = @bgp_proc_nw.node(loopback_ip_str)
-        bgp_proc_core_node.attribute = {
-          router_id: loopback_ip_str,
-          policies: DEFAULT_POLICIES,
-          flags: %w[core-router]
-        }
+        bgp_proc_core_node.attribute = bgp_proc_core_router_attribute(loopback_ip_str)
+        # NOTE: when region-as, core-router is route-reflector
+        bgp_proc_core_node.attribute[:route_reflector] = true if region_as_params?
         bgp_proc_core_node.supports.push([@layer3_nw.name, layer3_core_node_name])
 
         bgp_proc_core_node

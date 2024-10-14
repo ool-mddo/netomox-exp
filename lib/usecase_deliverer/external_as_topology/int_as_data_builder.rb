@@ -2,7 +2,6 @@
 
 require 'netomox'
 require 'ipaddr'
-require 'net/http'
 
 module NetomoxExp
   module UsecaseDeliverer
@@ -30,8 +29,6 @@ module NetomoxExp
         @peer_list = find_all_peers(@params['asn'])
         # target AS info
         @as_state = make_as_state(as_type)
-        warn "# DEBUG: peer_list: #{@peer_list}"
-        warn "# DEBUG: as_state: #{@as_state}"
       end
 
       protected
@@ -54,15 +51,6 @@ module NetomoxExp
           int_asn: @peer_list.map { |item| item[:bgp_proc][:local_as] }.uniq[0],
           ext_asn: @peer_list.map { |item| item[:bgp_proc][:remote_as] }.uniq[0]
         }
-      end
-
-      # @param [String] network_name
-      # @return [Hash] Internal-AS topology data (rfc8345)
-      def fetch_int_as_topology(network_name)
-        # call myself, NOTE: port number was hard-coded
-        url = URI("http://localhost:9292/topologies/#{network_name}/original_asis/topology")
-        response = Net::HTTP.get_response(url)
-        response.is_a?(Net::HTTPSuccess) ? JSON.parse(response.body) : { error: response.message }
       end
 
       # @param [String] layer3_node_name
@@ -97,7 +85,7 @@ module NetomoxExp
 
       # find peer info for multi_region usecase
       # @param [String] remote_ip
-      # return [Hash, nil]
+      # return [Hash] empty hash if not found
       def find_peer_by_remote_ip(remote_ip)
         @params['regions'].each do |region|
           peer = region['allowed_peers'].find { |peer| peer['peer'] == remote_ip }
@@ -109,13 +97,13 @@ module NetomoxExp
             peer_type: peer['type']
           }
         end
-        nil # not found
+        {} # not found
       end
 
       # @param [Netomox::Topology::Node] bgp_proc_node BGP-proc node (int-AS)
       # @param [Netomox::Topology::TermPoint] bgp_proc_tp BGP-proc term-point
       # @return [Hash]
-      def make_peer_item_bgp_proc_base(bgp_proc_node, bgp_proc_tp)
+      def make_peer_item_bgp_proc(bgp_proc_node, bgp_proc_tp)
         tp_attr = bgp_proc_tp.attribute
         {
           type: :simple,
@@ -126,19 +114,6 @@ module NetomoxExp
           remote_as: tp_attr.remote_as,
           remote_ip: tp_attr.remote_ip
         }
-      end
-
-      # @param [Netomox::Topology::Node] bgp_proc_node BGP-proc node (int-AS)
-      # @param [Netomox::Topology::TermPoint] bgp_proc_tp BGP-proc term-point
-      # @return [Hash]
-      def make_peer_item_bgp_proc(bgp_proc_node, bgp_proc_tp)
-        data = make_peer_item_bgp_proc_base(bgp_proc_node, bgp_proc_tp)
-        if region_as_params?
-          peer_data = find_peer_by_remote_ip(bgp_proc_tp.attribute.remote_ip)
-          return data.merge(peer_data) if peer_data
-        end
-
-        data
       end
 
       # @param [Netomox::Topology::SupportingTerminationPoint] layer3_ref Support of a bgp-proc node (int-AS)
@@ -156,9 +131,10 @@ module NetomoxExp
       # @return [Hash] peer_item
       def make_peer_item(bgp_proc_node, bgp_proc_tp)
         layer3_ref = bgp_proc_tp.supports.find { |s| s.ref_network == 'layer3' }
+        peer_data = region_as_params? ? find_peer_by_remote_ip(bgp_proc_tp.attribute.remote_ip) : {}
         {
-          bgp_proc: make_peer_item_bgp_proc(bgp_proc_node, bgp_proc_tp),
-          layer3: make_peer_item_layer3(layer3_ref)
+          bgp_proc: make_peer_item_bgp_proc(bgp_proc_node, bgp_proc_tp).merge(peer_data),
+          layer3: make_peer_item_layer3(layer3_ref).merge(peer_data)
         }
       end
 

@@ -61,14 +61,17 @@ module NetomoxExp
           prefixes: [{ prefix: "#{segment_ip}/#{segment_ip.prefix}", metric: 0, flags: %w[connected] }],
           flags: %w[ebgp-router]
         }
+        layer3_node.attribute[:flags].push("region=#{peer_item[:layer3][:region]}") if region_as_params?
+
         # term-point (loopback)
         add_loopback_to_layer3_node(layer3_node)
         # term-point (eBGP interface)
         layer3_tp = layer3_node.term_point('Ethernet0')
-        layer3_tp.attribute = {
-          ip_addrs: ["#{peer_item[:bgp_proc][:remote_ip]}/#{segment_ip.prefix}"],
-          flags: %W[ebgp-peer=#{peer_item[:layer3][:node_name]}[#{peer_item[:layer3][:tp_name]}]]
-        }
+        flags = %W[ebgp-peer=#{peer_item[:layer3][:node_name]}[#{peer_item[:layer3][:tp_name]}]]
+        if region_as_params?
+          flags.push("region=#{peer_item[:layer3][:region]}", "peer_type=#{peer_item[:layer3][:peer_type]}")
+        end
+        layer3_tp.attribute = { ip_addrs: ["#{peer_item[:bgp_proc][:remote_ip]}/#{segment_ip.prefix}"], flags: }
 
         # memo to peer_item
         peer_item[:layer3][:node] = layer3_node

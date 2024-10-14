@@ -43,7 +43,7 @@ module NetomoxExp
       # @return [void]
       def merge_ext_topologies!(src_ext_as_topologies)
         # merge
-        %w[layer3 bgp_proc].each do |layer|
+        %w[bgp_proc layer3].each do |layer|
           src_ext_as_topologies.each do |src_ext_as_topology|
             src_network = src_ext_as_topology.network(layer)
             dst_network = @ext_as_topology.network(layer)
