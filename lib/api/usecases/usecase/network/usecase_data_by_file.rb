@@ -14,9 +14,9 @@ module NetomoxExp
       end
 
       desc 'Get usecase params (yaml -> json)'
-      get 'params' do
-        usecase, network = %i[usecase network].map { |key| params[key] }
-        read_params(usecase, network)
+      get ':params' do
+        usecase, network, param_yaml = %i[usecase network params].map { |key| params[key] }
+        read_params_yaml(usecase, network, param_yaml)
       end
     end
   end
