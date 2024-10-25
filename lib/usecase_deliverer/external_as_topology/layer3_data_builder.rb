@@ -19,6 +19,8 @@ module NetomoxExp
       #   @return [Netomox::PseudoDSL::PNetworks]
       attr_reader :layer3_nw
 
+      # rubocop:disable Metrics/ParameterLists
+
       # @param [String] usecase Usecase name
       # @param [Symbol] as_type (enum: [:source_as, :dest_as])
       # @param [Hash] as_params AS params data
@@ -41,10 +43,11 @@ module NetomoxExp
 
         make_layer3_topology!
       end
+      # rubocop:enable Metrics/ParameterLists
 
       private
 
-      # @param [Inteer] ipam_seed Seed number (index) for ipam
+      # @param [Integer] ipam_seed Seed number (index) for ipam
       # @return [void]
       def ipam_assign_base_prefix(ipam_seed)
         ipam = TinyIPAM.instance # singleton

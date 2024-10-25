@@ -38,6 +38,8 @@ module NetomoxExp
       # default policies to set external-as node
       DEFAULT_POLICIES = [POLICY_ADV_ALL_PREFIXES, POLICY_PASS_ALL, POLICY_PASS_ALL_LP200].freeze
 
+      # rubocop:disable Metrics/ParameterLists
+
       # @param [String] usecase Usecase name
       # @param [Symbol] as_type (enum: [source_as, :dest_as])
       # @param [Hash] as_params AS params data
@@ -55,6 +57,7 @@ module NetomoxExp
 
         make_bgp_proc_topology!
       end
+      # rubocop:enable Metrics/ParameterLists
 
       private
 

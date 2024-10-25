@@ -6,6 +6,8 @@ require_relative 'bgp_proc_data_builder'
 
 module NetomoxExp
   module UsecaseDeliverer
+    # rubocop:disable Metrics/ClassLength
+
     # bgp_as network data builder
     class BgpAsDataBuilder
       # @param [String] usecase Usecase name
@@ -214,5 +216,6 @@ module NetomoxExp
         end
       end
     end
+    # rubocop:enable Metrics/ClassLength
   end
 end
