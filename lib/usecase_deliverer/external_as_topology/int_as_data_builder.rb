@@ -14,21 +14,25 @@ module NetomoxExp
       attr_reader :as_state, :int_as_topology
 
       # @param [String] usecase Usecase name
-      # @param [Symbol] as_type (enum: [source_as, :dest_as])
-      # @param [Hash] usecase_params Params data
+      # @param [Symbol] as_type (enum: [:source_as, :dest_as])
+      # @param [Hash] as_params AS params data
       # @param [Netomox::Topology::Networks] int_as_topology Internal AS topology (original_asis)
-      def initialize(usecase, as_type, usecase_params, int_as_topology)
+      def initialize(usecase, as_type, as_params, int_as_topology)
         # usecase name
         @usecase = usecase
         # self (internal) AS topology
         @int_as_topology = int_as_topology
 
         # single (target) as params
-        @params = usecase_params[as_type.to_s]
+        @params = as_params
         # peer info
         @peer_list = find_all_peers(@params['asn'])
+        warn "# DEBUG: peer_list for as=#{@params['asn']}: #{@peer_list}"
         # target AS info
         @as_state = make_as_state(as_type)
+
+        warn "# DEBUG: params=#{as_params}"
+        warn "# DEBUG: as_state=#{@as_state}"
       end
 
       protected

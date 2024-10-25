@@ -21,16 +21,17 @@ module NetomoxExp
 
       # @param [String] usecase Usecase name
       # @param [Symbol] as_type (enum: [:source_as, :dest_as])
-      # @param [Hash] usecase_params Params data
+      # @param [Hash] as_params AS params data
       # @param [Array<Hash>] usecase_flows Flow data
       # @param [Netomox::Topology::Networks] int_as_topology Internal AS topology (original_asis)
-      def initialize(usecase, as_type, usecase_params, usecase_flows, int_as_topology)
-        super(usecase, as_type, usecase_params, int_as_topology)
+      # @param [Integer] ipam_seed Seed number (index) for ipam
+      def initialize(usecase, as_type, as_params, usecase_flows, int_as_topology, ipam_seed)
+        super(usecase, as_type, as_params, int_as_topology)
 
         # list endpoint (iperf-node) info from flow data
         @flow_prefixes = column_items_from_flows(usecase_flows)
         # assign base prefix to ipam
-        ipam_assign_base_prefix(as_type)
+        ipam_assign_base_prefix(ipam_seed)
         # target external-AS topology (empty)
         @ext_as_topology = Netomox::PseudoDSL::PNetworks.new
         # layer3 network
@@ -43,13 +44,13 @@ module NetomoxExp
 
       private
 
-      # @param [Symbol] as_type (enum: [:source_as, :dest_as])
+      # @param [Inteer] ipam_seed Seed number (index) for ipam
       # @return [void]
-      def ipam_assign_base_prefix(as_type)
+      def ipam_assign_base_prefix(ipam_seed)
         ipam = TinyIPAM.instance # singleton
         # NOTE: 'subnet' key is optional in source/dest-as parameters.
-        #   default: 169.254.[0|2].0/23
-        base_prefix = @params['subnet'] || "169.254.#{as_type == :source_as ? 0 : 2}.0/23"
+        #   default: 169.254.[0,2,4,...].0/23
+        base_prefix = @params['subnet'] || "169.254.#{ipam_seed * 2}.0/23"
         ipam.assign_base_prefix(base_prefix)
       end
 

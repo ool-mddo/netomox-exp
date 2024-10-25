@@ -5,6 +5,7 @@ require 'optparse'
 require 'json'
 require 'yaml'
 require 'csv'
+require_relative 'netomox_exp'
 require_relative 'usecase_deliverer/external_as_topology/bgp_as_data_builder'
 
 USECASE_DIR = ENV['USECASE_DIR'] || "#{__dir__}/../../../usecases" # playground/usecases
@@ -42,33 +43,89 @@ def read_topology_object(network, snapshot)
 end
 
 # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
-def merge_ext_topology(layers, src_builder, dst_builder)
+def merge_ext_topology(layers, src_builders, dst_builder)
   # whole networks
   ext_as_topology = Netomox::PseudoDSL::PNetworks.new
   # merge
   layers.each do |layer|
     if layer == 'layer3'
       ext_as_layer = ext_as_topology.network(layer)
-      src_layer = src_builder.layer3_nw
+      src_layers = src_builders.map(&:layer3_nw)
       dst_layer = dst_builder.layer3_nw
       ext_as_layer.type = Netomox::NWTYPE_MDDO_L3
       ext_as_layer.attribute = { name: 'mddo-layer3-network' }
-      ext_as_layer.nodes = [src_layer.nodes, dst_layer.nodes].flatten
-      ext_as_layer.links = [src_layer.links, dst_layer.links].flatten
+      ext_as_layer.nodes = [src_layers.map(&:nodes), dst_layer.nodes].flatten
+      ext_as_layer.links = [src_layers.map(&:links), dst_layer.links].flatten
     elsif layer == 'bgp_proc'
       ext_as_layer = ext_as_topology.network(layer)
-      src_layer = src_builder.bgp_proc_nw
+      src_layers = src_builders.map(&:bgp_proc_nw)
       dst_layer = dst_builder.bgp_proc_nw
       ext_as_layer.type = Netomox::NWTYPE_MDDO_BGP_PROC
       ext_as_layer.attribute = { name: 'mddo-bgp-network' }
-      ext_as_layer.nodes = [src_layer.nodes, dst_layer.nodes].flatten
-      ext_as_layer.links = [src_layer.links, dst_layer.links].flatten
+      ext_as_layer.nodes = [src_layers.map(&:nodes), dst_layer.nodes].flatten
+      ext_as_layer.links = [src_layers.map(&:links), dst_layer.links].flatten
     end
   end
 
   ext_as_topology.interpret.topo_data
 end
 # rubocop:enable Metrics/AbcSize, Metrics/MethodLength
+
+def l3_src_as_builders(usecase, usecase_params, usecase_flows, int_as_topology)
+  if usecase_params.key?('source_as')
+    [
+      NetomoxExp::UsecaseDeliverer::Layer3DataBuilder.new(usecase, :source_as, usecase_params['source_as'],
+                                                          usecase_flows, int_as_topology, 0)
+    ]
+  elsif usecase_params.key?('source_ases')
+    usecase_params['source_ases'].map.with_index do |as_param, ipam_seed|
+      NetomoxExp::UsecaseDeliverer::Layer3DataBuilder.new(usecase, :source_as, as_param,
+                                                          usecase_flows, int_as_topology, ipam_seed)
+    end
+  else
+    warn "ERROR: invalid usecase params: #{usecase_params}"
+    exit 1
+  end
+end
+
+def l3_dst_as_builders(usecase, usecase_params, usecase_flows, int_as_topology)
+  ipam_seed = dst_as_builders_ipam_seed(usecase_params)
+  NetomoxExp::UsecaseDeliverer::Layer3DataBuilder.new(usecase, :dest_as, usecase_params['dest_as'],
+                                                      usecase_flows, int_as_topology, ipam_seed)
+end
+
+def dst_as_builders_ipam_seed(usecase_params)
+  if usecase_params.key?('source_as')
+    1 # source_as = 0, dest_as = 1
+  elsif usecase_params.key?('source_ases')
+    usecase_params['source_ases'].length # source_as = 0...length-1, dest_as = length
+  else
+    warn "ERROR: invalid usecase params: #{usecase_params}"
+  end
+end
+
+def bgp_proc_src_as_builders(usecase, usecase_params, usecase_flows, int_as_topology)
+  if usecase_params.key?('source_as')
+    [
+      NetomoxExp::UsecaseDeliverer::BgpProcDataBuilder.new(usecase, :source_as, usecase_params['source_as'],
+                                                           usecase_flows, int_as_topology, 0)
+    ]
+  elsif usecase_params.key?('source_ases')
+    usecase_params['source_ases'].map.with_index do |as_param, ipam_seed|
+      NetomoxExp::UsecaseDeliverer::BgpProcDataBuilder.new(usecase, :source_as, as_param,
+                                                           usecase_flows, int_as_topology, ipam_seed)
+    end
+  else
+    warn "ERROR: invalid usecase params: #{usecase_params}"
+    exit 1
+  end
+end
+
+def bgp_proc_dst_as_builders(usecase, usecase_params, usecase_flows, int_as_topology)
+  ipam_seed = dst_as_builders_ipam_seed(usecase_params)
+  NetomoxExp::UsecaseDeliverer::BgpProcDataBuilder.new(usecase, :dest_as, usecase_params['dest_as'],
+                                                       usecase_flows, int_as_topology, ipam_seed)
+end
 
 # main
 
@@ -116,18 +173,14 @@ begin
   # build ext-as topology data
   if options[:layer] == 'layer3'
     # debug layer3
-    src_topo_builder = NetomoxExp::UsecaseDeliverer::Layer3DataBuilder.new(usecase, :source_as, usecase_params,
-                                                                           usecase_flows, int_as_topology)
-    dst_topo_builder = NetomoxExp::UsecaseDeliverer::Layer3DataBuilder.new(usecase, :dest_as, usecase_params,
-                                                                           usecase_flows, int_as_topology)
-    puts JSON.generate(merge_ext_topology(%w[layer3], src_topo_builder, dst_topo_builder))
+    src_topo_builders = l3_src_as_builders(usecase, usecase_params, usecase_flows, int_as_topology)
+    dst_topo_builder = l3_dst_as_builders(usecase, usecase_params, usecase_flows, int_as_topology)
+    puts JSON.generate(merge_ext_topology(%w[layer3], src_topo_builders, dst_topo_builder))
   elsif options[:layer] == 'bgp_proc'
     # debug bgp_proc (includes layer3)
-    src_topo_builder = NetomoxExp::UsecaseDeliverer::BgpProcDataBuilder.new(usecase, :source_as, usecase_params,
-                                                                            usecase_flows, int_as_topology)
-    dst_topo_builder = NetomoxExp::UsecaseDeliverer::BgpProcDataBuilder.new(usecase, :dest_as, usecase_params,
-                                                                            usecase_flows, int_as_topology)
-    puts JSON.generate(merge_ext_topology(%w[bgp_proc layer3], src_topo_builder, dst_topo_builder))
+    src_topo_builders = bgp_proc_src_as_builders(usecase, usecase_params, usecase_flows, int_as_topology)
+    dst_topo_builder = bgp_proc_dst_as_builders(usecase, usecase_params, usecase_flows, int_as_topology)
+    puts JSON.generate(merge_ext_topology(%w[bgp_proc layer3], src_topo_builders, dst_topo_builder))
   else
     # default
     # debug bgp-as (includes bgp-proc, layer3)

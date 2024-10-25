@@ -40,10 +40,11 @@ module NetomoxExp
 
       # @param [String] usecase Usecase name
       # @param [Symbol] as_type (enum: [source_as, :dest_as])
-      # @param [Hash] usecase_params Params data
+      # @param [Hash] as_params AS params data
       # @param [Array<Hash>] usecase_flows Flow data
       # @param [Netomox::Topology::Networks] int_as_topology Internal AS topology (original_asis)
-      def initialize(usecase, as_type, usecase_params, usecase_flows, int_as_topology)
+      # @param [Integer] ipam_seed Seed number (index) for ipam
+      def initialize(usecase, as_type, as_params, usecase_flows, int_as_topology, ipam_seed)
         super
 
         # bgp_proc network
