@@ -186,7 +186,8 @@ module NetomoxExp
 
         # endpoint = iperf node
         # endpoint [] -- [] Seg [] -- [] region-core
-        @flow_prefixes.each_with_index do |flow_prefix, flow_index|
+        ep_index = 0
+        @flow_prefixes.each do |flow_prefix|
           # target region core
           layer3_rcore_node = find_rcore_by_flow_prefix(flow_prefix)
           if layer3_rcore_node.nil?
@@ -194,7 +195,8 @@ module NetomoxExp
             next
           end
 
-          add_layer3_core_to_endpoint_links(layer3_rcore_node, flow_prefix, flow_index)
+          add_layer3_core_to_endpoint_links(layer3_rcore_node, flow_prefix, ep_index)
+          ep_index += 1
         end
       end
       # rubocop:enable Metrics/MethodLength
