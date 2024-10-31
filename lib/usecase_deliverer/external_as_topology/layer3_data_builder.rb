@@ -157,6 +157,7 @@ module NetomoxExp
       # @param [String] flow_prefix Flow prefix (e.g. a.b.c.d/xx)
       # @return [Boolean] true if the region core node has the flow prefix
       def prefix_under_rcore?(layer3_rcore_node, flow_prefix)
+        warn "# DEBUG: l3rcore_node=#{layer3_rcore_node.name}, flow_prefix=#{flow_prefix}"
         flow_prefix_obj = IPAddr.new(flow_prefix)
         region_params = params_by_rcore(layer3_rcore_node)
         region_params['prefixes'].map { |prefix| IPAddr.new(prefix) }.any? do |region_prefix_obj|
@@ -191,7 +192,7 @@ module NetomoxExp
           # target region core
           layer3_rcore_node = find_rcore_by_flow_prefix(flow_prefix)
           if layer3_rcore_node.nil?
-            NetomoxExp.logger.error "Flow prefix: #{flow_prefix} not found in regions (usecase params mismatch)"
+            NetomoxExp.logger.warn "Flow prefix: #{flow_prefix} not found in as#{@params['asn']} regions"
             next
           end
 
