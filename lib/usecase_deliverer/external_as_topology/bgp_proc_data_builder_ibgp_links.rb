@@ -82,7 +82,10 @@ module NetomoxExp
         bgp_proc_tp = bgp_proc_node.term_point(tp_name)
         bgp_proc_tp.attribute = bgp_proc_tp_ibgp_attribute(local_ip, remote_ip)
         # NOTE: when region-as, core-router is route-reflector
-        bgp_proc_tp.attribute[:route_reflector_client] = true if region_as_params? && core_router?(bgp_proc_node)
+        if region_as_params? && core_router?(bgp_proc_node)
+          bgp_proc_tp.attribute[:route_reflector_client] = true
+          bgp_proc_tp.attribute[:cluster_id] = bgp_proc_node.attribute[:router_id]
+        end
         bgp_proc_tp.supports.push([@layer3_nw.name, support_layer3_edge[:node].name, support_layer3_edge[:tp].name])
 
         [bgp_proc_node, bgp_proc_tp]
