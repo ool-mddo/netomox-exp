@@ -25,7 +25,15 @@ module NetomoxExp
     # @param [String] network Network name
     # @return [Hash] usecase params
     def read_params(usecase, network)
-      param_file_path = File.join(USECASE_DIR, usecase, network, 'params.yaml')
+      # Notice: short-cut method: use HARD-CORDED file name
+      read_params_yaml(usecase, network, 'params')
+    end
+
+    # @param [String] usecase Usecase name
+    # @param [String] network Network name
+    # @return [Hash] usecase params
+    def read_params_yaml(usecase, network, file_name)
+      param_file_path = File.join(USECASE_DIR, usecase, network, "#{file_name}.yaml")
       error!("Not found usecase params: #{param_file_path}", 404) unless File.exist?(param_file_path)
 
       read_yaml_file(param_file_path)

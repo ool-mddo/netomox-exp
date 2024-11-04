@@ -31,7 +31,7 @@ module NetomoxExp
     # @param [String] file_path File path to read
     # @return [Object]
     def read_yaml_file(file_path)
-      error!("Not found: #{file_path}, 404") unless File.exist?(file_path)
+      error!("Not found: #{file_path}", 404) unless File.exist?(file_path)
 
       YAML.load_file(file_path)
     end
@@ -39,6 +39,8 @@ module NetomoxExp
     # @param [String] file_path File path to read
     # @return [Object]
     def read_csv_file(file_path)
+      error!("Not found: #{file_path}", 404) unless File.exist?(file_path)
+
       csv_data = CSV.read(file_path, headers: true)
       csv_data.map(&:to_h)
     end

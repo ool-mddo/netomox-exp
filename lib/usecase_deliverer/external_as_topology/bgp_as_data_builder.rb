@@ -6,21 +6,24 @@ require_relative 'bgp_proc_data_builder'
 
 module NetomoxExp
   module UsecaseDeliverer
+    # rubocop:disable Metrics/ClassLength
+
     # bgp_as network data builder
     class BgpAsDataBuilder
+      # @param [String] usecase Usecase name
       # @param [Hash] usecase_params Params data
       # @param [Array<Hash>] usecase_flows Flow data
       # @param [Netomox::Topology::Networks] int_as_topology Internal AS topology (original_asis)
-      def initialize(usecase_params, usecase_flows, int_as_topology)
+      def initialize(usecase, usecase_params, usecase_flows, int_as_topology)
         # each external-AS topology which contains layer3/bgp_proc layer
-        @src_topo_builder = BgpProcDataBuilder.new(:source_as, usecase_params, usecase_flows, int_as_topology)
-        @dst_topo_builder = BgpProcDataBuilder.new(:dest_as, usecase_params, usecase_flows, int_as_topology)
+        @src_topo_builders = src_topo_builders(usecase, usecase_params, usecase_flows, int_as_topology)
+        @dst_topo_builder = dst_topo_builder(usecase, usecase_params, usecase_flows, int_as_topology)
 
         # target external-AS topology (empty)
         # src/dst ext-AS topology (layer3/bgp-proc) are merged into it with a new layer, bgp_as.
         @ext_as_topology = Netomox::PseudoDSL::PNetworks.new
         # internal-AS topology data (Netomox::Topology::Networks)
-        @int_as_topology = @src_topo_builder.int_as_topology
+        @int_as_topology = int_as_topology
 
         # bgp_as network
         @bgp_as_nw = @ext_as_topology.network('bgp_as')
@@ -30,7 +33,7 @@ module NetomoxExp
 
       # @return [Hash] External-AS topology data (rfc8345)
       def build_topology
-        merge_ext_topologies!([@src_topo_builder, @dst_topo_builder].map(&:ext_as_topology))
+        merge_ext_topologies!([*@src_topo_builders, @dst_topo_builder].map(&:ext_as_topology))
         make_bgp_as_topology!
 
         @ext_as_topology.interpret.topo_data
@@ -38,11 +41,52 @@ module NetomoxExp
 
       private
 
+      # @param [String] usecase Usecase name
+      # @param [Hash] usecase_params Params data
+      # @param [Array<Hash>] usecase_flows Flow data
+      # @param [Netomox::Topology::Networks] int_as_topology Internal AS topology (original_asis)
+      # @return [Array<BgpProcDataBuilder>]
+      # @raise [StandardError]
+      def src_topo_builders(usecase, usecase_params, usecase_flows, int_as_topology)
+        if usecase_params.key?('source_as')
+          [BgpProcDataBuilder.new(usecase, :source_as, usecase_params['source_as'], usecase_flows, int_as_topology, 0)]
+        elsif usecase_params.key?('source_ases')
+          usecase_params['source_ases'].map.with_index do |src_as_param, ipam_seed|
+            BgpProcDataBuilder.new(usecase, :source_as, src_as_param, usecase_flows, int_as_topology, ipam_seed)
+          end
+        else
+          raise StandardError, 'Invalid usecase params: source-as params are not found'
+        end
+      end
+
+      # @param [Hash] usecase_params Params data
+      # @return [Integer] IPAM seed for destination AS
+      # @raise [StandardError]
+      def dst_ipam_seed(usecase_params)
+        if usecase_params.key?('source_as')
+          1 # source_as = 0, dest_as = 1
+        elsif usecase_params.key?('source_ases')
+          usecase_params['source_ases'].length # source_as = 0...length-1, dest_as = length
+        else
+          raise StandardError, 'Invalid usecase params: source-as params are not found'
+        end
+      end
+
+      # @param [String] usecase Usecase name
+      # @param [Hash] usecase_params Params data
+      # @param [Array<Hash>] usecase_flows Flow data
+      # @param [Netomox::Topology::Networks] int_as_topology Internal AS topology (original_asis)
+      # @return [BgpProcDataBuilder] Builder for destination AS
+      def dst_topo_builder(usecase, usecase_params, usecase_flows, int_as_topology)
+        ipam_seed = dst_ipam_seed(usecase_params)
+        BgpProcDataBuilder.new(usecase, :dest_as, usecase_params['dest_as'], usecase_flows, int_as_topology, ipam_seed)
+      end
+
       # @param [Array<Netomox::PseudoDSL::PNetworks>] src_ext_as_topologies Src/Dst Ext-AS topologies (layer3/bgp-proc)
       # @return [void]
       def merge_ext_topologies!(src_ext_as_topologies)
         # merge
-        %w[layer3 bgp_proc].each do |layer|
+        %w[bgp_proc layer3].each do |layer|
           src_ext_as_topologies.each do |src_ext_as_topology|
             src_network = src_ext_as_topology.network(layer)
             dst_network = @ext_as_topology.network(layer)
@@ -58,7 +102,8 @@ module NetomoxExp
 
       # @return [Netomox::PseudoDSL::PNode] Added internal-AS bgp-as node
       def add_int_bgp_as_node
-        int_asn = @src_topo_builder.as_state[:int_asn]
+        # int_as is common for each ext-as builder, represented as head
+        int_asn = @src_topo_builders[0].as_state[:int_asn]
         int_bgp_as_node = @bgp_as_nw.node("as#{int_asn}")
         int_bgp_as_node.attribute = { as_number: int_asn }
         int_bgp_proc_nw = @int_as_topology.find_network('bgp_proc')
@@ -68,7 +113,7 @@ module NetomoxExp
 
       # @return [Array<Integer>] External-AS number list (src/dst asn)
       def ext_asn_list
-        [@src_topo_builder.as_state[:ext_asn], @dst_topo_builder.as_state[:ext_asn]].map(&:to_i)
+        [*@src_topo_builders.map { |s| s.as_state[:ext_asn] }, @dst_topo_builder.as_state[:ext_asn]].map(&:to_i)
       end
 
       # @param [Integer] ext_asn External-AS number
@@ -171,5 +216,6 @@ module NetomoxExp
         end
       end
     end
+    # rubocop:enable Metrics/ClassLength
   end
 end

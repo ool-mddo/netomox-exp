@@ -1,15 +1,36 @@
 # frozen_string_literal: true
 
+require_relative 'p_network'
+
 module NetomoxExp
   module UsecaseDeliverer
     # bgp_proc network data builder
     class BgpProcDataBuilder < Layer3DataBuilder
       protected
 
+      # @param [Netomox::PseudoDSL::PNode] node (bgp_proc) node
+      def core_router?(node)
+        node.flags_include?('core-router')
+      end
+
+      # @return [Array<Netomox::PseudoDSL::PNode>] ebgp-routers
+      def find_all_bgp_proc_ebgp_routers
+        @bgp_proc_nw.nodes.find_all do |node|
+          node.flags_include?('ebgp-router')
+        end
+      end
+
       # @return [Array<Netomox::PseudoDSL::PNode>] ebgp-candidate-routers
       def find_all_bgp_proc_ebgp_candidate_routers
         @bgp_proc_nw.nodes.find_all do |node|
-          node.attribute.key?(:flags) && node.attribute[:flags].include?('ebgp-candidate-router')
+          node.flags_include?('ebgp-candidate-router')
+        end
+      end
+
+      # @return [Array<Netomox::PseudoDSL::PNode>] region-core-routers
+      def find_all_bgp_proc_region_core_routers
+        @bgp_proc_nw.nodes.find_all do |node|
+          node.flags_include?('region-core-router')
         end
       end
 
@@ -60,6 +81,11 @@ module NetomoxExp
       def add_bgp_proc_tp(bgp_proc_node, tp_name, local_ip, remote_ip, support_layer3_edge)
         bgp_proc_tp = bgp_proc_node.term_point(tp_name)
         bgp_proc_tp.attribute = bgp_proc_tp_ibgp_attribute(local_ip, remote_ip)
+        # NOTE: when region-as, core-router is route-reflector
+        if region_as_params? && core_router?(bgp_proc_node)
+          bgp_proc_tp.attribute[:route_reflector_client] = true
+          bgp_proc_tp.attribute[:cluster_id] = bgp_proc_node.attribute[:router_id]
+        end
         bgp_proc_tp.supports.push([@layer3_nw.name, support_layer3_edge[:node].name, support_layer3_edge[:tp].name])
 
         [bgp_proc_node, bgp_proc_tp]

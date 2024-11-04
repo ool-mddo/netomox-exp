@@ -7,6 +7,8 @@ require_relative 'csv_mapper/node_props_table'
 
 module NetomoxExp
   module TopologyBuilder
+    # rubocop:disable Metrics/ClassLength
+
     # L1 data builder
     class L1DataBuilder < DataBuilderBase
       # @param [String] target Target network (config) data name
@@ -58,6 +60,18 @@ module NetomoxExp
         rev_edge.dst == edge.src
       end
 
+      # @return [void]
+      def error_exit_when_validate_l1_edges!
+        # search invalid edge and output error message
+        @l1_edges.records.each do |l1_edge|
+          if !valid_edge_in_intf_props?(l1_edge.src) || !valid_edge_in_intf_props?(l1_edge.dst)
+            @logger.fatal("l1_edge: #{l1_edge} has invalid props")
+          end
+          @logger.fatal("l1_edge: #{l1_edge} is uni-directional link") unless bidirectional_link?(l1_edge)
+        end
+        exit 1
+      end
+
       # L1 edges table is converted from layer1-topology.json.
       # but, the json data are converted from interface-description in configs or handwriting data.
       # it must to validate all node and interface names are correct.
@@ -70,8 +84,7 @@ module NetomoxExp
         bd_check_results = @l1_edges.records.map { |l1_edge| bidirectional_link?(l1_edge) }
         return unless (names_check_results + bd_check_results).include?(false)
 
-        @logger.fatal('Found invalid layer1 edges')
-        exit 1
+        error_exit_when_validate_l1_edges!
       end
 
       # @param [Netomox::PseudoDSL::PLink] l1_link Layer1 link
@@ -169,5 +182,6 @@ module NetomoxExp
         end
       end
     end
+    # rubocop:enable Metrics/ClassLength
   end
 end

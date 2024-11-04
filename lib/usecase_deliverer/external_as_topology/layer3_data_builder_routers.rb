@@ -2,6 +2,8 @@
 
 module NetomoxExp
   module UsecaseDeliverer
+    # rubocop:disable Metrics/ClassLength
+
     # Layer3 network data builder
     class Layer3DataBuilder < IntAsDataBuilder
       # Loopback interface name
@@ -38,8 +40,8 @@ module NetomoxExp
       # @return [Netomox::PseudoDSL::PNode] layer3 core router node
       def add_layer3_core_router
         # node
-        layer3_core_node = @layer3_nw.node(layer3_router_name('core'))
-        layer3_core_node.attribute = { node_type: 'node' }
+        layer3_core_node = @layer3_nw.node(layer3_router_name('core00'))
+        layer3_core_node.attribute = { node_type: 'node', flags: %w[core-router] }
         # term-point (loopback)
         add_loopback_to_layer3_node(layer3_core_node)
 
@@ -58,16 +60,20 @@ module NetomoxExp
         layer3_node = @layer3_nw.node(node_name)
         layer3_node.attribute = {
           node_type: 'node',
-          prefixes: [{ prefix: "#{segment_ip}/#{segment_ip.prefix}", metric: 0, flags: ['connected'] }]
+          prefixes: [{ prefix: "#{segment_ip}/#{segment_ip.prefix}", metric: 0, flags: %w[connected] }],
+          flags: %w[ebgp-router]
         }
+        layer3_node.attribute[:flags].push("region=#{peer_item[:layer3][:region]}") if region_as_params?
+
         # term-point (loopback)
         add_loopback_to_layer3_node(layer3_node)
         # term-point (eBGP interface)
         layer3_tp = layer3_node.term_point('Ethernet0')
-        layer3_tp.attribute = {
-          ip_addrs: ["#{peer_item[:bgp_proc][:remote_ip]}/#{segment_ip.prefix}"],
-          flags: ["ebgp-peer=#{peer_item[:layer3][:node_name]}[#{peer_item[:layer3][:tp_name]}]"]
-        }
+        flags = %W[ebgp-peer=#{peer_item[:layer3][:node_name]}[#{peer_item[:layer3][:tp_name]}]]
+        if region_as_params?
+          flags.push("region=#{peer_item[:layer3][:region]}", "peer_type=#{peer_item[:layer3][:peer_type]}")
+        end
+        layer3_tp.attribute = { ip_addrs: ["#{peer_item[:bgp_proc][:remote_ip]}/#{segment_ip.prefix}"], flags: }
 
         # memo to peer_item
         peer_item[:layer3][:node] = layer3_node
@@ -96,8 +102,8 @@ module NetomoxExp
         layer3_ext_node = @layer3_nw.node(layer3_router_name(format('edge%02d', @layer3_nw.nodes.length)))
         layer3_ext_node.attribute = {
           node_type: 'node',
-          prefixes: [{ prefix: ipaddr_to_full_str(link_segment_ip), metric: 0, flags: ['connected'] }],
-          flags: ['ebgp-candidate-router']
+          prefixes: [{ prefix: ipaddr_to_full_str(link_segment_ip), metric: 0, flags: %w[connected] }],
+          flags: %w[ebgp-candidate-router]
         }
         # term-point (loopback)
         add_loopback_to_layer3_node(layer3_ext_node)
@@ -105,7 +111,7 @@ module NetomoxExp
         layer3_ext_tp = layer3_ext_node.term_point("Ethernet#{layer3_ext_node.tps.length}")
         layer3_ext_tp.attribute = {
           ip_addrs: ["#{add_link['remote_ip']}/#{link_segment_ip.prefix}"],
-          flags: ["ebgp-peer=#{add_link['node']}[#{add_link['interface']}]", 'ebgp-candidate-interface']
+          flags: %W[ebgp-peer=#{add_link['node']}[#{add_link['interface']}] ebgp-candidate-interface]
         }
 
         [layer3_ext_node, layer3_ext_tp]
@@ -194,5 +200,6 @@ module NetomoxExp
         add_layer3_inter_as_link(layer3_int_node, layer3_int_tp, layer3_ext_node, layer3_ext_tp, link_segment_ip)
       end
     end
+    # rubocop:enable Metrics/ClassLength
   end
 end

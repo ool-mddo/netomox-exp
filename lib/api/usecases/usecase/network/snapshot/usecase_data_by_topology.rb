@@ -2,8 +2,8 @@
 
 require 'grape'
 require 'lib/api/usecases/usecase/usecase_helpers'
-require 'lib/usecase_deliverer/pni/iperf_command_generator'
-require 'lib/usecase_deliverer/pni/external_as_topology/bgp_as_data_builder'
+require 'lib/usecase_deliverer/iperf_command_generator'
+require 'lib/usecase_deliverer/external_as_topology/bgp_as_data_builder'
 
 module NetomoxExp
   module ApiRoute
@@ -19,7 +19,7 @@ module NetomoxExp
         usecase_flows = read_flow_data(usecase, network, flow_data)
         usecase_params = read_params(usecase, network)
         int_as_topology = fetch_topology_object(network, snapshot)
-        builder = UsecaseDeliverer::BgpAsDataBuilder.new(usecase_params, usecase_flows, int_as_topology)
+        builder = UsecaseDeliverer::BgpAsDataBuilder.new(usecase, usecase_params, usecase_flows, int_as_topology)
 
         # response
         builder.build_topology

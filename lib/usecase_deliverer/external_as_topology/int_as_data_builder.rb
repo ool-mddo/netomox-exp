@@ -2,7 +2,6 @@
 
 require 'netomox'
 require 'ipaddr'
-require 'net/http'
 
 module NetomoxExp
   module UsecaseDeliverer
@@ -14,19 +13,36 @@ module NetomoxExp
       #   @return [Netomox::Topology::Networks]
       attr_reader :as_state, :int_as_topology
 
-      # @param [Symbol] as_type (enum: [source_as, :dest_as])
-      # @param [Hash] usecase_params Params data
+      # @param [String] usecase Usecase name
+      # @param [Symbol] as_type (enum: [:source_as, :dest_as])
+      # @param [Hash] as_params AS params data
       # @param [Netomox::Topology::Networks] int_as_topology Internal AS topology (original_asis)
-      def initialize(as_type, usecase_params, int_as_topology)
+      def initialize(usecase, as_type, as_params, int_as_topology)
+        # usecase name
+        @usecase = usecase
         # self (internal) AS topology
         @int_as_topology = int_as_topology
 
         # single (target) as params
-        @params = usecase_params[as_type.to_s]
+        @params = as_params
         # peer info
         @peer_list = find_all_peers(@params['asn'])
+        warn "# DEBUG: peer_list for as=#{@params['asn']}: #{@peer_list}"
         # target AS info
         @as_state = make_as_state(as_type)
+
+        warn "# DEBUG: params=#{as_params}"
+        warn "# DEBUG: as_state=#{@as_state}"
+      end
+
+      protected
+
+      # @return [Boolean] true if AS params (@params) is region-separated data
+      def region_as_params?
+        return false if @params.key?('allowed_peers') && !@params.key?('regions')
+        return true if @params.key?('regions') && !@params.key?('allowed_peers')
+
+        false # default
       end
 
       private
@@ -41,15 +57,6 @@ module NetomoxExp
         }
       end
 
-      # @param [String] network_name
-      # @return [Hash] Internal-AS topology data (rfc8345)
-      def fetch_int_as_topology(network_name)
-        # call myself, NOTE: port number was hard-coded
-        url = URI("http://localhost:9292/topologies/#{network_name}/original_asis/topology")
-        response = Net::HTTP.get_response(url)
-        response.is_a?(Net::HTTPSuccess) ? JSON.parse(response.body) : { error: response.message }
-      end
-
       # @param [String] layer3_node_name
       # @param [String] layer3_tp_name
       # @return [String] ip address of the interface
@@ -60,39 +67,80 @@ module NetomoxExp
         layer3_tp.attribute.ip_addrs[0]
       end
 
+      # @param [String] remote_ip Remote IP addr (in tp_attr)
+      # @return [Boolean] true if allowed_peer
+      def allowed_peer?(remote_ip)
+        # for pni usecases or dest_peer in multi_region usecase
+        return @params['allowed_peers'].include?(remote_ip) unless region_as_params?
+
+        # for multi_region_te usecase
+        @params['regions'].any? do |region|
+          region['allowed_peers'].map { |peer| peer['peer'] }.include?(remote_ip)
+        end
+      end
+
       # @param [Netomox::Topology::TermPoint] bgp_proc_tp Internal-AS eBGP term-point
       # @param [Integer] remote_asn Remote ASN
       # @return [Boolean] true if target eBGP edge
       def target_ebgp_peer?(bgp_proc_tp, remote_asn)
         tp_attr = bgp_proc_tp.attribute
-        tp_attr.remote_as == remote_asn && @params['allowed_peers'].include?(tp_attr.remote_ip)
+        tp_attr.remote_as == remote_asn && allowed_peer?(tp_attr.remote_ip)
       end
 
-      # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
+      # find peer info for multi_region usecase
+      # @param [String] remote_ip
+      # return [Hash] empty hash if not found
+      def find_peer_by_remote_ip(remote_ip)
+        @params['regions'].each do |region|
+          allowed_peer = region['allowed_peers'].find { |peer| peer['peer'] == remote_ip }
+          next if allowed_peer.nil?
+
+          return {
+            type: :region,
+            region: region['region'],
+            peer_type: allowed_peer['type']
+          }
+        end
+        {} # not found
+      end
+
+      # @param [Netomox::Topology::Node] bgp_proc_node BGP-proc node (int-AS)
+      # @param [Netomox::Topology::TermPoint] bgp_proc_tp BGP-proc term-point
+      # @return [Hash]
+      def make_peer_item_bgp_proc(bgp_proc_node, bgp_proc_tp)
+        tp_attr = bgp_proc_tp.attribute
+        {
+          type: :simple,
+          node_name: bgp_proc_node.name,
+          tp_name: bgp_proc_tp.name,
+          local_as: tp_attr.confederation.negative? ? tp_attr.local_as : tp_attr.confederation,
+          local_ip: tp_attr.local_ip,
+          remote_as: tp_attr.remote_as,
+          remote_ip: tp_attr.remote_ip
+        }
+      end
+
+      # @param [Netomox::Topology::SupportingTerminationPoint] layer3_ref Support of a bgp-proc node (int-AS)
+      # @return [Hash]
+      def make_peer_item_layer3(layer3_ref)
+        {
+          node_name: layer3_ref.ref_node,
+          tp_name: layer3_ref.ref_tp,
+          ip_addr: find_layer3_tp_ip_addr(layer3_ref.ref_node, layer3_ref.ref_tp)
+        }
+      end
 
       # @param [Netomox::Topology::Node] bgp_proc_node Internal-AS eBGP node
       # @param [Netomox::Topology::TermPoint] bgp_proc_tp Internal-AS eBGP term-point
       # @return [Hash] peer_item
       def make_peer_item(bgp_proc_node, bgp_proc_tp)
-        tp_attr = bgp_proc_tp.attribute
         layer3_ref = bgp_proc_tp.supports.find { |s| s.ref_network == 'layer3' }
+        peer_data = region_as_params? ? find_peer_by_remote_ip(bgp_proc_tp.attribute.remote_ip) : {}
         {
-          bgp_proc: {
-            node_name: bgp_proc_node.name,
-            tp_name: bgp_proc_tp.name,
-            local_as: tp_attr.confederation.negative? ? tp_attr.local_as : tp_attr.confederation,
-            local_ip: tp_attr.local_ip,
-            remote_as: tp_attr.remote_as,
-            remote_ip: tp_attr.remote_ip
-          },
-          layer3: {
-            node_name: layer3_ref.ref_node,
-            tp_name: layer3_ref.ref_tp,
-            ip_addr: find_layer3_tp_ip_addr(layer3_ref.ref_node, layer3_ref.ref_tp)
-          }
+          bgp_proc: make_peer_item_bgp_proc(bgp_proc_node, bgp_proc_tp).merge(peer_data),
+          layer3: make_peer_item_layer3(layer3_ref).merge(peer_data)
         }
       end
-      # rubocop:enable Metrics/AbcSize, Metrics/MethodLength
 
       # @param [Integer] remote_asn Remote ASN
       # @return [Array<Hash>] peer list

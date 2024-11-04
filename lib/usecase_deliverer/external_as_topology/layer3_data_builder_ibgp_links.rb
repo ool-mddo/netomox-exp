@@ -1,15 +1,31 @@
 # frozen_string_literal: true
 
+require_relative 'p_network'
+
 module NetomoxExp
   module UsecaseDeliverer
     # Layer3 network data builder
     class Layer3DataBuilder < IntAsDataBuilder
       protected
 
+      # @return [Array<Netomox::PseudoDSL::PNode>] ebgp-routers
+      def find_all_layer3_ebgp_routers
+        @layer3_nw.nodes.find_all do |node|
+          node.flags_include?('ebgp-router')
+        end
+      end
+
       # @return [Array<Netomox::PseudoDSL::PNode>] ebgp-candidate-routers
       def find_all_layer3_ebgp_candidate_routers
         @layer3_nw.nodes.find_all do |node|
-          node.attribute.key?(:flags) && node.attribute[:flags].include?('ebgp-candidate-router')
+          node.flags_include?('ebgp-candidate-router')
+        end
+      end
+
+      # @return [Array<Netomox::PseudoDSL::PNode>] region-core-routers
+      def find_all_layer3_region_core_routers
+        @layer3_nw.nodes.find_all do |node|
+          node.flags_include?('region-core-router')
         end
       end
 
