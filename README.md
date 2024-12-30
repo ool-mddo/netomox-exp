@@ -92,14 +92,6 @@ Delete all topology (and other network-related) data in a network
 curl -X DELETE http://localhost:9292/topologies/pushed_configs
 ```
 
-Fetch topology diff between two snapshots in a network
-
-* GET `/topologies/<network>/snapshot_diff/<source_snapshot>/<destination_snapshot>`
-
-```shell
-curl http://localhost:9292/topologies/pushed_configs/snapshot_diff/mddo_network/mddo_network_linkdown_01
-```
-
 Save (register) topology data
 
 * POST `/topologies/<network>/<snapshot>/topology`
