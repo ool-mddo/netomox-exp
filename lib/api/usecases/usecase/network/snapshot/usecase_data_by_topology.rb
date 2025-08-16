@@ -3,6 +3,7 @@
 require 'grape'
 require 'lib/api/usecases/usecase/usecase_helpers'
 require 'lib/usecase_deliverer/iperf_command_generator'
+require 'lib/usecase_deliverer/layer3_empty_resource_builder'
 require 'lib/usecase_deliverer/external_as_topology/bgp_as_data_builder'
 
 module NetomoxExp
@@ -20,6 +21,16 @@ module NetomoxExp
         usecase_params = read_params(usecase, network)
         int_as_topology = fetch_topology_object(network, snapshot)
         builder = UsecaseDeliverer::BgpAsDataBuilder.new(usecase, usecase_params, usecase_flows, int_as_topology)
+
+        # response
+        builder.build_topology
+      end
+
+      desc 'Get layer3 empty resources'
+      get 'layer3_empties' do
+        usecase, network = %i[usecase network].map { |key| params[key] }
+        usecase_params = read_params(usecase, network)
+        builder = UsecaseDeliverer::Layer3EmptyResourceBuilder.new(usecase, usecase_params)
 
         # response
         builder.build_topology
