@@ -72,6 +72,8 @@ module NetomoxExp
         }
       end
 
+      # rubocop:disable Metrics/AbcSize
+
       # @param [Netomox::PseudoDSL::PNode] bgp_proc_node Target bgp-proc node
       # @param [String] tp_name Term-point name to add the node
       # @param [String] local_ip
@@ -90,6 +92,7 @@ module NetomoxExp
 
         [bgp_proc_node, bgp_proc_tp]
       end
+      # rubocop:enable Metrics/AbcSize
 
       # add link bidirectional
       # @param [Netomox::PseudoDSL::PNode] node1

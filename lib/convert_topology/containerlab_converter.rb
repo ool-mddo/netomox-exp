@@ -78,7 +78,8 @@ module NetomoxExp
           opts[:license] = @options[:license] if @options.key?(:license)
           define_node_data('juniper_crpd', **opts)
         when 'endpoint'
-          define_node_data('linux', image: 'ghcr.io/ool-mddo/ool-iperf:main')
+          ep_image = @options[:endpoint_image] || 'ghcr.io/ool-mddo/ool-iperf:main'
+          define_node_data('linux', image: ep_image)
         else
           raise StandardError, "Unknown node type: #{node.name}, type=#{node.attribute.node_type}"
         end
