@@ -25,14 +25,15 @@ module NetomoxExp
         optional :bind_license, type: String, desc: 'Router bind configs (like "license.key:/tmp/license.key")'
         optional :license, type: String, desc: 'Router license file path for container'
         requires :image, type: String, desc: 'Router image name'
+        optional :endpoint_image, type: String, desc: 'Endpoint image name'
       end
       get 'containerlab_topology' do
         network, snapshot, layer = %i[network snapshot layer].map { |key| params[key] }
 
         topology_data = read_topology_file(network, snapshot)
         ns_converter = ns_converter_wo_topology(network)
-        opts = %i[env_name bind_license license image].select { |key| params.key?(key) }
-                                                      .to_h { |key| [key, params[key]] }
+        opts = %i[env_name bind_license license image endpoint_image].select { |key| params.key?(key) }
+                                                                     .to_h { |key| [key, params[key]] }
         clab_converter = ConvertTopology::ContainerLabConverter.new(topology_data, layer, ns_converter, opts)
 
         # response
