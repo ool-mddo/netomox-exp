@@ -333,7 +333,7 @@ curl -s http://localhost:9292/usecases/pni_te/mddo-bgp/flows/normal
 
 Generate external-AS topology data
 
-* GET `/usecases/<usecase>/<network>/<snapshot>external_as_topology`
+* GET `/usecases/<usecase>/<network>/<snapshot>/external_as_topology`
 * option
   * `flow_data`: flow data (file name)
 
@@ -350,6 +350,15 @@ Generate iperf commands
 ```shell
 curl -s http://localhost:9292/usecases/pni_te/mddo-bgp/emulated_asis/iperf_commands?flow_data=normal
 ```
+
+### Manual-Ops usecase
+
+Generate topology data of layer3 pre-allocated (empty) resources
+* GET `/usecases/<usecase>/<network>/params/layer3_pre_allocated`
+
+```shell
+curl -s http://localhost:9292/usecases/manual-ops/mddo-bgp/params/layer3_pre_allocated
+``````
 
 ## Development
 

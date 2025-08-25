@@ -13,6 +13,20 @@ module NetomoxExp
         read_flow_data(usecase, network, flow_file)
       end
 
+      desc 'Get layer3 preallocated (empty) resources'
+      get 'params/l3_preallocated_resources' do
+        usecase, network = %i[usecase network].map { |key| params[key] }
+        usecase_params = read_params(usecase, network)
+        unless usecase_params.key?('l3_preallocated_resources')
+          error!('ERROR: l3_preallocated_resources is not defined in usecase params', 400)
+        end
+
+        builder = UsecaseDeliverer::Layer3PreallocatedResourceBuilder.new(usecase, usecase_params)
+
+        # response
+        builder.build_topology
+      end
+
       desc 'Get usecase params (yaml -> json)'
       get ':params' do
         usecase, network, param_yaml = %i[usecase network params].map { |key| params[key] }
