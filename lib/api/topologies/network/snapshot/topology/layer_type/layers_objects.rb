@@ -20,9 +20,10 @@ module NetomoxExp
       # api /nodes, /interfaces
 
       params do
+        optional :node_name, type: String, desc: 'Node name'
         optional :node_type, type: String, desc: 'Node type (segment/node/endpoint)'
         optional :exc_node_type, type: String, desc: 'Exclude node type (segment/node/endpoint)'
-        mutually_exclusive :node_type, :exc_node_type
+        mutually_exclusive :node_name, :node_type, :exc_node_type
       end
       get 'nodes' do
         network, snapshot, layer_type = %i[network snapshot layer_type].map { |key| params[key] }
@@ -32,6 +33,7 @@ module NetomoxExp
         # response
         found_nws.map do |nw|
           nodes = nw.nodes
+          nodes.select! { |n| n.name == params[:node_name] } if params.key?(:node_name)
           nodes.select! { |n| n.attribute.node_type == params[:node_type] } if params.key?(:node_type)
           nodes.reject! { |n| n.attribute.node_type == params[:exc_node_type] } if params.key?(:exc_node_type)
           {
@@ -43,9 +45,10 @@ module NetomoxExp
       end
 
       params do
+        optional :node_name, type: String, desc: 'Node name'
         optional :node_type, type: String, desc: 'Node type (segment/node/endpoint)'
         optional :exc_node_type, type: String, desc: 'Exclude node type (segment/node/endpoint)'
-        mutually_exclusive :node_type, :exc_node_type
+        mutually_exclusive :node_name, :node_type, :exc_node_type
       end
       get 'interfaces' do
         network, snapshot, layer_type = %i[network snapshot layer_type].map { |key| params[key] }
@@ -55,6 +58,7 @@ module NetomoxExp
         # response
         found_nws.map do |nw|
           nodes = nw.nodes
+          nodes.select! { |n| n.name == params[:node_name] } if params.key?(:node_name)
           nodes.select! { |n| n.attribute.node_type == params[:node_type] } if params.key?(:node_type)
           nodes.reject! { |n| n.attribute.node_type == params[:exc_node_type] } if params.key?(:exc_node_type)
           {

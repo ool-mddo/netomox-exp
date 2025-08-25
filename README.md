@@ -226,6 +226,7 @@ Fetch all nodes and its attributes with namespace-converted names in a layer of 
 * GET `/topologies/<network>/<snapshot>/topology/<layer>/nodes` (single layer)
 * GET `/topologies/<network>/<snapshot>/topology/layer_type_<layer_type>/nodes` (multiple layers)
 * option (node filter)
+  * `node_name`: [optional] select a node by name
   * `node_type`: [optional] select specified type nodes (segment/node/endpoint)
   * `exc_node_type`: [optional] reject specified type nodes (segment/node/endpoint)
   * [NOTE] `node_type` and `exc_node_type` are mutually exclusive
@@ -241,6 +242,7 @@ Fetch all interfaces and its attributes with namespace-converted names in a laye
 * GET `/topologies/<network>/<snapshot>/topology/<layer>/interfaces` (single layer)
 * GET `/topologies/<network>/<snapshot>/topology/layer_type_<layer_type>/interfaces` (multiple layers)
 * option (node filter)
+  * `node_name`: [optional] select a node by name
   * `node_type`: [optional] select specified type nodes (segment/node/endpoint)
   * `exc_node_type`: [optional] reject specified type nodes (segment/node/endpoint)
   * [NOTE] `node_type` and `exc_node_type` are mutually exclusive
