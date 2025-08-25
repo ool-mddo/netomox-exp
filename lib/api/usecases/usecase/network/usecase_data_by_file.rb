@@ -2,6 +2,7 @@
 
 require 'grape'
 require 'lib/api/usecases/usecase/usecase_helpers'
+require 'lib/usecase_deliverer/layer3_preallocated_resource_builder'
 
 module NetomoxExp
   module ApiRoute

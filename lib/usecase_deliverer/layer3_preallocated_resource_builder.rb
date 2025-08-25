@@ -4,6 +4,18 @@ require 'netomox'
 
 module NetomoxExp
   module UsecaseDeliverer
+    # Node flag for L3 preallocated node
+    FLAG_PREALLOCATED_NODE = 'preallocated-node'
+    # Node flag for L3 preallocated segment-node
+    FLAG_PREALLOCATED_SEGMENT = 'preallocated-segment'
+    # Term-point flag for L3 preallocated term-point
+    FLAG_PREALLOCATED_TP = 'preallocated-tp'
+
+    # Prefix of shutdown-bridge term-point
+    SB_TP_PREFIX = 'sbp'
+    # Prefix of shutdown-bridge (segment-node)
+    SB_NAME = 'Seg_empty00'
+
     # Layer3 preallocated (empty) resource builder for manual_steps usecase
     class Layer3PreallocatedResourceBuilder
       # @param [String] usecase Usecase name
@@ -33,10 +45,10 @@ module NetomoxExp
       # param [String] tp_name Term-point name to add (default="", then set automatically, for shutdown-bridge)
       # @return [Network::PseudoDSL::PTermPoint] new interface
       def add_interface_to_node(l3_node, tp_name = nil)
-        tp_name = "sbp#{l3_node.tps.length}" if tp_name.nil?
+        tp_name = "#{SB_TP_PREFIX}#{l3_node.tps.length}" if tp_name.nil?
 
         l3_tp = l3_node.term_point(tp_name)
-        l3_tp.attribute = { flags: %w[preallocated-tp] }
+        l3_tp.attribute = { flags: [FLAG_PREALLOCATED_TP] }
         l3_tp
       end
 
@@ -47,7 +59,7 @@ module NetomoxExp
       # @return [void]
       def add_layer3_preallocated_node(prealloc_node_data, sb_node)
         l3e_node = @layer3_nw.node(prealloc_node_data['name'])
-        l3e_node.attribute = { node_type: 'node', flags: %w[preallocated-node] }
+        l3e_node.attribute = { node_type: 'node', flags: [FLAG_PREALLOCATED_NODE] }
 
         # interfaces
         prealloc_node_data['interfaces'].each do |ifname|
@@ -65,13 +77,13 @@ module NetomoxExp
       # @return [void]
       def add_layer3_preallocated_segment(prealloc_segment_data)
         l3e_seg_node = @layer3_nw.node(prealloc_segment_data['name'])
-        l3e_seg_node.attribute = { node_type: 'segment', flags: %w[preallocated-segment] }
+        l3e_seg_node.attribute = { node_type: 'segment', flags: [FLAG_PREALLOCATED_SEGMENT] }
       end
 
       # @return [Netomox::PseudoDSL::PNode] shutdown bridge node
       def add_layer3_shutdown_bridge
-        sb_node = @layer3_nw.node('Seg_empty00')
-        sb_node.attribute = { node_type: 'segment', flags: %w[empty-segment] }
+        sb_node = @layer3_nw.node(SB_NAME)
+        sb_node.attribute = { node_type: 'segment', flags: [FLAG_PREALLOCATED_SEGMENT] }
         sb_node
       end
 

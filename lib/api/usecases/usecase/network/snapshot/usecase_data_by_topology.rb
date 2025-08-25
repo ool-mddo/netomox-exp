@@ -3,7 +3,6 @@
 require 'grape'
 require 'lib/api/usecases/usecase/usecase_helpers'
 require 'lib/usecase_deliverer/iperf_command_generator'
-require 'lib/usecase_deliverer/layer3_preallocated_resource_builder'
 require 'lib/usecase_deliverer/external_as_topology/bgp_as_data_builder'
 
 module NetomoxExp
