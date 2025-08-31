@@ -128,6 +128,17 @@ Fetch topology data (Upper layer3)
 curl http://localhost:9292/topologies/mddo-ospf/original_asis/topology/upper_layer3
 ```
 
+### List snapshots
+
+List snapshots in a network
+
+* GET `/topologies/<network>/snapshots`
+  * `prefix`: [optional] prefix of snapshot name
+
+```shell
+curl "http://localhost:9292/topologies/mddo-bgp/snapshots?prefix=original"
+```
+
 ### Operate namespace convert table
 
 Delete namespace convert table of a network
