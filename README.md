@@ -70,6 +70,13 @@ rerun [--force-polling] bundle exec rackup -s webrick -o 0.0.0.0 -p 9292
 
 ### Operate netoviz
 
+Fetch netoviz index
+* GET `/topologies/index`
+
+```shell
+curl http://localhost:9292/topologies/index
+```
+
 Save netoviz index
 
 * POST `/topologies/index`
