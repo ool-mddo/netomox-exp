@@ -1,5 +1,52 @@
 # frozen_string_literal: true
 
+require 'netomox'
+
+module Netomox
+  module Topology
+    # patch for DiffState
+    class Networks
+      def clear_diff_state
+        @networks.each(&:clear_diff_state)
+      end
+    end
+
+    # patch for DiffState
+    class Network
+      def clear_diff_state
+        warn "# clear nw:#{name} diff state"
+        @nodes.delete_if { |node| node.diff_state.detect == :deleted }
+        @links.delete_if { |link| link.diff_state.detect == :deleted }
+
+        @nodes.each(&:clear_diff_state)
+        @links.each(&:clear_diff_state)
+      end
+    end
+
+    # patch for DiffState
+    class Node
+      def clear_diff_state
+        @termination_points.delete_if { |tp| tp.diff_state.detect == :deleted }
+        @termination_points.each(&:clear_diff_state)
+      end
+    end
+
+    # patch for DiffState
+    class TermPoint
+      def clear_diff_state
+        @diff_state = DiffState.new
+      end
+    end
+
+    # patch for DiffState
+    class Link
+      def clear_diff_state
+        @diff_state = DiffState.new
+      end
+    end
+  end
+end
+
 module NetomoxExp
   module ConvertNamespace
     # Base class of namespace converter
@@ -19,6 +66,7 @@ module NetomoxExp
       # @return [void]
       def load_origin_topology(topology_data)
         @src_nws = Netomox::Topology::Networks.new(topology_data)
+        @src_nws.clear_diff_state
         @upper_l3_nw_names = upper_layer3_network_names
       end
 
