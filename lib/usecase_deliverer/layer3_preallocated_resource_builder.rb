@@ -11,8 +11,6 @@ module NetomoxExp
     # Term-point flag for L3 preallocated term-point
     FLAG_PREALLOCATED_TP = 'preallocated-tp'
 
-    # Prefix of shutdown-bridge term-point
-    SB_TP_PREFIX = 'sbp'
     # Prefix of shutdown-bridge (segment-node)
     SB_NAME = 'Seg_empty00'
 
@@ -41,12 +39,18 @@ module NetomoxExp
 
       private
 
-      # @param [Netomox::PseudoDSL::PNode] l3_node Layer3 node
-      # param [String] tp_name Term-point name to add (default="", then set automatically, for shutdown-bridge)
+      # @param [Netomox::PseudoDSL::PNode] l3_seg_node Segment node
+      # @param [String] l3e_node_name L3-endpoint node name (facing node)
+      # @param [String] l3e_tp_name L3-endpoint term-point name (facing tp)
       # @return [Network::PseudoDSL::PTermPoint] new interface
-      def add_interface_to_node(l3_node, tp_name = nil)
-        tp_name = "#{SB_TP_PREFIX}#{l3_node.tps.length}" if tp_name.nil?
+      def add_interface_to_segment(l3_seg_node, l3e_node_name, l3e_tp_name)
+        add_interface_to_node(l3_seg_node, "#{l3e_node_name}_#{l3e_tp_name}")
+      end
 
+      # @param [Netomox::PseudoDSL::PNode] l3_node Layer3 node
+      # param [String] tp_name Term-point name to add
+      # @return [Network::PseudoDSL::PTermPoint] new interface
+      def add_interface_to_node(l3_node, tp_name)
         l3_tp = l3_node.term_point(tp_name)
         l3_tp.attribute = { flags: [FLAG_PREALLOCATED_TP] }
         l3_tp
@@ -66,7 +70,7 @@ module NetomoxExp
           l3e_tp = add_interface_to_node(l3e_node, ifname)
 
           # connect the interface to shutdown-bridge
-          sb_tp = add_interface_to_node(sb_node)
+          sb_tp = add_interface_to_segment(sb_node, l3e_node.name, l3e_tp.name)
           @layer3_nw.link(l3e_node.name, l3e_tp.name, sb_node.name, sb_tp.name)
           @layer3_nw.link(sb_node.name, sb_tp.name, l3e_node.name, l3e_tp.name)
         end
