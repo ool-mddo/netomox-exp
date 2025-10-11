@@ -22,6 +22,22 @@ module NetomoxExp
           ''
         end
 
+        desc 'Get snapshot list'
+        params do
+          optional :prefix, type: String, desc: 'Prefix of snapshot name'
+        end
+        get 'snapshots' do
+          network_dir = File.join(TOPOLOGIES_DIR, params[:network])
+          if params[:prefix].nil?
+            Dir.children(network_dir)
+               .select { |entry| File.directory?(File.join(network_dir, entry)) }
+          else
+            Dir.children(network_dir)
+               .select { |entry| File.directory?(File.join(network_dir, entry)) }
+               .select { |entry| entry.start_with?(params[:prefix]) }
+          end
+        end
+
         mount ApiRoute::NsConvertTable
         mount ApiRoute::Snapshot
       end

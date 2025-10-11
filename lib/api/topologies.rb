@@ -19,6 +19,13 @@ module NetomoxExp
           {}
         end
 
+        desc 'Fetch netoviz index'
+        get 'index' do
+          index_file = File.join(TOPOLOGIES_DIR, '_index.json')
+          # response
+          read_json_file(index_file)
+        end
+
         mount ApiRoute::Network
       end
     end

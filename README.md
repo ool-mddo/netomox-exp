@@ -70,6 +70,13 @@ rerun [--force-polling] bundle exec rackup -s webrick -o 0.0.0.0 -p 9292
 
 ### Operate netoviz
 
+Fetch netoviz index
+* GET `/topologies/index`
+
+```shell
+curl http://localhost:9292/topologies/index
+```
+
 Save netoviz index
 
 * POST `/topologies/index`
@@ -90,14 +97,6 @@ Delete all topology (and other network-related) data in a network
 
 ```shell
 curl -X DELETE http://localhost:9292/topologies/pushed_configs
-```
-
-Fetch topology diff between two snapshots in a network
-
-* GET `/topologies/<network>/snapshot_diff/<source_snapshot>/<destination_snapshot>`
-
-```shell
-curl http://localhost:9292/topologies/pushed_configs/snapshot_diff/mddo_network/mddo_network_linkdown_01
 ```
 
 Save (register) topology data
@@ -126,6 +125,17 @@ Fetch topology data (Upper layer3)
 
 ```shell
 curl http://localhost:9292/topologies/mddo-ospf/original_asis/topology/upper_layer3
+```
+
+### List snapshots
+
+List snapshots in a network
+
+* GET `/topologies/<network>/snapshots`
+  * `prefix`: [optional] prefix of snapshot name
+
+```shell
+curl "http://localhost:9292/topologies/mddo-bgp/snapshots?prefix=original"
 ```
 
 ### Operate namespace convert table
@@ -226,6 +236,7 @@ Fetch all nodes and its attributes with namespace-converted names in a layer of 
 * GET `/topologies/<network>/<snapshot>/topology/<layer>/nodes` (single layer)
 * GET `/topologies/<network>/<snapshot>/topology/layer_type_<layer_type>/nodes` (multiple layers)
 * option (node filter)
+  * `node_name`: [optional] select a node by name
   * `node_type`: [optional] select specified type nodes (segment/node/endpoint)
   * `exc_node_type`: [optional] reject specified type nodes (segment/node/endpoint)
   * [NOTE] `node_type` and `exc_node_type` are mutually exclusive
@@ -241,6 +252,7 @@ Fetch all interfaces and its attributes with namespace-converted names in a laye
 * GET `/topologies/<network>/<snapshot>/topology/<layer>/interfaces` (single layer)
 * GET `/topologies/<network>/<snapshot>/topology/layer_type_<layer_type>/interfaces` (multiple layers)
 * option (node filter)
+  * `node_name`: [optional] select a node by name
   * `node_type`: [optional] select specified type nodes (segment/node/endpoint)
   * `exc_node_type`: [optional] reject specified type nodes (segment/node/endpoint)
   * [NOTE] `node_type` and `exc_node_type` are mutually exclusive
@@ -331,7 +343,7 @@ curl -s http://localhost:9292/usecases/pni_te/mddo-bgp/flows/normal
 
 Generate external-AS topology data
 
-* GET `/usecases/<usecase>/<network>/<snapshot>external_as_topology`
+* GET `/usecases/<usecase>/<network>/<snapshot>/external_as_topology`
 * option
   * `flow_data`: flow data (file name)
 
@@ -348,6 +360,15 @@ Generate iperf commands
 ```shell
 curl -s http://localhost:9292/usecases/pni_te/mddo-bgp/emulated_asis/iperf_commands?flow_data=normal
 ```
+
+### Manual-Ops usecase
+
+Generate topology data of layer3 pre-allocated (empty) resources
+* GET `/usecases/<usecase>/<network>/params/layer3_pre_allocated`
+
+```shell
+curl -s http://localhost:9292/usecases/manual-ops/mddo-bgp/params/layer3_pre_allocated
+``````
 
 ## Development
 

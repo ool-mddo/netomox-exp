@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require 'netomox'
+
 module NetomoxExp
   module ConvertNamespace
     # Base class of namespace converter
@@ -19,6 +21,7 @@ module NetomoxExp
       # @return [void]
       def load_origin_topology(topology_data)
         @src_nws = Netomox::Topology::Networks.new(topology_data)
+        @src_nws.clear_diff_state
         @upper_l3_nw_names = upper_layer3_network_names
       end
 
