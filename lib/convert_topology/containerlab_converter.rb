@@ -48,43 +48,72 @@ module NetomoxExp
       end
 
       # @param [String] kind Container type
-      # @param [String] image Container image name
-      # @param [String] config Startup-config file name
-      # @param [Array<String>] bind_configs Volume mount string to bind license file into container
-      # @param [String] license License file path
+      # param [Hash] opts Options for clab-topo.yaml
       # @return [Hash]
-      def define_node_data(kind, image: nil, config: nil, bind_configs: [], license: '')
+      def define_node_data(kind, opts = {})
         data = { 'kind' => kind }
-        data['image'] = image unless image.nil?
-        data['startup-config'] = config unless config.nil?
-        data['binds'] = bind_configs unless bind_configs.empty?
-        data['license'] = license unless license.empty?
+        %w[image type startup-config license binds components].each do |key|
+          # NOTE
+          #   binds: Array<String>
+          #   components: Hash
+          data[key] = opts[key] if opts.key?(key) && !(opts[key].nil? || opts[key].empty?)
+        end
         data
+      end
+
+      # @param [String] node_name Node name
+      # @return [Hash, nil] nil if not found
+      def find_l3prealloc_node(node_name)
+        return nil unless @options.key?(:usecase_l3preallocs)
+
+        node_params = @options[:usecase_l3preallocs].find { |n| n['type'] == 'node' && n['name'] == node_name }
+        return nil if node_params.nil? || !node_params.key?('emulated_params')
+
+        node_params['emulated_params'] # for clab-topo
       end
 
       # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
 
       # @param [Netomox::Topology::Node] node
+      # @return [Hash] clab-topo node data
+      def select_node_data(node)
+        l3_prealloc_params = find_l3prealloc_node(node.name)
+        if node.attribute.flags.include?('preallocated_node') || l3_prealloc_params.nil?
+          opts = { 'image' => @options[:image], 'startup-config' => "#{node.name}.conf" }
+          opts['binds'] = [@options[:bind_license]] if @options.key?(:bind_license)
+          opts['license'] = @options[:license] if @options.key?(:license)
+          return define_node_data('juniper_crpd', opts)
+        end
+
+        # NOTE: for special empty resources (nokia sr-sim, that has node-params definitions in usecase params file)
+        opts = {}
+        %w[license image kind type components].each do |key|
+          opts[key] = l3_prealloc_params[key] if l3_prealloc_params.key?(key)
+        end
+        define_node_data(l3_prealloc_params['kind'], opts)
+      end
+      # rubocop:enable Metrics/AbcSize, Metrics/MethodLength
+
+      # rubocop:disable Metrics/MethodLength
+
+      # @param [Netomox::Topology::Node] node
       # @return [Hash]
       # @raise [StandardError] if found unknown node-type
       def make_node_data(node)
-        node_name = converted_node_l1principal(node.name)
+        converted_node_l1principal(node.name)
         case node.attribute.node_type
         when 'segment'
           define_node_data('ovs-bridge')
         when 'node'
-          opts = { image: @options[:image], config: "#{node_name}.conf" }
-          opts[:bind_configs] = [@options[:bind_license]] if @options.key?(:bind_license)
-          opts[:license] = @options[:license] if @options.key?(:license)
-          define_node_data('juniper_crpd', **opts)
+          select_node_data(node)
         when 'endpoint'
           ep_image = @options[:endpoint_image] || 'ghcr.io/ool-mddo/ool-iperf:main'
-          define_node_data('linux', image: ep_image)
+          define_node_data('linux', { 'image' => ep_image })
         else
           raise StandardError, "Unknown node type: #{node.name}, type=#{node.attribute.node_type}"
         end
       end
-      # rubocop:enable Metrics/AbcSize, Metrics/MethodLength
+      # rubocop:enable Metrics/MethodLength
 
       # @return [Hash<Hash>] node data
       def node_data
