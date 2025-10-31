@@ -8,6 +8,17 @@ module NetomoxExp
   module ApiRoute
     # namespace /ns_convert_table
     class NsConvertTable < Grape::API
+      helpers do
+        # @param [String] usecase_name Usecase name
+        # @param [String] network_name Network name
+        # @return [Hash] Usecase parameters
+        def read_usecase_params(usecase_name, network_name)
+          return {} unless usecase_name
+
+          read_params(usecase_name, network_name)
+        end
+      end
+
       # rubocop:disable Metrics/BlockLength
       resource 'ns_convert_table' do
         desc 'Post convert_table'
@@ -15,14 +26,18 @@ module NetomoxExp
           optional :origin_snapshot, type: String, desc: 'Origin snapshot name'
           optional :convert_table, type: Hash, desc: 'Convert table'
           mutually_exclusive :origin_snapshot, :convert_table, message: 'are exclusive cannot pass both params'
+          optional :usecase, type: String, desc: 'Usecase name', default: nil
         end
         post do
           network = params[:network]
           ns_converter = ConvertNamespace::NamespaceConverter.new
+
           if params.key?(:origin_snapshot)
             snapshot = params[:origin_snapshot]
             logger.info "Initialize namespace convert table with snapshot: #{network}/#{snapshot}"
-            ns_converter.load_origin_topology(read_topology_file(network, snapshot))
+            topology_data = read_topology_file(network, snapshot)
+            usecase_params = read_usecase_params(params[:usecase], network)
+            ns_converter.load_origin_topology(topology_data, usecase_params)
           else
             logger.info "Update namespace convert table of network: #{network}"
             ns_converter.reload(params[:convert_table])

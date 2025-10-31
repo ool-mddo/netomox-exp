@@ -3,6 +3,7 @@
 require 'grape'
 require 'lib/netomox_exp'
 require_relative 'helpers'
+require_relative 'helpers_usecase'
 
 module NetomoxExp
   # Rest api base class

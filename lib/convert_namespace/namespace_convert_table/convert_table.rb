@@ -42,12 +42,13 @@ module NetomoxExp
       end
 
       # @param [Hash] topology_data Topology data (RFC8345 Hash)
+      # @param [Hash] usecase_params Usecase parameters (optional)
       # @return [void]
-      def load_from_topology(topology_data)
+      def load_from_topology(topology_data, usecase_params = {})
         src_nws = Netomox::Topology::Networks.new(topology_data)
 
         @node_name_table.make_table(src_nws) # MUST at first (in use making other tables)
-        @tp_name_table.make_table(src_nws)
+        @tp_name_table.make_table(src_nws, usecase_params)
         @ospf_proc_id_table.make_table(src_nws)
         @static_route_tp_table.make_table(src_nws)
       end

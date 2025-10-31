@@ -3,6 +3,7 @@
 require_relative 'convert_table_base'
 
 module NetomoxExp
+  # rubocop:disable Metrics/ClassLength
   module ConvertNamespace
     # Term-point name convert table
     class TermPointNameTable < ConvertTableBase
@@ -10,6 +11,7 @@ module NetomoxExp
       def initialize(node_name_table)
         super()
         @node_name_table = node_name_table
+        @usecase_params = {}
       end
 
       # @param [String] src_node_name Source node name
@@ -102,9 +104,13 @@ module NetomoxExp
       # rubocop:enable Metrics/AbcSize
 
       # @param [Netomox::Topology::Networks] src_nws Source networks
+      # @param [Hash] usecase_params Usecase parameters (optional)
       # @return [void]
-      def make_table(src_nws)
-        super
+      def make_table(src_nws, usecase_params = {})
+        super(src_nws)
+
+        # usecase params
+        @usecase_params = usecase_params
 
         # convert table (for layer3, ospf-area)
         make_layer3_tp_table(@src_nws.find_network('layer3'))
@@ -141,9 +147,35 @@ module NetomoxExp
         @convert_table[dst_node_name] = {} unless key?(dst_node_name)
       end
 
+      # @param [Netomox::Topology::Node] src_node Source node
+      # @param [Netomox::Topology::TermPoint] src_tp Source term-point
+      # @return [Boolean] True if the term-point is specified in usecase_params
+      def usecase_specified_tp?(src_node, src_tp)
+        l3pr_key = 'l3_preallocated_resources' # alias
+        return false if @usecase_params.empty? || !@usecase_params.key?(l3pr_key)
+
+        found_tp = @usecase_params[l3pr_key].find do |l3pr|
+          l3pr['type'] == 'node' && l3pr['name'] == src_node.name && l3pr['interfaces'].include?(src_tp.name)
+        end
+        found_tp ? true : false
+      end
+
+      # @param [Netomox::Topology::Node] src_node Source node
+      # @param [Netomox::Topology::TermPoint] src_tp Source term-point
+      # @param [Integer] index Term-point index
+      # @return [Hash] Converted term-point name dic
+      def select_actual_tp_dic(src_node, src_tp, index)
+        if usecase_specified_tp?(src_node, src_tp)
+          forward_convert_pass_through_tp_name(src_tp.name)
+        else
+          forward_convert_actual_tp_name(index + 1)
+        end
+      end
+
       # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
 
       # @param [Netomox::Topology::Network] src_nw Source network (L3)
+      # return [void]
       def make_table_for_actual(src_nw)
         src_nw.nodes.reject { |node| segment_node?(node) }.each do |src_node|
           dst_node_name = @node_name_table.convert(src_node.name)['l3_model']
@@ -154,7 +186,7 @@ module NetomoxExp
             add_tp_name_entry(src_node.name, src_tp.name, dst_node_name, dst_tp_dic)
           end
           src_node.termination_points.reject { |src_tp| loopback?(src_tp) }.each_with_index do |src_tp, index|
-            dst_tp_dic = forward_convert_actual_tp_name(index + 1)
+            dst_tp_dic = select_actual_tp_dic(src_node, src_tp, index)
             add_tp_name_entry(src_node.name, src_tp.name, dst_node_name, dst_tp_dic)
           end
         end
@@ -171,6 +203,12 @@ module NetomoxExp
             add_tp_name_entry(src_node.name, src_tp.name, dst_node_name, dst_tp_dic)
           end
         end
+      end
+
+      # @param [String] src_tp_name Source term-point name (pass-through)
+      # @return [Hash] Converted term-point name
+      def forward_convert_pass_through_tp_name(src_tp_name)
+        emulated_name_dict(src_tp_name)
       end
 
       # @param [String] src_tp_name Source term-point name (loopback)
@@ -218,4 +256,5 @@ module NetomoxExp
       # rubocop:enable Metrics/AbcSize
     end
   end
+  # rubocop:enable Metrics/ClassLength
 end

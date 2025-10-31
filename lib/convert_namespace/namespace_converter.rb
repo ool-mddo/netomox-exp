@@ -40,12 +40,13 @@ module NetomoxExp
       end
 
       # @param [Hash] topology_data Topology data (RFC8345 Hash)
+      # @param [Hash] usecase_params Usecase parameters (optional)
       # @return [void]
       # @raise [StandardError] if @src_nws is not initialized
-      def load_origin_topology(topology_data)
-        super
+      def load_origin_topology(topology_data, usecase_params = {})
+        super(topology_data)
 
-        @convert_table.load_from_topology(topology_data)
+        @convert_table.load_from_topology(topology_data, usecase_params)
       end
 
       # @return [void]
