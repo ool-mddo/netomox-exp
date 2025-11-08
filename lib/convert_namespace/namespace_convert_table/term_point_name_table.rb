@@ -151,13 +151,20 @@ module NetomoxExp
       # @param [Netomox::Topology::TermPoint] src_tp Source term-point
       # @return [Boolean] True if the term-point is specified in usecase_params
       def usecase_specified_tp?(src_node, src_tp)
-        l3pr_key = 'l3_preallocated_resources' # alias
-        return false if @usecase_params.empty? || !@usecase_params.key?(l3pr_key)
+        l3pr_key = 'l3_preallocated_resources'
+        l3prs = @usecase_params[l3pr_key]
 
-        found_tp = @usecase_params[l3pr_key].find do |l3pr|
-          l3pr['type'] == 'node' && l3pr['name'] == src_node.name && l3pr['interfaces'].include?(src_tp.name)
+        return false unless l3prs&.any?
+
+        # find a node from usecase params (l3_preallocated_resources)
+        # if exist a node that has `emulated_params` key, it is "specified" in usecase_params
+        l3prs.any? do |l3pr|
+          next false unless l3pr['type'] == 'node'
+          next false unless l3pr['name'] == src_node.name
+          next false unless l3pr['interfaces'].include?(src_tp.name)
+
+          l3pr.key?('emulated_params')
         end
-        found_tp ? true : false
       end
 
       # @param [Netomox::Topology::Node] src_node Source node
