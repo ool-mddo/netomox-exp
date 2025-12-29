@@ -2,12 +2,13 @@
 
 require 'grape'
 require 'fileutils'
+require 'lib/api/rest_api_base'
 require 'lib/convert_namespace/namespace_converter'
 
 module NetomoxExp
   module ApiRoute
     # namespace /ns_convert_table
-    class NsConvertTable < Grape::API
+    class NsConvertTable < RestApiBase
       helpers do
         # @param [String] usecase_name Usecase name
         # @param [String] network_name Network name

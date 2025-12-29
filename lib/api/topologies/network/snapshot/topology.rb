@@ -2,6 +2,7 @@
 
 require 'fileutils'
 require 'grape'
+require 'lib/api/rest_api_base'
 require 'lib/convert_namespace/upper_layer3_filter'
 require 'lib/topology_builder/topology_builder'
 require_relative 'topology/layer'
@@ -11,7 +12,7 @@ require_relative 'topology/verify_layers'
 module NetomoxExp
   module ApiRoute
     # namespace /topology
-    class Topology < Grape::API
+    class Topology < RestApiBase
       desc 'Post (register) topology data'
       # rubocop:disable Metrics/BlockLength
       resource 'topology' do

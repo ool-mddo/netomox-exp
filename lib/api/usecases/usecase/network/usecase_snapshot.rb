@@ -1,12 +1,13 @@
 # frozen_string_literal: true
 
 require 'grape'
+require 'lib/api/rest_api_base'
 require_relative 'snapshot/usecase_data_by_topology'
 
 module NetomoxExp
   module ApiRoute
     # namespace /snapshot
-    class UsecaseSnapshot < Grape::API
+    class UsecaseSnapshot < RestApiBase
       resource ':snapshot' do
         mount ApiRoute::UsecaseDataByTopology
       end

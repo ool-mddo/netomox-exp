@@ -1,11 +1,12 @@
 # frozen_string_literal: true
 
 require 'grape'
+require 'lib/api/rest_api_base'
 
 module NetomoxExp
   module ApiRoute
     # api config_params
-    class ConfigParams < Grape::API
+    class ConfigParams < RestApiBase
       desc 'Get all interface parameters for generate config files'
       params do
         optional :node_type, type: String, desc: 'Node type (segment/node/endpoint)'

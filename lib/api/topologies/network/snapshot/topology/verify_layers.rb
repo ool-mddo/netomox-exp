@@ -1,12 +1,13 @@
 # frozen_string_literal: true
 
 require 'grape'
+require 'lib/api/rest_api_base'
 require 'lib/static_verifier/static_verifier'
 
 module NetomoxExp
   module ApiRoute
     # resource /verify
-    class VerifyLayers < Grape::API
+    class VerifyLayers < RestApiBase
       resource 'verify' do
         desc 'Verify all network layer'
         params do

@@ -1,11 +1,12 @@
 # frozen_string_literal: true
 
 require 'grape'
+require 'lib/api/rest_api_base'
 
 module NetomoxExp
   module ApiRoute
     # namespace /converted_topology
-    class ConvertedTopology < Grape::API
+    class ConvertedTopology < RestApiBase
       resource 'converted_topology' do
         desc 'Get namespace-convert-table to get converted topology'
         get do
