@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-require 'grape'
 require 'lib/api/rest_api_base'
 
 module NetomoxExp

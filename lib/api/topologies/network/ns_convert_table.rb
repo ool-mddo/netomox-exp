@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-require 'grape'
 require 'fileutils'
 require 'lib/api/rest_api_base'
 require 'lib/convert_namespace/namespace_converter'

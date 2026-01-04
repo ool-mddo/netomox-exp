@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-require 'grape'
 require 'lib/api/rest_api_base'
 require_relative 'layer_type/layers_objects'
 

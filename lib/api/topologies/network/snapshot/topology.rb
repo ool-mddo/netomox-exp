@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 require 'fileutils'
-require 'grape'
 require 'lib/api/rest_api_base'
 require 'lib/convert_namespace/upper_layer3_filter'
 require 'lib/topology_builder/topology_builder'

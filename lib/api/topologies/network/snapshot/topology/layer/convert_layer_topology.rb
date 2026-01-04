@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-require 'grape'
 require 'lib/api/rest_api_base'
 require 'lib/convert_topology/batfish_converter'
 require 'lib/convert_topology/containerlab_converter'

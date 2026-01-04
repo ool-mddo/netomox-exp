@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-require 'grape'
 require 'lib/api/rest_api_base'
 require 'lib/usecase_deliverer/layer3_preallocated_resource_builder'
 

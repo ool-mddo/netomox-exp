@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 require 'fileutils'
-require 'grape'
 require 'lib/api/rest_api_base'
 require_relative 'network/ns_convert_table'
 require_relative 'network/snapshot'

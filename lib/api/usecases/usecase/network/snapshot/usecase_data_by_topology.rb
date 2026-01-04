@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-require 'grape'
 require 'lib/api/rest_api_base'
 require 'lib/usecase_deliverer/iperf_command_generator'
 require 'lib/usecase_deliverer/external_as_topology/bgp_as_data_builder'
