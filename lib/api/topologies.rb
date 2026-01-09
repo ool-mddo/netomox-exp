@@ -1,12 +1,12 @@
 # frozen_string_literal: true
 
-require 'grape'
+require_relative 'rest_api_base'
 require_relative 'topologies/network'
 
 module NetomoxExp
   module ApiRoute
     # namespace /topologies
-    class Topologies < Grape::API
+    class Topologies < RestApiBase
       namespace 'topologies' do
         desc 'Post (register) netoviz index'
         params do

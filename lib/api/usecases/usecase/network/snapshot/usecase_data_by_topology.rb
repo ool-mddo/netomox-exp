@@ -1,13 +1,13 @@
 # frozen_string_literal: true
 
-require 'grape'
+require 'lib/api/rest_api_base'
 require 'lib/usecase_deliverer/iperf_command_generator'
 require 'lib/usecase_deliverer/external_as_topology/bgp_as_data_builder'
 
 module NetomoxExp
   module ApiRoute
     # usecase data based on topology data
-    class UsecaseDataByTopology < Grape::API
+    class UsecaseDataByTopology < RestApiBase
       desc 'Get external-AS topology'
       params do
         requires :flow_data, type: String, desc: 'File name of a flow data'

@@ -1,11 +1,11 @@
 # frozen_string_literal: true
 
-require 'grape'
+require 'lib/api/rest_api_base'
 
 module NetomoxExp
   module ApiRoute
     # fetch/filter multiple layer parameters
-    class LayersObjects < Grape::API
+    class LayersObjects < RestApiBase
       # multiple layer in several layers (networks) in topology data (RFC8345 based json)
       desc 'Get topology data (multiple layers by network type'
       get do

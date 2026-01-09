@@ -1,13 +1,13 @@
 # frozen_string_literal: true
 
-require 'grape'
+require 'lib/api/rest_api_base'
 require 'lib/convert_topology/batfish_converter'
 require 'lib/convert_topology/containerlab_converter'
 
 module NetomoxExp
   module ApiRoute
     # api that convert a layer topology to another another data
-    class ConvertLayerTopology < Grape::API
+    class ConvertLayerTopology < RestApiBase
       desc 'convert layer data to batfish layer1_topology.json'
       get 'batfish_layer1_topology' do
         network, snapshot, layer = %i[network snapshot layer].map { |key| params[key] }
