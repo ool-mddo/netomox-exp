@@ -1,4 +1,4 @@
-FROM ruby:3.1.0-slim
+FROM ruby:3.1.6-slim
 
 WORKDIR /netomox-exp
 COPY . /netomox-exp
