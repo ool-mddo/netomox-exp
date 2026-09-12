@@ -13,7 +13,7 @@ module NetomoxExp
     # namespace /topology
     class Topology < RestApiBase
       desc 'Post (register) topology data'
-      # rubocop:disable Metrics/BlockLength
+      # rubocop:disable-next Metrics/BlockLength
       resource 'topology' do
         params do
           optional :topology_data, type: Hash, desc: 'RFC8345 topology data'
@@ -63,7 +63,6 @@ module NetomoxExp
         mount ApiRoute::Layer # 2nd match; /:layer
         mount ApiRoute::VerifyLayers
       end
-      # rubocop:enable Metrics/BlockLength
     end
   end
 end

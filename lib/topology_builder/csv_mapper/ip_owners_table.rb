@@ -45,7 +45,7 @@ module NetomoxExp
 
         # @return [String]
         def to_s
-          [@node, @vrf, @interface, @ip, @mask].map(&:to_s).join(', ')
+          [@node, @vrf, @interface, @ip, @mask].join(', ')
         end
 
         # @return [Boolean] true if GRT ip info (not VRF instance)

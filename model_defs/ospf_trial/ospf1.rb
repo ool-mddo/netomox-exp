@@ -2,7 +2,7 @@
 
 require 'netomox'
 
-# rubocop:disable Metrics/MethodLength, Metrics/BlockLength, Metrics/AbcSize
+# rubocop:disable-next Metrics/MethodLength, Metrics/BlockLength, Metrics/AbcSize
 def register_ospf1(nws)
   # rfc8346 ospf-extend based
   nws.register do
@@ -147,4 +147,3 @@ def register_ospf1(nws)
     end
   end
 end
-# rubocop:enable Metrics/MethodLength, Metrics/BlockLength, Metrics/AbcSize

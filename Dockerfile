@@ -1,24 +1,23 @@
-FROM ruby:3.1.6-slim
+FROM ruby:3.4.10-slim
 
 WORKDIR /netomox-exp
 COPY . /netomox-exp
 
-# gcc/make: to build native extensions (json)
+# install required runtime packages
 RUN apt-get update \
-    && apt-get install -y --no-install-recommends gcc make \
+    && apt-get install -y --no-install-recommends curl jq less \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
-# install all (production and development) ruby tools (with native extensions)
+# install ruby gems (build-essential is needed for native extensions, removed after install)
 RUN --mount=type=secret,id=ghp_credential \
-    gem install bundler \
+    apt-get update \
+    && apt-get install -y --no-install-recommends build-essential \
+    && gem install bundler \
     && export BUNDLE_RUBYGEMS__PKG__GITHUB__COM=$(cat /run/secrets/ghp_credential) \
     && bundle install \
-    && unset BUNDLE_RUBYGEMS__PKG__GITHUB__COM
-
-# install required packages
-RUN apt-get update \
-    && apt-get install -y --no-install-recommends curl jq less \
+    && unset BUNDLE_RUBYGEMS__PKG__GITHUB__COM \
+    && apt-get purge -y --auto-remove build-essential \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 

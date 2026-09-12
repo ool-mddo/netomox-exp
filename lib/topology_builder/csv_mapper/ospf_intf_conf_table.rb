@@ -51,7 +51,7 @@ module NetomoxExp
 
         # @return [String]
         def to_s
-          [@node, @interface, @process_id, @ospf_area_name, @ospf_enabled].map(&:to_s).join(', ')
+          [@node, @interface, @process_id, @ospf_area_name, @ospf_enabled].join(', ')
         end
 
         # @return [Boolean] true if ospf enabled and not passive

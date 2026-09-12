@@ -16,7 +16,7 @@ module NetomoxExp
       JSON.pretty_generate(topology_data)
     end
 
-    # rubocop:disable Metrics/MethodLength
+    # rubocop:disable-next Metrics/MethodLength
     def main
       opts = ARGV.getopts('i:', 'debug:')
 
@@ -33,7 +33,6 @@ module NetomoxExp
         puts to_json(NetomoxExp::TopologyBuilder.generate_data(target_data_dir))
       end
     end
-    # rubocop:enable Metrics/MethodLength
   end
 end
 

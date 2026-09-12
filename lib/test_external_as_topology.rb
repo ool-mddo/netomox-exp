@@ -49,7 +49,7 @@ module NetomoxExp
       Netomox::Topology::Networks.new(topology_data)
     end
 
-    # rubocop:disable Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity, Metrics/AbcSize, Metrics/MethodLength
+    # rubocop:disable-next Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity, Metrics/AbcSize, Metrics/MethodLength
     def merge_ext_topology(layers, src_builders, dst_builder)
       # whole networks
       ext_as_topology = Netomox::PseudoDSL::PNetworks.new
@@ -76,9 +76,8 @@ module NetomoxExp
 
       ext_as_topology.interpret.topo_data
     end
-    # rubocop:enable Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity, Metrics/AbcSize, Metrics/MethodLength
 
-    # rubocop:disable Metrics/MethodLength
+    # rubocop:disable-next Metrics/MethodLength
     def l3_src_as_builders(usecase, usecase_params, usecase_flows, int_as_topology)
       if usecase_params.key?('source_as')
         [
@@ -95,7 +94,6 @@ module NetomoxExp
         exit 1
       end
     end
-    # rubocop:enable Metrics/MethodLength
 
     def l3_dst_as_builders(usecase, usecase_params, usecase_flows, int_as_topology)
       ipam_seed = dst_as_builders_ipam_seed(usecase_params)
@@ -113,7 +111,7 @@ module NetomoxExp
       end
     end
 
-    # rubocop:disable Metrics/MethodLength
+    # rubocop:disable-next Metrics/MethodLength
     def bgp_proc_src_as_builders(usecase, usecase_params, usecase_flows, int_as_topology)
       if usecase_params.key?('source_as')
         [
@@ -130,7 +128,6 @@ module NetomoxExp
         exit 1
       end
     end
-    # rubocop:enable Metrics/MethodLength
 
     def bgp_proc_dst_as_builders(usecase, usecase_params, usecase_flows, int_as_topology)
       ipam_seed = dst_as_builders_ipam_seed(usecase_params)
@@ -138,7 +135,7 @@ module NetomoxExp
                                                            usecase_flows, int_as_topology, ipam_seed)
     end
 
-    # rubocop:disable Metrics/MethodLength, Metrics/AbcSize
+    # rubocop:disable-next Metrics/MethodLength, Metrics/AbcSize
     def main
       # option definitions
 
@@ -202,7 +199,6 @@ module NetomoxExp
       warn e.message
       exit 1
     end
-    # rubocop:enable Metrics/MethodLength, Metrics/AbcSize
   end
   # rubocop:enable Metrics/ModuleLength
 end

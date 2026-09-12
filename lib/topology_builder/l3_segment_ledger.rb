@@ -7,6 +7,7 @@ module NetomoxExp
     # L3 segment data holder
     class L3SegmentLedger
       extend Forwardable
+
       # @!method push
       #   @see Array#size
       # @!method each
