@@ -17,6 +17,9 @@ ContainerLab / cRPD ベースのエミュレーション環境構築までをつ
 - **`ns_convert_table.json` の事前初期化:** `converted_topology`, `batfish_layer1_topology`,
   `containerlab_topology`, `nodes`, `interfaces`, `config_params` の各 API はこのファイルが
   存在することを前提とする。存在しない場合は 404 エラー
+- **`DELETE /topologies/:nw/:ss` はスナップショットディレクトリごと削除:** `FileUtils.rm_rf` で即時削除。
+  `conduit_topology` API が既存の `*_conduitN` スナップショットを削除する際に使用される。
+  失敗しても後続処理は続行 (デバッグのため残す設計)。
 - **`eval` 使用:** CSV の配列フィールドのパース時に `eval` を使用している
   ([lib/topology_builder/csv_mapper/table_base.rb](lib/topology_builder/csv_mapper/table_base.rb) L51)
 - **JSON gem:** v3.x を使用。`JSON.parse` / `JSON.dump` はオプションなしで呼び出しており互換性に問題なし
@@ -75,3 +78,29 @@ model_defs/            # プロトタイプ用手書きトポロジ定義（本�
 ```
 
 詳細は [docs/architecture.md](docs/architecture.md) を参照。
+
+## 追加済みエンドポイント・ヘルパー
+
+### `DELETE /topologies/:network/:snapshot`
+
+スナップショットディレクトリを削除する。`FileUtils.rm_rf` で即時削除。
+`lib/api/topologies/network/snapshot.rb` に定義。
+
+### `GET /usecases/:usecase/:network/:snapshot/topology`
+
+usecase ディレクトリ内の blueprint topology JSON を返す。
+`$MDDO_USECASES_DIR/:uc/:nw/:ss/topology.json` を読み込む。
+`lib/api/usecases/usecase/network/snapshot/blueprint_topology.rb` に定義。
+
+呼び出し例:
+```
+GET /usecases/refocus_topology/mddo-fw/original_asis_blueprint/topology
+→ usecases/refocus_topology/mddo-fw/original_asis_blueprint/topology.json
+```
+
+### `Helpers#read_usecase_snapshot_topology(usecase, network, snapshot)`
+
+`helpers_usecase.rb` に追加したヘルパーメソッド。
+`USECASE_DIR/:uc/:nw/:ss/topology.json` を `read_json_file` で読んで返す。
+`blueprint_topology.rb` のルートブロックから呼び出される。
+(`USECASE_DIR` 定数は `Helpers` モジュール内でしかアクセスできないため、ルートから直接参照不可。)

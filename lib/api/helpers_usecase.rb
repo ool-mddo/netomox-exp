@@ -39,6 +39,15 @@ module NetomoxExp
       read_yaml_file(param_file_path)
     end
 
+    # @param [String] usecase Usecase name
+    # @param [String] network Network name
+    # @param [String] snapshot Snapshot name (blueprint snapshot)
+    # @return [Hash] topology data
+    def read_usecase_snapshot_topology(usecase, network, snapshot)
+      file_path = File.join(USECASE_DIR, usecase, network, snapshot, 'topology.json')
+      read_json_file(file_path)
+    end
+
     # @param [String] network Network name
     # @param [String] snapshot Snapshot name
     # @return [Array<Hash>] L3 endpoint list
