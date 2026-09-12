@@ -7,6 +7,7 @@ module NetomoxExp
     # Base class of a convert table
     class ConvertTableBase
       extend Forwardable
+
       delegate %i(keys []) => :@convert_table
 
       def initialize

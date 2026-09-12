@@ -19,7 +19,7 @@ module NetomoxExp
         end
       end
 
-      # rubocop:disable Metrics/BlockLength
+      # rubocop:disable-next Metrics/BlockLength
       resource 'ns_convert_table' do
         desc 'Post convert_table'
         params do
@@ -85,7 +85,6 @@ module NetomoxExp
           end
         end
       end
-      # rubocop:enable Metrics/BlockLength
     end
   end
 end

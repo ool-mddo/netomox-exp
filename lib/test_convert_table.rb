@@ -9,7 +9,7 @@ module NetomoxExp
   module TestTools
     module_function
 
-    # rubocop:disable Metrics/MethodLength
+    # rubocop:disable-next Metrics/MethodLength
     def main
       opts = ARGV.getopts('t:')
 
@@ -34,7 +34,6 @@ module NetomoxExp
       # converted config
       puts JSON.pretty_generate(converter.convert)
     end
-    # rubocop:enable Metrics/MethodLength
   end
 end
 

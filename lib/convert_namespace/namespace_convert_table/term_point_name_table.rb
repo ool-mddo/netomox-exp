@@ -3,7 +3,7 @@
 require_relative 'convert_table_base'
 
 module NetomoxExp
-  # rubocop:disable Metrics/ClassLength
+  # rubocop:disable-next Metrics/ClassLength
   module ConvertNamespace
     # Term-point name convert table
     class TermPointNameTable < ConvertTableBase
@@ -263,5 +263,4 @@ module NetomoxExp
       # rubocop:enable Metrics/AbcSize
     end
   end
-  # rubocop:enable Metrics/ClassLength
 end

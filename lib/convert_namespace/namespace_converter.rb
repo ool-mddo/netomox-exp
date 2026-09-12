@@ -13,6 +13,7 @@ module NetomoxExp
     # namespace converter (original/emulated)
     class NamespaceConverter < NamespaceConverterBase
       extend Forwardable
+
       # @!method reload(table_data)
       #   @return [void]
       #   @see ConvertTable#reload

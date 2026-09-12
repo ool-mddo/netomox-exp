@@ -2,7 +2,7 @@
 
 require 'netomox'
 
-# rubocop:disable Metrics/MethodLength, Metrics/BlockLength, Metrics/AbcSize
+# rubocop:disable-next Metrics/MethodLength, Metrics/BlockLength, Metrics/AbcSize
 def register_layer3(nws)
   nws.register do
     network 'ospf_trial_l3' do
@@ -167,4 +167,3 @@ def register_layer3(nws)
     end
   end
 end
-# rubocop:enable Metrics/MethodLength, Metrics/BlockLength, Metrics/AbcSize

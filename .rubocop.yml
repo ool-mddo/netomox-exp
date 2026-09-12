@@ -3,7 +3,7 @@ require:
 
 AllCops:
   NewCops: enable
-  TargetRubyVersion: 3.1.0
+  TargetRubyVersion: 3.4
 
 # disable several metrics for hand-made models
 

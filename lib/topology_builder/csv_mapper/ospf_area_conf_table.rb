@@ -37,7 +37,7 @@ module NetomoxExp
 
         # @return [String]
         def to_s
-          [@node, @process_id, @area].map(&:to_s).join(', ')
+          [@node, @process_id, @area].join(', ')
         end
       end
 
