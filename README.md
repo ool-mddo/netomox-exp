@@ -368,7 +368,17 @@ Generate topology data of layer3 pre-allocated (empty) resources
 
 ```shell
 curl -s http://localhost:9292/usecases/manual-ops/mddo-bgp/params/layer3_pre_allocated
-``````
+```
+
+### Refocus-toplogy usecase
+
+Get blueprint topology data
+- GET `/usecases/<usecase>/<network>/<snapshot>/topology`
+
+```shell
+curl -s http://localhost:9292/usecases/refocus_topology/mddo-fw/original_asis_blueprint/topology
+```
+
 
 ## Development
 
