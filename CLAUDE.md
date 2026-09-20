@@ -79,6 +79,16 @@ model_defs/            # プロトタイプ用手書きトポロジ定義（本�
 
 詳細は [docs/architecture.md](docs/architecture.md) を参照。
 
+## FW ノードアトリビュート JSON スキーマ
+
+FW アトリビュートの JSON スキーマは複数リポジトリをまたがる canonical definition として管理されている:
+**`playground/docs/firewall_node_attributes.md`**
+
+このファイルには以下が記載されている:
+- per-node JSON / topology endpoint payload / topology.json 内の配置の各スキーマ
+- `flag: ["firewall"]` と `firewall` アトリビュートの二重構造の説明
+- netomox gem の `ATTR_DEFS[ext:]` との整合性制約
+
 ## 名前空間変換: FW ノード (vSRX) 対応
 
 `lib/convert_namespace/namespace_convert_table/` の変換テーブルは、
