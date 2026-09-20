@@ -85,7 +85,9 @@ model_defs/            # プロトタイプ用手書きトポロジ定義（本�
 layer3 ノードが FW ノード（vSRX）かどうかで変換ルールを分けている。
 
 **FW ノード判定 (`firewall_node?` in `convert_table_base.rb`):**  
-`node.attribute.firewall` が non-nil であれば FW ノード。policies/zones が空でも FW ノードと判定する。
+RFC8345 トップレベルの `"flag": ["firewall"]` を持つノードを FW ノードと判定する。
+`ConvertTable#load_from_topology` が生の topology JSON から FW ノード名 Set を抽出し (`extract_l3_firewall_node_names`)、
+全サブテーブルに注入 (`firewall_node_names=`)。`node.attribute.firewall` は全ノードで常に non-nil のため使用不可。
 
 **TP 名変換ルール:**
 

@@ -95,8 +95,10 @@ original_node_name
 
 ### インターフェース名変換: cRPD ノード vs vSRX（FW）ノード
 
-layer3 ノードに `firewall` 属性（`node.attribute.firewall != nil`）がある場合は FW ノードと判定し、
+RFC8345 トップレベルの `"flag": ["firewall"]` を持つノードを FW ノードと判定し、
 通常の cRPD ノードとは異なる変換ルールを適用します（`firewall_node?` in `convert_table_base.rb`）。
+`node.attribute.firewall` は netomox gem の仕様上、全 L3 ノードで常に non-nil を返すため判定に使用不可。
+`ConvertTable#load_from_topology` が生の topology JSON から FW ノード名を `Set` として抽出し、全サブテーブルに注入します。
 
 | | cRPD ノード | vSRX（FW）ノード |
 |---|---|---|
