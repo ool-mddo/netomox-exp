@@ -39,6 +39,7 @@ module NetomoxExp
         if opts[:usecase]
           param_data = read_params(opts[:usecase], network)
           opts[:usecase_l3preallocs] = param_data['l3_preallocated_resources']
+          opts[:clab_node_params] = param_data['containerlab_nodes']
         end
         clab_converter = ConvertTopology::ContainerLabConverter.new(topology_data, layer, ns_converter, opts)
 

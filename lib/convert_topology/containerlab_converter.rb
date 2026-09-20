@@ -52,7 +52,7 @@ module NetomoxExp
       # @return [Hash]
       def define_node_data(kind, opts = {})
         data = { 'kind' => kind }
-        %w[image type startup-config license binds components].each do |key|
+        %w[image type startup-config license binds components env ports labels].each do |key|
           # NOTE
           #   binds: Array<String>
           #   components: Hash
@@ -64,7 +64,7 @@ module NetomoxExp
       # @param [String] node_name Node name
       # @return [Hash, nil] nil if not found
       def find_l3prealloc_node(node_name)
-        return nil unless @options.key?(:usecase_l3preallocs)
+        return nil unless @options[:usecase_l3preallocs]
 
         node_params = @options[:usecase_l3preallocs].find { |n| n['type'] == 'node' && n['name'] == node_name }
         return nil if node_params.nil? || !node_params.key?('emulated_params')
@@ -72,11 +72,22 @@ module NetomoxExp
         node_params['emulated_params'] # for clab-topo
       end
 
-      # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
+      # @param [String] node_name Node name
+      # @return [Hash, nil] nil if not found
+      def find_clab_node_params(node_name)
+        return nil unless @options[:clab_node_params]
+
+        @options[:clab_node_params][node_name]
+      end
+
+      # rubocop:disable Metrics/AbcSize, Metrics/CyclomaticComplexity, Metrics/MethodLength
 
       # @param [Netomox::Topology::Node] node
       # @return [Hash] clab-topo node data
       def select_node_data(node)
+        clab_params = find_clab_node_params(node.name)
+        return define_node_data(clab_params['kind'], clab_params) if clab_params
+
         l3_prealloc_params = find_l3prealloc_node(node.name)
         if node.attribute.flags.include?('preallocated_node') || l3_prealloc_params.nil?
           opts = { 'image' => @options[:image], 'startup-config' => "#{node.name}.conf" }
@@ -92,7 +103,7 @@ module NetomoxExp
         end
         define_node_data(l3_prealloc_params['kind'], opts)
       end
-      # rubocop:enable Metrics/AbcSize, Metrics/MethodLength
+      # rubocop:enable Metrics/AbcSize, Metrics/CyclomaticComplexity, Metrics/MethodLength
 
       # rubocop:disable Metrics/MethodLength
 

@@ -142,3 +142,40 @@ GET /usecases/refocus_topology/mddo-fw/original_asis_blueprint/topology
 `USECASE_DIR/:uc/:nw/:ss/topology.json` を `read_json_file` で読んで返す。
 `blueprint_topology.rb` のルートブロックから呼び出される。
 (`USECASE_DIR` 定数は `Helpers` モジュール内でしかアクセスできないため、ルートから直接参照不可。)
+
+## ContainerLab トポロジ変換: FW ノード (proxmox) 対応
+
+`GET /topologies/:nw/:ss/topology/:layer/containerlab_topology` で `usecase` パラメータを渡すと、
+ユースケース params.yaml の `containerlab_nodes` セクションに定義されたノードごとの設定を優先的に使用する。
+
+**`containerlab_nodes` (params.yaml):**
+ノード名をキーとするハッシュ。各エントリが `ContainerLabConverter#find_clab_node_params` で参照される。
+`l3_preallocated_resources` とは独立した別セクション（処理コードは共有しない）。
+
+サポートするフィールド: `kind`, `image`, `env`, `binds`, `ports`, `labels`
+（`startup-config` は付与されない — proxmox/VM ベースのノードは config ファイル注入を使わない）
+
+```yaml
+# usecases/<usecase>/<network>/params.yaml
+containerlab_nodes:
+  site-a-fw-1:
+    kind: linux
+    image: 'rtedpro/proxmox:9.2.3'
+    env:
+      container: docker
+    binds:
+      - /dev/kvm:/dev/kvm
+    ports:
+      - "8006:8006"
+    labels:
+      ansible-group: junos
+      clusterid: 1
+      redundant: act
+```
+
+**優先順位 (`select_node_data` の参照順):**
+1. `containerlab_nodes` に定義あり → その定義を使用（FW / proxmox ノード）
+2. `l3_preallocated_resources` の `emulated_params` に定義あり → そちらを使用（Nokia SR-SIM 等）
+3. いずれも未定義 → `juniper_crpd` デフォルト（cRPD ノード）
+
+実装: [`lib/convert_topology/containerlab_converter.rb`](lib/convert_topology/containerlab_converter.rb)

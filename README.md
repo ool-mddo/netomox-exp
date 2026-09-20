@@ -210,14 +210,41 @@ Convert specified layer topology to clab-topo.yaml for container-lab
   * option for containerlab
     * `env_name`: containerlab environment name (default: "emulated")
   * options for router node (cRPD)
-    * `image`: image name
+    * `image`: image name (used for nodes not overridden by `containerlab_nodes`)
     * `bind_license`: [optional] docker volume mount string to bind license file into a container
     * `license`: [optional] file path of license file
   * options for endpoint node (linux endpoint)
     * `endpoint_image`: [optional] image name (default: `ghcr.io/ool-mddo/ool-iperf:main`)
+  * options for per-node override
+    * `usecase`: [optional] usecase name to load `containerlab_nodes` definitions from params.yaml
+      * `containerlab_nodes` in params.yaml: per-node containerlab definitions (keyed by node name).
+        Supports `kind`, `image`, `env`, `binds`, `ports`, `labels`. Takes priority over cRPD defaults.
+        Primarily used to define non-cRPD nodes such as firewall (proxmox-based) nodes.
+
+```yaml
+# example: usecases/<usecase>/<network>/params.yaml
+containerlab_nodes:
+  site-a-fw-1:
+    kind: linux
+    image: 'rtedpro/proxmox:9.2.3'
+    env:
+      container: docker
+    binds:
+      - /dev/kvm:/dev/kvm
+    ports:
+      - "8006:8006"
+    labels:
+      ansible-group: junos
+      redundant: act
+```
+
 ```shell
 curl -s "http://localhost:9292/topologies/mddo-ospf/emulated_asis/topology/layer3/containerlab_topology?image=crpd:22.1R1.10&bind_license=license.key:/tmp/license.key:ro" \
   | ruby -r json -r yaml -e "puts YAML.dump_stream(JSON.parse(STDIN.read))"
+
+# with per-node override (firewall nodes)
+curl -s "http://localhost:9292/topologies/mddo-fw/original_asis/topology/layer1/containerlab_topology?image=ghcr.io/ool-mddo/crpd:latest&usecase=refocus_topology" \
+  | ruby -r json -r yaml -e "puts YAML.dump(JSON.parse(STDIN.read))"
 ```
 
 Fetch a network, all networks by a network type (RFC8345-based json)
