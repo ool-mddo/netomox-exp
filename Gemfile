@@ -6,7 +6,7 @@ git_source(:github) { |repo_name| "https://github.com/#{repo_name}" }
 
 group :production do
   source 'https://rubygems.pkg.github.com/ool-mddo' do
-    gem 'netomox', '>= 0.12.0'
+    gem 'netomox', '>= 0.12.1'
   end
 
   gem 'csv'
