@@ -58,25 +58,29 @@ module NetomoxExp
         "#{src_node}:#{route_prefix}"
       end
 
-      # rubocop:disable Metrics/AbcSize
+      # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
 
       # @param [Netomox::Topology::Node] src_node Source node (L3)
       # @param [Netomox::Topology::MddoL3StaticRoute] route Static route entry
       # @return [void]
       def add_static_route_entry(src_node, route)
-        # forward
-        # NOTE: As demonstration, all actual nodes (except segment node) in emulated environment
-        #   are actualized using cRPD.
-        #   Therefore, all interface of static route attribute will be 'dynamic'
         fwd_route_key = static_route_key(src_node.name, route.prefix)
         @convert_table[fwd_route_key] = {} unless key?(fwd_route_key)
-        @convert_table[fwd_route_key][route.interface] = 'dynamic'
-        # reverse
+
         bwd_route_key = static_route_key(@node_name_table.convert(src_node.name)['l3_model'], route.prefix)
         @convert_table[bwd_route_key] = {} unless key?(bwd_route_key)
-        @convert_table[bwd_route_key]['dynamic'] = route.interface
+
+        if firewall_node?(src_node)
+          # vSRX: keep original JunOS interface name (not converted to 'dynamic')
+          @convert_table[fwd_route_key][route.interface] = route.interface
+          @convert_table[bwd_route_key][route.interface] = route.interface
+        else
+          # NOTE: cRPD nodes in emulated environment use 'dynamic' for static route interfaces
+          @convert_table[fwd_route_key][route.interface] = 'dynamic'
+          @convert_table[bwd_route_key]['dynamic'] = route.interface
+        end
       end
-      # rubocop:enable Metrics/AbcSize
+      # rubocop:enable Metrics/AbcSize, Metrics/MethodLength
     end
   end
 end

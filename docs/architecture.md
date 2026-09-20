@@ -93,6 +93,23 @@ original_node_name
                      例: "regiona-rt1"、セグメントノード → OVS bridge インスタンス名
 ```
 
+### インターフェース名変換: cRPD ノード vs vSRX（FW）ノード
+
+layer3 ノードに `firewall` 属性（`node.attribute.firewall != nil`）がある場合は FW ノードと判定し、
+通常の cRPD ノードとは異なる変換ルールを適用します（`firewall_node?` in `convert_table_base.rb`）。
+
+| | cRPD ノード | vSRX（FW）ノード |
+|---|---|---|
+| 実体 | コンテナ（cRPD） | VM（Proxmox 上の vSRX） |
+| `l3_model` | `ethN.0`（連番） | 元の JunOS インタフェース名（`ge-0/0/1.0`） |
+| `l1_agent` | `ethN`（連番） | 元の物理名（`ge-0/0/1`、ユニット番号なし） |
+| `l1_principal` | `ethN`（連番） | Proxmox ホスト NIC 名（`ethM`） |
+| static route next-hop | `'dynamic'` | 元の JunOS インタフェース名 |
+
+vSRX の `l1_principal` 割り当て:
+- `management` → `eth1`、`control` → `eth2`
+- データポート: `ge-x/y/z` を若番ソートして `eth3` 以降（同一物理ポートのサブインタフェースは同じ `ethM`）
+
 ### 変換テーブルの初期化フロー
 
 ```
@@ -176,7 +193,16 @@ L1L3DataBuilder (layer1)
       "l1_principal": "regiona-rt1"
     }
   },
-  "tp_name_table": { ... },
+  "tp_name_table": {
+    "regiona-rt1": {
+      "ge-0/0/0.0": { "l3_model": "eth1.0", "l1_agent": "eth1", "l1_principal": "eth1" },
+      "eth1.0":      { "l3_model": "ge-0/0/0.0", "l1_agent": "ge-0/0/0.0", "l1_principal": "ge-0/0/0.0" }
+    },
+    "site-a-fw-1": {
+      "ge-0/0/1.0": { "l3_model": "ge-0/0/1.0", "l1_agent": "ge-0/0/1", "l1_principal": "eth3" },
+      "ge-0/0/2.0": { "l3_model": "ge-0/0/2.0", "l1_agent": "ge-0/0/2", "l1_principal": "eth4" }
+    }
+  },
   "ospf_proc_id_table": { ... },
   "static_route_tp_table": { ... }
 }

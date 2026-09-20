@@ -39,6 +39,11 @@ module NetomoxExp
         node.attribute.node_type == 'segment'
       end
 
+      # @param [Netomox::Topology::Node] node
+      def firewall_node?(node)
+        !node.attribute.empty? && !node.attribute.firewall.nil?
+      end
+
       # @param [Netomox::Topology::TermPoint] term_point Term-point (L3)
       # @return [Boolean] True if the tp name is loopback
       def loopback?(term_point)
