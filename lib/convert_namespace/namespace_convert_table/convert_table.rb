@@ -46,12 +46,35 @@ module NetomoxExp
       # @return [void]
       def load_from_topology(topology_data, usecase_params = {})
         src_nws = Netomox::Topology::Networks.new(topology_data)
+        fw_names = extract_l3_firewall_node_names(topology_data)
+        all_tables.each { |t| t.firewall_node_names = fw_names }
 
         @node_name_table.make_table(src_nws) # MUST at first (in use making other tables)
         @tp_name_table.make_table(src_nws, usecase_params)
         @ospf_proc_id_table.make_table(src_nws)
         @static_route_tp_table.make_table(src_nws)
       end
+
+      private
+
+      # @return [Array<ConvertTableBase>] All sub-tables
+      def all_tables
+        [@node_name_table, @tp_name_table, @ospf_proc_id_table, @static_route_tp_table]
+      end
+
+      # @param [Hash] topology_data Topology data (RFC8345 Hash)
+      # @return [Set<String>] Set of firewall node names (from top-level RFC8345 "flag")
+      def extract_l3_firewall_node_names(topology_data)
+        networks = topology_data.dig('ietf-network:networks', 'network') || []
+        l3_nw = networks.find { |nw| nw['network-id'] == 'layer3' }
+        return Set.new unless l3_nw
+
+        (l3_nw['node'] || [])
+          .select { |n| n.fetch('flag', []).include?('firewall') }
+          .to_set { |n| n['node-id'] }
+      end
+
+      public
 
       # @param [Hash] given_table_data Convert table data
       # @return [void]

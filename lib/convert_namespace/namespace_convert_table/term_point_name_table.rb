@@ -78,6 +78,7 @@ module NetomoxExp
         raise StandardError, 'Network: layer3 is not found' if src_nw.nil?
 
         make_table_for_actual(src_nw)
+        make_table_for_firewall_actual(src_nw)
         # NOTE: The node name and interface name of the node facing it
         #   are used for the interface name of the segment node.
         #   Therefore, it is necessary to first create an interface name conversion table for the node.
@@ -179,12 +180,12 @@ module NetomoxExp
         end
       end
 
-      # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
+      # rubocop:disable Metrics/AbcSize, Metrics/CyclomaticComplexity, Metrics/MethodLength
 
       # @param [Netomox::Topology::Network] src_nw Source network (L3)
       # return [void]
       def make_table_for_actual(src_nw)
-        src_nw.nodes.reject { |node| segment_node?(node) }.each do |src_node|
+        src_nw.nodes.reject { |node| segment_node?(node) || firewall_node?(node) }.each do |src_node|
           dst_node_name = @node_name_table.convert(src_node.name)['l3_model']
           add_tp_name_hash(src_node.name, dst_node_name)
 
@@ -198,7 +199,7 @@ module NetomoxExp
           end
         end
       end
-      # rubocop:enable Metrics/AbcSize, Metrics/MethodLength
+      # rubocop:enable Metrics/AbcSize, Metrics/CyclomaticComplexity, Metrics/MethodLength
 
       # @param [Netomox::Topology::Network] src_nw Source network (L3)
       def make_table_for_segment(src_nw)
@@ -216,6 +217,76 @@ module NetomoxExp
       # @return [Hash] Converted term-point name
       def forward_convert_pass_through_tp_name(src_tp_name)
         emulated_name_dict(src_tp_name)
+      end
+
+      # rubocop:disable Metrics/AbcSize, Metrics/CyclomaticComplexity, Metrics/MethodLength, Metrics/PerceivedComplexity
+
+      # @param [Netomox::Topology::Network] src_nw Source network (L3)
+      # @return [void]
+      def make_table_for_firewall_actual(src_nw)
+        src_nw.nodes.select { |node| firewall_node?(node) }.each do |src_node|
+          dst_node_name = @node_name_table.convert(src_node.name)['l3_model']
+          add_tp_name_hash(src_node.name, dst_node_name)
+
+          src_node.termination_points.select { |src_tp| loopback?(src_tp) }.each do |src_tp|
+            dst_tp_dic = forward_convert_actual_lo_name(src_tp.name)
+            add_tp_name_entry(src_node.name, src_tp.name, dst_node_name, dst_tp_dic)
+          end
+
+          non_lo_tps = src_node.termination_points.reject { |src_tp| loopback?(src_tp) }
+          eth_map = build_firewall_eth_map(non_lo_tps)
+          non_lo_tps.each do |src_tp|
+            dst_tp_dic = if usecase_specified_tp?(src_node, src_tp)
+                           forward_convert_pass_through_tp_name(src_tp.name)
+                         else
+                           forward_convert_firewall_tp_name(src_tp.name, eth_map[src_tp.name])
+                         end
+            add_tp_name_entry(src_node.name, src_tp.name, dst_node_name, dst_tp_dic)
+          end
+        end
+      end
+      # rubocop:enable Metrics/AbcSize, Metrics/CyclomaticComplexity, Metrics/MethodLength, Metrics/PerceivedComplexity
+
+      # rubocop:disable Metrics/AbcSize, Metrics/CyclomaticComplexity, Metrics/MethodLength, Metrics/PerceivedComplexity
+
+      # @param [Array<Netomox::Topology::TermPoint>] non_lo_tps Non-loopback term-points of a firewall node
+      # @return [Hash{String => String}] mapping: original tp name => l1_principal eth name
+      def build_firewall_eth_map(non_lo_tps)
+        phys = ->(tp) { tp.name.sub(/\.\d+$/, '') }
+
+        management_tps = non_lo_tps.select { |tp| phys.call(tp) == 'management' }
+        control_tps    = non_lo_tps.select { |tp| phys.call(tp) == 'control' }
+        data_tps       = non_lo_tps.reject { |tp| %w[management control].include?(phys.call(tp)) }
+
+        data_phys_sorted = data_tps.map { |tp| phys.call(tp) }.uniq
+                                   .sort_by { |name| interface_sort_key(name) }
+
+        result = {}
+        management_tps.each { |tp| result[tp.name] = 'eth1' }
+        control_tps.each    { |tp| result[tp.name] = 'eth2' }
+        data_tps.each do |tp|
+          idx = data_phys_sorted.index(phys.call(tp))
+          result[tp.name] = "eth#{idx + 3}"
+        end
+        result
+      end
+      # rubocop:enable Metrics/AbcSize, Metrics/CyclomaticComplexity, Metrics/MethodLength, Metrics/PerceivedComplexity
+
+      # @param [String] iface_name Physical interface name (e.g. "ge-0/0/1")
+      # @return [Array<Integer>] sort key
+      def interface_sort_key(iface_name)
+        m = iface_name.match(%r{[a-z]+-(\d+)/(\d+)/(\d+)})
+        m ? m[1..3].map(&:to_i) : [999, 999, 999]
+      end
+
+      # @param [String] src_tp_name Source term-point name (firewall/vSRX interface)
+      # @param [String] eth_name l1_principal name on the Proxmox host (e.g. "eth3")
+      # @return [Hash] Converted term-point name dic
+      def forward_convert_firewall_tp_name(src_tp_name, eth_name)
+        # vSRX: l3_model and l1_agent keep the original JunOS interface name;
+        # only l1_principal (Proxmox host side) maps to eth<N>.
+        phys = src_tp_name.sub(/\.\d+$/, '')
+        emulated_name_dict(src_tp_name, l1_agent: phys, l1_principal: eth_name)
       end
 
       # @param [String] src_tp_name Source term-point name (loopback)

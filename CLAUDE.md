@@ -79,6 +79,44 @@ model_defs/            # プロトタイプ用手書きトポロジ定義（本�
 
 詳細は [docs/architecture.md](docs/architecture.md) を参照。
 
+## FW ノードアトリビュート JSON スキーマ
+
+FW アトリビュートの JSON スキーマは複数リポジトリをまたがる canonical definition として管理されている:
+**`playground/docs/firewall_node_attributes.md`**
+
+このファイルには以下が記載されている:
+- per-node JSON / topology endpoint payload / topology.json 内の配置の各スキーマ
+- `flag: ["firewall"]` と `firewall` アトリビュートの二重構造の説明
+- netomox gem の `ATTR_DEFS[ext:]` との整合性制約
+
+## 名前空間変換: FW ノード (vSRX) 対応
+
+`lib/convert_namespace/namespace_convert_table/` の変換テーブルは、
+layer3 ノードが FW ノード（vSRX）かどうかで変換ルールを分けている。
+
+**FW ノード判定 (`firewall_node?` in `convert_table_base.rb`):**  
+RFC8345 トップレベルの `"flag": ["firewall"]` を持つノードを FW ノードと判定する。
+`ConvertTable#load_from_topology` が生の topology JSON から FW ノード名 Set を抽出し (`extract_l3_firewall_node_names`)、
+全サブテーブルに注入 (`firewall_node_names=`)。`node.attribute.firewall` は全ノードで常に non-nil のため使用不可。
+
+**TP 名変換ルール:**
+
+| | cRPD ノード | vSRX（FW）ノード |
+|---|---|---|
+| `l3_model` | `ethN.0`（連番） | 元の JunOS インタフェース名（例: `ge-0/0/1.0`） |
+| `l1_agent` | `ethN`（連番） | 元の物理名（例: `ge-0/0/1`、ユニット番号なし） |
+| `l1_principal` | `ethN`（連番） | Proxmox ホスト側 NIC 名（例: `eth3`） |
+
+**vSRX の `l1_principal` 割り当て順序:**
+- `management` インタフェース → `eth1`
+- `control` インタフェース → `eth2`
+- データポート → `ge-x/y/z` を若番ソートして `eth3` 以降
+- 同一物理ポートの複数サブインタフェースは同じ `ethM` を共有
+
+**静的ルートの next-hop インタフェース (`StaticRouteTpTable`):**
+- cRPD ノード: `'dynamic'` に変換
+- vSRX（FW）ノード: 元の JunOS インタフェース名を保持
+
 ## 追加済みエンドポイント・ヘルパー
 
 ### `DELETE /topologies/:network/:snapshot`

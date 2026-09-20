@@ -10,9 +10,14 @@ module NetomoxExp
 
       delegate %i(keys []) => :@convert_table
 
+      # @!attribute [w] firewall_node_names
+      #   @return [Set<String>] Set of firewall node names (injected by ConvertTable)
+      attr_writer :firewall_node_names
+
       def initialize
         @convert_table = {}
         @src_nws = nil # initialized in #make_table
+        @firewall_node_names = Set.new
       end
 
       # @return [Hash] convert table
@@ -37,6 +42,12 @@ module NetomoxExp
       # @param [Netomox::Topology::Node] node
       def segment_node?(node)
         node.attribute.node_type == 'segment'
+      end
+
+      # @param [Netomox::Topology::Node] node
+      # @return [Boolean] True if the node is a firewall node (vSRX)
+      def firewall_node?(node)
+        @firewall_node_names.include?(node.name)
       end
 
       # @param [Netomox::Topology::TermPoint] term_point Term-point (L3)
