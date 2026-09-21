@@ -12,7 +12,7 @@ module NetomoxExp
         {
           'name' => @options[:env_name] || 'emulated',
           'topology' => {
-            'links' => link_data,
+            'links' => link_data + fabric_link_data,
             'nodes' => node_data
           }
         }
@@ -45,6 +45,41 @@ module NetomoxExp
         links.map do |link|
           { 'endpoints' => [link_edge_to_str(link.source), link_edge_to_str(link.destination)] }
         end
+      end
+
+      # @param [Netomox::Topology::Node] node
+      # @return [Boolean]
+      def firewall_primary_node?(node)
+        pair = node.attribute.firewall.pair
+        pair.key?('primary') && pair['primary']['name'] == node.name
+      end
+
+      # @return [String] eth name for fabric interface (fixed: eth3)
+      def fabric_eth_name(_node)
+        'eth3'
+      end
+
+      # rubocop:disable Metrics/MethodLength
+
+      # @param [Netomox::Topology::Node] primary_node Primary FW node
+      # @return [Hash, nil]
+      def make_fabric_link(primary_node)
+        pair = primary_node.attribute.firewall.pair
+        secondary_name = pair['secondary']['name']
+        secondary_node = @src_network.nodes.find { |n| n.name == secondary_name }
+        return nil if secondary_node.nil?
+
+        primary_ep   = "#{converted_node_l1principal(primary_node.name)}:#{fabric_eth_name(primary_node)}"
+        secondary_ep = "#{converted_node_l1principal(secondary_name)}:#{fabric_eth_name(secondary_node)}"
+        { 'endpoints' => [primary_ep, secondary_ep] }
+      end
+      # rubocop:enable Metrics/MethodLength
+
+      # @return [Array<Hash>] fabric link data for FW HA pairs
+      def fabric_link_data
+        @src_network.nodes
+                    .select { |node| firewall_primary_node?(node) }
+                    .filter_map { |node| make_fabric_link(node) }
       end
 
       # @param [String] kind Container type

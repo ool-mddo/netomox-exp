@@ -110,7 +110,8 @@ RFC8345 トップレベルの `"flag": ["firewall"]` を持つノードを FW �
 **vSRX の `l1_principal` 割り当て順序:**
 - `management` インタフェース → `eth1`
 - `control` インタフェース → `eth2`
-- データポート → `ge-x/y/z` を若番ソートして `eth3` 以降
+- `fabric` インタフェース (ge-0/0/0 / ge-7/0/0) → `eth3` (固定; L3 TP に現れないが containerlab で直接使用)
+- データポート → `ge-x/y/z` を若番ソートして `eth4` 以降
 - 同一物理ポートの複数サブインタフェースは同じ `ethM` を共有
 
 **静的ルートの next-hop インタフェース (`StaticRouteTpTable`):**
@@ -165,12 +166,14 @@ containerlab_nodes:
       container: docker
     binds:
       - /dev/kvm:/dev/kvm
+      - /tmp/proxmox-shared:/var/tmp
+      - /tmp/proxmox-shared/qemu:/opt/qemu-shared
     ports:
       - "8006:8006"
     labels:
       ansible-group: junos
       clusterid: 1
-      redundant: act
+      redundant: act   # secondary は "sby"
 ```
 
 **優先順位 (`select_node_data` の参照順):**
@@ -179,3 +182,40 @@ containerlab_nodes:
 3. いずれも未定義 → `juniper_crpd` デフォルト（cRPD ノード）
 
 実装: [`lib/convert_topology/containerlab_converter.rb`](lib/convert_topology/containerlab_converter.rb)
+
+### FW HA ペアの fabric リンク自動生成
+
+`ContainerLabConverter#convert` は通常の L3 リンクに加え、FW HA クラスタのファブリックリンクを自動追加する。
+ファブリックリンクは L3 トポロジに現れないが、エミュレーション環境では必要なリンク。
+
+**eth 番号の割り当て (vSRX / Proxmox):**
+| eth 番号 | 用途 |
+|---|---|
+| eth1 | management |
+| eth2 | control (JunOS eth0 相当) |
+| eth3 | **fabric** (ge-0/0/0 / ge-7/0/0 — 固定) |
+| eth4 以降 | データポート (ge-x/y/z を若番ソート) |
+
+primary ノードの `node.attribute.firewall.pair` から secondary ノードを特定し、
+primary:eth3 ↔ secondary:eth3 のリンクを生成する。
+
+**関連メソッド:**
+- `firewall_primary_node?(node)` — primary/secondary 判定
+- `fabric_eth_name(_node)` — `'eth3'` を返す（固定）
+- `make_fabric_link(primary_node)` — 1 ペア分のリンク Hash を生成
+- `fabric_link_data` — 全 HA ペアのファブリックリンク Array を返す
+
+### ns_convert_table の fabric インタフェースエントリ
+
+`TermPointNameTable#make_table_for_firewall_actual` は、L3 TP として現れない fabric インタフェース
+(ge-0/0/0 / ge-7/0/0) のエントリも変換テーブルに追加する。
+
+```json
+"site-a-fw-1": {
+  "ge-0/0/1.0": { "l3_model": "ge-0/0/1.0", "l1_agent": "ge-0/0/1", "l1_principal": "eth4" },
+  "ge-0/0/0":   { "l3_model": "ge-0/0/0",   "l1_agent": "ge-0/0/0", "l1_principal": "eth3" }
+}
+```
+
+fabric インタフェースはサブインタフェース指定なし (物理ポート直接使用のため `.0` サフィックスなし)。
+`extract_fabric_member_interfaces(node)` が `pair[...]['atypical_interfaces']` から取得する。
