@@ -5,6 +5,7 @@ require_relative 'topology_converter_base'
 module NetomoxExp
   module ConvertTopology
     # topology data converter for container-lab
+    # rubocop:disable-next Metrics/ClassLength
     class ContainerLabConverter < TopologyConverterBase
       # @return [Hash] topology data for clab
       def convert
@@ -59,8 +60,6 @@ module NetomoxExp
         'eth3'
       end
 
-      # rubocop:disable Metrics/MethodLength
-
       # @param [Netomox::Topology::Node] primary_node Primary FW node
       # @return [Hash, nil]
       def make_fabric_link(primary_node)
@@ -73,7 +72,6 @@ module NetomoxExp
         secondary_ep = "#{converted_node_l1principal(secondary_name)}:#{fabric_eth_name(secondary_node)}"
         { 'endpoints' => [primary_ep, secondary_ep] }
       end
-      # rubocop:enable Metrics/MethodLength
 
       # @return [Array<Hash>] fabric link data for FW HA pairs
       def fabric_link_data
