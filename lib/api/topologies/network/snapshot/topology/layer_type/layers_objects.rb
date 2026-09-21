@@ -39,7 +39,7 @@ module NetomoxExp
           {
             network: nw.name,
             attribute: nw.attribute.to_data,
-            nodes: convert_layer_nodes(network, nodes)
+            nodes: convert_layer_nodes(network, snapshot, nodes)
           }
         end
       end
@@ -64,7 +64,7 @@ module NetomoxExp
           {
             network: nw.name,
             attribute: nw.attribute.to_data,
-            nodes: convert_layer_interfaces(network, nodes)
+            nodes: convert_layer_interfaces(network, snapshot, nodes)
           }
         end
       end

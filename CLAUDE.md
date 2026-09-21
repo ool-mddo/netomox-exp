@@ -15,8 +15,9 @@ ContainerLab / cRPD ベースのエミュレーション環境構築までをつ
 - **URL マッチ順序:** `/layer_type_:layer_type` は `/:layer` より先にマウントする必要がある
   （[lib/api/topologies/network/snapshot/topology.rb](lib/api/topologies/network/snapshot/topology.rb) L62-63 参照）
 - **`ns_convert_table.json` の事前初期化:** `converted_topology`, `batfish_layer1_topology`,
-  `containerlab_topology`, `nodes`, `interfaces`, `config_params` の各 API はこのファイルが
-  存在することを前提とする。存在しない場合は 404 エラー
+  `containerlab_topology`, `nodes`, `interfaces`, `config_params` の各 API はスナップショット
+  ディレクトリ内の `ns_convert_table.json` が存在することを前提とする。存在しない場合は 404 エラー。
+  ファイルは `POST /topologies/:nw/:ss/ns_convert_table` で生成される。
 - **`DELETE /topologies/:nw/:ss` はスナップショットディレクトリごと削除:** `FileUtils.rm_rf` で即時削除。
   `conduit_topology` API が既存の `*_conduitN` スナップショットを削除する際に使用される。
   失敗しても後続処理は続行 (デバッグのため残す設計)。
@@ -123,6 +124,7 @@ RFC8345 トップレベルの `"flag": ["firewall"]` を持つノードを FW �
 ### `DELETE /topologies/:network/:snapshot`
 
 スナップショットディレクトリを削除する。`FileUtils.rm_rf` で即時削除。
+`topology.json` と `ns_convert_table.json` の両方が同じディレクトリにあるため、同時に削除される。
 `lib/api/topologies/network/snapshot.rb` に定義。
 
 ### `GET /usecases/:usecase/:network/:snapshot/topology`
@@ -219,3 +221,31 @@ primary:eth3 ↔ secondary:eth3 のリンクを生成する。
 
 fabric インタフェースはサブインタフェース指定なし (物理ポート直接使用のため `.0` サフィックスなし)。
 `extract_fabric_member_interfaces(node)` が `pair[...]['atypical_interfaces']` から取得する。
+
+## ns_convert_table のスナップショット単位管理
+
+変換テーブルはスナップショットごとに独立して管理される:
+
+- **ファイルパス:** `$MDDO_TOPOLOGIES_DIR/<network>/<snapshot>/ns_convert_table.json`
+  (topology.json と同一ディレクトリ)
+- **REST API:** `GET/POST/DELETE /topologies/:nw/:ss/ns_convert_table`
+  (`lib/api/topologies/network/snapshot/ns_convert_table.rb`)
+- **自動削除:** `DELETE /topologies/:nw/:ss` で snapshot ディレクトリを `rm_rf` すると自動削除される
+- **404:** `ns_convert_table.json` が存在しない状態で参照 API を呼ぶと 404 を返す
+
+### POST の動作
+
+| リクエストボディ | 動作 |
+|---|---|
+| `{ usecase: "..." }` または空 | URL の `:ss` の `topology.json` からテーブルを生成・保存 |
+| `{ convert_table: {...} }` | 提供されたテーブルを直接保存 (手動上書き) |
+
+### 変換方向の意味
+
+| snapshot プレフィックス | テーブルの方向 |
+|---|---|
+| `original_*` | original → emulated |
+| `emulated_*` | emulated → original |
+
+ヘルパーメソッド: `ns_convert_table_file(network, snapshot)`, `read_ns_convert_table(network, snapshot)`,
+`save_ns_convert_table(network, snapshot, data)`, `ns_converter_wo_topology(network, snapshot)`

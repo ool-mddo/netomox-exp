@@ -70,28 +70,32 @@ module NetomoxExp
     end
 
     # @param [String] network Network name
+    # @param [String] snapshot Snapshot name
     # @return [String] file path
-    def ns_convert_table_file(network)
-      File.join(TOPOLOGIES_DIR, network, 'ns_convert_table.json')
+    def ns_convert_table_file(network, snapshot)
+      File.join(TOPOLOGIES_DIR, network, snapshot, 'ns_convert_table.json')
     end
 
     # @param [String] network Network name
+    # @param [String] snapshot Snapshot name
     # @return [void]
-    def save_ns_convert_table(network, data)
-      save_json_file(ns_convert_table_file(network), data)
+    def save_ns_convert_table(network, snapshot, data)
+      save_json_file(ns_convert_table_file(network, snapshot), data)
     end
 
     # @param [String] network Network name
+    # @param [String] snapshot Snapshot name
     # @return [Hash] convert_table
-    def read_ns_convert_table(network)
-      read_json_file(ns_convert_table_file(network))
+    def read_ns_convert_table(network, snapshot)
+      read_json_file(ns_convert_table_file(network, snapshot))
     end
 
     # @param [String] network Network name
+    # @param [String] snapshot Snapshot name
     # @return [NamespaceConverter] Namespace converter without topology data
-    def ns_converter_wo_topology(network)
+    def ns_converter_wo_topology(network, snapshot)
       ns_converter = ConvertNamespace::NamespaceConverter.new
-      ns_converter.reload(read_ns_convert_table(network))
+      ns_converter.reload(read_ns_convert_table(network, snapshot))
       ns_converter
     end
 
@@ -115,10 +119,11 @@ module NetomoxExp
     end
 
     # @param [String] network Network name (target of namespace conversion)
+    # @param [String] snapshot Snapshot name
     # @param [Array<Netomox::Topology::Node>] nodes Nodes in a layer
     # @return [Array<Hash>] Node/interfaces objects in the layer
-    def convert_layer_nodes(network, nodes)
-      ns_converter = ns_converter_wo_topology(network)
+    def convert_layer_nodes(network, snapshot, nodes)
+      ns_converter = ns_converter_wo_topology(network, snapshot)
       nodes.map { |node| _node_hash(ns_converter, node) }
     end
 
@@ -137,10 +142,11 @@ module NetomoxExp
     end
 
     # @param [String] network Network name (target of namespace conversion)
+    # @param [String] snapshot Snapshot name
     # @param [Array<Netomox::Topology::Node>] nodes Nodes in a layer
     # @return [Array<Hash>] Node/interfaces objects in the layer
-    def convert_layer_interfaces(network, nodes)
-      ns_converter = ns_converter_wo_topology(network)
+    def convert_layer_interfaces(network, snapshot, nodes)
+      ns_converter = ns_converter_wo_topology(network, snapshot)
       nodes.map do |node|
         node_hash = _node_hash(ns_converter, node)
         # NOTE: ADD :interfaces as diff -> #_node_hash returns common data with #convert_layer_nodes
