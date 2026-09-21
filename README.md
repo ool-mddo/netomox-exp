@@ -140,51 +140,66 @@ curl "http://localhost:9292/topologies/mddo-bgp/snapshots?prefix=original"
 
 ### Operate namespace convert table
 
-Delete namespace convert table of a network
+Delete namespace convert table of a snapshot
 
-* DELETE `/topologies/<network>/ns_convert_table`
+* DELETE `/topologies/<network>/<snapshot>/ns_convert_table`
 
 ```shell
-curl -X DELETE http://localhost:9292/topologies/mddo-ospf
+curl -X DELETE http://localhost:9292/topologies/mddo-ospf/original_asis/ns_convert_table
 ```
 
-Create (initialize) or update namespace convert table of a network
+Create (initialize) or update namespace convert table of a snapshot
 
-* POST `/topologies/<network>/ns_convert_table`
-  * `origin_snapshot`: snapshot name to create convert table (MUST be "original" env snapshot)
-  * `convert_table`: convert table data to update (upload)
+* POST `/topologies/<network>/<snapshot>/ns_convert_table`
+  * `usecase`: [optional] usecase name to load params.yaml for table generation
+  * `convert_table`: [optional] convert table data to store directly (manual override)
 
 ```shell
 curl -s -X POST -H 'Content-Type: application/json' \
-  -d '{"origin_snapshot": "original_asis"}' \
-  http://localhost:9292/topologies/mddo-ospf/ns_convert_table
+  -d '{"usecase": "refocus_topology"}' \
+  http://localhost:9292/topologies/mddo-ospf/original_asis/ns_convert_table
 ```
 
-Fetch namespace convert table of a network
+Fetch namespace convert table of a snapshot
 
-* GET `/topologies/<network>/ns_convert_table`
+* GET `/topologies/<network>/<snapshot>/ns_convert_table`
 
 ```shell
-curl http://localhost:9292/topologies/mddo-ospf/ns_convert_table
+curl http://localhost:9292/topologies/mddo-ospf/original_asis/ns_convert_table
 ```
 
 Convert hostname using convert table
 
-* POST `/topologies/<netowrk>/ns_convert_table/query`
+* POST `/topologies/<network>/<snapshot>/ns_convert_table/query`
   * `host_name` : host name to convert
-  * `if_name` : [optional] interface name to convert 
+  * `if_name` : [optional] interface name to convert
+
+Response:
+
+```json
+{
+  "origin_host": "<original hostname>",
+  "target_host": { "l3_model": "...", "l1_agent": "...", "l1_principal": "..." },
+  "origin_if": "<original if name>",
+  "target_if": { "l3_model": "...", "l1_agent": "...", "l1_principal": "..." }
+}
+```
+
+Note: `origin_if` / `target_if` are included only when `if_name` is specified.
+`target_host` / `target_if` are hashes containing the converted name for each layer view.
+Returns HTTP 404 if the node or interface is not found in the convert table.
 
 ```shell
 curl -s -X POST -H 'Content-Type: application/json' \
   -d '{"host_name": "Seg_192.168.0.0/30", "if_name": "regiona-rt1_ge-0/0/0.0"}' \
-  http://localhost:9292/topologies/mddo-ospf/ns_convert_table/query
+  http://localhost:9292/topologies/mddo-ospf/original_asis/ns_convert_table/query
 ```
 
 ### Convert topology namespace
 
 Fetch namespace converted topology data
 
-* GET `/topologies/<neetwork>/<snapshot>/converte_topology`
+* GET `/topologies/<network>/<snapshot>/converted_topology`
   * NOTE: initialize namespace convert table of the network before convert topology
 
 ```shell
