@@ -5,6 +5,7 @@ require_relative 'topology_converter_base'
 module NetomoxExp
   module ConvertTopology
     # topology data converter for container-lab
+    # rubocop:disable-next Metrics/ClassLength
     class ContainerLabConverter < TopologyConverterBase
       # @return [Hash] topology data for clab
       def convert
@@ -12,7 +13,7 @@ module NetomoxExp
         {
           'name' => @options[:env_name] || 'emulated',
           'topology' => {
-            'links' => link_data,
+            'links' => link_data + fabric_link_data,
             'nodes' => node_data
           }
         }
@@ -47,12 +48,44 @@ module NetomoxExp
         end
       end
 
+      # @param [Netomox::Topology::Node] node
+      # @return [Boolean]
+      def firewall_primary_node?(node)
+        pair = node.attribute.firewall.pair
+        pair.key?('primary') && pair['primary']['name'] == node.name
+      end
+
+      # @return [String] eth name for fabric interface (fixed: eth3)
+      def fabric_eth_name(_node)
+        'eth3'
+      end
+
+      # @param [Netomox::Topology::Node] primary_node Primary FW node
+      # @return [Hash, nil]
+      def make_fabric_link(primary_node)
+        pair = primary_node.attribute.firewall.pair
+        secondary_name = pair['secondary']['name']
+        secondary_node = @src_network.nodes.find { |n| n.name == secondary_name }
+        return nil if secondary_node.nil?
+
+        primary_ep   = "#{converted_node_l1principal(primary_node.name)}:#{fabric_eth_name(primary_node)}"
+        secondary_ep = "#{converted_node_l1principal(secondary_name)}:#{fabric_eth_name(secondary_node)}"
+        { 'endpoints' => [primary_ep, secondary_ep] }
+      end
+
+      # @return [Array<Hash>] fabric link data for FW HA pairs
+      def fabric_link_data
+        @src_network.nodes
+                    .select { |node| firewall_primary_node?(node) }
+                    .filter_map { |node| make_fabric_link(node) }
+      end
+
       # @param [String] kind Container type
       # param [Hash] opts Options for clab-topo.yaml
       # @return [Hash]
       def define_node_data(kind, opts = {})
         data = { 'kind' => kind }
-        %w[image type startup-config license binds components].each do |key|
+        %w[image type startup-config license binds components env ports labels].each do |key|
           # NOTE
           #   binds: Array<String>
           #   components: Hash
@@ -64,7 +97,7 @@ module NetomoxExp
       # @param [String] node_name Node name
       # @return [Hash, nil] nil if not found
       def find_l3prealloc_node(node_name)
-        return nil unless @options.key?(:usecase_l3preallocs)
+        return nil unless @options[:usecase_l3preallocs]
 
         node_params = @options[:usecase_l3preallocs].find { |n| n['type'] == 'node' && n['name'] == node_name }
         return nil if node_params.nil? || !node_params.key?('emulated_params')
@@ -72,11 +105,22 @@ module NetomoxExp
         node_params['emulated_params'] # for clab-topo
       end
 
-      # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
+      # @param [String] node_name Node name
+      # @return [Hash, nil] nil if not found
+      def find_clab_node_params(node_name)
+        return nil unless @options[:clab_node_params]
+
+        @options[:clab_node_params][node_name]
+      end
+
+      # rubocop:disable Metrics/AbcSize, Metrics/CyclomaticComplexity, Metrics/MethodLength
 
       # @param [Netomox::Topology::Node] node
       # @return [Hash] clab-topo node data
       def select_node_data(node)
+        clab_params = find_clab_node_params(node.name)
+        return define_node_data(clab_params['kind'], clab_params) if clab_params
+
         l3_prealloc_params = find_l3prealloc_node(node.name)
         if node.attribute.flags.include?('preallocated_node') || l3_prealloc_params.nil?
           opts = { 'image' => @options[:image], 'startup-config' => "#{node.name}.conf" }
@@ -92,7 +136,7 @@ module NetomoxExp
         end
         define_node_data(l3_prealloc_params['kind'], opts)
       end
-      # rubocop:enable Metrics/AbcSize, Metrics/MethodLength
+      # rubocop:enable Metrics/AbcSize, Metrics/CyclomaticComplexity, Metrics/MethodLength
 
       # rubocop:disable Metrics/MethodLength
 

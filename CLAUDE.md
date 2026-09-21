@@ -15,8 +15,9 @@ ContainerLab / cRPD ベースのエミュレーション環境構築までをつ
 - **URL マッチ順序:** `/layer_type_:layer_type` は `/:layer` より先にマウントする必要がある
   （[lib/api/topologies/network/snapshot/topology.rb](lib/api/topologies/network/snapshot/topology.rb) L62-63 参照）
 - **`ns_convert_table.json` の事前初期化:** `converted_topology`, `batfish_layer1_topology`,
-  `containerlab_topology`, `nodes`, `interfaces`, `config_params` の各 API はこのファイルが
-  存在することを前提とする。存在しない場合は 404 エラー
+  `containerlab_topology`, `nodes`, `interfaces`, `config_params` の各 API はスナップショット
+  ディレクトリ内の `ns_convert_table.json` が存在することを前提とする。存在しない場合は 404 エラー。
+  ファイルは `POST /topologies/:nw/:ss/ns_convert_table` で生成される。
 - **`DELETE /topologies/:nw/:ss` はスナップショットディレクトリごと削除:** `FileUtils.rm_rf` で即時削除。
   `conduit_topology` API が既存の `*_conduitN` スナップショットを削除する際に使用される。
   失敗しても後続処理は続行 (デバッグのため残す設計)。
@@ -110,7 +111,8 @@ RFC8345 トップレベルの `"flag": ["firewall"]` を持つノードを FW �
 **vSRX の `l1_principal` 割り当て順序:**
 - `management` インタフェース → `eth1`
 - `control` インタフェース → `eth2`
-- データポート → `ge-x/y/z` を若番ソートして `eth3` 以降
+- `fabric` インタフェース (ge-0/0/0 / ge-7/0/0) → `eth3` (固定; L3 TP に現れないが containerlab で直接使用)
+- データポート → `ge-x/y/z` を若番ソートして `eth4` 以降
 - 同一物理ポートの複数サブインタフェースは同じ `ethM` を共有
 
 **静的ルートの next-hop インタフェース (`StaticRouteTpTable`):**
@@ -122,6 +124,7 @@ RFC8345 トップレベルの `"flag": ["firewall"]` を持つノードを FW �
 ### `DELETE /topologies/:network/:snapshot`
 
 スナップショットディレクトリを削除する。`FileUtils.rm_rf` で即時削除。
+`topology.json` と `ns_convert_table.json` の両方が同じディレクトリにあるため、同時に削除される。
 `lib/api/topologies/network/snapshot.rb` に定義。
 
 ### `GET /usecases/:usecase/:network/:snapshot/topology`
@@ -142,3 +145,107 @@ GET /usecases/refocus_topology/mddo-fw/original_asis_blueprint/topology
 `USECASE_DIR/:uc/:nw/:ss/topology.json` を `read_json_file` で読んで返す。
 `blueprint_topology.rb` のルートブロックから呼び出される。
 (`USECASE_DIR` 定数は `Helpers` モジュール内でしかアクセスできないため、ルートから直接参照不可。)
+
+## ContainerLab トポロジ変換: FW ノード (proxmox) 対応
+
+`GET /topologies/:nw/:ss/topology/:layer/containerlab_topology` で `usecase` パラメータを渡すと、
+ユースケース params.yaml の `containerlab_nodes` セクションに定義されたノードごとの設定を優先的に使用する。
+
+**`containerlab_nodes` (params.yaml):**
+ノード名をキーとするハッシュ。各エントリが `ContainerLabConverter#find_clab_node_params` で参照される。
+`l3_preallocated_resources` とは独立した別セクション（処理コードは共有しない）。
+
+サポートするフィールド: `kind`, `image`, `env`, `binds`, `ports`, `labels`
+（`startup-config` は付与されない — proxmox/VM ベースのノードは config ファイル注入を使わない）
+
+```yaml
+# usecases/<usecase>/<network>/params.yaml
+containerlab_nodes:
+  site-a-fw-1:
+    kind: linux
+    image: 'rtedpro/proxmox:9.2.3'
+    env:
+      container: docker
+    binds:
+      - /dev/kvm:/dev/kvm
+      - /tmp/proxmox-shared:/var/tmp
+      - /tmp/proxmox-shared/qemu:/opt/qemu-shared
+    ports:
+      - "8006:8006"
+    labels:
+      ansible-group: junos
+      clusterid: 1
+      redundant: act   # secondary は "sby"
+```
+
+**優先順位 (`select_node_data` の参照順):**
+1. `containerlab_nodes` に定義あり → その定義を使用（FW / proxmox ノード）
+2. `l3_preallocated_resources` の `emulated_params` に定義あり → そちらを使用（Nokia SR-SIM 等）
+3. いずれも未定義 → `juniper_crpd` デフォルト（cRPD ノード）
+
+実装: [`lib/convert_topology/containerlab_converter.rb`](lib/convert_topology/containerlab_converter.rb)
+
+### FW HA ペアの fabric リンク自動生成
+
+`ContainerLabConverter#convert` は通常の L3 リンクに加え、FW HA クラスタのファブリックリンクを自動追加する。
+ファブリックリンクは L3 トポロジに現れないが、エミュレーション環境では必要なリンク。
+
+**eth 番号の割り当て (vSRX / Proxmox):**
+| eth 番号 | 用途 |
+|---|---|
+| eth1 | management |
+| eth2 | control (JunOS eth0 相当) |
+| eth3 | **fabric** (ge-0/0/0 / ge-7/0/0 — 固定) |
+| eth4 以降 | データポート (ge-x/y/z を若番ソート) |
+
+primary ノードの `node.attribute.firewall.pair` から secondary ノードを特定し、
+primary:eth3 ↔ secondary:eth3 のリンクを生成する。
+
+**関連メソッド:**
+- `firewall_primary_node?(node)` — primary/secondary 判定
+- `fabric_eth_name(_node)` — `'eth3'` を返す（固定）
+- `make_fabric_link(primary_node)` — 1 ペア分のリンク Hash を生成
+- `fabric_link_data` — 全 HA ペアのファブリックリンク Array を返す
+
+### ns_convert_table の fabric インタフェースエントリ
+
+`TermPointNameTable#make_table_for_firewall_actual` は、L3 TP として現れない fabric インタフェース
+(ge-0/0/0 / ge-7/0/0) のエントリも変換テーブルに追加する。
+
+```json
+"site-a-fw-1": {
+  "ge-0/0/1.0": { "l3_model": "ge-0/0/1.0", "l1_agent": "ge-0/0/1", "l1_principal": "eth4" },
+  "ge-0/0/0":   { "l3_model": "ge-0/0/0",   "l1_agent": "ge-0/0/0", "l1_principal": "eth3" }
+}
+```
+
+fabric インタフェースはサブインタフェース指定なし (物理ポート直接使用のため `.0` サフィックスなし)。
+`extract_fabric_member_interfaces(node)` が `pair[...]['atypical_interfaces']` から取得する。
+
+## ns_convert_table のスナップショット単位管理
+
+変換テーブルはスナップショットごとに独立して管理される:
+
+- **ファイルパス:** `$MDDO_TOPOLOGIES_DIR/<network>/<snapshot>/ns_convert_table.json`
+  (topology.json と同一ディレクトリ)
+- **REST API:** `GET/POST/DELETE /topologies/:nw/:ss/ns_convert_table`
+  (`lib/api/topologies/network/snapshot/ns_convert_table.rb`)
+- **自動削除:** `DELETE /topologies/:nw/:ss` で snapshot ディレクトリを `rm_rf` すると自動削除される
+- **404:** `ns_convert_table.json` が存在しない状態で参照 API を呼ぶと 404 を返す
+
+### POST の動作
+
+| リクエストボディ | 動作 |
+|---|---|
+| `{ usecase: "..." }` または空 | URL の `:ss` の `topology.json` からテーブルを生成・保存 |
+| `{ convert_table: {...} }` | 提供されたテーブルを直接保存 (手動上書き) |
+
+### 変換方向の意味
+
+| snapshot プレフィックス | テーブルの方向 |
+|---|---|
+| `original_*` | original → emulated |
+| `emulated_*` | emulated → original |
+
+ヘルパーメソッド: `ns_convert_table_file(network, snapshot)`, `read_ns_convert_table(network, snapshot)`,
+`save_ns_convert_table(network, snapshot, data)`, `ns_converter_wo_topology(network, snapshot)`

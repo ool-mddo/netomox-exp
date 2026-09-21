@@ -2,7 +2,6 @@
 
 require 'fileutils'
 require 'lib/api/rest_api_base'
-require_relative 'network/ns_convert_table'
 require_relative 'network/snapshot'
 
 module NetomoxExp
@@ -38,7 +37,6 @@ module NetomoxExp
           end
         end
 
-        mount ApiRoute::NsConvertTable
         mount ApiRoute::Snapshot
       end
     end

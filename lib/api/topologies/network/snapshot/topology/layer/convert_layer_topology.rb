@@ -12,7 +12,7 @@ module NetomoxExp
       get 'batfish_layer1_topology' do
         network, snapshot, layer = %i[network snapshot layer].map { |key| params[key] }
         topology_data = read_topology_file(network, snapshot)
-        ns_converter = ns_converter_wo_topology(network)
+        ns_converter = ns_converter_wo_topology(network, snapshot)
         bf_converter = ConvertTopology::BatfishConverter.new(topology_data, layer, ns_converter)
 
         # response
@@ -32,13 +32,14 @@ module NetomoxExp
         network, snapshot, layer = %i[network snapshot layer].map { |key| params[key] }
 
         topology_data = read_topology_file(network, snapshot)
-        ns_converter = ns_converter_wo_topology(network)
+        ns_converter = ns_converter_wo_topology(network, snapshot)
         opts = %i[env_name bind_license license image endpoint_image usecase]
                .select { |key| params.key?(key) }
                .to_h { |key| [key, params[key]] }
         if opts[:usecase]
           param_data = read_params(opts[:usecase], network)
           opts[:usecase_l3preallocs] = param_data['l3_preallocated_resources']
+          opts[:clab_node_params] = param_data['containerlab_nodes']
         end
         clab_converter = ConvertTopology::ContainerLabConverter.new(topology_data, layer, ns_converter, opts)
 

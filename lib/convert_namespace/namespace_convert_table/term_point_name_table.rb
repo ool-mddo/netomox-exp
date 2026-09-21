@@ -243,6 +243,11 @@ module NetomoxExp
                          end
             add_tp_name_entry(src_node.name, src_tp.name, dst_node_name, dst_tp_dic)
           end
+
+          extract_fabric_member_interfaces(src_node).each do |iface|
+            dst_tp_dic = forward_convert_firewall_tp_name(iface, 'eth3')
+            add_tp_name_entry(src_node.name, iface, dst_node_name, dst_tp_dic)
+          end
         end
       end
       # rubocop:enable Metrics/AbcSize, Metrics/CyclomaticComplexity, Metrics/MethodLength, Metrics/PerceivedComplexity
@@ -266,11 +271,23 @@ module NetomoxExp
         control_tps.each    { |tp| result[tp.name] = 'eth2' }
         data_tps.each do |tp|
           idx = data_phys_sorted.index(phys.call(tp))
-          result[tp.name] = "eth#{idx + 3}"
+          result[tp.name] = "eth#{idx + 4}"
         end
         result
       end
       # rubocop:enable Metrics/AbcSize, Metrics/CyclomaticComplexity, Metrics/MethodLength, Metrics/PerceivedComplexity
+
+      # @param [Netomox::Topology::Node] node FW node
+      # @return [Array<String>] physical interface names used as fabric members (e.g. ["ge-0/0/0"])
+      def extract_fabric_member_interfaces(node)
+        pair = node.attribute.firewall.pair
+        node_side = [pair['primary'], pair['secondary']].find { |s| s && s['name'] == node.name }
+        return [] if node_side.nil?
+
+        node_side.fetch('atypical_interfaces', [])
+                 .select { |i| i['role'] == 'fabric' }
+                 .flat_map { |i| i.dig('fabric_options', 'member_interfaces') || [] }
+      end
 
       # @param [String] iface_name Physical interface name (e.g. "ge-0/0/1")
       # @return [Array<Integer>] sort key

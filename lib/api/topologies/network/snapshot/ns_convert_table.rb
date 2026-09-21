@@ -23,26 +23,23 @@ module NetomoxExp
       resource 'ns_convert_table' do
         desc 'Post convert_table'
         params do
-          optional :origin_snapshot, type: String, desc: 'Origin snapshot name'
-          optional :convert_table, type: Hash, desc: 'Convert table'
-          mutually_exclusive :origin_snapshot, :convert_table, message: 'are exclusive cannot pass both params'
+          optional :convert_table, type: Hash, desc: 'Convert table (manual override)'
           optional :usecase, type: String, desc: 'Usecase name', default: nil
         end
         post do
-          network = params[:network]
+          network, snapshot = %i[network snapshot].map { |key| params[key] }
           ns_converter = ConvertNamespace::NamespaceConverter.new
 
-          if params.key?(:origin_snapshot)
-            snapshot = params[:origin_snapshot]
+          if params.key?(:convert_table)
+            logger.info "Update namespace convert table of network: #{network}/#{snapshot}"
+            ns_converter.reload(params[:convert_table])
+          else
             logger.info "Initialize namespace convert table with snapshot: #{network}/#{snapshot}"
             topology_data = read_topology_file(network, snapshot)
             usecase_params = read_usecase_params(params[:usecase], network)
             ns_converter.load_origin_topology(topology_data, usecase_params)
-          else
-            logger.info "Update namespace convert table of network: #{network}"
-            ns_converter.reload(params[:convert_table])
           end
-          save_ns_convert_table(network, ns_converter.to_hash)
+          save_ns_convert_table(network, snapshot, ns_converter.to_hash)
 
           # response
           {}
@@ -50,13 +47,16 @@ module NetomoxExp
 
         desc 'Get convert_table'
         get do
+          network, snapshot = %i[network snapshot].map { |key| params[key] }
+
           # response
-          read_ns_convert_table(params[:network])
+          read_ns_convert_table(network, snapshot)
         end
 
         desc 'Delete convert_table'
         delete do
-          FileUtils.rm_f(ns_convert_table_file(params[:network]))
+          network, snapshot = %i[network snapshot].map { |key| params[key] }
+          FileUtils.rm_f(ns_convert_table_file(network, snapshot))
 
           # response
           ''
@@ -68,8 +68,8 @@ module NetomoxExp
           optional :if_name, type: String, desc: 'Interface name to convert'
         end
         post 'query' do
-          network, host_name = %i[network host_name].map { |key| params[key] }
-          ns_converter = ns_converter_wo_topology(network)
+          network, snapshot, host_name = %i[network snapshot host_name].map { |key| params[key] }
+          ns_converter = ns_converter_wo_topology(network, snapshot)
           begin
             resp = { origin_host: host_name, target_host: ns_converter.node_name.convert(host_name) }
             if params.key?(:if_name)

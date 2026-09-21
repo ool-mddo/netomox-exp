@@ -18,7 +18,7 @@ module NetomoxExp
         nw = nws.find_network(layer)
         error!("#{network}/#{snapshot}/#{layer} not found", 404) if nw.nil?
 
-        ns_converter = ns_converter_wo_topology(network)
+        ns_converter = ns_converter_wo_topology(network, snapshot)
         nodes = nw.nodes
         nodes.select! { |n| n.attribute.node_type == params[:node_type] } if params.key?(:node_type)
         nodes.reject! { |n| n.attribute.node_type == params[:exc_node_type] } if params.key?(:exc_node_type)

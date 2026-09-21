@@ -2,6 +2,7 @@
 
 require 'fileutils'
 require 'lib/api/rest_api_base'
+require_relative 'snapshot/ns_convert_table'
 require_relative 'snapshot/converted_topology'
 require_relative 'snapshot/topology/layer'
 require_relative 'snapshot/topology'
@@ -21,6 +22,7 @@ module NetomoxExp
           ''
         end
 
+        mount ApiRoute::NsConvertTable
         mount ApiRoute::ConvertedTopology
         mount ApiRoute::Topology
       end
