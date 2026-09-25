@@ -458,4 +458,3 @@ bundle exec rake rubocop
 # or
 bundle exec rake rubocop:auto_correct
 ```
-/
