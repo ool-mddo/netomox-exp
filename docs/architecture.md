@@ -110,7 +110,12 @@ RFC8345 トップレベルの `"flag": ["firewall"]` を持つノードを FW �
 
 vSRX の `l1_principal` 割り当て:
 - `management` → `eth1`、`control` → `eth2`
-- データポート: `ge-x/y/z` を若番ソートして `eth3` 以降（同一物理ポートのサブインタフェースは同じ `ethM`）
+- `fabric` (ge-0/0/0 / ge-7/0/0) → `eth3`（固定。L3 TP には現れないが containerlab で直接使用）
+- データポート: `ge-x/y/z` を若番ソートして `eth4` 以降（同一物理ポートのサブインタフェースは同じ `ethM`）
+- chassis cluster の HA ペア (fw-1/fw-2) は config を共有するため、各ノードの L3 TP には自分側と
+  パートナー側（実リンクの無い「幽霊」ポート）の両方のデータポートが現れる。パートナー側は `pair`
+  から判定した FPC 番号で自分側と別グループに分け、それぞれ独立に `eth4` から採番する
+  （詳細: [netomox-exp/CLAUDE.md](../CLAUDE.md) の「名前空間変換: FW ノード (vSRX) 対応」）
 
 ### 変換テーブルの初期化フロー
 
@@ -201,8 +206,9 @@ L1L3DataBuilder (layer1)
       "eth1.0":      { "l3_model": "ge-0/0/0.0", "l1_agent": "ge-0/0/0.0", "l1_principal": "ge-0/0/0.0" }
     },
     "site-a-fw-1": {
-      "ge-0/0/1.0": { "l3_model": "ge-0/0/1.0", "l1_agent": "ge-0/0/1", "l1_principal": "eth3" },
-      "ge-0/0/2.0": { "l3_model": "ge-0/0/2.0", "l1_agent": "ge-0/0/2", "l1_principal": "eth4" }
+      "ge-0/0/1.0": { "l3_model": "ge-0/0/1.0", "l1_agent": "ge-0/0/1", "l1_principal": "eth4" },
+      "ge-0/0/2.0": { "l3_model": "ge-0/0/2.0", "l1_agent": "ge-0/0/2", "l1_principal": "eth5" },
+      "ge-0/0/0":   { "l3_model": "ge-0/0/0",   "l1_agent": "ge-0/0/0", "l1_principal": "eth3" }
     }
   },
   "ospf_proc_id_table": { ... },

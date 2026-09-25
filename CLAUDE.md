@@ -112,8 +112,19 @@ RFC8345 トップレベルの `"flag": ["firewall"]` を持つノードを FW �
 - `management` インタフェース → `eth1`
 - `control` インタフェース → `eth2`
 - `fabric` インタフェース (ge-0/0/0 / ge-7/0/0) → `eth3` (固定; L3 TP に現れないが containerlab で直接使用)
-- データポート → `ge-x/y/z` を若番ソートして `eth4` 以降
+- データポート → `ge-x/y/z` を若番ソートして `eth4` 以降を割当て。ただし HA パートナー側の FPC 番号
+  (下記) に属するポートは、自ノードのポートとは**別グループとして独立に** `eth4` から番号を振り直す
 - 同一物理ポートの複数サブインタフェースは同じ `ethM` を共有
+
+**HA ペアの config 共有に関する注意:** chassis cluster 構成では fw-1/fw-2 (node0/node1) が
+同一の設定内容を持つため、両ノードの L3 TP に自分側 (`ge-0/*/*`) とパートナー側 (`ge-7/*/*`) の
+データポートが両方現れる（実リンクは自分側にしか無い、いわば「幽霊」ポート）。しかし
+`NamespaceConverter#rewrite_node` はノードの全 TP（実リンクの有無を問わず）を変換テーブルで
+引くため、パートナー側ポートも変換テーブルへのエントリ自体は必要。
+`build_firewall_eth_map` は `partner_fpc_number(node)` (`pair` の相手側の fabric メンバー
+インタフェースから判定) でパートナー側の FPC 番号を求め、そのポート群だけを自分側とは別グループに
+分けて `eth4` から番号を振り直す（`assign_sequential_eth_names`）。結果として自分側とパートナー側で
+同じ `ethM` が重複して使われるが、パートナー側ポートは実体のない参照専用エントリのため実害はない。
 
 **静的ルートの next-hop インタフェース (`StaticRouteTpTable`):**
 - cRPD ノード: `'dynamic'` に変換
@@ -196,7 +207,8 @@ containerlab_nodes:
 | eth1 | management |
 | eth2 | control (JunOS eth0 相当) |
 | eth3 | **fabric** (ge-0/0/0 / ge-7/0/0 — 固定) |
-| eth4 以降 | データポート (ge-x/y/z を若番ソート) |
+| eth4 以降 | データポート (ge-x/y/z を若番ソート。HA パートナー側ポートは別グループとして
+  独立に eth4 から採番されるため、自分側と番号が重複しうる — 詳細は上記「名前空間変換」節参照) |
 
 primary ノードの `node.attribute.firewall.pair` から secondary ノードを特定し、
 primary:eth3 ↔ secondary:eth3 のリンクを生成する。
