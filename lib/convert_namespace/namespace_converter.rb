@@ -63,7 +63,7 @@ module NetomoxExp
         @dst_nws.networks = @src_nws.networks
                                     .filter { |nw| target_network?(nw.name) }
                                     .map { |src_nw| rewrite_network(src_nw) }
-        @dst_nws.interpret.topo_data
+        restore_node_flags(@dst_nws.interpret.topo_data) { |_nw_id, node_id| node_name.reverse_lookup(node_id) }
       end
 
       protected

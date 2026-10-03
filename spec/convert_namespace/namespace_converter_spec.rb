@@ -13,6 +13,13 @@ RSpec.describe NetomoxExp::ConvertNamespace::NamespaceConverter do
                    .map { |tp| tp['tp-id'] }
   end
 
+  # @return [Hash{String => Array<String>}] "network-id/node-id" => top-level flags
+  def flagged_nodes(topology)
+    topology['ietf-network:networks']['network'].each_with_object({}) do |nw, h|
+      (nw['node'] || []).each { |n| h["#{nw['network-id']}/#{n['node-id']}"] = n['flag'] if n['flag'] }
+    end
+  end
+
   it 'reproduces the reviewed emulated topology (original_asis -> emulated_asis)' do
     # the fixture 'emulated_asis' is a snapshot of the demo output
     emulated = JSON.parse(File.read(FixtureHelper.path('topologies', 'mddo-fw', 'emulated_asis.topology.json')))
@@ -33,14 +40,26 @@ RSpec.describe NetomoxExp::ConvertNamespace::NamespaceConverter do
     expect(tp_ids(converted, 'layer3', 'site-a-fw-1')).to match_array %w[ge-0/0/1.0 ge-0/0/2.0 ge-7/0/1.0 ge-7/0/2.0]
   end
 
-  it 'keeps the firewall attribute and node count' do
+  it 'keeps the firewall attribute, the top-level firewall flag and node count' do
     orig_nodes = ConverterHelper.nodes_of(original, 'layer3')
     conv_nodes = ConverterHelper.nodes_of(converted, 'layer3')
     expect(conv_nodes.length).to eq orig_nodes.length
-    # NOTE: the top-level "flag" is not output by the converter (netomox gem); `firewall` attribute is kept
-    fw_names = conv_nodes.select { |n| n.dig('mddo-topology:l3-node-attributes', 'firewall') }
-                         .map { |n| n['node-id'] }
-    expect(fw_names).to match_array %w[site-a-fw-1 site-a-fw-2 site-b-fw-1 site-b-fw-2]
+    fw_names = %w[site-a-fw-1 site-a-fw-2 site-b-fw-1 site-b-fw-2]
+    expect(conv_nodes.select { |n| n.dig('mddo-topology:l3-node-attributes', 'firewall') }.map { |n| n['node-id'] })
+      .to match_array fw_names
+    expect(conv_nodes.select { |n| n['flag']&.include?('firewall') }.map { |n| n['node-id'] })
+      .to match_array fw_names
+  end
+
+  it 'keeps top-level node flags (not only the firewall) before and after the conversion' do
+    flags = ->(topology) { flagged_nodes(topology) }
+    expect(flags.call(original)).to eq flags.call(converted)
+    expect(flags.call(converted)).not_to be_empty
+  end
+
+  it 'keeps the flag in the backward conversion (emulated -> original)' do
+    back = ConverterHelper.ns_converter_for(converted)
+    expect(flagged_nodes(back.convert)).to eq flagged_nodes(converted)
   end
 
   it 'keeps link count and every link endpoint refers to an existing term-point' do

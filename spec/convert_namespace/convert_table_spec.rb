@@ -106,6 +106,18 @@ RSpec.describe NetomoxExp::ConvertNamespace::ConvertTable do
     end
   end
 
+  describe 'convert table made from a converted (emulated) topology' do
+    let(:emulated) do
+      JSON.parse(File.read(FixtureHelper.path('topologies', 'mddo-fw', 'emulated_asis.topology.json')))
+    end
+    let(:emulated_table) { described_class.new.tap { |t| t.load_from_topology(emulated) } }
+
+    it 'still detects firewall nodes (the flag is kept in the converted topology)' do
+      # as a firewall node: JunOS names are kept (not renumbered as ethN.0)
+      expect(emulated_table.tp_name_table.to_data['site-a-fw-1']['ge-0/0/1.0']['l3_model']).to eq 'ge-0/0/1.0'
+    end
+  end
+
   describe 'static_route_tp_table / ospf_proc_id_table' do
     it 'has no static route entries for the fixture' do
       expect(table.static_route_tp_table.to_data).to eq({})
