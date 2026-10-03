@@ -12,7 +12,7 @@ ContainerLab / cRPD ベースのエミュレーション環境構築までをつ
 - **`netomox` gem:** GitHub Packages (`ool-mddo` org) からのみ取得可能。`bundle install` に GitHub 認証が必要
 - **ポート番号:** 9292 に hardcode あり（[lib/api/helpers_usecase.rb](lib/api/helpers_usecase.rb) L50, L64）
   - `external_as_topology` / `iperf_commands` API が自身に HTTP リクエストを送る self-call 設計
-- **URL マッチ順序:** `/layer_type_:layer_type` は `/:layer` より先にマウントする必要がある
+- **URL マッチ順序:** `/layer_type_:layer_type` と `/verify` は `/:layer` より先にマウントする必要がある
   （[lib/api/topologies/network/snapshot/topology.rb](lib/api/topologies/network/snapshot/topology.rb) L62-63 参照）
 - **`ns_convert_table.json` の事前初期化:** `converted_topology`, `batfish_layer1_topology`,
   `containerlab_topology`, `nodes`, `interfaces`, `config_params` の各 API はスナップショット
@@ -64,7 +64,21 @@ ghp_credential="USERNAME:TOKEN" docker buildx build -t netomox-exp --secret id=g
 
 ## テスト
 
-自動テストは存在しない。`lib/test_*.rb` は手動実行スクリプト（位置づけ要確認）。
+RSpec (`spec/`)。計画・方針は [docs/test_plan.md](docs/test_plan.md) を参照。
+
+```bash
+# テスト用 gem (rspec, rack-test) は Gemfile の optional group `test`。
+# 本番イメージには入らない (Dockerfile は group 指定なしで bundle install)。
+export BUNDLE_WITH=test
+bundle install
+bundle exec rspec          # または bundle exec rake spec
+UPDATE_GOLDEN=1 bundle exec rspec   # golden (spec/fixtures/golden) の再生成。差分は必ずレビューすること
+```
+
+- `spec/fixtures/` は `queries/` `topologies/` `usecases/` (mddo-fw) のコピーで固定されたデータ (自動生成物を直接参照しない)。
+- `MDDO_*_DIR` は `spec/spec_helper.rb` が一時ディレクトリに向ける (app を require する前に設定される)。
+- CI: `.github/workflows/test.yaml` (rubocop + rspec)。`.dockerignore` で `spec` 等はイメージから除外。
+- `lib/test_*.rb` は手動実行スクリプト (assert なし。イメージには含めない)。
 
 ## ディレクトリ構成の要点
 
