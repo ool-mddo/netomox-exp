@@ -27,3 +27,10 @@ group :development do
   gem 'rubocop-rake', require: false
   gem 'yard', '>= 0.9.20'
 end
+
+# test gems: NOT installed by default (e.g. in the container image).
+# enable with `bundle config set --local with test` or `BUNDLE_WITH=test`
+group :test, optional: true do
+  gem 'rack-test', '>= 2.0'
+  gem 'rspec', '>= 3.13'
+end

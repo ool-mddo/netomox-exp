@@ -1,0 +1,32 @@
+name: Test netomox-exp
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: read
+    env:
+      # `netomox` gem is provided by GitHub Packages (ool-mddo)
+      BUNDLE_RUBYGEMS__PKG__GITHUB__COM: ${{ github.repository_owner }}:${{ secrets.GITHUB_TOKEN }}
+      # enable the optional `test` group in Gemfile (rspec, rack-test)
+      BUNDLE_WITH: test
+    steps:
+      - name: checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.4'
+          bundler-cache: true
+
+      - name: Run rubocop
+        run: bundle exec rake rubocop
+
+      - name: Run rspec
+        run: bundle exec rake spec
