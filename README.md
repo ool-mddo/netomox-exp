@@ -10,6 +10,7 @@ Backend api to operate topology data. (original: https://github.com/corestate55/
   + figs/              # design diagrams
   + lib/               # REST API body
   + model_defs/        # scripts to generate topology data (prototype)
+  + spec/              # automated tests (rspec)
   + yang/              # yang schema to validate topology data (TODO)
 ```
 
@@ -458,3 +459,34 @@ bundle exec rake rubocop
 # or
 bundle exec rake rubocop:auto_correct
 ```
+
+### Test
+
+Automated tests are written with [RSpec](https://rspec.info/) (`spec/`).
+Test gems (`rspec`, `rack-test`) belong to the optional `test` group in `Gemfile`,
+so they are **not** installed into the container image (`spec/` is also excluded by `.dockerignore`).
+
+```shell
+# enable the optional `test` group (needs github packages credential, see "Optional: Install ruby gems")
+export BUNDLE_WITH=test
+bundle install
+
+# run all tests
+bundle exec rspec
+# or
+bundle exec rake spec
+
+# run a part of tests
+bundle exec rspec spec/convert_namespace
+bundle exec rspec spec/api/ns_convert_table_api_spec.rb
+bundle exec rspec spec/convert_namespace/convert_table_spec.rb:56
+```
+
+- Tests do not need external services (Batfish, ContainerLab, etc.). Topology/usecase directories
+  (`MDDO_*_DIR`) are redirected to temporary directories, and test data is in `spec/fixtures/`
+  (copy of `mddo-fw` network data).
+- Some expected data (`spec/fixtures/golden/`) can be regenerated with `UPDATE_GOLDEN=1 bundle exec rspec`.
+  **Always review the diff** of regenerated files.
+- CI: GitHub Actions (`.github/workflows/test.yaml`) runs rubocop and rspec on pull request.
+  On push, `actions.yaml` runs it first and builds/pushes the container image only if it succeeds.
+- Test plan and policy: [docs/test_plan.md](docs/test_plan.md)

@@ -1,0 +1,9 @@
+,Node,Configuration_Format
+0,site-b-br-1,JUNIPER
+1,site-a-br-1,JUNIPER
+2,site-b-fw-2,JUNIPER
+3,site-a-br-2,JUNIPER
+4,site-b-br-2,JUNIPER
+5,site-b-fw-1,JUNIPER
+6,site-a-fw-2,JUNIPER
+7,site-a-fw-1,JUNIPER

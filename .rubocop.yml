@@ -5,6 +5,12 @@ AllCops:
   NewCops: enable
   TargetRubyVersion: 3.4
 
+# specs are naturally long blocks
+Metrics/BlockLength:
+  Exclude:
+    - 'spec/**/*'
+    - 'model_defs/mddo/*.rb'
+
 # disable several metrics for hand-made models
 
 Metrics/AbcSize:
@@ -12,10 +18,6 @@ Metrics/AbcSize:
     - 'model_defs/mddo/*.rb'
 
 Metrics/MethodLength:
-  Exclude:
-    - 'model_defs/mddo/*.rb'
-
-Metrics/BlockLength:
   Exclude:
     - 'model_defs/mddo/*.rb'
 

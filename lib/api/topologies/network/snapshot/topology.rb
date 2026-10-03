@@ -52,7 +52,7 @@ module NetomoxExp
         desc 'Get topology data (L3+ layers)'
         get 'upper_layer3' do
           network, snapshot = %i[network snapshot].map { |key| params[key] }
-          layer_filter = UpperLayer3Filter.new(read_topology_file(network, snapshot))
+          layer_filter = ConvertNamespace::UpperLayer3Filter.new(read_topology_file(network, snapshot))
 
           # response
           layer_filter.filter
@@ -60,8 +60,8 @@ module NetomoxExp
 
         # NOTICE: url match sequence
         mount ApiRoute::LayerType # 1st match; /layer_type_:layer_type
-        mount ApiRoute::Layer # 2nd match; /:layer
-        mount ApiRoute::VerifyLayers
+        mount ApiRoute::VerifyLayers # 2nd match; /verify (must be before /:layer, or it is shadowed)
+        mount ApiRoute::Layer # 3rd match; /:layer
       end
     end
   end

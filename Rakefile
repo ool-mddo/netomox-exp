@@ -28,4 +28,13 @@ rescue LoadError
   end
 end
 
+begin
+  require 'rspec/core/rake_task'
+  RSpec::Core::RakeTask.new(:spec)
+rescue LoadError
+  task :spec do
+    warn 'RSpec is disabled (bundle with `test` group)'
+  end
+end
+
 CLEAN.include('**/*~')
