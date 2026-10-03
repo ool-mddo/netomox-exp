@@ -120,13 +120,15 @@ netomox-exp (Ruby 3.4 / Grape REST API, lib 88 ファイル・約 9,000 行) に
 
 ## CI（GitHub Actions）
 
-既存 `.github/workflows/actions.yaml`（`on: push`、docker build & push のみ）は変更せず、別ファイル `.github/workflows/test.yaml` を追加する。
+テストは `.github/workflows/test.yaml` に定義し、`.github/workflows/actions.yaml`（`on: push`、docker build & push）から reusable workflow として呼び出す。
+**CI (rubocop + rspec) が成功した場合のみ image を build / push する** (`build_and_push` は `needs: test`)。
 
-- トリガ: `push` / `pull_request`
+- トリガ: `pull_request` (単体実行) と `workflow_call` (`actions.yaml` の `test` ジョブ経由。push 時はこちら。二重実行を避けるため `test.yaml` 自体は push を購読しない)
+- 呼び出し側ジョブに `permissions: contents: read, packages: read` が必要 (reusable workflow は呼び出し側の権限を超えられない)
 - steps: `actions/checkout` → `ruby/setup-ruby`（ruby 3.4、`bundler-cache` は GitHub Packages 認証が必要なため `BUNDLE_RUBYGEMS__PKG__GITHUB__COM` を env に渡してから使用）→ `bundle exec rspec` → `bundle exec rake rubocop`
 - 認証: `BUNDLE_RUBYGEMS__PKG__GITHUB__COM: ${{ github.repository_owner }}:${{ secrets.GITHUB_TOKEN }}`、`permissions: contents: read, packages: read`（既存 docker build が同じ GITHUB_TOKEN で gem を取得しているため同方式で可）
 - bundle は `BUNDLE_WITH=test`（または `bundle config set with test`）でテスト用 group を有効化
-- 任意: docker build の job を `needs: test` にして、テスト失敗時はイメージを push しない（要判断。既存 job を触るため別 PR 推奨）
+- docker build の job は `needs: test` (確定。テスト失敗時はイメージを push しない)
 - 失敗時に RSpec 出力を確認できるよう `--format documentation` / JUnit は不要（最小構成）
 
 ## コンテナへの非混入
@@ -149,7 +151,7 @@ netomox-exp (Ruby 3.4 / Grape REST API, lib 88 ファイル・約 9,000 行) に
 
 ## 未確定事項
 
-- docker build job を test 成功に依存させるか（別 PR で可）
+- なし（docker build を test 成功に依存させる点は確定）
 
 ## Golden master 方針（確定: 構造アサーション中心）
 
@@ -201,16 +203,18 @@ netomox-exp (Ruby 3.4 / Grape REST API, lib 88 ファイル・約 9,000 行) に
 
 - [ ] **fixture の追従**: `spec/fixtures/` は mddo-fw のコピー。デモ側の出力が変わっても自動追従せず、更新手順が無い
   (`UPDATE_GOLDEN` の対象は golden のみ)。
-- [ ] **docker build と test の依存**: docker build ジョブはテスト成功を待たない (テスト失敗でもイメージが push される)。
-  既存ジョブを変更するため別 PR で扱う。
+- [x] **docker build と test の依存 → 対応済み**: `actions.yaml` の `build_and_push` を `needs: test` (reusable workflow `test.yaml`) にした。実走は未確認。
 - [ ] **rubocop-rspec 未導入**: spec の lint は標準 rubocop のみ。
 
 ### 調査が必要な点
 
-- [ ] **`flag: ["firewall"]` の欠落**: `NamespaceConverter#convert` の出力 (emulated トポロジ) からトップレベルの `flag: ["firewall"]` が消える
-  (`firewall` アトリビュートは残る。netomox gem 側の挙動と思われる)。FW ノード判定 (`ConvertTable#extract_l3_firewall_node_names`) はこの flag を使うため、
-  `emulated_*` スナップショットの topology から ns_convert_table を生成すると FW ノードが cRPD 扱いになる可能性がある。
-  デモの実フローで実際に起きるかは未確認。spec (`namespace_converter_spec.rb`) にはコメントで挙動を記録済み。
+- [x] **`flag: ["firewall"]` の欠落 → 修正済み**: netomox gem (0.13.0) はノードのトップレベル `flag` を扱わないため、
+  `NamespaceConverter#convert` / `UpperLayer3Filter#filter` の出力から消えていた。
+  変換前・後どちらでも常に残る仕様とし、`NamespaceConverterBase` が元の topology JSON からノードの `flag` を保持し、出力へ復元する
+  (`extract_node_flags` / `restore_node_flags`)。`flag` は FW 以外の値も含めてそのまま保持する。
+  これにより `emulated_*` の topology から ns_convert_table を生成しても FW ノードを判定できる。
+  spec: `namespace_converter_spec.rb` (変換前後・逆変換)、`upper_layer3_filter_spec.rb`、`convert_table_spec.rb` (emulated からの表生成)。
+  `spec/fixtures/topologies/mddo-fw/emulated_asis.topology.json` は復元後の出力で更新した (差分は FW 4 ノードの `flag` のみ)。
 
 ### 既知の未修正事項 (コード側)
 
@@ -220,7 +224,6 @@ netomox-exp (Ruby 3.4 / Grape REST API, lib 88 ファイル・約 9,000 行) に
 ### 優先順位 (案)
 
 1. CI の実走確認 (上記「CI が未実行」)
-2. `flag: ["firewall"]` 欠落の影響調査
-3. docker build の確認 / コミット整理
-4. BGP / external_as 系のテスト追加 (BGP fixture 用意)
-5. カバレッジ計測、`lib/test_*.rb` の整理
+2. docker build の確認 / コミット整理
+3. BGP / external_as 系のテスト追加 (BGP fixture 用意)
+4. カバレッジ計測、`lib/test_*.rb` の整理

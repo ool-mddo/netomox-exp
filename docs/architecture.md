@@ -295,4 +295,4 @@ spec/
 
 - `MDDO_QUERIES_DIR` / `MDDO_TOPOLOGIES_DIR` / `MDDO_USECASES_DIR` は `spec_helper.rb` が一時ディレクトリに向ける（アプリ読み込み前に設定する必要がある）。
 - テスト用 gem は Gemfile の optional group `test`。`spec/` 等は `.dockerignore` でコンテナイメージから除外する。
-- CI は `.github/workflows/test.yaml` (rubocop + rspec)。
+- CI は `.github/workflows/test.yaml` (rubocop + rspec)。push 時は `actions.yaml` から呼ばれ、成功後に image を build/push する。

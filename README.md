@@ -487,5 +487,6 @@ bundle exec rspec spec/convert_namespace/convert_table_spec.rb:56
   (copy of `mddo-fw` network data).
 - Some expected data (`spec/fixtures/golden/`) can be regenerated with `UPDATE_GOLDEN=1 bundle exec rspec`.
   **Always review the diff** of regenerated files.
-- CI: GitHub Actions (`.github/workflows/test.yaml`) runs rubocop and rspec on push/pull request.
+- CI: GitHub Actions (`.github/workflows/test.yaml`) runs rubocop and rspec on pull request.
+  On push, `actions.yaml` runs it first and builds/pushes the container image only if it succeeds.
 - Test plan and policy: [docs/test_plan.md](docs/test_plan.md)

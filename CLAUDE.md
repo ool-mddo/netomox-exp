@@ -77,7 +77,7 @@ UPDATE_GOLDEN=1 bundle exec rspec   # golden (spec/fixtures/golden) の再生成
 
 - `spec/fixtures/` は `queries/` `topologies/` `usecases/` (mddo-fw) のコピーで固定されたデータ (自動生成物を直接参照しない)。
 - `MDDO_*_DIR` は `spec/spec_helper.rb` が一時ディレクトリに向ける (app を require する前に設定される)。
-- CI: `.github/workflows/test.yaml` (rubocop + rspec)。`.dockerignore` で `spec` 等はイメージから除外。
+- CI: `.github/workflows/test.yaml` (rubocop + rspec)。push 時は `actions.yaml` から呼ばれ、成功した場合のみ image を build/push する。`.dockerignore` で `spec` 等はイメージから除外。
 - `lib/test_*.rb` は手動実行スクリプト (assert なし。イメージには含めない)。
 
 ## ディレクトリ構成の要点
@@ -111,6 +111,8 @@ layer3 ノードが FW ノード（vSRX）かどうかで変換ルールを分�
 
 **FW ノード判定 (`firewall_node?` in `convert_table_base.rb`):**  
 RFC8345 トップレベルの `"flag": ["firewall"]` を持つノードを FW ノードと判定する。
+この `flag` は netomox gem が扱わないため、`NamespaceConverterBase#restore_node_flags` が元の topology JSON から復元し、
+変換前・後 (`NamespaceConverter#convert` / `UpperLayer3Filter#filter`) のどちらの出力にも常に残る。
 `ConvertTable#load_from_topology` が生の topology JSON から FW ノード名 Set を抽出し (`extract_l3_firewall_node_names`)、
 全サブテーブルに注入 (`firewall_node_names=`)。`node.attribute.firewall` は全ノードで常に non-nil のため使用不可。
 
