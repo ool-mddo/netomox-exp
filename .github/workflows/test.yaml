@@ -1,8 +1,9 @@
 name: Test netomox-exp
 
+# NOTE: `push` is handled by actions.yaml (this workflow is called as a reusable workflow before building the image)
 on:
-  push:
   pull_request:
+  workflow_call:
 
 jobs:
   test:
