@@ -19,7 +19,7 @@ module NetomoxExp
         @networks = Netomox::Topology::Networks.new(topology_data)
         @ns_converter = ns_converter
         @src_network = @networks.find_network(src_network)
-        raise StandardError, "Network #{src_network} is not found in #{file} data" unless @src_network
+        raise StandardError, "Network #{src_network} is not found in topology data" unless @src_network
 
         @options = options
       end
