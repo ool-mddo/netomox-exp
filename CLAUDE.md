@@ -12,7 +12,7 @@ ContainerLab / cRPD ベースのエミュレーション環境構築までをつ
 - **`netomox` gem:** GitHub Packages (`ool-mddo` org) からのみ取得可能。`bundle install` に GitHub 認証が必要
 - **ポート番号:** 9292 に hardcode あり（[lib/api/helpers_usecase.rb](lib/api/helpers_usecase.rb) L50, L64）
   - `external_as_topology` / `iperf_commands` API が自身に HTTP リクエストを送る self-call 設計
-- **URL マッチ順序:** `/layer_type_:layer_type` は `/:layer` より先にマウントする必要がある
+- **URL マッチ順序:** `/layer_type_:layer_type` と `/verify` は `/:layer` より先にマウントする必要がある
   （[lib/api/topologies/network/snapshot/topology.rb](lib/api/topologies/network/snapshot/topology.rb) L62-63 参照）
 - **`ns_convert_table.json` の事前初期化:** `converted_topology`, `batfish_layer1_topology`,
   `containerlab_topology`, `nodes`, `interfaces`, `config_params` の各 API はスナップショット
@@ -64,7 +64,21 @@ ghp_credential="USERNAME:TOKEN" docker buildx build -t netomox-exp --secret id=g
 
 ## テスト
 
-自動テストは存在しない。`lib/test_*.rb` は手動実行スクリプト（位置づけ要確認）。
+RSpec (`spec/`)。計画・方針は [docs/test_plan.md](docs/test_plan.md) を参照。
+
+```bash
+# テスト用 gem (rspec, rack-test) は Gemfile の optional group `test`。
+# 本番イメージには入らない (Dockerfile は group 指定なしで bundle install)。
+export BUNDLE_WITH=test
+bundle install
+bundle exec rspec          # または bundle exec rake spec
+UPDATE_GOLDEN=1 bundle exec rspec   # golden (spec/fixtures/golden) の再生成。差分は必ずレビューすること
+```
+
+- `spec/fixtures/` は `queries/` `topologies/` `usecases/` (mddo-fw) のコピーで固定されたデータ (自動生成物を直接参照しない)。
+- `MDDO_*_DIR` は `spec/spec_helper.rb` が一時ディレクトリに向ける (app を require する前に設定される)。
+- CI: `.github/workflows/test.yaml` (rubocop + rspec)。push 時は `actions.yaml` から呼ばれ、成功した場合のみ image を build/push する。`.dockerignore` で `spec` 等はイメージから除外。
+- `lib/test_*.rb` は手動実行スクリプト (assert なし。イメージには含めない)。
 
 ## ディレクトリ構成の要点
 
@@ -97,6 +111,8 @@ layer3 ノードが FW ノード（vSRX）かどうかで変換ルールを分�
 
 **FW ノード判定 (`firewall_node?` in `convert_table_base.rb`):**  
 RFC8345 トップレベルの `"flag": ["firewall"]` を持つノードを FW ノードと判定する。
+この `flag` は netomox gem が扱わないため、`NamespaceConverterBase#restore_node_flags` が元の topology JSON から復元し、
+変換前・後 (`NamespaceConverter#convert` / `UpperLayer3Filter#filter`) のどちらの出力にも常に残る。
 `ConvertTable#load_from_topology` が生の topology JSON から FW ノード名 Set を抽出し (`extract_l3_firewall_node_names`)、
 全サブテーブルに注入 (`firewall_node_names=`)。`node.attribute.firewall` は全ノードで常に non-nil のため使用不可。
 
@@ -112,8 +128,19 @@ RFC8345 トップレベルの `"flag": ["firewall"]` を持つノードを FW �
 - `management` インタフェース → `eth1`
 - `control` インタフェース → `eth2`
 - `fabric` インタフェース (ge-0/0/0 / ge-7/0/0) → `eth3` (固定; L3 TP に現れないが containerlab で直接使用)
-- データポート → `ge-x/y/z` を若番ソートして `eth4` 以降
+- データポート → `ge-x/y/z` を若番ソートして `eth4` 以降を割当て。ただし HA パートナー側の FPC 番号
+  (下記) に属するポートは、自ノードのポートとは**別グループとして独立に** `eth4` から番号を振り直す
 - 同一物理ポートの複数サブインタフェースは同じ `ethM` を共有
+
+**HA ペアの config 共有に関する注意:** chassis cluster 構成では fw-1/fw-2 (node0/node1) が
+同一の設定内容を持つため、両ノードの L3 TP に自分側 (`ge-0/*/*`) とパートナー側 (`ge-7/*/*`) の
+データポートが両方現れる（実リンクは自分側にしか無い、いわば「幽霊」ポート）。しかし
+`NamespaceConverter#rewrite_node` はノードの全 TP（実リンクの有無を問わず）を変換テーブルで
+引くため、パートナー側ポートも変換テーブルへのエントリ自体は必要。
+`build_firewall_eth_map` は `partner_fpc_number(node)` (`pair` の相手側の fabric メンバー
+インタフェースから判定) でパートナー側の FPC 番号を求め、そのポート群だけを自分側とは別グループに
+分けて `eth4` から番号を振り直す（`assign_sequential_eth_names`）。結果として自分側とパートナー側で
+同じ `ethM` が重複して使われるが、パートナー側ポートは実体のない参照専用エントリのため実害はない。
 
 **静的ルートの next-hop インタフェース (`StaticRouteTpTable`):**
 - cRPD ノード: `'dynamic'` に変換
@@ -196,7 +223,8 @@ containerlab_nodes:
 | eth1 | management |
 | eth2 | control (JunOS eth0 相当) |
 | eth3 | **fabric** (ge-0/0/0 / ge-7/0/0 — 固定) |
-| eth4 以降 | データポート (ge-x/y/z を若番ソート) |
+| eth4 以降 | データポート (ge-x/y/z を若番ソート。HA パートナー側ポートは別グループとして
+  独立に eth4 から採番されるため、自分側と番号が重複しうる — 詳細は上記「名前空間変換」節参照) |
 
 primary ノードの `node.attribute.firewall.pair` から secondary ノードを特定し、
 primary:eth3 ↔ secondary:eth3 のリンクを生成する。

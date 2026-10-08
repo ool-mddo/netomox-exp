@@ -18,7 +18,7 @@ module NetomoxExp
         @dst_nws = Netomox::PseudoDSL::PNetworks.new
         @dst_nws.networks = @src_nws.networks.filter { |nw| target_network?(nw.name) }
                                     .map { |src_nw| filter_network(src_nw) }
-        @dst_nws.interpret.topo_data
+        restore_node_flags(@dst_nws.interpret.topo_data) { |_nw_id, node_id| node_id }
       end
 
       private

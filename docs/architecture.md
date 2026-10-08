@@ -59,12 +59,12 @@ app.rb / config.ru
     │               ├── GET    (取得)
     │               ├── GET upper_layer3 (L3+ フィルタ)
     │               ├── ApiRoute::LayerType (/layer_type_:type) ※先にマッチ
-    │               ├── ApiRoute::Layer (/:layer)
-    │               │   ├── ConfigParams      (/config_params)
-    │               │   ├── ConvertLayerTopology (/batfish_layer1_topology, /containerlab_topology)
-    │               │   ├── LayerObjects      (/nodes, /interfaces)
-    │               │   └── VerifyLayer       (/verify)
-    │               └── VerifyLayers          (/verify)
+    │               ├── VerifyLayers          (/verify) ※/:layer より先にマッチ
+    │               └── ApiRoute::Layer (/:layer)
+    │                   ├── ConfigParams      (/config_params)
+    │                   ├── ConvertLayerTopology (/batfish_layer1_topology, /containerlab_topology)
+    │                   ├── LayerObjects      (/nodes, /interfaces)
+    │                   └── VerifyLayer       (/verify)
     └── ApiRoute::Usecases (/usecases)
         └── ApiRoute::Usecase (/:usecase)
             └── ApiRoute::UsecaseNetwork (/:network)
@@ -110,7 +110,12 @@ RFC8345 トップレベルの `"flag": ["firewall"]` を持つノードを FW �
 
 vSRX の `l1_principal` 割り当て:
 - `management` → `eth1`、`control` → `eth2`
-- データポート: `ge-x/y/z` を若番ソートして `eth3` 以降（同一物理ポートのサブインタフェースは同じ `ethM`）
+- `fabric` (ge-0/0/0 / ge-7/0/0) → `eth3`（固定。L3 TP には現れないが containerlab で直接使用）
+- データポート: `ge-x/y/z` を若番ソートして `eth4` 以降（同一物理ポートのサブインタフェースは同じ `ethM`）
+- chassis cluster の HA ペア (fw-1/fw-2) は config を共有するため、各ノードの L3 TP には自分側と
+  パートナー側（実リンクの無い「幽霊」ポート）の両方のデータポートが現れる。パートナー側は `pair`
+  から判定した FPC 番号で自分側と別グループに分け、それぞれ独立に `eth4` から採番する
+  （詳細: [netomox-exp/CLAUDE.md](../CLAUDE.md) の「名前空間変換: FW ノード (vSRX) 対応」）
 
 ### 変換テーブルの初期化フロー
 
@@ -201,8 +206,9 @@ L1L3DataBuilder (layer1)
       "eth1.0":      { "l3_model": "ge-0/0/0.0", "l1_agent": "ge-0/0/0.0", "l1_principal": "ge-0/0/0.0" }
     },
     "site-a-fw-1": {
-      "ge-0/0/1.0": { "l3_model": "ge-0/0/1.0", "l1_agent": "ge-0/0/1", "l1_principal": "eth3" },
-      "ge-0/0/2.0": { "l3_model": "ge-0/0/2.0", "l1_agent": "ge-0/0/2", "l1_principal": "eth4" }
+      "ge-0/0/1.0": { "l3_model": "ge-0/0/1.0", "l1_agent": "ge-0/0/1", "l1_principal": "eth4" },
+      "ge-0/0/2.0": { "l3_model": "ge-0/0/2.0", "l1_agent": "ge-0/0/2", "l1_principal": "eth5" },
+      "ge-0/0/0":   { "l3_model": "ge-0/0/0",   "l1_agent": "ge-0/0/0", "l1_principal": "eth3" }
     }
   },
   "ospf_proc_id_table": { ... },
@@ -261,10 +267,32 @@ GET /usecases/pni_te/:network/:snapshot/external_as_topology
    - `GET /topology/:layer/interfaces`
    - `GET /topology/:layer/config_params`
 
-3. **layer_type vs layer のルートマッチ順序:** `topology.rb` で `LayerType` を `Layer` より先にマウントしないと `/layer_type_ospf` が `:layer = "layer_type_ospf"` として解釈されてしまう。
+3. **layer_type / verify と layer のルートマッチ順序:** `topology.rb` で `LayerType` と `VerifyLayers` を `Layer` より先にマウントしないと、`/layer_type_ospf` や `/verify` が `:layer = "layer_type_ospf"` / `"verify"` として解釈されてしまう（`/verify` は 404 になる）。
 
 4. **TopologyBuilder の CSV 必須依存:** `generate_data` は複数の CSV ファイルが全て揃っていることを前提とする。ファイルが欠けると例外で終了する。
 
 5. **L3→L2 サポート情報の意図的除外:** NamespaceConverter は L3→L2 のサポートリンクを変換後のトポロジに含めない（エミュレーション環境では不要なため）。
 
 6. **`eval` によるCSV配列パース:** `table_base.rb` の `parse_array_string` は `eval` を使用している。信頼できるデータソース（Batfish 出力）のみを対象とすること。
+
+7. **`Layer3Verifier` の入力前提:** セグメントノードのリンクが欠けた（片方向のみの）トポロジでは `NoMethodError` になる（API は 500 を返す）。`ipaddress` gem の `require` を自身では持たず、TopologyBuilder 側の読み込みに依存している。
+
+## テスト構成
+
+自動テストは RSpec (`spec/`)。方針・優先度・実装結果は [test_plan.md](test_plan.md)、実行方法は [README.md](../README.md) を参照。
+
+```
+spec/
+├── convert_namespace/   # ConvertTable / NamespaceConverter (FW HA の eth 割当て等)
+├── convert_topology/    # ContainerLabConverter / BatfishConverter
+├── topology_builder/    # TopologyBuilder (Batfish CSV → topology), CSV mapper
+├── static_verifier/     # StaticVerifier
+├── usecase_deliverer/   # iperf コマンド生成, TinyIPAM
+├── api/                 # rack-test による REST API 統合テスト
+├── support/             # fixture / golden / API ヘルパー
+└── fixtures/            # mddo-fw のコピー (queries, topologies, usecases, golden)
+```
+
+- `MDDO_QUERIES_DIR` / `MDDO_TOPOLOGIES_DIR` / `MDDO_USECASES_DIR` は `spec_helper.rb` が一時ディレクトリに向ける（アプリ読み込み前に設定する必要がある）。
+- テスト用 gem は Gemfile の optional group `test`。`spec/` 等は `.dockerignore` でコンテナイメージから除外する。
+- CI は `.github/workflows/test.yaml` (rubocop + rspec)。push 時は `actions.yaml` から呼ばれ、成功後に image を build/push する。

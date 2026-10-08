@@ -5,7 +5,15 @@ env:
   IMAGE_NAME: netomox-exp
 
 jobs:
+  # run tests (rubocop + rspec) first: the image is built and pushed only if they pass
+  test:
+    permissions:
+      contents: read
+      packages: read
+    uses: ./.github/workflows/test.yaml
+
   build_and_push:
+    needs: test
     runs-on: ubuntu-latest
     permissions:
       contents: read

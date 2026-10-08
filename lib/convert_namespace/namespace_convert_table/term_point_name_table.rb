@@ -234,7 +234,7 @@ module NetomoxExp
           end
 
           non_lo_tps = src_node.termination_points.reject { |src_tp| loopback?(src_tp) }
-          eth_map = build_firewall_eth_map(non_lo_tps)
+          eth_map = build_firewall_eth_map(src_node, non_lo_tps)
           non_lo_tps.each do |src_tp|
             dst_tp_dic = if usecase_specified_tp?(src_node, src_tp)
                            forward_convert_pass_through_tp_name(src_tp.name)
@@ -252,41 +252,86 @@ module NetomoxExp
       end
       # rubocop:enable Metrics/AbcSize, Metrics/CyclomaticComplexity, Metrics/MethodLength, Metrics/PerceivedComplexity
 
-      # rubocop:disable Metrics/AbcSize, Metrics/CyclomaticComplexity, Metrics/MethodLength, Metrics/PerceivedComplexity
+      # rubocop:disable Metrics/AbcSize, Metrics/CyclomaticComplexity, Metrics/MethodLength
 
+      # @param [Netomox::Topology::Node] node FW node
       # @param [Array<Netomox::Topology::TermPoint>] non_lo_tps Non-loopback term-points of a firewall node
       # @return [Hash{String => String}] mapping: original tp name => l1_principal eth name
-      def build_firewall_eth_map(non_lo_tps)
+      def build_firewall_eth_map(node, non_lo_tps)
         phys = ->(tp) { tp.name.sub(/\.\d+$/, '') }
 
         management_tps = non_lo_tps.select { |tp| phys.call(tp) == 'management' }
         control_tps    = non_lo_tps.select { |tp| phys.call(tp) == 'control' }
         data_tps       = non_lo_tps.reject { |tp| %w[management control].include?(phys.call(tp)) }
 
-        data_phys_sorted = data_tps.map { |tp| phys.call(tp) }.uniq
-                                   .sort_by { |name| interface_sort_key(name) }
+        # A firewall HA pair member's parsed config reports both its own data ports and its
+        # HA partner's (chassis cluster config is shared between the two nodes, so e.g. fw-1
+        # also carries fw-2's ge-7/0/* ports as termination points, without a real link).
+        # Number the partner's ports as their own independent eth4.. sequence, instead of
+        # letting them extend this node's own sequence (they still need a table entry: every
+        # termination point of the node, linked or not, is looked up during conversion).
+        partner_fpc = partner_fpc_number(node)
+        ghost_tps, own_tps = data_tps.partition do |tp|
+          partner_fpc && interface_sort_key(phys.call(tp)).first == partner_fpc
+        end
 
         result = {}
         management_tps.each { |tp| result[tp.name] = 'eth1' }
         control_tps.each    { |tp| result[tp.name] = 'eth2' }
-        data_tps.each do |tp|
-          idx = data_phys_sorted.index(phys.call(tp))
-          result[tp.name] = "eth#{idx + 4}"
-        end
+        assign_sequential_eth_names(result, own_tps, phys)
+        assign_sequential_eth_names(result, ghost_tps, phys)
         result
       end
-      # rubocop:enable Metrics/AbcSize, Metrics/CyclomaticComplexity, Metrics/MethodLength, Metrics/PerceivedComplexity
+      # rubocop:enable Metrics/AbcSize, Metrics/CyclomaticComplexity, Metrics/MethodLength
+
+      # @param [Hash{String => String}] result mapping to fill in (mutated)
+      # @param [Array<Netomox::Topology::TermPoint>] tps Data term-points to number (single FPC group)
+      # @param [Proc] phys Extracts the physical (unit-less) interface name from a term-point
+      # @return [void]
+      def assign_sequential_eth_names(result, tps, phys)
+        phys_sorted = tps.map { |tp| phys.call(tp) }.uniq.sort_by { |name| interface_sort_key(name) }
+        tps.each do |tp|
+          idx = phys_sorted.index(phys.call(tp))
+          result[tp.name] = "eth#{idx + 4}"
+        end
+      end
+
+      # @param [Netomox::Topology::Node] node FW node
+      # @yield [String] pair-side node name, to select primary/secondary
+      # @return [Hash, nil] the matching pair side (`pair['primary']` or `pair['secondary']`)
+      def find_pair_side(node)
+        pair = node.attribute.firewall.pair
+        [pair['primary'], pair['secondary']].find { |side| side && yield(side['name']) }
+      end
+
+      # @param [Hash] pair_side one side (`primary`/`secondary`) of a firewall `pair` attribute
+      # @return [Array<String>] physical interface names used as fabric members (e.g. ["ge-0/0/0"])
+      def fabric_member_interfaces_for(pair_side)
+        pair_side.fetch('atypical_interfaces', [])
+                 .select { |i| i['role'] == 'fabric' }
+                 .flat_map { |i| i.dig('fabric_options', 'member_interfaces') || [] }
+      end
 
       # @param [Netomox::Topology::Node] node FW node
       # @return [Array<String>] physical interface names used as fabric members (e.g. ["ge-0/0/0"])
       def extract_fabric_member_interfaces(node)
-        pair = node.attribute.firewall.pair
-        node_side = [pair['primary'], pair['secondary']].find { |s| s && s['name'] == node.name }
+        node_side = find_pair_side(node) { |side_name| side_name == node.name }
         return [] if node_side.nil?
 
-        node_side.fetch('atypical_interfaces', [])
-                 .select { |i| i['role'] == 'fabric' }
-                 .flat_map { |i| i.dig('fabric_options', 'member_interfaces') || [] }
+        fabric_member_interfaces_for(node_side)
+      end
+
+      # @param [Netomox::Topology::Node] node FW node
+      # @return [Integer, nil] HA partner's FPC number (e.g. 7 for "ge-7/0/0"),
+      #   nil if undetermined (e.g. a standalone firewall with no HA pair/fabric info)
+      def partner_fpc_number(node)
+        partner_side = find_pair_side(node) { |side_name| side_name != node.name }
+        return nil if partner_side.nil?
+
+        fabric_iface = fabric_member_interfaces_for(partner_side).first
+        return nil if fabric_iface.nil?
+
+        interface_sort_key(fabric_iface).first
       end
 
       # @param [String] iface_name Physical interface name (e.g. "ge-0/0/1")
