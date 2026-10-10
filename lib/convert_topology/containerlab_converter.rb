@@ -7,13 +7,16 @@ module NetomoxExp
     # topology data converter for container-lab
     # rubocop:disable-next Metrics/ClassLength
     class ContainerLabConverter < TopologyConverterBase
+      # NOTE: fixed eth names of the direct links between FW HA cluster pair (eth2: control, eth3: fabric)
+      FIREWALL_PAIR_LINK_ETHS = %w[eth2 eth3].freeze
+
       # @return [Hash] topology data for clab
       def convert
         check_network_type
         {
           'name' => @options[:env_name] || 'emulated',
           'topology' => {
-            'links' => link_data + fabric_link_data,
+            'links' => link_data + firewall_pair_link_data,
             'nodes' => node_data
           }
         }
@@ -55,29 +58,25 @@ module NetomoxExp
         pair.key?('primary') && pair['primary']['name'] == node.name
       end
 
-      # @return [String] eth name for fabric interface (fixed: eth3)
-      def fabric_eth_name(_node)
-        'eth3'
-      end
-
       # @param [Netomox::Topology::Node] primary_node Primary FW node
-      # @return [Hash, nil]
-      def make_fabric_link(primary_node)
+      # @return [Array<Hash>] links between primary and secondary (empty if secondary is not found)
+      def make_pair_links(primary_node)
         pair = primary_node.attribute.firewall.pair
         secondary_name = pair['secondary']['name']
-        secondary_node = @src_network.nodes.find { |n| n.name == secondary_name }
-        return nil if secondary_node.nil?
+        return [] if @src_network.nodes.none? { |n| n.name == secondary_name }
 
-        primary_ep   = "#{converted_node_l1principal(primary_node.name)}:#{fabric_eth_name(primary_node)}"
-        secondary_ep = "#{converted_node_l1principal(secondary_name)}:#{fabric_eth_name(secondary_node)}"
-        { 'endpoints' => [primary_ep, secondary_ep] }
+        primary_l1 = converted_node_l1principal(primary_node.name)
+        secondary_l1 = converted_node_l1principal(secondary_name)
+        FIREWALL_PAIR_LINK_ETHS.map do |eth|
+          { 'endpoints' => ["#{primary_l1}:#{eth}", "#{secondary_l1}:#{eth}"] }
+        end
       end
 
-      # @return [Array<Hash>] fabric link data for FW HA pairs
-      def fabric_link_data
+      # @return [Array<Hash>] direct link data for FW HA pairs
+      def firewall_pair_link_data
         @src_network.nodes
                     .select { |node| firewall_primary_node?(node) }
-                    .filter_map { |node| make_fabric_link(node) }
+                    .flat_map { |node| make_pair_links(node) }
       end
 
       # @param [String] kind Container type

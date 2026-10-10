@@ -49,7 +49,7 @@ netomox-exp (Ruby 3.4 / Grape REST API, lib 88 ファイル・約 9,000 行) に
 | `convert_table.rb`, `convert_table_base.rb` | `extract_l3_firewall_node_names`（`flag: ["firewall"]` による判定）、`firewall_node?`、`to_hash` → `reload` の往復一致 |
 | `node_name_table.rb`, `ospf_proc_id_table.rb`, `static_route_tp_table.rb` | ノード名変換・方向 (original→emulated / emulated→original)、静的ルート next-hop（cRPD は `dynamic`、FW は JunOS 名保持） |
 | `namespace_converter.rb` | topology JSON 入力 → 変換後の node/tp/link/support 名が期待通り。変換 → 逆変換で元に戻る (round-trip)。`rewrite_tp_supports`, `rewrite_link`, `find_next_hop_interface` |
-| `convert_topology/containerlab_converter.rb` | `select_node_data` の優先順位 (containerlab_nodes > l3_preallocated_resources > cRPD デフォルト)、`unique_links`（双方向リンクの片側化）、`firewall_primary_node?`、`make_fabric_link` / `fabric_link_data`（primary:eth3 ↔ secondary:eth3）、`startup-config` が proxmox ノードに付かないこと |
+| `convert_topology/containerlab_converter.rb` | `select_node_data` の優先順位 (containerlab_nodes > l3_preallocated_resources > cRPD デフォルト)、`unique_links`（双方向リンクの片側化）、`firewall_primary_node?`、`make_pair_links` / `firewall_pair_link_data`（primary/secondary 間の eth2・eth3 直結、相手ノード不在時は追加しない）、`startup-config` が proxmox ノードに付かないこと |
 | `convert_topology/batfish_converter.rb` | layer1_topology.json 形式への変換（小 fixture で golden 比較） |
 
 ### P1: トポロジ生成・検証（fixture ベース / golden master）
@@ -155,7 +155,7 @@ netomox-exp (Ruby 3.4 / Grape REST API, lib 88 ファイル・約 9,000 行) に
 
 ## Golden master 方針（確定: 構造アサーション中心）
 
-- **基本は構造アサーション**: ノード/リンク数、TP 名の変換結果（例: fw-1 の `ge-0/0/1.0` → `l1_principal: eth4`）、リンクの対称性、`flag: ["firewall"]`、HA pair 属性、fabric リンク（primary:eth3 ↔ secondary:eth3）など、ルール単位で個別に assert する。
+- **基本は構造アサーション**: ノード/リンク数、TP 名の変換結果（例: fw-1 の `ge-0/0/1.0` → `l1_principal: eth4`）、リンクの対称性、`flag: ["firewall"]`、HA pair 属性、FW ペア直結リンク（eth2・eth3）など、ルール単位で個別に assert する。
 - **全文 golden は最小限**: `ns_convert_table`（mini fixture、約200行以内）のみ。キー順・配列順はソートして正規化して比較。
 - **実データ (mddo-fw) の topology 全体は全文比較しない**（構造アサーションのみ）。
 - 全文 golden を更新する場合は `UPDATE_GOLDEN=1 bundle exec rspec` で再生成し、差分を必ずレビューする。

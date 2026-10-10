@@ -63,9 +63,9 @@ RSpec.describe NetomoxExp::ConvertTopology::ContainerLabConverter do
   end
 
   describe 'links' do
-    it 'has one link per bidirectional pair (+ fabric links)' do
+    it 'has one link per bidirectional pair (+ FW pair links)' do
       l3_links = ConverterHelper.links_of(emulated, 'layer3')
-      expect(links.length).to eq((l3_links.length / 2) + 2) # 2 FW HA pairs
+      expect(links.length).to eq((l3_links.length / 2) + 4) # 2 FW HA pairs x (eth2, eth3)
     end
 
     it 'uses l1_principal names for endpoints' do
@@ -73,13 +73,16 @@ RSpec.describe NetomoxExp::ConvertTopology::ContainerLabConverter do
       expect(endpoints).to include(%w[br1:br1p1 site-a-fw-1:eth4])
     end
 
-    it 'adds fabric links (primary:eth3 <-> secondary:eth3) for each HA pair' do
-      expect(endpoints).to include(%w[site-a-fw-1:eth3 site-a-fw-2:eth3])
-      expect(endpoints).to include(%w[site-b-fw-1:eth3 site-b-fw-2:eth3])
-      expect(endpoints.count { |ep| ep.all? { |e| e.end_with?(':eth3') && e.include?('-fw-') } }).to eq 2
+    it 'adds direct links (eth2, eth3) between FW HA pair members' do
+      %w[site-a site-b].each do |site|
+        %w[eth2 eth3].each do |eth|
+          expect(endpoints).to include(["#{site}-fw-1:#{eth}", "#{site}-fw-2:#{eth}"])
+        end
+      end
+      expect(endpoints.count { |ep| ep.all? { |e| e.match?(/-fw-\d:eth[23]\z/) } }).to eq 4
     end
 
-    it 'does not add fabric links without firewall pair attributes' do
+    it 'does not add pair links without firewall pair attributes' do
       data = FixtureHelper.deep_dup(emulated)
       l3 = data['ietf-network:networks']['network'].find { |nw| nw['network-id'] == 'layer3' }
       l3['node'].each do |n|
@@ -87,10 +90,22 @@ RSpec.describe NetomoxExp::ConvertTopology::ContainerLabConverter do
         n['mddo-topology:l3-node-attributes']&.delete('firewall')
       end
       c = described_class.new(data, 'layer3', ns_converter, options).convert
-      fabric = c['topology']['links'].select do |l|
-        l['endpoints'].all? { |e| e.end_with?(':eth3') && e.include?('-fw-') }
+      pair_links = c['topology']['links'].select do |l|
+        l['endpoints'].all? { |e| e.match?(/-fw-\d:eth[23]\z/) }
       end
-      expect(fabric).to be_empty
+      expect(pair_links).to be_empty
+    end
+
+    it 'does not add pair links if the pair partner node is not found' do
+      data = FixtureHelper.deep_dup(emulated)
+      l3 = data['ietf-network:networks']['network'].find { |nw| nw['network-id'] == 'layer3' }
+      l3['node'].reject! { |n| n['node-id'] == 'site-a-fw-2' }
+      c = described_class.new(data, 'layer3', ns_converter, options).convert
+      pair_eps = c['topology']['links'].map { |l| l['endpoints'] }.select do |ep|
+        ep.all? { |e| e.match?(/-fw-\d:eth[23]\z/) }
+      end
+      expect(pair_eps.flatten.grep(/site-a/)).to be_empty
+      expect(pair_eps).to include(%w[site-b-fw-1:eth2 site-b-fw-2:eth2])
     end
 
     it 'references only defined nodes' do

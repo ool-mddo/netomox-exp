@@ -224,7 +224,9 @@ Convert specified layer topology to clab-topo.yaml for container-lab
 * GET `/topologies/<network>/<snapshot>/topology/<layer>/containerlab_topology`
   * NOTE: This API returns json data. Convert it to yaml for containerlab.
   * option for containerlab
-    * `env_name`: containerlab environment name (default: "emulated")
+    * `env_name`: [optional] containerlab environment name (default: snapshot name)
+  * FW HA cluster pair (primary/secondary) members are directly linked by fixed links `eth2` (control) and `eth3` (fabric).
+    Not added if the pair partner node is not found in the topology.
   * options for router node (cRPD)
     * `image`: image name (used for nodes not overridden by `containerlab_nodes`)
     * `bind_license`: [optional] docker volume mount string to bind license file into a container
