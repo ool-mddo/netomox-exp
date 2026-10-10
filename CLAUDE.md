@@ -268,12 +268,11 @@ fabric インタフェースはサブインタフェース指定なし (物理�
 | `{ usecase: "..." }` または空 | URL の `:ss` の `topology.json` からテーブルを生成・保存 |
 | `{ convert_table: {...} }` | 提供されたテーブルを直接保存 (手動上書き) |
 
-### 変換方向の意味
+### original / emulated のペア保存
 
-| snapshot プレフィックス | テーブルの方向 |
-|---|---|
-| `original_*` | original → emulated |
-| `emulated_*` | emulated → original |
+テーブルは origin (original) トポロジから生成した 1 枚で、方向別の内容は持たない。
+model-conductor の `ns_convert` API が、同一内容を `original_*` と対応する `emulated_*` の両 snapshot に
+`convert_table` として POST して保存する。保存後の同期は行わない (片方だけ DELETE しても他方は残る)。
 
 ヘルパーメソッド: `ns_convert_table_file(network, snapshot)`, `read_ns_convert_table(network, snapshot)`,
 `save_ns_convert_table(network, snapshot, data)`, `ns_converter_wo_topology(network, snapshot)`
