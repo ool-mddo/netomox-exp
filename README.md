@@ -314,6 +314,8 @@ Fetch all nodes and interface parameters to generate CNF configurations
   * `node_type`: [optional] select specified type nodes (segment/node/endpoint)
   * `exc_node_type`: [optional] reject specified type nodes (segment/node/endpoint)
   * [NOTE] `node_type` and `exc_node_type` are mutually exclusive
+  * `if_list[].fhrp`: FHRP (VRRP/HSRP) groups of the term-point (same keys as `fhrp` in topology.json, `[]` if none).
+    The playbook template (`crpd.j2`) uses it to generate Junos `vrrp-group` config.
 
 ```shell
 curl -s http://localhost:9292/topologies/mddo-ospf/emulated_asis/topology/layer3/config_params

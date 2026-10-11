@@ -266,7 +266,7 @@ GET /usecases/pni_te/:network/:snapshot/external_as_topology
    - `GET /topology/:layer/containerlab_topology`
    - `GET /topology/:layer/nodes`
    - `GET /topology/:layer/interfaces`
-   - `GET /topology/:layer/config_params`
+   - `GET /topology/:layer/config_params` (`if_list[]` に `fhrp` を含む。playground の `crpd.j2` が Junos の `vrrp-group` 生成に使う)
 
 3. **layer_type / verify と layer のルートマッチ順序:** `topology.rb` で `LayerType` と `VerifyLayers` を `Layer` より先にマウントしないと、`/layer_type_ospf` や `/verify` が `:layer = "layer_type_ospf"` / `"verify"` として解釈されてしまう（`/verify` は 404 になる）。
 
