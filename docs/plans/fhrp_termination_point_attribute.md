@@ -16,6 +16,22 @@
   - 実環境 `21_generate_conduit.sh` → 正常終了。`fhrp` を持つ L3 TP: `original_asis` 12 / `emulated_asis` 12 (TP 名は `eth3.0` 等に変換されて保持)。
     `*_conduit*` は 0 (Phase E の対象)。全 snapshot で、`fhrp` を除いた topology.json は実行前と同一。
 
+### Phase D (名前空間変換での保持) の結果
+
+- 調査: netomox-exp 内で L3 TP の属性を扱う箇所は次のとおり。いずれも `Netomox.convert_attr_topo2dsl(tp.attribute.to_data)` で
+  属性を丸ごと変換する方式で、netomox 0.14.0 の `fhrp` 対応により `fhrp` が保持される。**lib の変更は不要**だった。
+  - `NamespaceConverter#rewrite_term_point` (original → emulated。`fhrp` 内に node/TP 名は無いので名前変換は不要)
+  - `UpperLayer3Filter#filter_term_point`
+  - API (`helpers.rb` の `_node_hash` / `_interfaces_hash`, `config_params.rb`): `attribute.to_data` を返すため、
+    `nodes` / `interfaces` の `attribute` に `fhrp` が含まれる (追加のみ。`config_params` は `ip_addrs`/`description` のみ参照で影響なし)
+  - `usecase_deliverer/external_as_topology/*` は外部 AS の TP を新規構築する (既存 TP の属性は触らない) ので対象外
+- spec 追加 (5 examples): `spec/convert_namespace/namespace_converter_fhrp_spec.rb`, `spec/convert_namespace/upper_layer3_filter_fhrp_spec.rb`
+  (全 12 TP の `fhrp` が変換後の名前 (`ethN.0`) で一致、`fhrp` の無い TP に付かない、他の属性が保持される)
+- 確認: rspec 168 examples, 0 failures (従来 163 + 5)、rubocop 違反なし。実環境の
+  `GET /topologies/mddo-fw/emulated_asis/topology/layer3/interfaces?node_name=site-b-cr-2` で
+  `eth3.0` (reverse `ge-0/0/2.0`) / `eth4.0` (reverse `ge-0/0/3.0`) の `attribute.fhrp` を確認。
+- README の `interfaces` API に `fhrp` を含む旨の注記を追加。
+
 ### 確認事項の決定 (2026-10-11)
 
 - CSV (`vrrp_props.csv` / `hsrp_props.csv`) が無いときは空として扱う。
