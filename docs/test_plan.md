@@ -75,6 +75,7 @@ netomox-exp (Ruby 3.4 / Grape REST API, lib 88 ファイル・約 9,000 行) に
 | URL マッチ順序 | `/layer_type_:layer_type` が `/:layer` より先にマッチ（CLAUDE.md の制約の回帰） |
 | `DELETE /topologies/:nw/:ss` | snapshot dir ごと削除、存在しない場合の挙動 |
 | `GET/POST/DELETE /topologies/:nw/:ss/ns_convert_table` | POST の 3 パターン（空 / usecase / `convert_table` 直接指定）、任意 snapshot (`original_*` / `emulated_*`) への保存 |
+| `config_params` fhrp | `spec/api/config_params_fhrp_spec.rb`: TP の `fhrp` が topology.json と同じキーで返ること、`fhrp` を持たない TP は `[]` |
 | ns_convert_table 前提 API | `converted_topology`, `containerlab_topology`, `batfish_layer1_topology`, `nodes`, `interfaces`, `config_params` が **table 無しで 404**、POST 後は 200 |
 | `GET /usecases/:uc/:nw/:ss/topology` | blueprint JSON を返す／無ければ 404 |
 | `containerlab_topology?usecase=` | params.yaml の `containerlab_nodes` が反映される |
