@@ -94,6 +94,12 @@ model_defs/            # プロトタイプ用手書きトポロジ定義（本�
 
 詳細は [docs/architecture.md](docs/architecture.md) を参照。
 
+## FHRP (VRRP/HSRP) TP アトリビュート JSON スキーマ
+
+layer3 TP の `fhrp` アトリビュート (`vrrp_props.csv` / `hsrp_props.csv` → topology.json) の canonical definition:
+**`playground/docs/fhrp_termination_point_attributes.md`**
+(`vrrp_props.csv` / `hsrp_props.csv` は無くても空として扱う。netomox 0.14.0 以降が必要)
+
 ## FW ノードアトリビュート JSON スキーマ
 
 FW アトリビュートの JSON スキーマは複数リポジトリをまたがる canonical definition として管理されている:

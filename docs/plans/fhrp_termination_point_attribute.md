@@ -1,6 +1,6 @@
 # Plan: queries の VRRP/HSRP 情報を layer3 TP の `fhrp` 属性として付与する
 
-(状態: 実装済み (ブランチ `v1.20.0-dev`、未コミット)。Gemfile の制約引き上げと CI 対応は netomox 公開後)
+(状態: 実装済み (ブランチ `v1.20.0-dev`)。netomox v0.14.0 の公開後、Gemfile の制約を `>= 0.14.0` に引き上げ済み)
 
 ### 実装結果
 
