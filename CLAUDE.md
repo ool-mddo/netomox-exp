@@ -122,6 +122,11 @@ RFC8345 トップレベルの `"flag": ["firewall"]` を持つノードを FW �
 `ConvertTable#load_from_topology` が生の topology JSON から FW ノード名 Set を抽出し (`extract_l3_firewall_node_names`)、
 全サブテーブルに注入 (`firewall_node_names=`)。`node.attribute.firewall` は全ノードで常に non-nil のため使用不可。
 
+**networks アトリビュートの引き継ぎ:**  
+`ietf-network:networks` 直下の `mddo-topology:networks-attributes` (conduit の生成元 blueprint の flag) は、
+`NamespaceConverterBase#copy_networks_attribute` が変換後の `PNetworks` にコピーする
+(`NamespaceConverter#convert` / `UpperLayer3Filter#filter`)。スキーマ: [docs/networks_attributes.md](../../docs/networks_attributes.md)
+
 **TP 名変換ルール:**
 
 | | cRPD ノード | vSRX（FW）ノード |

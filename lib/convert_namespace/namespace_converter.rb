@@ -60,6 +60,7 @@ module NetomoxExp
       def convert
         # destination: converted topology data (@src_nw -> @dst_nw)
         @dst_nws = Netomox::PseudoDSL::PNetworks.new
+        copy_networks_attribute(@dst_nws)
         @dst_nws.networks = @src_nws.networks
                                     .filter { |nw| target_network?(nw.name) }
                                     .map { |src_nw| rewrite_network(src_nw) }

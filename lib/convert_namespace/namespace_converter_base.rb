@@ -61,6 +61,16 @@ module NetomoxExp
         topo_data
       end
 
+      # Copy the attribute of the networks container (`mddo-topology:networks-attributes`, e.g. source blueprint flag)
+      # @param [Netomox::PseudoDSL::PNetworks] dst_nws Destination networks
+      # @return [void]
+      def copy_networks_attribute(dst_nws)
+        attr = @src_nws.attribute
+        return if attr.nil? || attr.empty?
+
+        dst_nws.attribute = Netomox.convert_attr_topo2dsl(attr.to_data)
+      end
+
       # @return [Array<String>] Network names (upper layer3)
       def upper_layer3_network_names
         nw_names = Netomox::UPPER_LAYER3_NWTYPE_LIST.map do |network_type|
