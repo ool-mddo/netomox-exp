@@ -153,6 +153,28 @@ RSpec.describe NetomoxExp::ConvertNamespace::NamespaceConverter do
     expect(flags.call(converted)).not_to be_empty
   end
 
+  describe 'attribute of the networks container (mddo-topology:networks-attributes)' do
+    let(:attr_key) { 'mddo-topology:networks-attributes' }
+    let(:flagged) do
+      original.merge(
+        'ietf-network:networks' => original['ietf-network:networks'].merge(
+          attr_key => { 'flag' => %w[blueprint=original_asis_blueprint1] }
+        )
+      )
+    end
+
+    it 'keeps the flag before and after the conversion and in the backward conversion' do
+      forward = ConverterHelper.ns_converter_for(flagged).convert
+      expect(forward.dig('ietf-network:networks', attr_key, 'flag')).to eq %w[blueprint=original_asis_blueprint1]
+      back = ConverterHelper.ns_converter_for(forward).convert
+      expect(back.dig('ietf-network:networks', attr_key, 'flag')).to eq %w[blueprint=original_asis_blueprint1]
+    end
+
+    it 'does not add the attribute when the source has no attribute' do
+      expect(converted['ietf-network:networks']).not_to have_key(attr_key)
+    end
+  end
+
   it 'keeps the flag in the backward conversion (emulated -> original)' do
     back = ConverterHelper.ns_converter_for(converted)
     expect(flagged_nodes(back.convert)).to eq flagged_nodes(converted)
