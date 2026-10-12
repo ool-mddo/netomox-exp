@@ -200,22 +200,122 @@ module NetomoxExp
         Netomox::PseudoDSL::PLink.new(dst_link_dst, dst_link_src)
       end
 
+      # @param [Netomox::PseudoDSL::PNetwork] target_nw Destination network (L3)
+      # @param [String] node_name Node name
+      # @return [Boolean] true if the node is a segment node
+      def segment_in_network?(target_nw, node_name)
+        target_nw.nodes.find { |node| node.name == node_name }&.attribute&.dig(:node_type) == 'segment'
+      end
+
       # rubocop:disable Metrics/AbcSize
+
+      # Facing edge of a term-point (the description target).
+      # A point-to-point (2 endpoints) segment is skipped: the facing node/tp beyond the segment (router/firewall).
+      # The facing edge of a multi-access (3+ endpoints) segment is not unique: it is the segment itself.
+      #
+      # @param [Netomox::PseudoDSL::PNetwork] target_nw Destination network (L3)
+      # @param [Netomox::PseudoDSL::PLink] link Link (source: description target)
+      # @return [Netomox::PseudoDSL::PLinkEdge] Facing edge
+      def facing_edge(target_nw, link)
+        return link.dst unless segment_in_network?(target_nw, link.dst.node)
+
+        endpoints = target_nw.links.select { |l| l.src.node == link.dst.node }.map(&:dst)
+        endpoints.size == 2 ? endpoints.find { |edge| [edge.node, edge.tp] != [link.src.node, link.src.tp] } : link.dst
+      end
 
       # @param [Netomox::PseudoDSL::Network] target_nw Destination network (L3)
       # @return [void]
       def update_tp_description(target_nw)
         target_nw.links.each do |link|
-          target_node = target_nw.node(link.src.node)
-
           # Update target is source edge, Note: link is bidirectional
-          target_node_dic = node_name.find_l1_alias(link.dst.node)
-          target_tp = target_node.term_point(link.src.tp)
-          target_tp_dic = tp_name.find_l1_alias(link.dst.node, link.dst.tp)
+          facing = facing_edge(target_nw, link)
+          target_node_dic = node_name.find_l1_alias(facing.node)
+          target_tp = target_nw.node(link.src.node).term_point(link.src.tp)
+          target_tp_dic = tp_name.find_l1_alias(facing.node, facing.tp)
           target_tp.attribute[:description] = ['to', target_node_dic['l1_agent'], target_tp_dic['l1_agent']].join('_')
         end
       end
       # rubocop:enable Metrics/AbcSize
+
+      # @param [Netomox::Topology::Node] src_node Source node (L3)
+      # @return [Hash, nil] `pair` attribute of firewall (cluster pair), nil if not a cluster member
+      def firewall_pair(src_node)
+        return nil unless src_node.attribute.respond_to?(:firewall)
+
+        src_node.attribute.firewall&.pair
+      end
+
+      # @param [Netomox::Topology::Network] src_nw Source network (L3)
+      # @return [Array<Array<String>>] [[primary_name, secondary_name], ...] firewall cluster pairs (source names)
+      def firewall_cluster_pairs(src_nw)
+        names = src_nw.nodes.map(&:name)
+        src_nw.nodes.filter_map do |src_node|
+          pair = firewall_pair(src_node)
+          pair_names = [pair&.dig('primary', 'name'), pair&.dig('secondary', 'name')]
+          pair_names if pair_names.all? { |name| names.include?(name) } && pair_names.first == src_node.name
+        end
+      end
+
+      # The two nodes of a firewall cluster pair share one (cluster) config: a term-point of the same name is the same
+      # interface, but only one of them (e.g. ge-0/0/1 of primary, ge-7/0/1 of secondary) is linked.
+      # Copy the description determined by the link to the partner's term-point which has no link.
+      #
+      # @param [Netomox::Topology::Network] src_nw Source network (L3)
+      # @param [Netomox::PseudoDSL::PNetwork] dst_nw Destination network (L3)
+      # @return [void]
+      def sync_firewall_pair_description(src_nw, dst_nw)
+        linked = dst_nw.links.to_set { |link| [link.src.node, link.src.tp] }
+        firewall_cluster_pairs(src_nw).each do |pair_names|
+          pair_tp_names(src_nw, pair_names).each do |tp|
+            copy_linked_description(dst_nw, pair_names.map { |name| converted_edge(name, tp) }, linked)
+          end
+        end
+      end
+
+      # @param [Netomox::Topology::Network] src_nw Source network (L3)
+      # @param [Array<String>] pair_names Node names of a cluster pair
+      # @return [Array<String>] term-point names of the (primary) node
+      def pair_tp_names(src_nw, pair_names)
+        src_nw.find_node_by_name(pair_names.first).termination_points.map(&:name)
+      end
+
+      # @param [String] src_node_name Source node name
+      # @param [String] src_tp_name Source term-point name
+      # @return [Array<String>] [node, tp] in the destination (layer3 model)
+      def converted_edge(src_node_name, src_tp_name)
+        [node_name.convert(src_node_name)['l3_model'], tp_name.convert(src_node_name, src_tp_name)['l3_model']]
+      end
+
+      # @param [Netomox::PseudoDSL::PNetwork] dst_nw Destination network (L3)
+      # @param [Array<String>] edge [node, tp]
+      # @return [Netomox::PseudoDSL::PTermPoint]
+      def find_dst_tp(dst_nw, edge)
+        dst_nw.node(edge[0]).term_point(edge[1])
+      end
+
+      # @param [Netomox::PseudoDSL::PNetwork] dst_nw Destination network (L3)
+      # @param [Array<Array<String>>] edges [node, tp] of the same-name term-point in each node of the pair
+      # @param [Set<Array<String>>] linked [node, tp] which have a link
+      # @return [void]
+      def copy_linked_description(dst_nw, edges, linked)
+        linked_edges, unlinked_edges = edges.partition { |edge| linked.include?(edge) }
+        return unless linked_edges.size == 1
+
+        from_tp, to_tp = [linked_edges.first, unlinked_edges.first].map { |edge| find_dst_tp(dst_nw, edge) }
+        to_tp.attribute[:description] = from_tp.attribute[:description]
+      end
+
+      # The interface description describes the information on the peer interface,
+      # assuming the converted layer3 topology to be layer1.
+      # Therefore, it must be updated when the conversion has been completed up to the link.
+      #
+      # @param [Netomox::Topology::Network] src_nw Source network (L3)
+      # @param [Netomox::PseudoDSL::PNetwork] dst_nw Destination network (L3)
+      # @return [void]
+      def update_layer3_tp_description(src_nw, dst_nw)
+        update_tp_description(dst_nw)
+        sync_firewall_pair_description(src_nw, dst_nw)
+      end
 
       # rubocop:disable Metrics/AbcSize
 
@@ -229,10 +329,7 @@ module NetomoxExp
         dst_nw.supports = src_nw.supports.map(&:ref_network) if src_nw.supports
         dst_nw.nodes = src_nw.nodes.map { |src_node| rewrite_node(src_node) }
         dst_nw.links = src_nw.links.map { |src_link| rewrite_link(src_link) }
-        # The interface description describes the information on the peer interface,
-        # assuming the converted layer3 topology to be layer1.
-        # Therefore, it must be updated when the conversion has been completed up to the link.
-        update_tp_description(dst_nw) if dst_nw.name == 'layer3'
+        update_layer3_tp_description(src_nw, dst_nw) if dst_nw.name == 'layer3'
         dst_nw
       end
       # rubocop:enable Metrics/AbcSize
