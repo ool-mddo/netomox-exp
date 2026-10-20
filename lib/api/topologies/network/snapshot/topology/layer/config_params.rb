@@ -35,7 +35,8 @@ module NetomoxExp
                 agent_name: ns_converter.tp_name.find_l1_alias(node.name, tp.name)['l1_agent'],
                 ipv4: tp.attribute.empty? ? nil : tp.attribute&.ip_addrs&.[](0),
                 description: tp.attribute.empty? ? nil : tp.attribute&.description,
-                original_if: ns_converter.tp_name.reverse_lookup(node.name, tp.name)[1]
+                original_if: ns_converter.tp_name.reverse_lookup(node.name, tp.name)[1],
+                fhrp: tp.attribute.empty? ? [] : (tp.attribute.fhrp || []).map(&:to_data)
               }
             end
           }

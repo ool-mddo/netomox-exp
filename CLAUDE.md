@@ -94,6 +94,12 @@ model_defs/            # プロトタイプ用手書きトポロジ定義（本�
 
 詳細は [docs/architecture.md](docs/architecture.md) を参照。
 
+## FHRP (VRRP/HSRP) TP アトリビュート JSON スキーマ
+
+layer3 TP の `fhrp` アトリビュート (`vrrp_props.csv` / `hsrp_props.csv` → topology.json) の canonical definition:
+**`playground/docs/fhrp_termination_point_attributes.md`**
+(`vrrp_props.csv` / `hsrp_props.csv` は無くても空として扱う。netomox 0.14.0 以降が必要)
+
 ## FW ノードアトリビュート JSON スキーマ
 
 FW アトリビュートの JSON スキーマは複数リポジトリをまたがる canonical definition として管理されている:
@@ -115,6 +121,11 @@ RFC8345 トップレベルの `"flag": ["firewall"]` を持つノードを FW �
 変換前・後 (`NamespaceConverter#convert` / `UpperLayer3Filter#filter`) のどちらの出力にも常に残る。
 `ConvertTable#load_from_topology` が生の topology JSON から FW ノード名 Set を抽出し (`extract_l3_firewall_node_names`)、
 全サブテーブルに注入 (`firewall_node_names=`)。`node.attribute.firewall` は全ノードで常に non-nil のため使用不可。
+
+**networks アトリビュートの引き継ぎ:**  
+`ietf-network:networks` 直下の `mddo-topology:networks-attributes` (conduit の生成元 blueprint の flag) は、
+`NamespaceConverterBase#copy_networks_attribute` が変換後の `PNetworks` にコピーする
+(`NamespaceConverter#convert` / `UpperLayer3Filter#filter`)。スキーマ: [docs/networks_attributes.md](../../docs/networks_attributes.md)
 
 **TP 名変換ルール:**
 

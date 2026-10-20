@@ -16,6 +16,7 @@ module NetomoxExp
       # @return [Hash]
       def filter
         @dst_nws = Netomox::PseudoDSL::PNetworks.new
+        copy_networks_attribute(@dst_nws)
         @dst_nws.networks = @src_nws.networks.filter { |nw| target_network?(nw.name) }
                                     .map { |src_nw| filter_network(src_nw) }
         restore_node_flags(@dst_nws.interpret.topo_data) { |_nw_id, node_id| node_id }

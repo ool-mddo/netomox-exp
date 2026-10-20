@@ -4,6 +4,7 @@ require_relative 'l3_data_checker'
 require_relative 'csv_mapper/ip_owners_table'
 require_relative 'csv_mapper/interface_prop_table'
 require_relative 'csv_mapper/routes_table'
+require_relative 'csv_mapper/fhrp_props_table'
 require 'ipaddress'
 
 # rubocop:disable Metrics/ClassLength
@@ -19,6 +20,7 @@ module NetomoxExp
         @ip_owners = CSVMapper::IPOwnersTable.new(target)
         @intf_props = CSVMapper::InterfacePropertiesTable.new(target)
         @routes = CSVMapper::RoutesTable.new(target)
+        @fhrp_props = CSVMapper::FhrpPropertiesTable.new(target)
         # NOTE: use object_id for hash key
         #   e.g. `@segment_prefixes[seg]` means `@segment_prefixes[seg.object_id]`
         #   ref. https://www.rubydoc.info/gems/rubocop/RuboCop/Cop/Lint/HashCompareByIdentity
@@ -74,11 +76,22 @@ module NetomoxExp
         l3_tp = l3_node.term_point(rec.interface)
         l3_tp.supports.push([@layer2p.name, l2_node_name, l2_tp_name])
         tp_prop = @intf_props.find_record_by_node_intf(rec.node, rec.interface)
-        l3_tp.attribute = {
+        l3_tp.attribute = l3_tp_attribute(rec, tp_prop)
+        l3_tp
+      end
+
+      # @param [CSVMapper::IPOwnersTableRecord] rec A record of IP-Owners table
+      # @param [CSVMapper::InterfacePropertiesTableRecord, nil] tp_prop A record of interface properties table
+      # @return [Hash] Attribute data of layer3 term-point
+      def l3_tp_attribute(rec, tp_prop)
+        attribute = {
           ip_addrs: ["#{rec.ip}/#{rec.mask}"],
           description: tp_prop ? tp_prop.description : ''
         }
-        l3_tp
+        # add fhrp (VRRP/HSRP) groups only if the interface has them
+        fhrp = @fhrp_props.find_all_records_by_node_intf(rec.node, rec.interface).map(&:to_attribute)
+        attribute[:fhrp] = fhrp unless fhrp.empty?
+        attribute
       end
 
       # rubocop:disable Metrics/MethodLength, Metrics/AbcSize

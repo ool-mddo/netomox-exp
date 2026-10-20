@@ -21,6 +21,14 @@ RSpec.describe NetomoxExp::ConvertNamespace::UpperLayer3Filter do
     })
   end
 
+  it 'keeps the attribute of the networks container' do
+    attr_key = 'mddo-topology:networks-attributes'
+    flagged = original.merge(
+      'ietf-network:networks' => original['ietf-network:networks'].merge(attr_key => { 'flag' => %w[blueprint=bp1] })
+    )
+    expect(described_class.new(flagged).filter.dig('ietf-network:networks', attr_key, 'flag')).to eq %w[blueprint=bp1]
+  end
+
   it 'keeps the top-level firewall flag' do
     fw_nodes = ConverterHelper.nodes_of(filtered, 'layer3').select { |n| n['flag']&.include?('firewall') }
     expect(fw_nodes.map { |n| n['node-id'] }).to match_array %w[site-a-fw-1 site-a-fw-2 site-b-fw-1 site-b-fw-2]

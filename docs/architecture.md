@@ -22,7 +22,7 @@ Batfish（設定解析）
     │ CSV クエリ結果
     ▼
 MDDO_QUERIES_DIR/<network>/<snapshot>/
-    │  *.csv (edges_layer1, interface_props, ip_owners, routes, ospf_*, bgp_*, ...)
+    │  *.csv (edges_layer1, interface_props, ip_owners, routes, vrrp_props, hsrp_props, ospf_*, bgp_*, ...)
     │
     ▼  POST /topologies/:network/:snapshot/topology
 netomox-exp
@@ -143,6 +143,7 @@ L1L3DataBuilder (layer1)
            sw_vlan_props.csv
            └─ L3DataBuilder (layer3)
                   ip_owners.csv, interface_props.csv, routes.csv
+                  vrrp_props.csv, hsrp_props.csv (任意: 無ければ空扱い。L3 TP の fhrp 属性になる)
                   └─ ExpandedL3DataBuilder (layer3 拡張)
                          └─ OspfDataBuilder (ospf_area*)
                                 ospf_proc_conf.csv, ospf_area_conf.csv, ospf_intf_conf.csv
@@ -265,11 +266,12 @@ GET /usecases/pni_te/:network/:snapshot/external_as_topology
    - `GET /topology/:layer/containerlab_topology`
    - `GET /topology/:layer/nodes`
    - `GET /topology/:layer/interfaces`
-   - `GET /topology/:layer/config_params`
+   - `GET /topology/:layer/config_params` (`if_list[]` に `fhrp` を含む。playground の `crpd.j2` が Junos の `vrrp-group` 生成に使う)
 
 3. **layer_type / verify と layer のルートマッチ順序:** `topology.rb` で `LayerType` と `VerifyLayers` を `Layer` より先にマウントしないと、`/layer_type_ospf` や `/verify` が `:layer = "layer_type_ospf"` / `"verify"` として解釈されてしまう（`/verify` は 404 になる）。
 
 4. **TopologyBuilder の CSV 必須依存:** `generate_data` は複数の CSV ファイルが全て揃っていることを前提とする。ファイルが欠けると例外で終了する。
+   ただし `vrrp_props.csv` / `hsrp_props.csv` (L3 TP の `fhrp` 属性の元データ) は例外で、欠けていても空として扱う (これらを出力しない古い queries との互換のため)。
 
 5. **L3→L2 サポート情報の意図的除外:** NamespaceConverter は L3→L2 のサポートリンクを変換後のトポロジに含めない（エミュレーション環境では不要なため）。
 
@@ -291,6 +293,7 @@ spec/
 ├── api/                 # rack-test による REST API 統合テスト
 ├── support/             # fixture / golden / API ヘルパー
 └── fixtures/            # mddo-fw のコピー (queries, topologies, usecases, golden)
+                         #   queries/mddo-fw-fhrp: cr ノード (VRRP) を含む現行 queries のコピー
 ```
 
 - `MDDO_QUERIES_DIR` / `MDDO_TOPOLOGIES_DIR` / `MDDO_USECASES_DIR` は `spec_helper.rb` が一時ディレクトリに向ける（アプリ読み込み前に設定する必要がある）。

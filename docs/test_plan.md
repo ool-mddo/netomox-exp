@@ -59,6 +59,7 @@ netomox-exp (Ruby 3.4 / Grape REST API, lib 88 ファイル・約 9,000 行) に
 | `topology_builder/csv_mapper/*` | 各 CSV → record 変換。特に `table_base.rb` の `parse_array_string`（`[...]` / 数字カンマ区切り / 空 / 不正文字列で StandardError）、`true_string?`、`extract_interfaces`。`eval` 使用箇所のため**悪意ある入力に対する挙動を明文化**（不正形式は例外） |
 | `topology_builder` (`l1/l2/l3/ospf/bgp_proc_data_builder`, `l3_segment_ledger`) | mini CSV fixture → `generate_data` の結果を golden JSON と比較（ネットワーク種別・ノード数・リンク対称性など構造的アサーションを併用し、golden 更新時の見落としを防ぐ）。`JUNOS_INTERFACE_REGEXP` / `LO_INTERFACE_REGEXP` の表形式テスト |
 | `topology_builder` + mddo-fw 実データ | FW (`flag: firewall`) ノードが生成されること、HA pair 属性 |
+| `topology_builder` fhrp (VRRP/HSRP) | `csv_mapper/fhrp_props_table.rb` (型変換、node/interface 検索、vrrp/hsrp の連結、CSV 欠落・ヘッダのみで空) と、L3 TP への `fhrp` 属性の付与 (`mddo-fw-fhrp` fixture: cr-1/cr-2 の priority、`fhrp` を持たない TP にキーが無いこと、出力順の安定、CSV 無しの古い queries との互換、`StaticVerifier` に影響しないこと)。名前空間変換 (`NamespaceConverter`: TP 名が `ethN.0` に変わっても `fhrp` が保持される、`UpperLayer3Filter`) も `mddo-fw-fhrp` fixture で検証。netomox 0.14.0 以降 (`MddoFhrp`) が必要。 |
 | `static_verifier/*` | 正常 topology → 指摘 0 件。意図的に壊した topology（片方向リンク、TP 無しノード、孤立ノード、重複リンク）→ 期待する level (`fatal/error/warn`) とメッセージ |
 | `usecase_deliverer/iperf_command_generator.rb` | ポート採番 (5201 起点、client_node ソート)、scale 計算 |
 | `usecase_deliverer/external_as_topology/tiny_ipam.rb` ほか | IP 割当ての一意性・枯渇、BGP/iBGP link 生成（小入力） |
@@ -74,6 +75,7 @@ netomox-exp (Ruby 3.4 / Grape REST API, lib 88 ファイル・約 9,000 行) に
 | URL マッチ順序 | `/layer_type_:layer_type` が `/:layer` より先にマッチ（CLAUDE.md の制約の回帰） |
 | `DELETE /topologies/:nw/:ss` | snapshot dir ごと削除、存在しない場合の挙動 |
 | `GET/POST/DELETE /topologies/:nw/:ss/ns_convert_table` | POST の 3 パターン（空 / usecase / `convert_table` 直接指定）、任意 snapshot (`original_*` / `emulated_*`) への保存 |
+| `config_params` fhrp | `spec/api/config_params_fhrp_spec.rb`: TP の `fhrp` が topology.json と同じキーで返ること、`fhrp` を持たない TP は `[]` |
 | ns_convert_table 前提 API | `converted_topology`, `containerlab_topology`, `batfish_layer1_topology`, `nodes`, `interfaces`, `config_params` が **table 無しで 404**、POST 後は 200 |
 | `GET /usecases/:uc/:nw/:ss/topology` | blueprint JSON を返す／無ければ 404 |
 | `containerlab_topology?usecase=` | params.yaml の `containerlab_nodes` が反映される |
@@ -164,7 +166,7 @@ netomox-exp (Ruby 3.4 / Grape REST API, lib 88 ファイル・約 9,000 行) に
 ## 実装結果（計画との差分）
 
 - 構成: `spec/{convert_namespace,convert_topology,topology_builder,static_verifier,usecase_deliverer,api}`、`spec/support/{fixtures,golden,converters,api_helper}.rb`
-- **fixture は mini ではなく mddo-fw 実データ (queries / topology) のコピー**を使用（小さく、FW HA の全ケースが含まれるため）。
+- **fixture は mini ではなく mddo-fw 実データ (queries / topology) のコピー**を使用 (fhrp 用に cr ノードを含む現行 queries を `queries/mddo-fw-fhrp` として追加)（小さく、FW HA の全ケースが含まれるため）。
   ghost ポート等の追加ケースは、テスト内でトポロジを加工して作る。
   全文 golden は `spec/fixtures/golden/ns_convert_table_subset.json`（代表 3 ノード）のみ。
 - 追加: `emulated_asis` topology fixture により「original → `NamespaceConverter#convert` が emulated と一致する」ラウンドトリップを検証。
