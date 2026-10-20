@@ -227,13 +227,16 @@ containerlab_nodes:
   独立に eth4 から採番されるため、自分側と番号が重複しうる — 詳細は上記「名前空間変換」節参照) |
 
 primary ノードの `node.attribute.firewall.pair` から secondary ノードを特定し、
-primary:eth3 ↔ secondary:eth3 のリンクを生成する。
+primary:eth2 ↔ secondary:eth2 (control) と primary:eth3 ↔ secondary:eth3 (fabric) の 2 本のリンクを生成する。
+secondary ノードがトポロジ内に見つからない場合はリンクを追加しない。
+
+環境名 (`name:`) は `env_name` パラメータ省略時は snapshot 名になる (指定時はその値で上書き)。
 
 **関連メソッド:**
 - `firewall_primary_node?(node)` — primary/secondary 判定
-- `fabric_eth_name(_node)` — `'eth3'` を返す（固定）
-- `make_fabric_link(primary_node)` — 1 ペア分のリンク Hash を生成
-- `fabric_link_data` — 全 HA ペアのファブリックリンク Array を返す
+- `FIREWALL_PAIR_LINK_ETHS` — `%w[eth2 eth3]`（固定）
+- `make_pair_links(primary_node)` — 1 ペア分のリンク Hash 配列を生成（相手ノード不在なら空）
+- `firewall_pair_link_data` — 全 HA ペアの直結リンク Array を返す
 
 ### ns_convert_table の fabric インタフェースエントリ
 
@@ -268,12 +271,11 @@ fabric インタフェースはサブインタフェース指定なし (物理�
 | `{ usecase: "..." }` または空 | URL の `:ss` の `topology.json` からテーブルを生成・保存 |
 | `{ convert_table: {...} }` | 提供されたテーブルを直接保存 (手動上書き) |
 
-### 変換方向の意味
+### original / emulated のペア保存
 
-| snapshot プレフィックス | テーブルの方向 |
-|---|---|
-| `original_*` | original → emulated |
-| `emulated_*` | emulated → original |
+テーブルは origin (original) トポロジから生成した 1 枚で、方向別の内容は持たない。
+model-conductor の `ns_convert` API が、同一内容を `original_*` と対応する `emulated_*` の両 snapshot に
+`convert_table` として POST して保存する。保存後の同期は行わない (片方だけ DELETE しても他方は残る)。
 
 ヘルパーメソッド: `ns_convert_table_file(network, snapshot)`, `read_ns_convert_table(network, snapshot)`,
 `save_ns_convert_table(network, snapshot, data)`, `ns_converter_wo_topology(network, snapshot)`

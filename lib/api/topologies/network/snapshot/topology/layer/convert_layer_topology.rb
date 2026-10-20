@@ -21,7 +21,7 @@ module NetomoxExp
 
       desc 'convert layer data to container-lab topology json'
       params do
-        optional :env_name, type: String, desc: 'Environment name (for container-lab)', default: 'emulated'
+        optional :env_name, type: String, desc: 'Environment name (for container-lab, default: snapshot name)'
         optional :bind_license, type: String, desc: 'Router bind configs (like "license.key:/tmp/license.key")'
         optional :license, type: String, desc: 'Router license file path for container'
         requires :image, type: String, desc: 'Router image name'
@@ -36,6 +36,7 @@ module NetomoxExp
         opts = %i[env_name bind_license license image endpoint_image usecase]
                .select { |key| params.key?(key) }
                .to_h { |key| [key, params[key]] }
+        opts[:env_name] ||= snapshot
         if opts[:usecase]
           param_data = read_params(opts[:usecase], network)
           opts[:usecase_l3preallocs] = param_data['l3_preallocated_resources']

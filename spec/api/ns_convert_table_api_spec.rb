@@ -148,6 +148,14 @@ RSpec.describe 'ns_convert_table API and its dependents' do
       expect(json_body['topology']['nodes']['site-a-fw-1']['kind']).to eq 'juniper_crpd'
     end
 
+    it 'uses the snapshot name as the environment name (overridable by env_name)' do
+      get "/topologies/#{nw}/emulated_asis/topology/layer3/containerlab_topology", { image: 'crpd:test' }
+      expect(json_body['name']).to eq 'emulated_asis'
+      get "/topologies/#{nw}/emulated_asis/topology/layer3/containerlab_topology",
+          { image: 'crpd:test', env_name: 'custom' }
+      expect(json_body['name']).to eq 'custom'
+    end
+
     it 'requires the image param' do
       get "/topologies/#{nw}/emulated_asis/topology/layer3/containerlab_topology"
       expect(last_response.status).to eq 400
