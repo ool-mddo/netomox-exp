@@ -5,6 +5,7 @@ require_relative 'csv_mapper/ip_owners_table'
 require_relative 'csv_mapper/interface_prop_table'
 require_relative 'csv_mapper/routes_table'
 require_relative 'csv_mapper/fhrp_props_table'
+require_relative 'csv_mapper/node_props_table'
 require 'ipaddress'
 
 # rubocop:disable Metrics/ClassLength
@@ -21,6 +22,7 @@ module NetomoxExp
         @intf_props = CSVMapper::InterfacePropertiesTable.new(target)
         @routes = CSVMapper::RoutesTable.new(target)
         @fhrp_props = CSVMapper::FhrpPropertiesTable.new(target)
+        @node_props = CSVMapper::NodePropsTable.new(target)
         # NOTE: use object_id for hash key
         #   e.g. `@segment_prefixes[seg]` means `@segment_prefixes[seg.object_id]`
         #   ref. https://www.rubydoc.info/gems/rubocop/RuboCop/Cop/Lint/HashCompareByIdentity
@@ -53,6 +55,15 @@ module NetomoxExp
         rec.grt? ? rec.node : "#{rec.node}_#{rec.vrf}"
       end
 
+      # @param [String] bf_node_name Node name in batfish (node_props)
+      # @param [String] l3_node_name Name of layer3 node
+      # @return [Boolean] true if the node is an endpoint (host defined by batfish host json or "*svrN" name)
+      def endpoint_node?(bf_node_name, l3_node_name)
+        return true if l3_node_name =~ /.*svr\d+/i
+
+        @node_props.find_record_by_node(bf_node_name)&.config_format&.upcase == 'HOST'
+      end
+
       # @param [IPOwnersTableRecord] rec A record of IP-Owners table
       # @param [Netomox::PseudoDSL::PNode] l2_node A layer2 node
       # @return [Netomox::PseudoDSL::PNode] Added layer3 node
@@ -62,7 +73,7 @@ module NetomoxExp
         l3_node.supports.push([@layer2p.name, l2_node.name])
         l3_node.attribute = {} unless l3_node.attribute
         # TODO: ad-hoc node type detection...
-        l3_node.attribute[:node_type] = node_name =~ /.*svr\d+/i ? 'endpoint' : 'node'
+        l3_node.attribute[:node_type] = endpoint_node?(rec.node, node_name) ? 'endpoint' : 'node'
         l3_node.attribute[:flags] = ["vrf:#{rec.vrf}"] unless rec.grt?
         l3_node
       end
