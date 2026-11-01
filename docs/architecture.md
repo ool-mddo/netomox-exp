@@ -156,6 +156,8 @@ L1L3DataBuilder (layer1)
                   └─ ExpandedL3DataBuilder (layer3 拡張)
                          └─ OspfDataBuilder (ospf_area*)
                                 ospf_proc_conf.csv, ospf_area_conf.csv, ospf_intf_conf.csv
+                                (FW HA ペア: 同名 IF・同一 IP を持つ相方ノードの ospf_intf_conf を参照し、
+                                 名前順で先頭ノード (primary) の cost/network-type/timer/passive を両ノードで共通化)
                                 └─ BgpProcDataBuilder (bgp_proc)
                                        bgp_proc_conf.csv, bgp_peer_conf.csv, named_structures.csv
 ```
