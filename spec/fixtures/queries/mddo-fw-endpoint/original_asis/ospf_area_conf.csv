@@ -1,0 +1,13 @@
+,Node,VRF,Process_ID,Area,Area_Type,Active_Interfaces,Passive_Interfaces
+0,site-b-br-2,default,default,0,NONE,"['ge-0/0/0.0', 'ge-0/0/1.0', 'ge-0/0/2.0']",[]
+1,site-a-br-1,default,default,0,NONE,"['ge-0/0/0.0', 'ge-0/0/1.0', 'ge-0/0/2.0']",[]
+2,site-b-br-1,default,default,20,NONE,['ge-0/0/3.0'],[]
+3,site-a-br-2,default,default,0,NONE,"['ge-0/0/0.0', 'ge-0/0/1.0', 'ge-0/0/2.0']",[]
+4,site-b-br-2,default,default,20,NONE,['ge-0/0/3.0'],[]
+5,site-a-br-2,default,default,10,NONE,['ge-0/0/3.0'],[]
+6,site-b-br-1,default,default,0,NONE,"['ge-0/0/0.0', 'ge-0/0/1.0', 'ge-0/0/2.0']",[]
+7,site-a-br-1,default,default,10,NONE,['ge-0/0/3.0'],[]
+8,site-a-fw-1,default,default,10,NONE,"['ge-0/0/1.0', 'ge-0/0/2.0', 'ge-7/0/1.0', 'ge-7/0/2.0']",[]
+9,site-a-fw-2,default,default,10,NONE,"['ge-0/0/1.0', 'ge-0/0/2.0', 'ge-7/0/1.0', 'ge-7/0/2.0']",[]
+10,site-b-fw-2,default,default,20,NONE,"['ge-0/0/1.0', 'ge-0/0/2.0', 'ge-7/0/1.0', 'ge-7/0/2.0']",[]
+11,site-b-fw-1,default,default,20,NONE,"['ge-0/0/1.0', 'ge-0/0/2.0', 'ge-7/0/1.0', 'ge-7/0/2.0']",[]
