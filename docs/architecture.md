@@ -75,6 +75,15 @@ app.rb / config.ru
                         └── GET /iperf_commands
 ```
 
+## ContainerLab 変換: endpoint ノード
+
+`ContainerLabConverter` は `node_type: endpoint` のノードを `kind: linux` (image は `endpoint_image`) として出力し、
+`exec` に次のコマンドを生成する (コマンドが空のときは `exec` キー自体を出力しない)。
+
+- TP ごと: `ip addr add <ip> dev <l1_principal>`、`ip link set dev <l1_principal> mtu 1500` (MTU は固定)
+- static route ごと: `0.0.0.0/0` は `ip route del default` + `ip route add default via <next-hop>`、
+  それ以外は `ip route add <prefix> via <next-hop>`
+
 ## 名前空間変換の3層モデル
 
 実機ネットワークとエミュレーション環境では、ノード名・インターフェース名の命名規則が異なります。
@@ -142,7 +151,7 @@ L1L3DataBuilder (layer1)
     └─ L2DataBuilder (layer2)
            sw_vlan_props.csv
            └─ L3DataBuilder (layer3)
-                  ip_owners.csv, interface_props.csv, routes.csv
+                  ip_owners.csv, interface_props.csv, routes.csv, node_props.csv (endpoint 判定)
                   vrrp_props.csv, hsrp_props.csv (任意: 無ければ空扱い。L3 TP の fhrp 属性になる)
                   └─ ExpandedL3DataBuilder (layer3 拡張)
                          └─ OspfDataBuilder (ospf_area*)
@@ -150,6 +159,10 @@ L1L3DataBuilder (layer1)
                                 └─ BgpProcDataBuilder (bgp_proc)
                                        bgp_proc_conf.csv, bgp_peer_conf.csv, named_structures.csv
 ```
+
+L3 ノードの `node_type` は `L3DataBuilder#endpoint_node?` で判定する。ノード名が `*svrN` に一致するか、
+`node_props.csv` の `Configuration_Format` が `HOST` (Batfish の host JSON で定義したホスト) の場合は `endpoint`、
+それ以外は `node` (セグメントは `segment`)。
 
 各 Builder は `Netomox::PseudoDSL::PNetworks` を生成し、最終的に `to_data` で RFC8345 Hash に変換します。
 

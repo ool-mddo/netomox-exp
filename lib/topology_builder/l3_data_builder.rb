@@ -65,6 +65,14 @@ module NetomoxExp
       end
 
       # @param [IPOwnersTableRecord] rec A record of IP-Owners table
+      # @param [String] node_name Name of layer3 node
+      # @return [String] Node type (endpoint/node)
+      def l3_node_type(rec, node_name)
+        # TODO: ad-hoc node type detection...
+        endpoint_node?(rec.node, node_name) ? 'endpoint' : 'node'
+      end
+
+      # @param [IPOwnersTableRecord] rec A record of IP-Owners table
       # @param [Netomox::PseudoDSL::PNode] l2_node A layer2 node
       # @return [Netomox::PseudoDSL::PNode] Added layer3 node
       def add_l3_node(rec, l2_node)
@@ -72,8 +80,7 @@ module NetomoxExp
         l3_node = @network.node(node_name)
         l3_node.supports.push([@layer2p.name, l2_node.name])
         l3_node.attribute = {} unless l3_node.attribute
-        # TODO: ad-hoc node type detection...
-        l3_node.attribute[:node_type] = endpoint_node?(rec.node, node_name) ? 'endpoint' : 'node'
+        l3_node.attribute[:node_type] = l3_node_type(rec, node_name)
         l3_node.attribute[:flags] = ["vrf:#{rec.vrf}"] unless rec.grt?
         l3_node
       end

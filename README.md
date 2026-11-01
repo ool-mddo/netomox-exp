@@ -233,6 +233,10 @@ Convert specified layer topology to clab-topo.yaml for container-lab
     * `license`: [optional] file path of license file
   * options for endpoint node (linux endpoint)
     * `endpoint_image`: [optional] image name (default: `ghcr.io/ool-mddo/ool-iperf:main`)
+    * An endpoint node is defined as `kind: linux` with `exec` commands generated from the topology:
+      `ip addr add <ip> dev <intf>` and `ip link set dev <intf> mtu 1500` for each term-point,
+      and routes for each static route (`0.0.0.0/0` => `ip route del default` + `ip route add default via <next-hop>`,
+      others => `ip route add <prefix> via <next-hop>`). `exec` is omitted if no command is generated.
   * options for per-node override
     * `usecase`: [optional] usecase name to load `containerlab_nodes` definitions from params.yaml
       * `containerlab_nodes` in params.yaml: per-node containerlab definitions (keyed by node name).
@@ -285,6 +289,8 @@ Fetch all nodes and its attributes with namespace-converted names in a layer of 
   * `node_type`: [optional] select specified type nodes (segment/node/endpoint)
   * `exc_node_type`: [optional] reject specified type nodes (segment/node/endpoint)
   * [NOTE] `node_type` and `exc_node_type` are mutually exclusive
+  * [NOTE] A layer3 node is treated as `endpoint` if its name matches `*svrN` or if it is a host defined in Batfish
+    (`Configuration_Format` of `node_props.csv` is `HOST`)
 
 ```shell
 curl -s http://localhost:9292/topologies/mddo-ospf/emulated_asis/topology/ospf_area0/nodes
@@ -489,7 +495,8 @@ bundle exec rspec spec/convert_namespace/convert_table_spec.rb:56
 
 - Tests do not need external services (Batfish, ContainerLab, etc.). Topology/usecase directories
   (`MDDO_*_DIR`) are redirected to temporary directories, and test data is in `spec/fixtures/`
-  (copy of `mddo-fw` network data).
+  (copy of `mddo-fw` network data; `mddo-fw-fhrp` / `mddo-fw-endpoint` queries are variants with VRRP/HSRP and
+  endpoint (host) nodes).
 - Some expected data (`spec/fixtures/golden/`) can be regenerated with `UPDATE_GOLDEN=1 bundle exec rspec`.
   **Always review the diff** of regenerated files.
 - CI: GitHub Actions (`.github/workflows/test.yaml`) runs rubocop and rspec on pull request.
