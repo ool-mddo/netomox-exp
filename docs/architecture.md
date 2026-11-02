@@ -54,6 +54,11 @@ app.rb / config.ru
     │       ├── GET /:network/snapshots
     │       ├── ApiRoute::NsConvertTable (/:network/ns_convert_table)
     │       └── ApiRoute::Snapshot (/:network/:snapshot)
+    │           ├── ApiRoute::Netoviz2Api (/:network/:snapshot/netoviz2)  ※netoviz2 向け (lib/netoviz2/)
+    │           │   ├── GET  /summary
+    │           │   ├── GET  /layers/:layer
+    │           │   ├── GET  /supports
+    │           │   └── POST /attributes
     │           └── ApiRoute::Topology (/:network/:snapshot/topology)
     │               ├── POST   (生成 or 登録)
     │               ├── GET    (取得)
@@ -303,6 +308,7 @@ spec/
 ├── convert_namespace/   # ConvertTable / NamespaceConverter (FW HA の eth 割当て等)
 ├── convert_topology/    # ContainerLabConverter / BatfishConverter
 ├── topology_builder/    # TopologyBuilder (Batfish CSV → topology), CSV mapper
+├── netoviz2/            # netoviz2 向けの構造 (ID、Model、LayerGraph、Builder、キャッシュ)
 ├── static_verifier/     # StaticVerifier
 ├── usecase_deliverer/   # iperf コマンド生成, TinyIPAM
 ├── api/                 # rack-test による REST API 統合テスト
