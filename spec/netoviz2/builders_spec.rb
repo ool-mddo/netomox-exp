@@ -139,12 +139,8 @@ RSpec.describe 'netoviz2 builders' do
       expect(result[:not_found]).to eq ['layer1/none']
     end
 
-    # netomox restores `_diff_state_` of attributes/supports from data in a version after 0.15.0
-    # (https://github.com/ool-mddo/netomox : AttributeBase restores diff state). Skipped with older gems.
+    # netomox 0.15.1+ restores `_diff_state_` of attributes/supports from data (AttributeBase restores diff state)
     it 'keeps diff state in attributes and supports (diff data of attributes)' do
-      restorable = Netomox::Topology::DiffState.respond_to?(:from_data)
-      skip 'netomox does not restore diff state of attributes' unless restorable
-
       node = data['ietf-network:networks']['network'][2]['node'][0]
       node['mddo-topology:l3-node-attributes']['_diff_state_'] = changed_state.merge('pair' => 'attribute')
       node['supporting-node'][0]['_diff_state_'] = { 'forward' => 'kept', 'backward' => nil, 'pair' => 'support' }
