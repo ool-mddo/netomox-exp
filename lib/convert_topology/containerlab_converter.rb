@@ -84,13 +84,41 @@ module NetomoxExp
       # @return [Hash]
       def define_node_data(kind, opts = {})
         data = { 'kind' => kind }
-        %w[image type startup-config license binds components env ports labels].each do |key|
+        %w[image type startup-config license binds components env ports labels exec].each do |key|
           # NOTE
-          #   binds: Array<String>
+          #   binds, exec: Array<String>
           #   components: Hash
           data[key] = opts[key] if opts.key?(key) && !(opts[key].nil? || opts[key].empty?)
         end
         data
+      end
+
+      # @param [Netomox::Topology::Node] node
+      # @return [Array<String>] exec commands for linux endpoint container
+      def endpoint_exec_commands(node)
+        endpoint_tp_commands(node) + endpoint_route_commands(node)
+      end
+
+      # @param [Netomox::Topology::Node] node
+      # @return [Array<String>] interface ip/mtu setup commands
+      def endpoint_tp_commands(node)
+        node.termination_points.flat_map do |tp|
+          intf = converted_tp_l1principal(node.name, tp.name)
+          ip_cmds = (tp.attribute.ip_addrs || []).map { |ip| "ip addr add #{ip} dev #{intf}" }
+          ip_cmds + ["ip link set dev #{intf} mtu 1500"]
+        end
+      end
+
+      # @param [Netomox::Topology::Node] node
+      # @return [Array<String>] static route setup commands
+      def endpoint_route_commands(node)
+        (node.attribute.static_routes || []).flat_map do |sr|
+          if sr.prefix == '0.0.0.0/0'
+            ['ip route del default', "ip route add default via #{sr.next_hop}"]
+          else
+            ["ip route add #{sr.prefix} via #{sr.next_hop}"]
+          end
+        end
       end
 
       # @param [String] node_name Node name
@@ -151,7 +179,7 @@ module NetomoxExp
           select_node_data(node)
         when 'endpoint'
           ep_image = @options[:endpoint_image] || 'ghcr.io/ool-mddo/ool-iperf:main'
-          define_node_data('linux', { 'image' => ep_image })
+          define_node_data('linux', { 'image' => ep_image, 'exec' => endpoint_exec_commands(node) })
         else
           raise StandardError, "Unknown node type: #{node.name}, type=#{node.attribute.node_type}"
         end

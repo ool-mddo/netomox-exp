@@ -1,0 +1,19 @@
+,Node,VRF,Process_ID,Areas,Reference_Bandwidth,Router_ID,Export_Policy_Sources,Area_Border_Router
+0,site-c-br-2,default,default,"['0', '30']",1000000000.0,172.18.0.2,[],True
+1,site-a-cr-1,default,default,['10'],1000000000.0,192.168.0.1,[],False
+2,site-a-cr-2,default,default,['10'],1000000000.0,192.168.0.2,[],False
+3,site-c-fw-2,default,default,['30'],1000000000.0,172.18.1.2,[],False
+4,site-c-fw-1,default,default,['30'],1000000000.0,172.18.1.2,[],False
+5,site-a-br-2,default,default,"['0', '10']",1000000000.0,172.16.0.2,[],True
+6,site-a-br-1,default,default,"['0', '10']",1000000000.0,172.16.0.1,[],True
+7,site-b-br-2,default,default,"['0', '20']",1000000000.0,172.17.0.2,[],True
+8,site-b-fw-2,default,default,['20'],1000000000.0,172.17.1.2,[],False
+9,site-c-cr-1,default,default,['30'],1000000000.0,192.168.20.1,[],False
+10,site-b-br-1,default,default,"['0', '20']",1000000000.0,172.17.0.1,[],True
+11,site-a-fw-1,default,default,['10'],1000000000.0,172.16.1.2,[],False
+12,site-c-br-1,default,default,"['0', '30']",1000000000.0,172.18.0.1,[],True
+13,site-b-cr-2,default,default,['20'],1000000000.0,192.168.10.2,[],False
+14,site-b-cr-1,default,default,['20'],1000000000.0,192.168.10.1,[],False
+15,site-c-cr-2,default,default,['30'],1000000000.0,192.168.20.2,[],False
+16,site-a-fw-2,default,default,['10'],1000000000.0,172.16.1.2,[],False
+17,site-b-fw-1,default,default,['20'],1000000000.0,172.17.1.2,[],False

@@ -114,7 +114,7 @@ module NetomoxExp
       # @param l3_tp [Netomox::PseudoDSL::PTermPoint] l3tp Layer3 term-point
       # @return [Hash] attribute
       def ospf_tp_attr(l3_node, l3_tp)
-        ospf_intf_conf = @ospf_intf_conf.find_record_by_node_intf(l3_node.name, l3_tp.name)
+        ospf_intf_conf = find_cluster_consistent_intf_conf(l3_node, l3_tp)
         # empty (default) term-point attribute for segment-type ospf-node
         return { area: @area_id } if segment_type_l3_node?(l3_node)
 
@@ -131,6 +131,55 @@ module NetomoxExp
         }
       end
       # rubocop:enable Metrics/CyclomaticComplexity, Metrics/MethodLength, Metrics/PerceivedComplexity
+
+      # @param [Netomox::PseudoDSL::PNode] l3_node Layer3 node
+      # @param [Netomox::PseudoDSL::PTermPoint] l3_tp Layer3 term-point
+      # @return [Array<OspfInterfaceConfigurationTableRecord>]
+      #   ospf interface config of the term-point and of the same-name/same-address term-points in other nodes
+      #   (cluster firewall members have the same interface/address, but only one of them is linked to the segment)
+      def cluster_peer_intf_confs(l3_node, l3_tp)
+        addrs = l3_tp.attribute[:ip_addrs]
+        return [] if addrs.nil? || addrs.empty?
+
+        @layer3p.nodes.reject { |node| node.name == l3_node.name }.filter_map do |node|
+          peer_tp = find_tp_by_name_and_addrs(node, l3_tp.name, addrs)
+          peer_tp && @ospf_intf_conf.find_record_by_node_intf(node.name, peer_tp.name)
+        end
+      end
+
+      # @param [Netomox::PseudoDSL::PNode] node Layer3 node
+      # @param [String] tp_name Term-point name
+      # @param [Array<String>] addrs ip addresses
+      # @return [Netomox::PseudoDSL::PTermPoint, nil] Found term-point
+      def find_tp_by_name_and_addrs(node, tp_name, addrs)
+        node.tps.find { |tp| tp.name == tp_name && tp.attribute[:ip_addrs] == addrs }
+      end
+
+      # @param [OspfInterfaceConfigurationTableRecord] rec1
+      # @param [OspfInterfaceConfigurationTableRecord] rec2
+      # @return [Boolean] true if ospf parameters (reflected in the topology) are the same
+      def same_ospf_intf_params?(rec1, rec2)
+        %i[ospf_cost ospf_network_type ospf_hello_interval ospf_dead_interval ospf_passive].all? do |attr|
+          rec1.send(attr) == rec2.send(attr)
+        end
+      end
+
+      # Make ospf parameters consistent in a cluster (e.g. firewall HA pair).
+      # The record of the first node (sorted by name, e.g. primary) is used for all members.
+      # @param [Netomox::PseudoDSL::PNode] l3_node Layer3 node
+      # @param [Netomox::PseudoDSL::PTermPoint] l3_tp Layer3 term-point
+      # @return [OspfInterfaceConfigurationTableRecord, nil] ospf interface config
+      def find_cluster_consistent_intf_conf(l3_node, l3_tp)
+        own = @ospf_intf_conf.find_record_by_node_intf(l3_node.name, l3_tp.name)
+        peers = cluster_peer_intf_confs(l3_node, l3_tp)
+        return own if own.nil? || peers.empty?
+
+        base = ([own] + peers).min_by(&:node)
+        unless (peers + [own]).all? { |rec| same_ospf_intf_params?(base, rec) }
+          @logger.warn("ospf parameters of #{l3_tp.name} are different in cluster members; use #{base.node}'s")
+        end
+        base
+      end
 
       # @param [Netomox::PseudoDSL::PLinkEdge] l3_edge A edge of L3 link
       # @return [Array(Netomox::PseudoDSL::PNode, Netomox::PseudoDSL::PTermPoint)] pair of node/tp

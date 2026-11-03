@@ -1,0 +1,9 @@
+,Node,VRF,Process_ID,Areas,Reference_Bandwidth,Router_ID,Export_Policy_Sources,Area_Border_Router
+0,site-b-br-1,default,default,"['0', '20']",1000000000.0,172.16.3.1,['EXPORTOSPF'],True
+1,site-a-br-2,default,default,"['0', '10']",1000000000.0,172.16.0.2,['EXPORTOSPF'],True
+2,site-a-br-1,default,default,"['0', '10']",1000000000.0,172.16.0.1,['EXPORTOSPF'],True
+3,site-a-fw-1,default,default,['10'],1000000000.0,172.16.1.2,[],False
+4,site-b-fw-2,default,default,['20'],1000000000.0,172.16.4.2,[],False
+5,site-b-fw-1,default,default,['20'],1000000000.0,172.16.4.2,[],False
+6,site-b-br-2,default,default,"['0', '20']",1000000000.0,172.16.3.2,['EXPORTOSPF'],True
+7,site-a-fw-2,default,default,['10'],1000000000.0,172.16.1.2,[],False

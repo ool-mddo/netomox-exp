@@ -76,6 +76,7 @@ UPDATE_GOLDEN=1 bundle exec rspec   # golden (spec/fixtures/golden) の再生成
 ```
 
 - `spec/fixtures/` は `queries/` `topologies/` `usecases/` (mddo-fw) のコピーで固定されたデータ (自動生成物を直接参照しない)。
+  `queries/mddo-fw-fhrp` (VRRP/HSRP) と `queries/mddo-fw-endpoint` (endpoint ノード: HOST と `*svrN`) は専用の派生 fixture。
 - `MDDO_*_DIR` は `spec/spec_helper.rb` が一時ディレクトリに向ける (app を require する前に設定される)。
 - CI: `.github/workflows/test.yaml` (rubocop + rspec)。push 時は `actions.yaml` から呼ばれ、成功した場合のみ image を build/push する。`.dockerignore` で `spec` 等はイメージから除外。
 - `lib/test_*.rb` は手動実行スクリプト (assert なし。イメージには含めない)。
@@ -222,6 +223,15 @@ containerlab_nodes:
 3. いずれも未定義 → `juniper_crpd` デフォルト（cRPD ノード）
 
 実装: [`lib/convert_topology/containerlab_converter.rb`](lib/convert_topology/containerlab_converter.rb)
+
+### endpoint ノード
+
+- 判定 (`L3DataBuilder#endpoint_node?`): L3 ノード名が `*svrN` に一致、または `node_props.csv` の
+  `Configuration_Format` が `HOST` (Batfish host JSON 由来) のとき `node_type: endpoint`。
+- `ContainerLabConverter#make_node_data` は endpoint を `kind: linux` + `exec` で出力する
+  (`endpoint_exec_commands`: TP の `ip addr add` / `ip link set ... mtu 1500` (固定) と static route の `ip route`)。
+  default route (`0.0.0.0/0`) は `ip route del default` してから `ip route add default via` する。
+  コマンドが空のとき `exec` は出力されない (`define_node_data` が空値を除外)。
 
 ### FW HA ペアの fabric リンク自動生成
 
