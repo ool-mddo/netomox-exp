@@ -30,10 +30,10 @@ netomox-exp
     ▼
 MDDO_TOPOLOGIES_DIR/<network>/<snapshot>/topology.json
     │
-    ├─ GET /topologies/:network/:snapshot/topology          → netoviz（可視化）
+    ├─ GET /topologies/:network/:snapshot/topology          → トポロジ取得
     │
-    ├─ POST /topologies/:network/ns_convert_table           → 名前空間変換テーブル生成
-    │       └─ ns_convert_table.json
+    ├─ POST /topologies/:network/:snapshot/ns_convert_table  → 名前空間変換テーブル生成
+    │       └─ <snapshot>/ns_convert_table.json
     │
     ├─ GET /topologies/:network/:snapshot/topology/:layer/batfish_layer1_topology
     │       └─ Batfish 再解析（エミュレーション環境設定検証）
@@ -52,8 +52,8 @@ app.rb / config.ru
     │   └── ApiRoute::Network (/:network)
     │       ├── DELETE /:network
     │       ├── GET /:network/snapshots
-    │       ├── ApiRoute::NsConvertTable (/:network/ns_convert_table)
     │       └── ApiRoute::Snapshot (/:network/:snapshot)
+    │           ├── ApiRoute::NsConvertTable (/:network/:snapshot/ns_convert_table)  ※POST/GET/DELETE
     │           ├── ApiRoute::Netoviz2Api (/:network/:snapshot/netoviz2)  ※netoviz2 向け (lib/netoviz2/)
     │           │   ├── GET  /summary
     │           │   ├── GET  /layers/:layer
@@ -134,8 +134,9 @@ vSRX の `l1_principal` 割り当て:
 ### 変換テーブルの初期化フロー
 
 ```
-POST /topologies/:network/ns_convert_table
-  { "origin_snapshot": "original_asis" }
+POST /topologies/:network/:snapshot/ns_convert_table
+  { "usecase": "<usecase 名 (省略可)>" }          ← 手動上書きは { "convert_table": { ... } }
+  (対象は URL の :snapshot。そのトポロジから生成)
         │
         ▼
 ConvertTable.load_from_topology(topology_data)
@@ -237,7 +238,7 @@ L3 ノードの `node_type` は `L3DataBuilder#endpoint_node?` で判定する�
 }
 ```
 
-**保存場所:** `$MDDO_TOPOLOGIES_DIR/<network>/ns_convert_table.json`
+**保存場所:** `$MDDO_TOPOLOGIES_DIR/<network>/<snapshot>/ns_convert_table.json`
 
 ## 静的検証（StaticVerifier）
 
