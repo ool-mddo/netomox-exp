@@ -128,7 +128,7 @@ netoviz2 (汎用トポロジビューワー) が必要とする構造を、`topo
 * オブジェクトの ID: 各セグメントをパーセントエンコードして `/` で連結 (node `<nw>/<node>`、tp `<nw>/<node>/<tp>`、link `<nw>/~link/<link-id>`)。ID の先頭セグメントは layer の ID。
 * diff: `_diff_state_` から状態を導出し、`added` / `deleted` / `changed` のときだけ `diff` を付ける。`_diff_state_` は diff でないトポロジにも `kept` で入っている (netomox が常に出力する) ため、存在では判定しない。
 * ETag (`v<スキーマ版>-<mtime>-<size>`): GET は `If-None-Match` に一致すると 304。モデルは ETag をキーに直近 2 件をキャッシュする (想定上限 (30,000 TP) では 1 リクエスト約 2.8 秒のため)。
-* 属性・support 内の差分 (`_diff_state_` の `pair: attribute` / `support` と `diff_data`) の復元には netomox gem の修正 (`AttributeBase` の `_diff_state_` の復元) が必要。未対応の gem では関連するテストが pending になる。
+* 属性・support 内の差分 (`_diff_state_` の `pair: attribute` / `support` と `diff_data`) の復元には netomox 0.15.1 以降が必要 (`AttributeBase` が `_diff_state_` を復元する)。0.15.0 以前の gem では、属性内の差分は得られず、関連するテストは pending になる。
 * 参照解決は gem の `find_*` ではなく、ID の索引で行う (`__` を含む名前でも正しく動き、線形探索を避けるため)。
 
 ## 名前空間変換: FW ノード (vSRX) 対応
