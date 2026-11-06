@@ -46,6 +46,7 @@ Data directory:
 
 * `MDDO_QUERIES_DIR`: query result directory (default: `./queries`)
 * `MDDO_TOPOLOGIES_DIR`: topology data directory (for netoviz; default: `./topologies`)
+* `MDDO_PROFILES_DIR`: diagram profile directory for netoviz2 (YAML files written by hand: `<network>/<name>.yaml`; read only; default: `./profiles`)
 
 Log level variable:
 

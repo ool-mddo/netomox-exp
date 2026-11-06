@@ -6,6 +6,7 @@ require_relative 'snapshot/ns_convert_table'
 require_relative 'snapshot/converted_topology'
 require_relative 'snapshot/topology/layer'
 require_relative 'snapshot/topology'
+require_relative 'snapshot/netoviz2_api'
 
 module NetomoxExp
   module ApiRoute
@@ -25,6 +26,7 @@ module NetomoxExp
         mount ApiRoute::NsConvertTable
         mount ApiRoute::ConvertedTopology
         mount ApiRoute::Topology
+        mount ApiRoute::Netoviz2Api
       end
     end
   end

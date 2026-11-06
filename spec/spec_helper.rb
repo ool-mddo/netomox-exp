@@ -11,6 +11,7 @@ SPEC_TMP_ROOT = Dir.mktmpdir('netomox-exp-spec')
 ENV['MDDO_QUERIES_DIR'] = File.join(SPEC_TMP_ROOT, 'queries')
 ENV['MDDO_TOPOLOGIES_DIR'] = File.join(SPEC_TMP_ROOT, 'topologies')
 ENV['MDDO_USECASES_DIR'] = File.join(SPEC_TMP_ROOT, 'usecases')
+ENV['MDDO_PROFILES_DIR'] = File.join(SPEC_TMP_ROOT, 'profiles')
 ENV['NETOMOX_EXP_LOG_LEVEL'] ||= 'fatal'
 ENV['NETOMOX_LOG_LEVEL'] ||= 'fatal'
 

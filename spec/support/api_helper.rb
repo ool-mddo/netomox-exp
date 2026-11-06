@@ -10,6 +10,7 @@ module ApiHelper
   QUERIES_DIR = ENV.fetch('MDDO_QUERIES_DIR')
   TOPOLOGIES_DIR = ENV.fetch('MDDO_TOPOLOGIES_DIR')
   USECASES_DIR = ENV.fetch('MDDO_USECASES_DIR')
+  PROFILES_DIR = ENV.fetch('MDDO_PROFILES_DIR')
 
   def app
     NetomoxExp::NetomoxRestApi
@@ -22,8 +23,8 @@ module ApiHelper
 
   # copy fixtures to temporary dirs (call in `before`)
   def prepare_dirs
-    [QUERIES_DIR, TOPOLOGIES_DIR, USECASES_DIR].each { |d| FileUtils.rm_rf(d) }
-    FileUtils.mkdir_p([QUERIES_DIR, TOPOLOGIES_DIR, USECASES_DIR])
+    [QUERIES_DIR, TOPOLOGIES_DIR, USECASES_DIR, PROFILES_DIR].each { |d| FileUtils.rm_rf(d) }
+    FileUtils.mkdir_p([QUERIES_DIR, TOPOLOGIES_DIR, USECASES_DIR, PROFILES_DIR])
     FileUtils.cp_r(FixtureHelper.path('queries', 'mddo-fw'), QUERIES_DIR)
     FileUtils.cp_r(FixtureHelper.path('usecases', 'refocus_topology'), USECASES_DIR)
   end

@@ -30,10 +30,10 @@ netomox-exp
     ▼
 MDDO_TOPOLOGIES_DIR/<network>/<snapshot>/topology.json
     │
-    ├─ GET /topologies/:network/:snapshot/topology          → netoviz（可視化）
+    ├─ GET /topologies/:network/:snapshot/topology          → トポロジ取得
     │
-    ├─ POST /topologies/:network/ns_convert_table           → 名前空間変換テーブル生成
-    │       └─ ns_convert_table.json
+    ├─ POST /topologies/:network/:snapshot/ns_convert_table  → 名前空間変換テーブル生成
+    │       └─ <snapshot>/ns_convert_table.json
     │
     ├─ GET /topologies/:network/:snapshot/topology/:layer/batfish_layer1_topology
     │       └─ Batfish 再解析（エミュレーション環境設定検証）
@@ -52,8 +52,15 @@ app.rb / config.ru
     │   └── ApiRoute::Network (/:network)
     │       ├── DELETE /:network
     │       ├── GET /:network/snapshots
-    │       ├── ApiRoute::NsConvertTable (/:network/ns_convert_table)
+    │       ├── ApiRoute::Netoviz2ProfilesApi (/:network/netoviz2)  ※Snapshot より先に mount
+    │       │   └── GET /profiles  ※ダイアグラムプロファイル (YAML → JSON。lib/netoviz2/profile_files.rb)
     │       └── ApiRoute::Snapshot (/:network/:snapshot)
+    │           ├── ApiRoute::NsConvertTable (/:network/:snapshot/ns_convert_table)  ※POST/GET/DELETE
+    │           ├── ApiRoute::Netoviz2Api (/:network/:snapshot/netoviz2)  ※netoviz2 向け (lib/netoviz2/)
+    │           │   ├── GET  /summary
+    │           │   ├── GET  /layers/:layer
+    │           │   ├── GET  /supports
+    │           │   └── POST /attributes
     │           └── ApiRoute::Topology (/:network/:snapshot/topology)
     │               ├── POST   (生成 or 登録)
     │               ├── GET    (取得)
@@ -129,8 +136,9 @@ vSRX の `l1_principal` 割り当て:
 ### 変換テーブルの初期化フロー
 
 ```
-POST /topologies/:network/ns_convert_table
-  { "origin_snapshot": "original_asis" }
+POST /topologies/:network/:snapshot/ns_convert_table
+  { "usecase": "<usecase 名 (省略可)>" }          ← 手動上書きは { "convert_table": { ... } }
+  (対象は URL の :snapshot。そのトポロジから生成)
         │
         ▼
 ConvertTable.load_from_topology(topology_data)
@@ -232,7 +240,7 @@ L3 ノードの `node_type` は `L3DataBuilder#endpoint_node?` で判定する�
 }
 ```
 
-**保存場所:** `$MDDO_TOPOLOGIES_DIR/<network>/ns_convert_table.json`
+**保存場所:** `$MDDO_TOPOLOGIES_DIR/<network>/<snapshot>/ns_convert_table.json`
 
 ## 静的検証（StaticVerifier）
 
@@ -303,6 +311,7 @@ spec/
 ├── convert_namespace/   # ConvertTable / NamespaceConverter (FW HA の eth 割当て等)
 ├── convert_topology/    # ContainerLabConverter / BatfishConverter
 ├── topology_builder/    # TopologyBuilder (Batfish CSV → topology), CSV mapper
+├── netoviz2/            # netoviz2 向けの構造 (ID、Model、LayerGraph、Builder、キャッシュ)
 ├── static_verifier/     # StaticVerifier
 ├── usecase_deliverer/   # iperf コマンド生成, TinyIPAM
 ├── api/                 # rack-test による REST API 統合テスト
@@ -311,6 +320,6 @@ spec/
                          #   queries/mddo-fw-fhrp: cr ノード (VRRP) を含む現行 queries のコピー
 ```
 
-- `MDDO_QUERIES_DIR` / `MDDO_TOPOLOGIES_DIR` / `MDDO_USECASES_DIR` は `spec_helper.rb` が一時ディレクトリに向ける（アプリ読み込み前に設定する必要がある）。
+- `MDDO_QUERIES_DIR` / `MDDO_TOPOLOGIES_DIR` / `MDDO_USECASES_DIR` / `MDDO_PROFILES_DIR` は `spec_helper.rb` が一時ディレクトリに向ける（アプリ読み込み前に設定する必要がある）。
 - テスト用 gem は Gemfile の optional group `test`。`spec/` 等は `.dockerignore` でコンテナイメージから除外する。
 - CI は `.github/workflows/test.yaml` (rubocop + rspec)。push 時は `actions.yaml` から呼ばれ、成功後に image を build/push する。

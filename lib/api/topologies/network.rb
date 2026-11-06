@@ -2,6 +2,7 @@
 
 require 'fileutils'
 require 'lib/api/rest_api_base'
+require_relative 'network/netoviz2_profiles_api'
 require_relative 'network/snapshot'
 
 module NetomoxExp
@@ -37,6 +38,8 @@ module NetomoxExp
           end
         end
 
+        # (before Snapshot: `netoviz2` is a fixed segment and must not be taken as a snapshot name)
+        mount ApiRoute::Netoviz2ProfilesApi
         mount ApiRoute::Snapshot
       end
     end
