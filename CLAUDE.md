@@ -33,6 +33,7 @@ ContainerLab / cRPD ベースのエミュレーション環境構築までをつ
 | `MDDO_QUERIES_DIR` | `./queries` | Batfish CSV（入力）のルートディレクトリ |
 | `MDDO_TOPOLOGIES_DIR` | `./topologies` | トポロジ JSON / NS 変換テーブルの保存先 |
 | `MDDO_USECASES_DIR` | `/mddo/usecases` | ユースケース YAML / CSV のルートディレクトリ |
+| `MDDO_PROFILES_DIR` | `profiles` | netoviz2 のダイアグラムプロファイル (人が書く YAML) のルートディレクトリ (`<network>/<名前>.yaml`)。読み取りのみ |
 | `NETOMOX_EXP_LOG_LEVEL` | `info` | ログレベル（fatal / error / warn / info / debug） |
 | `NETOMOX_LOG_LEVEL` | `info` | netomox gem のログレベル |
 
@@ -111,7 +112,7 @@ FW アトリビュートの JSON スキーマは複数リポジトリをまた�
 - `flag: ["firewall"]` と `firewall` アトリビュートの二重構造の説明
 - netomox gem の `ATTR_DEFS[ext:]` との整合性制約
 
-## netoviz2 向け API (`/topologies/:network/:snapshot/netoviz2/*`)
+## netoviz2 向け API (`/topologies/:network/:snapshot/netoviz2/*`, `/topologies/:network/netoviz2/profiles`)
 
 netoviz2 (汎用トポロジビューワー) が必要とする構造を、`topology.json` から整形して返す読み取り専用 API。
 **canonical definition (データ形式・API 仕様): `playground/docs/netoviz2_data_format.md`**。
@@ -122,6 +123,7 @@ netoviz2 (汎用トポロジビューワー) が必要とする構造を、`topo
 | `GET .../layers/:layer` | 当該レイヤの構造 (nodes / tps / links。属性なし) |
 | `GET .../supports` | 全レイヤのオブジェクト間 support |
 | `POST .../attributes` | 指定 ID の属性・diff の詳細 (読み取りのみの POST。最大 200 件) |
+| `GET /topologies/:network/netoviz2/profiles` | network のダイアグラムプロファイル (schematic レイアウト用)。`$MDDO_PROFILES_DIR/<network>/*.{yaml,yml}` を **JSON に変換して**返す (snapshot には依存しない) |
 
 * 実装: ロジックは `lib/netoviz2/` (`ObjectId`、`Model`、`LayerGraph`、各 `*Builder`、`ModelCache`)、API は `lib/api/topologies/network/snapshot/netoviz2_api.rb` と `lib/api/helpers_netoviz2.rb`。
 * **整形処理は netomox gem のオブジェクトモデルを使う** (生の Hash を直接操作しない)。`attributes` は gem が保持する属性 (`attribute.to_data`) をそのまま返す。gem が保持しないキー (node 直下の `flag` など) は表示されない (必要なら gem 側に追加する)。
@@ -129,6 +131,12 @@ netoviz2 (汎用トポロジビューワー) が必要とする構造を、`topo
 * diff: `_diff_state_` から状態を導出し、`added` / `deleted` / `changed` のときだけ `diff` を付ける。`_diff_state_` は diff でないトポロジにも `kept` で入っている (netomox が常に出力する) ため、存在では判定しない。
 * ETag (`v<スキーマ版>-<mtime>-<size>`): GET は `If-None-Match` に一致すると 304。モデルは ETag をキーに直近 2 件をキャッシュする (想定上限 (30,000 TP) では 1 リクエスト約 2.8 秒のため)。
 * 属性・support 内の差分 (`_diff_state_` の `pair: attribute` / `support` と `diff_data`) の復元には netomox 0.15.1 以降が必要 (`AttributeBase` が `_diff_state_` を復元する)。0.15.0 以前の gem では、属性内の差分は得られず、関連するテストは pending になる。
+* **プロファイル API (`profiles`)** (仕様: `playground/docs/netoviz2_data_format.md` 4.5):
+  * 実装は `lib/netoviz2/profile_files.rb` (`ProfileFiles`) と `lib/api/topologies/network/netoviz2_profiles_api.rb`。`Network` に、`Snapshot` より**先に** mount する (`netoviz2` を snapshot 名として扱わないため)。
+  * 変換するだけで、プロファイルの意味は検証しない (検証・選択は netoviz2)。応答は `{network, profiles: [{name, etag, documents, error?}]}`。YAML の文書 (`---` 区切り) ごとに `documents` の 1 要素。
+  * **ファイル単位のエラー:** 構文エラー、JSON で表せない書き方 (アンカー・エイリアス・タグ、文字列でないキー、日付・シンボル、`.nan` / `.inf`、深さ 64 超)、1MB 超のファイルは、そのファイルだけ `error` にする (HTTP は 200。他のファイルは返す)。安全な読み込みだけを使う (`Psych.safe_load`。`Psych.parse_stream` の各文書を、再 emit して `safe_load(aliases: false)` する。`to_ruby` は制限が無いので使わない)。
+  * 名前は `[A-Za-z0-9_][A-Za-z0-9_.-]*` (ファイル名から拡張子を除く) だけ。通常のファイルだけを読み、シンボリックリンクは辿らない (network ディレクトリも)。network 名が `..`・`/` を含む、などのときは `[]`。`a.yaml` と `a.yml` があれば `a.yaml`。
+  * ETag ヘッダ・304・`schema_version` は持たない (毎回ファイルを読む)。型は YAML 1.1 (Psych) の規則 (`017` は 15、`yes` は真偽値)。
 * 参照解決は gem の `find_*` ではなく、ID の索引で行う (`__` を含む名前でも正しく動き、線形探索を避けるため)。
 
 ## 名前空間変換: FW ノード (vSRX) 対応

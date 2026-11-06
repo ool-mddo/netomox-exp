@@ -11,6 +11,8 @@ module NetomoxExp
   QUERIES_DIR = ENV.fetch('MDDO_QUERIES_DIR', 'queries')
   # Directory to save topology json from batfish query answers
   TOPOLOGIES_DIR = ENV.fetch('MDDO_TOPOLOGIES_DIR', 'topologies')
+  # Directory of the diagram profiles (YAML files for netoviz2: `<network>/<name>.yaml`)
+  PROFILES_DIR = ENV.fetch('MDDO_PROFILES_DIR', 'profiles')
   # (temporary) layout file directory
   MODEL_DEFS_DIR = './model_defs'
 

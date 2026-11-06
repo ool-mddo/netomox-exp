@@ -52,6 +52,8 @@ app.rb / config.ru
     │   └── ApiRoute::Network (/:network)
     │       ├── DELETE /:network
     │       ├── GET /:network/snapshots
+    │       ├── ApiRoute::Netoviz2ProfilesApi (/:network/netoviz2)  ※Snapshot より先に mount
+    │       │   └── GET /profiles  ※ダイアグラムプロファイル (YAML → JSON。lib/netoviz2/profile_files.rb)
     │       └── ApiRoute::Snapshot (/:network/:snapshot)
     │           ├── ApiRoute::NsConvertTable (/:network/:snapshot/ns_convert_table)  ※POST/GET/DELETE
     │           ├── ApiRoute::Netoviz2Api (/:network/:snapshot/netoviz2)  ※netoviz2 向け (lib/netoviz2/)
@@ -318,6 +320,6 @@ spec/
                          #   queries/mddo-fw-fhrp: cr ノード (VRRP) を含む現行 queries のコピー
 ```
 
-- `MDDO_QUERIES_DIR` / `MDDO_TOPOLOGIES_DIR` / `MDDO_USECASES_DIR` は `spec_helper.rb` が一時ディレクトリに向ける（アプリ読み込み前に設定する必要がある）。
+- `MDDO_QUERIES_DIR` / `MDDO_TOPOLOGIES_DIR` / `MDDO_USECASES_DIR` / `MDDO_PROFILES_DIR` は `spec_helper.rb` が一時ディレクトリに向ける（アプリ読み込み前に設定する必要がある）。
 - テスト用 gem は Gemfile の optional group `test`。`spec/` 等は `.dockerignore` でコンテナイメージから除外する。
 - CI は `.github/workflows/test.yaml` (rubocop + rspec)。push 時は `actions.yaml` から呼ばれ、成功後に image を build/push する。
